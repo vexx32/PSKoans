@@ -10,7 +10,7 @@ The PowerShell Koans need PowerShell version 5.1 or Core 6+ to be run; make sure
 
 Additionally, the project will provide Visual Studio Code configuration for running. To be able to run PowerShell projects in Visual Studio Code, the PowerShell extension should be installed.
 
-# Running the Koans from the console line (PowerShell 5.1 / Core 6+)
+# Running the Koans from the console (PowerShell 5.1 / Core 6+)
 TODO
 
 # Running the Koans in Visual Studio Code
