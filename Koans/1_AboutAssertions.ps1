@@ -1,4 +1,4 @@
-. "$PSScriptRoot\Shared\Common.ps1"
+. "$PSScriptRoot\Common.ps1"
 <#
     Getting Started
     
