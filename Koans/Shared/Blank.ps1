@@ -10,7 +10,7 @@ PS> __ -eq $null
 True
 #>
 function Get-Blank {
-    [Alias('__')]
+    [Alias('__', 'FILL_ME_IN')]
     param()
     $null
 }
