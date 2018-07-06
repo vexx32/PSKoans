@@ -1,4 +1,4 @@
-. "$PSScriptRoot\Shared\Blank.ps1"
+. "$PSScriptRoot\Shared\Common.ps1"
 <#
     Getting Started
     
@@ -39,7 +39,7 @@ Describe "Equality" {
     }
     
     # Easy, right? Try one more!
-    
+
     It "demands balance" {
         # Both sides of the scale must be of equal measure.
         (__ + 2) -eq 3 | Should -Be $true
