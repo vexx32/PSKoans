@@ -17,7 +17,10 @@ Describe 'Variable Assignment' {
         $Fifty = 50
         $Value = __
 
+        Set-Variable -Name 'Greeting' -Value "Hello!"
+
         $Value -eq $Fifty | Should -Be $true
+        $Greeting | Should -Be __
     }
 
     <#
@@ -55,7 +58,32 @@ Describe 'Variable Assignment' {
         $String = [string]$true
         $TypeOfString = $String.GetType()
 
-        $TypeOfNumber | Should -BeOfType [__]
-        $TypeOfString | Should -BeOfType [__]
+        $TypeOfNumber | Should -Be [__]
+        $TypeOfString | Should -Be [__]
+    }
+
+    It "distinguishes between types of numbers" {
+        # There are many kinds of numbers in PowerShell, from your basic [int], [double],
+        # [float] and [decimal] to the highly unusual [int64] and [bigint]
+
+        $Integer = 100
+        $Double = 12.0
+
+        $Integer | Should -BeOfType [int]
+        $Double | Should -BeOfType [double]
+    }
+
+    It "allows you to declare constant variables" {
+        {
+            Set-Variable -Name 'Constant' -Value 25 -Option Constant 
+            # This operation will never succeed; constant variables cannot be altered.
+            $Constant = "NewValue"
+        } | Should -Throw
+        {
+            # Contrast Read-Only variables, which can be later removed
+            Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
+            Remove-Variable -Name 'Constant' -Force
+            $Constant = 2
+        } | Shoulde -Not -Throw
     }
 }
