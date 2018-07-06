@@ -12,7 +12,7 @@
     This is where the fun begins! Each koan contains an example designed 
     to teach you a lesson about PowerShell. If you execute the program 
     defined in this project, you will get a message that the koan below 
-    has failed. Your job is to fill in the blank (the __ symbol) to 
+    has failed. Your job is to fill in the blanks (the __ symbol) to 
     make it pass. Once you make the change, re-run the program to 
     make sure the koan passes, and continue on to the next failing koan.
     With each  passing koan, you'll learn more about PowerShell, and 
@@ -39,12 +39,9 @@ Describe "Equality" {
     }
     
     # Easy, right? Try one more!
-
+    
     It "demands balance" {
-        # both sides of the 
+        # Both sides of the scale must be of equal measure.
         (__ + 2) -eq 3 | Should -Be $true
     }
-}
-trap {
-    $PSCmdlet.ThrowTerminatingError($_)
 }
