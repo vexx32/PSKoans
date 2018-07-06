@@ -63,8 +63,8 @@ Describe 'Variable Assignment' {
     }
 
     It "distinguishes between types of numbers" {
-        # There are many kinds of numbers in PowerShell, from your basic [int], [double],
-        # [float] and [decimal] to the highly unusual [int64] and [bigint]
+        # There are many kinds of numbers in PowerShell, but the basics are
+        # [int] and [double] for integers and floating-point numbers
 
         $Integer = 100
         $Double = 12.0
@@ -78,6 +78,7 @@ Describe 'Variable Assignment' {
             Set-Variable -Name 'Constant' -Value 25 -Option Constant 
             # This operation will never succeed; constant variables cannot be altered.
             # Try uncommenting the below line to see what happens.
+            
             # $Constant = "NewValue"
         } | Should -Not -Throw
         {
