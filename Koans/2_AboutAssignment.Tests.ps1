@@ -77,13 +77,14 @@ Describe 'Variable Assignment' {
         {
             Set-Variable -Name 'Constant' -Value 25 -Option Constant 
             # This operation will never succeed; constant variables cannot be altered.
-            $Constant = "NewValue"
-        } | Should -Throw
+            # Try uncommenting the below line to see what happens.
+            # $Constant = "NewValue"
+        } | Should -Not -Throw
         {
             # Contrast Read-Only variables, which can be later removed
             Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
             Remove-Variable -Name 'Constant' -Force
             $Constant = 2
-        } | Shoulde -Not -Throw
+        } | Should -Not -Throw
     }
 }
