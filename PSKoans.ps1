@@ -1,3 +1,7 @@
-Get-ChildItem "$PSScriptRoot\Koans" -Filter '*.ps1' | ForEach-Object {
-    . $_.FullName
-}
+Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1' |
+    ForEach-Object {
+        $KoansFailed = Invoke-Pester -Script $_.FullName
+        if (-not $KoansFailed) {
+            break
+        }
+    }
