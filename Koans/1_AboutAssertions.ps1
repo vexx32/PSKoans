@@ -1,3 +1,4 @@
+. "$PSScriptRoot\Shared\Blank.ps1"
 <#
     Getting Started
     
@@ -17,12 +18,33 @@
     With each  passing koan, you'll learn more about PowerShell, and 
     add another weapon to your PowerShell scripting arsenal.
 #>
+
 Describe "Equality" {
-    $ExpectedValue = 1 + 1
-    $ActualValue = __ # Start by changing this line
+    It "is a simple comparison" {
+        # Some truths are absolute.
+        $false | Should -Be $true
+    }
 
-    $ActualValue | Should -Be $ExpectedValue
+    It "expects you to fill in values" {
+        # Initiative will be rewarded.
+        1 + 2 | Should -Be __
+    }
 
+    It "sets the expectations" {
+        # Many roads converge, yet some paths are less clear.
+        $ExpectedValue = 1 + 1
+        $ActualValue = __ 
+        
+        $ExpectedValue -eq $ActualValue | Should -Be $true
+    }
+    
     # Easy, right? Try one more!
-    (__ + 2 -eq 3) | Should -Be $true
+
+    It "demands balance" {
+        # both sides of the 
+        (__ + 2) -eq 3 | Should -Be $true
+    }
+}
+trap {
+    $PSCmdlet.ThrowTerminatingError($_)
 }
