@@ -5,28 +5,31 @@ function Invoke-PSKoans {
         [switch]
         $NoClear
     )
-    if (!$NoClear) {
-        Clear-Host
-    }
+    begin {
+        if (!$NoClear) {
+            Clear-Host
+        }
 
-    Write-Host -ForegroundColor Cyan @"
+        Write-Host -ForegroundColor Cyan @"
     Welcome, seeker of enlightenment. 
     Please wait a moment while we examine your karma...
 
 "@
-    $Red = @{
-        ForegroundColor = "Red"
+        $Red = @{ForegroundColor = "Red"}
+        $Blue = @{ForegroundColor = "Cyan"}
+        $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
+        $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1'
+        $KoansPassed = 0
     }
-    $Blue = @{
-        ForegroundColor = "Cyan"
-    }
+    process {
+        foreach ($KoanFile in $Tests) {
+            $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
+            $KoansPassed += $PesterTests.PassedCount
 
-    $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
-
-    $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1'
-
-    foreach ($KoanFile in $Tests) {
-        $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
+            if ($PesterTests.FailedCount -gt 0) {
+                break
+            } # end if
+        } # end foreach
 
         if ($PesterTests.FailedCount -gt 0) {
             $NextKoanFailed = $PesterTests.TestResult | 
@@ -59,17 +62,15 @@ function Invoke-PSKoans {
         
     Your path thus far: 
 "@
-            $ProgressAmount = "$($PesterTests.PassedCount)/$PesterTestCount"
+            $ProgressAmount = "$KoansPassed/$PesterTestCount"
             $ProgressWidth = $host.UI.RawUI.WindowSize.Width - (3 + $ProgressAmount.Length)
-            $PortionDone = ($PesterTests.PassedCount / $PesterTestCount) * $ProgressWidth
-
+            $PortionDone = ($KoansPassed / $PesterTestCount) * $ProgressWidth
+            
             "[{0}{1}] {2}" -f @(
                 "$([char]0x25a0)" * $PortionDone
                 "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
                 $ProgressAmount
             ) | Write-Host @Blue
-            
-            break
-        }
-    }
-}
+        } # end if
+    } # end Process
+} # end function
