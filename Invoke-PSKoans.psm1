@@ -49,8 +49,18 @@ function Invoke-PSKoans {
 
     Mountains are merely mountains.
         
-    Your path thus far: $($PesterTests.PassedCount) / $($PesterTestCount)
+    Your path thus far: 
 "@
+            $Width = $host.UI.RawUI.WindowSize.Width - 7
+            $PortionDone = ($PesterTests.PassedCount / $PesterTestCount) * $Width
+            Write-Host @Blue (
+                "[{0}{1}] {2}/{3}" -f @(
+                    "$([char]0x25a0)" * $PortionDone
+                    "$([char]0x2015)" * ($Width - $PortionDone)
+                    $PesterTests.PassedCount
+                    $PesterTestCount
+                )
+            )
             break
         }
     }
