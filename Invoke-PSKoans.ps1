@@ -40,12 +40,12 @@ foreach ($KoanFile in $Tests) {
         Write-Host @Blue @"
     
     Please meditate on the following code:
-    
+
 "@
         Write-Host @Red @"
     $($NextKoanFailed.StackTrace)
 "@
-        Write-Host -ForegroundColor Cyan @"
+        Write-Host @Blue @"
 
     Mountains are merely mountains.
         
