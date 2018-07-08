@@ -14,6 +14,7 @@ function Invoke-PSKoans {
     $Blue = @{
         ForegroundColor = "Cyan"
     }
+
     $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
 
     $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1'
@@ -51,14 +52,15 @@ function Invoke-PSKoans {
         
     Your path thus far: 
 "@
-            $Width = $host.UI.RawUI.WindowSize.Width - 7
-            $PortionDone = ($PesterTests.PassedCount / $PesterTestCount) * $Width
+            $ProgressAmount = "$($PesterTests.PassedCount)/$PesterTestCount"
+            $ProgressWidth = $host.UI.RawUI.WindowSize.Width - (3 + $ProgressAmount.Length)
+            $PortionDone = ($PesterTests.PassedCount / $PesterTestCount) * $ProgressWidth
+
             Write-Host @Blue (
-                "[{0}{1}] {2}/{3}" -f @(
+                "[{0}{1}] {2}" -f @(
                     "$([char]0x25a0)" * $PortionDone
-                    "$([char]0x2015)" * ($Width - $PortionDone)
-                    $PesterTests.PassedCount
-                    $PesterTestCount
+                    "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
+                    $ProgressAmount
                 )
             )
             break
