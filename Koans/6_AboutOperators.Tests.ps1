@@ -39,6 +39,7 @@ Describe 'Addition' {
         # taking both operands into account
         
         11 + '12.5' | Should -Be __
+        12.21 + 'FILL_ME_IN' -eq 23.43 | Should -BeTrue
 
         # Adding items into typed arrays will also cause the resulting value to be converted
         [int[]]@(1, 2, 3, 4, 5) + '17' | Should -Be __
@@ -65,7 +66,7 @@ Describe 'Multiplication' {
         12.1 * 2 | Should -Be 24.2
     }
     It 'can also be used on strings' {
-
+        'A' * 4 -eq 'FILL_ME_IN' | Should -BeTrue
     }
 }
 
