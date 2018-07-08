@@ -60,6 +60,42 @@ Describe "Arrays and Enumerable Collections" {
         $Number1 | Should -Be __
     }
     It "has several types of enumerable collections that can be used" {
+        <# 
+            Arrays have one critical weakness: they are immutable collections. While the
+            members within them can change, the number of items they hold cannot.
+        #>
+        $Array = 0, 1
+        $Array = $Array + 2
+        $Array += 3
+
+        # So, if the number of items in an array can't change, what happens here?
+        # You might think it should fail with an error, but it won't!
+
+        $Array | Should -Be __ # So what is it? What happens?
+        <#
+            Actually, in PowerShell, the addition operator for arrays is defined something like:
+                "Take the elements in this array, and the thing(s) we're adding in, and
+                build a new array with them."
+
+            This is very convenient, but it can create a problem - this gets significantly more
+            expensive if you need to do it a lot. For large collections, adding items to them
+            becomes very slow to do. 
+
+            In these cases, we have a few .NET collection types that perform much better.
+            Introducing: Lists!
+        #>
+        # These methods of defining a list have largely the same results.
+        $List1 = New-Object System.Collections.Generic.List[int] # Slow but very clear in intent
         
+        # New List with no contents
+        $List2a = [System.Collections.Generic.List[string]]::new() 
+        # New List with 3 empty elements
+        $List2b = [System.Collections.Generic.List[string]]::new(3) 
+        # New List with whatever was in the array transferred into the List
+        $List2c = [System.Collections.Generic.List[string]]::new(@(1, 2))
+
+        # Cast from array. Identical method to $List2c.
+        $List3a = [System.Collections.Generic.List[double]]@(1, 2)
+        [System.Collections.Generic.List[double]]$List3b = @(1, 2)
     }
 }
