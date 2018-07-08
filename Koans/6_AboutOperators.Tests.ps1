@@ -67,6 +67,7 @@ Describe 'Multiplication' {
     }
     It 'can also be used on strings' {
         'A' * 4 -eq 'FILL_ME_IN' | Should -BeTrue
+        __ * 4 -eq "NANANANA" | Should -BeTrue
     }
 }
 
