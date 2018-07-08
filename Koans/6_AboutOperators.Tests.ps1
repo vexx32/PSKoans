@@ -18,8 +18,13 @@ Describe "Assignment and Arithmetic Operators" {
     Describe "Addition Operator" {
         It "is used to add two items together" {
             13 + 4 | Should -Be 17
-            __ + 6 | Shoulde -Be 13
+            __ + 6 | Should -Be 13
         }
+        It "can be used to concatenate strings" {
+            "hello" + "world" | Should -Be __
+            "My name is " + "Jim" | Should -Be "My name is Jim"
+        }
+        It ""
     }
 }
 Describe "Comparison Operators" {

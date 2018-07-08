@@ -50,6 +50,7 @@ function Invoke-PSKoans {
     Please meditate on the following code:
 "@
             Write-Host @Red @"
+    [It] $($NextKoanFailed.Name)
     $($NextKoanFailed.StackTrace)
 "@
             Write-Host @Blue @"
