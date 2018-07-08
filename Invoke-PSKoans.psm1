@@ -1,7 +1,13 @@
 function Invoke-PSKoans {
     [CmdletBinding()]
     [Alias('Rake')]
-    param()
+    param(
+        [switch]
+        $NoClear
+    )
+    if (!$NoClear) {
+        Clear-Host
+    }
 
     Write-Host -ForegroundColor Cyan @"
     Welcome, seeker of enlightenment. 
@@ -56,13 +62,12 @@ function Invoke-PSKoans {
             $ProgressWidth = $host.UI.RawUI.WindowSize.Width - (3 + $ProgressAmount.Length)
             $PortionDone = ($PesterTests.PassedCount / $PesterTestCount) * $ProgressWidth
 
-            Write-Host @Blue (
-                "[{0}{1}] {2}" -f @(
-                    "$([char]0x25a0)" * $PortionDone
-                    "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
-                    $ProgressAmount
-                )
-            )
+            "[{0}{1}] {2}" -f @(
+                "$([char]0x25a0)" * $PortionDone
+                "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
+                $ProgressAmount
+            ) | Write-Host @Blue
+            
             break
         }
     }
