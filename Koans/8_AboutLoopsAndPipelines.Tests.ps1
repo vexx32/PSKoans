@@ -1,3 +1,4 @@
+. "$PSScriptRoot\Common.ps1"
 <#
     The Pipeline & Loops
 
