@@ -3,11 +3,18 @@ function Invoke-PSKoans {
     [Alias('Rake')]
     param(
         [switch]
-        $NoClear
+        $NoClear,
+
+        [switch]
+        $Meditate
     )
     begin {
         if (!$NoClear) {
             Clear-Host
+        }
+        if ($Meditate) {
+            Invoke-Item "$PSScriptRoot\Koans"
+            exit
         }
 
         Write-Host -ForegroundColor Cyan @"
@@ -61,16 +68,23 @@ function Invoke-PSKoans {
     Mountains are merely mountains.
         
     Your path thus far: 
+
 "@
             $ProgressAmount = "$KoansPassed/$PesterTestCount"
             $ProgressWidth = $host.UI.RawUI.WindowSize.Width - (3 + $ProgressAmount.Length)
             $PortionDone = ($KoansPassed / $PesterTestCount) * $ProgressWidth
-            
+
             "[{0}{1}] {2}" -f @(
                 "$([char]0x25a0)" * $PortionDone
                 "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
                 $ProgressAmount
             ) | Write-Host @Blue
+
+            Write-Host @Blue @"
+    
+    You may run 'rake -Meditate' to begin your meditation.
+
+"@
         } # end if
     } # end Process
 } # end function
