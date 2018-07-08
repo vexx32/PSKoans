@@ -70,7 +70,17 @@ Describe 'Multiplication' {
         __ * 4 -eq "NANANANA" | Should -BeTrue
     }
 }
-
+Describe "Division" {
+    It "is restricted to numeric use only" {
+        # As with subtraction, there's no useful meaning of using division on a string
+        # so any attempts to do so will throw an error.
+        {"hello!" / 3} | Should -Throw
+        # Unlike with other numerical operators, however, division often results
+        # in a non-integer (double) value even when both operands are integers.
+        3 / 4 | Should -Be 0.75
+        __ / 10 -eq 0.5 | Should -BeTrue
+    }
+}
 Describe 'Comparison Operators' {
 
 }
