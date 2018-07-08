@@ -13,7 +13,7 @@
     which will be covered in the next set of koans.
 #>
 
-Describe "Arrays and Iterable Collections" {
+Describe "Arrays and Enumerable Collections" {
     It "is useful for grouping related objects and values" {
         # The comma operator is used to create an array. Spaces are ignored, for the most part.
         $Ages = 12, 25, 18, 64
@@ -58,5 +58,8 @@ Describe "Arrays and Iterable Collections" {
         #>
         $null, $Number1, $Number2 = $Others
         $Number1 | Should -Be __
+    }
+    It "has several types of enumerable collections that can be used" {
+        
     }
 }
