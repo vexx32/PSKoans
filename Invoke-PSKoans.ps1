@@ -40,7 +40,6 @@ foreach ($KoanFile in $Tests) {
         Write-Host @Blue @"
     
     Please meditate on the following code:
-
 "@
         Write-Host @Red @"
     $($NextKoanFailed.StackTrace)
