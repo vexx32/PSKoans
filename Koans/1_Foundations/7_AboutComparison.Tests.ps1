@@ -32,7 +32,8 @@ Describe 'Comparison Operators' {
             # Strings and numbers will also be converted if possible
             '1' -eq 1 | Should -Be $true
             10 -eq '10' | Should -Be __
-
+        }
+        It 'has a strict behaviour with most strings' {
             # Strings containing text behave a little differently in some cases
             "string" -eq 1 | Should -Be $false
             
@@ -43,7 +44,7 @@ Describe 'Comparison Operators' {
             $true -eq "" | Should -Be __ 
             
             # What about a string containing a number?
-            $false -eq '0' | Should -Be __
+            $false -ne '0' | Should -Be __
 
             # In short: strings don't care about their contents when cast to boolean
             $true -eq 'False' | Should -Be __
