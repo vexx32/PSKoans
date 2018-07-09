@@ -13,10 +13,10 @@ Pester installed. To do so, please run:
 
 ```PowerShell
 # PS 5.1 (upgrade to latest Pester)
-Install-Module Pester -Force
+Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 
 # PS Core 6.0+ (Install Pester under current user)
-Install-Module Pester -Scope CurrentUser
+Install-Module Pester -Scope CurrentUser -SkipPublisherCheck
 ```
 
 ## Getting Started with the PowerShell Koans
