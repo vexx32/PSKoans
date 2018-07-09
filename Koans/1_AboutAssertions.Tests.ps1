@@ -29,6 +29,7 @@ Describe "Equality" {
     It "expects you to fill in values" {
         # Initiative will be rewarded.
         1 + 2 | Should -Be __
+        __ + 5 -eq 10 | Should -BeTrue
     }
 
     It "sets the expectations" {
@@ -36,13 +37,13 @@ Describe "Equality" {
         $ExpectedValue = 1 + 1
         $ActualValue = __ 
         
-        $ExpectedValue -eq $ActualValue | Should -Be $true
+        $ExpectedValue -eq $ActualValue | Should -BeTrue
     }
     
     # Easy, right? Try one more!
 
     It "demands balance" {
         # Both sides of the scale must be of equal measure.
-        (__ + 2) -eq 3 | Should -Be $true
+        __ + 2 -eq 3 | Should -BeTrue
     }
 }

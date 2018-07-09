@@ -38,26 +38,54 @@
 #>
 
 Describe "Lists" {
-    It "has several types of enumerable collections that can be used" {
-        
-        
-        # New Lists with no contents.
+    It "can enforce strict typing on its contents" {        
+        # New integer-only List
         $IntList = New-Object System.Collections.Generic.List[int]
-        $StringList1 = [System.Collections.Generic.List[string]]::new()
+        $IntList.Add(7)
+        $IntList.Add(5.34)
+        
+        # Items are accessed by index just like arrays.
+        $IntList[0] | Should -Be __
+        $IntList[1] | Should -Be __
 
-        # Cast (converted) from existing array. [object] or [PSObject] typed lists hold any type of item.
+        $StringList = [System.Collections.Generic.List[string]]::new()
+        $StringList.Add("FILL_ME_IN")
+        $StringList.Add(12) # What happens if we add a number to a string-typed list?
+
+        $StringList[0] | Should -Be "hello!"
+        $StringList[1] | Should -Be __
+    }
+    It "can accept loose typing" {
+        # We can cast convert an array. [object] or [PSObject] typed lists hold any type(s) of items.
         $List = [System.Collections.Generic.List[PSObject]]@(1, 2)
 
         # Items must be added to Lists using their .Add() or .AddRange() method.
         # .AddRange() takes an array or other collection object.
-        $IntList.AddRange(@(12, 1, 2, 3))
-        $StringList1.Add("__")
-        $StringList1.Add(12) # What happens if we add a number to a string-typed list?
+        $List.AddRange(@(12, 1, 2, 3))
         $List.Add(12.5)
 
-        # Items are accessed by index just like arrays.
-        $StringList1[0] | Should -Be "Barry"
-        $IntList[0] | Should -Be __
-        $List[0] -eq 12.5 | Should -Be $true
+        $List[0] | Should -Be __
+        $List[6] -eq 12.5 | Should -Be $true
+    }
+    It "allows you to remove entries" {
+        # Lists have a few methods for removing entries:
+        # .Remove($value), .RemoveAt($Index) and .RemoveRange($Index,$Count) (among others)
+        $List = [System.Collections.Generic.List[string]]@(12, 15, 15, 18, 'hello', 19, 4, 12, 5, 10)
+
+        $List[3] | Should -Be '18'
+        $List.RemoveAt(3)
+        $List[3] | Should -Be '__'
+
+        $List[1] | Should -Be '15'
+        # The .Remove() method returns $true if the item was removed, and $false if it couldn't be
+        # found or removed.
+        $List.Remove('15') | Should -BeTrue
+        $List[1] | Should -Be __
+
+        # Now see if you can reduce the list down to only two values using the
+        # .RemoveRange($Index, $Count) method
+        # Feel free to add an additional ' | Should -Be ' test if you need it to guide your way!
+        
+        $List | Should -Be @('12', '10')
     }
 }

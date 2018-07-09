@@ -78,12 +78,15 @@ Describe "Functions" {
         Measure-String "Hello!" | Should -Be 6
         Measure-String "Muffins" | Should -Be __
     }
-
-    It "is a named script block" {
+}
+Describe "Script Block" {
+    It "is an anonymous function" {
         <#
             Script blocks can be used to group commands without defining a function.
             These can be used for various things, most commonly for parameters or
             defining a sequence of actions to be executed multiple times.
+            
+            Many PowerShell cmdlets take script blocks as parameters, particularly pipeline cmdlets.
         #>
         $Script = {
             throw "This is a script block that just throws an error."
@@ -96,5 +99,6 @@ Describe "Functions" {
         }
         $Script | Should -Throw
         $Script2 | Should -Throw
+
     }
 }
