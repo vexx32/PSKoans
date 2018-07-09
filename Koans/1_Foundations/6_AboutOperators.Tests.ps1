@@ -15,13 +15,6 @@
     comparison operators, followed by string operators, redirection operators, and finally 
     assignment operators execute last.
 #>
-
-<#
-    Arithmetic Operators
-
-    These can be used for standard arithmetic with numerical values, as well as some limited
-    usage with arrays and strings that can come in handy.
-#>
 Describe 'Assignment Operator' {
     It 'is used to assign a value to variables' {
         $ExpectedValue = 1 + 1
@@ -37,6 +30,8 @@ Describe 'Assignment Operator' {
     }
 }
 Describe 'Arithmetic Operators' {
+    # These can be used for standard arithmetic with numerical values, as well as some limited
+    # usage with arrays and strings that can come in handy.
     Describe 'Addition' {
         It 'is used to add two items together' {
             13 + 4 | Should -Be 17
@@ -44,7 +39,6 @@ Describe 'Arithmetic Operators' {
             13.7 + 4 | Should -Be __
         }
         It 'can be used to concatenate strings' {
-            # Be aware that it does not add any extra spacing, merely joins the exact strings.
             'hello' + 'world' | Should -Be __
             'My name is ' + 'Jim' | Should -Be 'My name is Jim'
         }
@@ -57,9 +51,7 @@ Describe 'Arithmetic Operators' {
             __ | Should -Be $NewArray
         }
         It 'behaves according to the type of the left-hand item' {
-            '10.5' + 11 | Should -Be 21.5 # Shouldn't it? What do you think?
-            # Interestingly, if the left type is numeric, an appropriate type will be chosen by
-            # taking both operands into account
+            '10.5' + 11 | Should -Be 21.5 # Or should it?
         
             11 + '12.5' | Should -Be __
             12.21 + 'FILL_ME_IN' -eq 23.43 | Should -BeTrue
@@ -90,30 +82,42 @@ Describe 'Arithmetic Operators' {
         }
         It 'can also be used on strings' {
             'A' * 4 -eq 'FILL_ME_IN' | Should -BeTrue
-            __ * 4 -eq "NANANANA" | Should -BeTrue
+            __ * 4 -eq 'NANANANA' | Should -BeTrue
         }
     }
-    Describe "Division" {
-        It "is restricted to numeric use only" {
+    Describe 'Division' {
+        It 'is restricted to numeric use only' {
             # As with subtraction, there's no useful meaning of using division on a string
             # so any attempts to do so will throw an error.
-            {"hello!" / 3} | Should -Throw
+            {'hello!' / 3} | Should -Throw
             # Unlike with other numerical operators, however, division often results
             # in a non-integer (double) value even when both operands are integers.
             3 / 4 | Should -Be 0.75
             __ / 10 -eq 0.5 | Should -BeTrue
         }
     }
-}
-<#
-    Comparison Operators
+    Describe 'Assignment/Arithmetic Combination Operators' {
+        It 'can be used to simplify expressions' {
+            # With only assignment and arithmetic, some expressions can get a bit unwieldy
+            $Value = 5
+            $Value = $Value + 5
+            $Value | Should -Be 10
 
-    These generally return either $true or $false when comparing two values, with the notable
-    differences being due to behaviour when comparing against arrays.
-#>
-Describe "Equality" {
-
+            # We can combine the two to increment a variable!
+            
+        }
+    }
 }
+Describe 'Comparison Operators' {
+    Describe 'Equality and Inequality' {
+
+    }
+    Describe 'Like and NotLike' {
+
+    }
+    Describe ''
+}
+
 Describe 'String Operators' {
 
 }
