@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Common.ps1"
 <#
     Variables
 
@@ -10,7 +9,6 @@
 
     Variables can store any value, object, or collection of objects in PowerShell.
 #>
-
 Describe 'Variable Assignment' {
     It "gives a name to a value or object" {
         # Names give succinct descriptions to pieces of reality.

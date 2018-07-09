@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Common.ps1"
 <#
     Getting Started
     
@@ -18,7 +17,6 @@
     With each  passing koan, you'll learn more about PowerShell, and 
     add another weapon to your PowerShell scripting arsenal.
 #>
-
 Describe "Equality" {
 
     It "is a simple comparison" {

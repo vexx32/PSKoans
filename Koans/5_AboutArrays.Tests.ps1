@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Common.ps1"
 <#
     Arrays and Iterable Collections
 
@@ -13,7 +12,6 @@
     Arrays in particular have a close relationship with the PowerShell pipeline,
     which will be covered a shortly.
 #>
-
 Describe "Arrays and Enumerable Collections" {
     It "is useful for grouping related objects and values" {
         # The comma operator is used to create an array. Spaces are ignored, for the most part.

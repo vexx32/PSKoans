@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Common.ps1"
 <#
     Order of Operations
 
@@ -12,7 +11,6 @@
     nested), but expressions cannot be passed as arguments without being forced
     to evaluate first.
 #>
-
 Describe "Order of Operations" {
     
     It "requires parameter argument expressions to be enclosed in parentheses" {

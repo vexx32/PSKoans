@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Common.ps1"
 <#
     Operators
 

@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Common.ps1"
 <#
     Functions & Script Blocks (I)
 
@@ -9,7 +8,6 @@
     function, and can be assigned to a variable or even later assigned
     a name as needed.
 #>
-
 Describe "Functions" {
     It "allows you to assign a name to a sequence of commands" {
         <#
