@@ -19,7 +19,7 @@ Pester installed. To do so, please run:
 
 ## Getting Started with the PowerShell Koans
 
-1. Download and extract the repository as a .zip file into a directory of your choice. 
+1. Download and extract the repository as a .zip file into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 
@@ -27,7 +27,7 @@ Pester installed. To do so, please run:
 
 1. Ensure you have the VSCode PowerShell extension installed.
 2. Load Visual Studio Code, and select `File -> Open Folder`
-3. Choose the `PSKoans-master` folder, you'll get a folder tree on the left. 
+3. Choose the `PSKoans-master` folder, you'll get a folder tree on the left.
 4. Double click on the `PSKoans.psm1` file, and VS Code will launch a powershell console
 5. In that console, enter `Import-Module c:\path\to\pskoans-master\PSKoans-Master`
 6. Run `Invoke-PSKoans` (or `rake`)  and it should run and fail a test.
