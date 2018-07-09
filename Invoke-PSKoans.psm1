@@ -25,7 +25,7 @@ function Invoke-PSKoans {
         $Red = @{ForegroundColor = "Red"}
         $Blue = @{ForegroundColor = "Cyan"}
         $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
-        $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1'
+        $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1' -Recurse
         $KoansPassed = 0
     }
     process {
