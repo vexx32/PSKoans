@@ -22,6 +22,20 @@
     These can be used for standard arithmetic with numerical values, as well as some limited
     usage with arrays and strings that can come in handy.
 #>
+Describe "Assignment Operator" {
+    It "is used to assign a value to variables" {
+        $ExpectedValue = 1 + 1
+        $ActualValue = __
+
+        $ActualValue | Should -Be $ExpectedValue
+    }
+    It "is also used to assign a value to properties or elements" {
+        # With arrays, we can assign values directly to indexes
+        $Array = 1, 2, 3
+        $Array[1] = 5
+        $Array | Should -Be @(1, 2, 3) # What would change?
+    }
+}
 Describe 'Addition' {
     It 'is used to add two items together' {
         13 + 4 | Should -Be 17
