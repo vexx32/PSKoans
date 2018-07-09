@@ -50,6 +50,7 @@ Describe 'Comparison Operators' {
             $true -eq 'False' | Should -Be __
         }
         It 'changes behaviour with arrays' {
+            # Note that the array must always be on the left hand side of the comparison
             $Array = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
             $Array -eq 2 | Should -Be 2
@@ -58,9 +59,28 @@ Describe 'Comparison Operators' {
         }
     }
     Describe 'GreaterThan and LessThan' {
+        It 'will compare values' {
+            11 -gt 6 | Should -BeTrue
+            __ -gt 14 | Should -BeTrue
 
+            10 -lt 20 | Should -BeTrue
+            __ -lt 0 | Should -BeTrue
+        }
+        It 'will often return many items from arrays' {
+            $Array = 1, 5, 10, 15, 20, 25, 30
+
+            $Array -gt 30 | Should -Be $null
+            $Array -lt 10 | Should -Be @(1, 10)
+
+        }
     }
-    Describe 'GreaterThanOrEqual and LessThanOrEqual' {
-
+    Describe 'GreaterOrEqual and LessOrEqual' {
+        It 'is a combination of the above two types' {
+            $Array = 1, 2, 3, 4, 5
+            
+            $Array -ge 3 | Should -Be @(3, 4, 5)
+            $Array -le 2 | Should -Be @(1, 2, 3, 4)
+            $Array -ge 5 | Should -Be __
+        }
     }
 }
