@@ -31,13 +31,15 @@ Describe "Order of Operations" {
     }
     
     It "will evaluate an entire expression if it is the first element in a pipeline" {
-        # A pipe character evaluates everything before it on the line before passing along the value(s).
+        # A pipe character evaluates everything before it on the line before 
+        # passing along the value(s).
         __ + 7 | Should -Be 11
         8 * 3 + 11 | Should -Be __
     }
 
     It "otherwise follows standard mathematical rules" {
-        # Although PowerShell doesn't have a native exponentiation operator, we can use [Math]::Pow($a,$b)
-        3 + 4 / [Math]::Pow(2,3) | Should -Be __
+        # Although PowerShell doesn't have a native exponentiation operator, 
+        # we can use [Math]::Pow($a, $b)
+        3 + 4 / [Math]::Pow(2, 3) | Should -Be __
     }
 }
