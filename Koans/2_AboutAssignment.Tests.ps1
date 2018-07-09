@@ -19,7 +19,7 @@ Describe 'Variable Assignment' {
 
         Set-Variable -Name 'Greeting' -Value "Hello!"
 
-        $Value -eq $Fifty | Should -Be $true
+        $Value -eq $Fifty | Should -BeTrue
         $Greeting | Should -Be __
     }
 
@@ -38,7 +38,7 @@ Describe 'Variable Assignment' {
     It "can directly compare types" {
         # For each task, a different tool.
         $Number = 5
-        $Number -is [int] | Should -Be $true
+        $Number -is [int] | Should -BeTrue
         $Number | Should -BeOfType [int]
 
         $Text = "Every worthwhile step is uphill."
@@ -76,7 +76,7 @@ Describe 'Variable Assignment' {
     It "allows you to declare constant variables" {
         {
             Set-Variable -Name 'Constant' -Value 25 -Option Constant 
-            # This operation will never succeed; constant variables cannot be altered.
+            # Thie next operation will never succeed; constant variables cannot be altered.
             # Try uncommenting the below line to see what happens.
             
             # $Constant = "NewValue"
