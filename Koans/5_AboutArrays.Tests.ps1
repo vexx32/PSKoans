@@ -11,7 +11,7 @@
     same as they do in C# and VB.NET.
 
     Arrays in particular have a close relationship with the PowerShell pipeline,
-    which will be covered in the next set of koans.
+    which will be covered a shortly.
 #>
 
 Describe "Arrays and Enumerable Collections" {
