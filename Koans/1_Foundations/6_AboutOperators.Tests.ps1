@@ -96,6 +96,24 @@ Describe 'Arithmetic Operators' {
             __ / 10 -eq 0.5 | Should -BeTrue
         }
     }
+    Describe 'Modulus' {
+        # Modulus is a bit of an odd one, but common enough in programming. It performs a
+        # division, and then returns the integer value of the remainder.
+        It 'is usually used with integers' {
+            $Remainder = 15 % 7
+            __ | Should -Be $Remainder
+        }
+        It 'cannot be used on non-numeric values' {
+            {
+                $String = "hello!"
+                $String % 4
+            }  | Should -Throw
+            {
+                $Array = 1, 10, 20
+                $Array % 4
+            } | Should -Not -Throw
+        }
+    }
     Describe 'Assignment/Arithmetic Combination Operators' {
         It 'can be used to simplify expressions' {
             # With only assignment and arithmetic, some expressions can get a bit unwieldy
@@ -103,24 +121,25 @@ Describe 'Arithmetic Operators' {
             $Value = $Value + 5
             $Value | Should -Be 10
 
-            # We can combine the two to increment a variable!
-            
+            # We can combine the two to increment or decrement a variable!
+            $Value = 12
+            $Value += 7
+            $Value | Should -Be 19
+
+            $Value -= 3
+            $Value | Should -Be __
+
+            # We can even combine multiplication and division with assignment
+            $Value /= 2
+            $Value | Should -Be 8
+
+            $Value *= 3
+            $Value | Should -Be __
+
+            # Modulus hasn't been left out, either.
+            $Value = 12
+            $Value %= 4
+            $Value | Should -Be __
         }
     }
-}
-Describe 'Comparison Operators' {
-    Describe 'Equality and Inequality' {
-
-    }
-    Describe 'Like and NotLike' {
-
-    }
-    Describe ''
-}
-
-Describe 'String Operators' {
-
-}
-Describe 'Redirection Operators' {
-
 }
