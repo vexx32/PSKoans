@@ -1,5 +1,5 @@
 <#
-    Operators
+    Assignment and Arithmetic Operators
 
     Just like many other programming languages, PowerShell has special operators designed to 
     work with data.
@@ -114,32 +114,32 @@ Describe 'Arithmetic Operators' {
             } | Should -Not -Throw
         }
     }
-    Describe 'Assignment/Arithmetic Combination Operators' {
-        It 'can be used to simplify expressions' {
-            # With only assignment and arithmetic, some expressions can get a bit unwieldy
-            $Value = 5
-            $Value = $Value + 5
-            $Value | Should -Be 10
+}
+Describe 'Assignment/Arithmetic Combination Operators' {
+    It 'can be used to simplify expressions' {
+        # With only assignment and arithmetic, some expressions can get a bit unwieldy
+        $Value = 5
+        $Value = $Value + 5
+        $Value | Should -Be 10
 
-            # We can combine the two to increment or decrement a variable!
-            $Value = 12
-            $Value += 7
-            $Value | Should -Be 19
+        # We can combine the two to increment or decrement a variable!
+        $Value = 12
+        $Value += 7
+        $Value | Should -Be 19
 
-            $Value -= 3
-            $Value | Should -Be __
+        $Value -= 3
+        $Value | Should -Be __
 
-            # We can even combine multiplication and division with assignment
-            $Value /= 2
-            $Value | Should -Be 8
+        # We can even combine multiplication and division with assignment
+        $Value /= 2
+        $Value | Should -Be 8
 
-            $Value *= 3
-            $Value | Should -Be __
+        $Value *= 3
+        $Value | Should -Be __
 
-            # Modulus hasn't been left out, either.
-            $Value = 12
-            $Value %= 4
-            $Value | Should -Be __
-        }
+        # Modulus hasn't been left out, either.
+        $Value = 12
+        $Value %= 4
+        $Value | Should -Be __
     }
 }
