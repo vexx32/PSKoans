@@ -2,54 +2,56 @@ function Invoke-PSKoans {
     [CmdletBinding()]
     [Alias('Rake')]
     param(
-        [switch]
-        $NoClear,
+        [bool]
+        $Clear = $true,
 
         [switch]
         $Meditate
     )
-    begin {
-        if (!$NoClear) {
-            Clear-Host
+    switch ($true) {
+        $Clear {
+            if (!$Meditate) {
+                Clear-Host
+            }
         }
-        if ($Meditate) {
+        $Meditate {
             Invoke-Item "$PSScriptRoot\Koans"
-            return
+            break
         }
+        default {
+            Write-MeditationPrompt -Greeting
 
-        Write-MeditationPrompt -Greeting
+            $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
+            $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1' -Recurse
+            $KoansPassed = 0
+            
+            foreach ($KoanFile in $Tests) {
+                $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
+                $KoansPassed += $PesterTests.PassedCount
 
-        $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
-        $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1' -Recurse
-        $KoansPassed = 0
-    }
-    process {
-        foreach ($KoanFile in $Tests) {
-            $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
-            $KoansPassed += $PesterTests.PassedCount
+                if ($PesterTests.FailedCount -gt 0) {
+                    break
+                }
+            }
 
             if ($PesterTests.FailedCount -gt 0) {
-                break
-            } # end if
-        } # end foreach
-
-        if ($PesterTests.FailedCount -gt 0) {
-            $NextKoanFailed = $PesterTests.TestResult | 
-                Where-Object Result -eq 'Failed' |
-                Select-Object -First 1
+                $NextKoanFailed = $PesterTests.TestResult | 
+                    Where-Object Result -eq 'Failed' |
+                    Select-Object -First 1
         
-            $Meditation = @{
-                DescribeName = $NextKoanFailed.Describe
-                Expectation  = $NextKoanFailed.ErrorRecord
-                ItName       = $NextKoanFailed.Name
-                Meditation   = $NextKoanFailed.StackTrace
-                KoansPassed  = $KoansPassed
-                TotalKoans   = $PesterTestCount
+                $Meditation = @{
+                    DescribeName = $NextKoanFailed.Describe
+                    Expectation  = $NextKoanFailed.ErrorRecord
+                    ItName       = $NextKoanFailed.Name
+                    Meditation   = $NextKoanFailed.StackTrace
+                    KoansPassed  = $KoansPassed
+                    TotalKoans   = $PesterTestCount
+                }
+                Write-MeditationPrompt @Meditation
             }
-            Write-MeditationPrompt @Meditation
-        }
-    }
-}
+        } # end default case
+    } # end switch
+} # end function
 function Get-Blank {
     [Alias('__', 'FILL_ME_IN')]
     param()
