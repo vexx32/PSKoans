@@ -14,6 +14,13 @@
     In terms of order of operations, arithmetic operators typically execute before comparison operators,
     followed by string operators, redirection operators, and finally assignment operators execute last.
 #>
+
+<#
+    Arithmetic Operators
+
+    These can be used for standard arithmetic with numerical values, as well as some limited
+    usage with arrays and strings that can come in handy.
+#>
 Describe 'Addition' {
     It 'is used to add two items together' {
         13 + 4 | Should -Be 17
@@ -70,10 +77,12 @@ Describe 'Multiplication' {
         __ * 4 -eq "NANANANA" | Should -BeTrue
     }
 }
+<#
+    Comparison Operators
 
-Describe 'Comparison Operators' {
-
-}
+    These generally return either $true or $false when comparing two values, with the notable
+    differences being due to behaviour when comparing against arrays.
+#>
 Describe 'String Operators' {
 
 }
