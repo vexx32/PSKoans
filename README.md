@@ -16,7 +16,7 @@ Pester installed. To do so, please run:
 Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 
 # PS Core 6.0+ (Install Pester under current user)
-Install-Module Pester -Scope CurrentUser -SkipPublisherCheck
+Install-Module Pester -Scope CurrentUser
 ```
 
 ## Getting Started with the PowerShell Koans
