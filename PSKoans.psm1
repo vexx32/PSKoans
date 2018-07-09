@@ -14,7 +14,7 @@ function Invoke-PSKoans {
         }
         if ($Meditate) {
             Invoke-Item "$PSScriptRoot\Koans"
-            exit
+            return
         }
 
         Write-MeditationPrompt -Greeting
