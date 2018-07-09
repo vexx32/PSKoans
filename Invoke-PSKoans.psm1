@@ -88,3 +88,8 @@ function Invoke-PSKoans {
         } # end if
     } # end Process
 } # end function
+function Get-Blank {
+    [Alias('__', 'FILL_ME_IN')]
+    param()
+    $null
+}
