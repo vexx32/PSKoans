@@ -48,7 +48,7 @@ Describe 'Arithmetic Operators' {
             $Array = 1, 2, 3, 4, 5
             $NewArray = $Array + 7
 
-            __ | Should -Be $NewArray
+            1, 2, 3, 4, 5, 6, 7, 8 | Should -Be $NewArray
         }
         It 'behaves according to the type of the left-hand item' {
             '10.5' + 11 | Should -Be 21.5 # Or should it?
