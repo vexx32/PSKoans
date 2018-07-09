@@ -5,7 +5,8 @@
     satisfy the condition set by the operator, the expression returns $true;
     otherwise, it returns $false.
 
-    Most common comparison operators 
+    Mathematical comparison operators are two letters preceded by a hyphen:
+    -eq, -ne, -gt, -lt, -le, -ge
 
     It's important to remember that when working with arrays, this behaviour
     changes completely, as you will see shortly, and they instead return
@@ -31,6 +32,21 @@ Describe 'Comparison Operators' {
             # Strings and numbers will also be converted if possible
             '1' -eq 1 | Should -Be $true
             10 -eq '10' | Should -Be __
+
+            # Strings containing text behave a little differently in some cases
+            "string" -eq 1 | Should -Be $false
+            
+            # How should strings cast to boolean?
+            $true -eq "Hello!" | Should -Be __ 
+            
+            # What about an empty string?
+            $true -eq "" | Should -Be __ 
+            
+            # What about a string containing a number?
+            $false -eq '0' | Should -Be __
+
+            # In short: strings don't care about their contents when cast to boolean
+            $true -eq 'False' | Should -Be __
         }
     }
     Describe 'GreaterThan and LessThan' {
