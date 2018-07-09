@@ -11,11 +11,13 @@ Your journey towards PowerShell enlightenment starts in the *(TODO: Figure out w
 The PowerShell Koans need PowerShell version 5.1 or Core 6+ to be run; make sure that you have a sufficient version installed before starting the project. You will also need the most recent version of
 Pester installed. To do so, please run:
 
-    # PS 5.1 (upgrade to latest Pester)
-    Install-Module Pester -Force
+```PowerShell
+# PS 5.1 (upgrade to latest Pester)
+Install-Module Pester -Force
 
-    # PS Core 6.0+ (Install Pester under current user)
-    Install-Module Pester -Scope CurrentUser
+# PS Core 6.0+ (Install Pester under current user)
+Install-Module Pester -Scope CurrentUser
+```
 
 ## Getting Started with the PowerShell Koans
 
