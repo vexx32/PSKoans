@@ -4,11 +4,13 @@ Describe "Strings" {
     }
 
     Describe "Strings can be literal" {
+        $var = 'Some things you must take literally'
+        $complexVar = 'They have $ or : or ; or _'
         It 'Is a literal string' {
-            'Literally typed string' | Should -Be __
+            $var | Should -Be __
         }
         It 'Can contain special characters' {
-            'American currency is denoted by: $' | Should be __
+            $complexVar | Should be __
         }
 
     }
