@@ -56,7 +56,7 @@ Describe "Lists" {
     }
     It "can accept loose typing" {
         # We can cast convert an array. [object] or [PSObject] typed lists hold any type(s) of items.
-        $List = [System.Collections.Generic.List[PSObject]]@(1, 2)
+        $List = [System.Collections.Generic.List[Object]]@(1, 2)
 
         # Items must be added to Lists using their .Add() or .AddRange() method.
         # .AddRange() takes an array or other collection object.
