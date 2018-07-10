@@ -9,17 +9,11 @@ function Invoke-PSKoans {
         [switch]
         $Meditate
     )
-    switch ($true) {
-        $Clear {
-            if (!$Meditate) {
-                Clear-Host
-            }
+    
+        if ($Clear) {
+            Clear-Host
         }
-        $Meditate {
-            Invoke-Item "$PSScriptRoot\Koans"
-            break
-        }
-        default {
+        if (!$Meditate) {
             Write-MeditationPrompt -Greeting
 
             $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
@@ -50,8 +44,10 @@ function Invoke-PSKoans {
                 }
                 Write-MeditationPrompt @Meditation
             }
-        } # end default case
-    } # end switch
+        }
+        else {
+            Invoke-Item "$PSScriptRoot\Koans"
+        }
 } # end function
 function Get-Blank {
     [Alias('__', 'FILL_ME_IN')]
@@ -128,7 +124,7 @@ function Write-MeditationPrompt {
 "@
     Write-Host @Blue @"
 
-    $Koan
+    $($Koan -replace "`n","`n    ")
         
     Your path thus far: 
 

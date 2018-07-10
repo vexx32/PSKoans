@@ -1,28 +1,20 @@
 <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
-  <Obj RefId="0">
-    <TN RefId="0">
-      <T>System.Collections.Generic.List`1[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]</T>
-      <T>System.Object</T>
-    </TN>
-    <LST>
-      <S>The whole moon and the entire sky_x000A_Are reflected in one dewdrop on the grass._x000A_~ Dogen</S>
-      <S>This is how your mind is._x000A_Its light penetrates everywhere_x000A_And engulfs everything,_x000A_So why does it not know itself?_x000A_~ Foyan</S>
-      <S>Who is hearing?_x000A_Your physical being doesn't hear,_x000A_Nor does the void._x000A_Then what does?_x000A_~ Bassui</S>
-      <S>Mountains are merely mountains.</S>
-      <S>Hell is not punishment; it is training._x000A_~ Shunryu Suzuki</S>
-      <S>Do not mistake any state for_x000A_Self-realisation, but continueTo ask yourself even more intensely,_x000A_What is it that hears?_x000A_~ Bassui</S>
-      <S>The most important thing is to find out what is the most important thing._x000A_~ Shunryu Suzuki</S>
-      <S>If you want to be free,_x000A_Get to know your real self._x000A_~ Linji</S>
-      <S>Knowledge and ignorance are interdependent;_x000A_Delusion and enlightenment condition each other._x000A_~ Ryokan</S>
-      <S>Even if you speak of the wonder of it all,_x000A_How do you deal with each thing changing?</S>
-      <S>A world of dew,_x000A_And within every dewdrop_x000A_A world of struggle._x000A_~ Issa</S>
-      <S>When you smash the citadel of doubt,_x000A_Then the Buddha is simply yourself.</S>
-      <S>I see mountains once again as mountains,_x000A_And waters once again as waters._x000A_~ Seigen Ishin</S>
-      <S>When the many are reduced to one,_x000A_To what is the one reduced?</S>
-      <S>Everything the same,_x000A_Everything distinct.</S>
-      <S>Make the mountains dance.</S>
-      <S>No one is injured but by himself.</S>
-      <S>Each branch of coral holds up the moon.</S>
-    </LST>
-  </Obj>
+  <S>The whole moon and the entire sky_x000A_Are reflected in one dewdrop on the grass.</S>
+  <S>This is how your mind is._x000A_Its light penetrates everywhere_x000A_And engulfs everything,_x000A_So why does it not know itself?</S>
+  <S>Who is hearing?_x000A_Your physical being doesn't hear,_x000A_Nor does the void._x000A_Then what does?</S>
+  <S>Mountains are merely mountains.</S>
+  <S>Hell is not punishment; it is training.</S>
+  <S>Do not mistake any state for_x000A_Self-realisation, but continueTo ask yourself even more intensely,_x000A_What is it that hears?</S>
+  <S>The most important thing is to find out what is the most important thing.</S>
+  <S>If you want to be free,_x000A_Get to know your real self.</S>
+  <S>Knowledge and ignorance are interdependent;_x000A_Delusion and enlightenment condition each other.</S>
+  <S>Even if you speak of the wonder of it all,_x000A_How do you deal with each thing changing?</S>
+  <S>A world of dew,_x000A_And within every dewdrop_x000A_A world of struggle.</S>
+  <S>When you smash the citadel of doubt,_x000A_Then the Buddha is simply yourself.</S>
+  <S>I see mountains once again as mountains,_x000A_And waters once again as waters.</S>
+  <S>When the many are reduced to one,_x000A_To what is the one reduced?</S>
+  <S>Everything the same,_x000A_Everything distinct.</S>
+  <S>Make the mountains dance.</S>
+  <S>No one is injured but by himself.</S>
+  <S>Each branch of coral holds up the moon.</S>
 </Objs>
