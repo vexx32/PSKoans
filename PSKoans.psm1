@@ -1,3 +1,4 @@
+$script:Koans = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
 function Invoke-PSKoans {
     [CmdletBinding()]
     [Alias('Rake')]
@@ -97,6 +98,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
+    $Koan = $Script:Koans | Get-Random
 
     if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
         Write-Host -ForegroundColor Cyan @"
@@ -126,7 +128,7 @@ function Write-MeditationPrompt {
 "@
     Write-Host @Blue @"
 
-    Mountains are merely mountains.
+    $Koan
         
     Your path thus far: 
 
