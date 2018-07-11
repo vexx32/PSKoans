@@ -1,4 +1,9 @@
-$script:Koans = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
+$script:ZenSayings = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
+$script:KoanFolder = $home | Join-Path -ChildPath 'PSKoans'
+if (-not (Test-Path -Path $script:KoanFolder)) {
+
+}
+
 function Test-Koans {
     [CmdletBinding()]
     [Alias('Rake', 'Invoke-PSKoans')]
@@ -94,7 +99,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $Script:Koans | Get-Random
+    $Koan = $Script:ZenSayings | Get-Random
     $SleepTime = @{Milliseconds = 500}
 
     if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
