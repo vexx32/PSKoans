@@ -58,27 +58,54 @@ Describe 'Conditionals' {
         # If you have more than an if/else, you might find a switch useful.
         It 'is used to create multiple possible branches' {
             $Folders = 4..9 | ForEach-Object {"$_" * $_}
+
             switch ($Folders.Count) {
                 1 {
                     # Switch statements assign the current value being tested to $_
                     $Amount = 'one' + $_
+                    break
                 }
                 5 {
                     $Amount = 'five'
+                    # Usually we break out of the switch after one case matches
+                    break
                 }
                 default {
+                    # The default branch is taken when no other cases match
                     $Amount = "other $_"
+                    break
                 }
             }
+
             $Amount | Should -Be '__'
         }
         It 'can also be used to conditionally assign values' {
+            $Case = 25 + (4/3) * 17 - (2/3)
+            $Variable = switch ($Case) {
+                45 {
+                    "hello!"
+                    break
+                }
+                47 {
+                    4.5
+                    break
+                }
+                default {
+                    -1
+                    break
+                }
+            }
 
+            $Variable | Should -Be -1
+            $Variable | Should -BeOfType [__]
         }
         It 'can go through multiple branches' {
 
         }
         It 'can stop after the first matching condition' {
+
+        }
+        It 'will process each element of arrays' {
 
         }
         It 'accepts wildcard conditions' {
