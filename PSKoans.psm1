@@ -1,5 +1,5 @@
 function Test-Koans {
-    [CmdletBinding(DefaultParameterSetName = "Default")]
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans')]
     param(
         [Parameter(ParameterSetName = "Default")]
@@ -28,7 +28,7 @@ function Test-Koans {
 
             $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None | 
                 Select-Object -ExpandProperty TotalCount
-                
+
             $Tests = Get-ChildItem -Path $script:KoanFolder -Filter '*.Tests.ps1' -Recurse
             $KoansPassed = 0
         
