@@ -49,6 +49,9 @@ Describe 'Conditionals' {
             }
             $Result | Should -Be __
         }
+        It 'can also apply a condition to an else' {
+            
+        }
     }
     Describe 'Switch' {
         # Switches often replace stacks of if/elseif/../else conditionals
