@@ -174,12 +174,12 @@ function Initialize-KoanDirectory {
             Remove-Item -Recurse -Path $script:KoanFolder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot\Koans" -Recurse -Destination $script:KoanFolder
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
         Write-Verbose "Koans copied to '$script:KoanFolder'"
     }
 }
 
-$script:ZenSayings = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
+$script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
 $script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
