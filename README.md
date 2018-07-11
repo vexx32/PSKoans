@@ -43,3 +43,14 @@ Install-Module Pester -Scope CurrentUser
 3. Run `rake -Meditate` as prompted to open the Koans folder.
 4. Edit the file in your favourite editor as instructed, in order to resolve the error.
 5. Re-run `rake` or `Invoke-PSKoans` in order to reevaluate the tests and check your progress.
+
+### Can I help out / contribute?
+
+Of course you can! We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
+
+* Feel more than free to clone the repository, make some changes, and submit a pull request!
+* Submit any small changes you'd like make to any of the koans as an issue on the repository, and either myself or one of the helpers here will be happy to talk it over and get it sorted out.
+
+The goal of the koans is to help those who have very limited knowledge learn PowerShell. In order to do that, simplicity and accessibility are key. There are some advanced topics out there that deserve coverage, and in order to cover them effectively we need to deal with them as clearly and simply as possible.
+
+If you just want to make a general comment or some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue.
