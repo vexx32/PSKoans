@@ -100,7 +100,7 @@ Describe 'Conditionals' {
             $Variable | Should -BeOfType [__]
         }
         It 'can go through multiple branches' {
-
+            # Omitting the break statement allows one condition to match several cases
         }
         It 'can stop after the first matching condition' {
 
