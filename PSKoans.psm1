@@ -1,30 +1,37 @@
-$script:ZenSayings = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
-$script:KoanFolder = $home | Join-Path -ChildPath 'PSKoans'
-if (-not (Test-Path -Path $script:KoanFolder)) {
-
-}
-
 function Test-Koans {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans')]
     param(
+        [Parameter(ParameterSetName = "Default")]
+        [ValidateNotNull()]
         [bool]
         $Clear = $true,
 
+        [Parameter(ParameterSetName = "Meditate")]
         [switch]
-        $Meditate
+        $Meditate,
+
+        [Parameter(Mandatory, ParameterSetName = "Reset")]
+        [switch]
+        $Reset
     )
-    
-        if ($Clear) {
-            Clear-Host
+    switch ($PSCmdlet.ParameterSetName) {
+        "Reset" {
+            Initialize-KoanDirectory
         }
-        if (!$Meditate) {
+        "Meditate" {
+            Invoke-Item $script:KoanFolder
+        }
+        "Default" {
+            if ($Clear) {Clear-Host}
             Write-MeditationPrompt -Greeting
 
-            $PesterTestCount = Invoke-Pester -PassThru -Show None | Select-Object -ExpandProperty TotalCount
-            $Tests = Get-ChildItem -Path "$PSScriptRoot\Koans" -Filter '*.Tests.ps1' -Recurse
+            $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None | 
+                Select-Object -ExpandProperty TotalCount
+                
+            $Tests = Get-ChildItem -Path $script:KoanFolder -Filter '*.Tests.ps1' -Recurse
             $KoansPassed = 0
-            
+        
             foreach ($KoanFile in $Tests) {
                 $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
                 $KoansPassed += $PesterTests.PassedCount
@@ -38,7 +45,7 @@ function Test-Koans {
                 $NextKoanFailed = $PesterTests.TestResult | 
                     Where-Object Result -eq 'Failed' |
                     Select-Object -First 1
-        
+    
                 $Meditation = @{
                     DescribeName = $NextKoanFailed.Describe
                     Expectation  = $NextKoanFailed.ErrorRecord
@@ -50,9 +57,7 @@ function Test-Koans {
                 Write-MeditationPrompt @Meditation
             }
         }
-        else {
-            Invoke-Item "$PSScriptRoot\Koans"
-        }
+    }
 } # end function
 function Get-Blank {
     [Alias('__', 'FILL_ME_IN')]
@@ -155,4 +160,28 @@ function Write-MeditationPrompt {
     You may run 'rake -Meditate' to begin your meditation.
 
 "@
+}
+function Initialize-KoanDirectory {
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "Medium")]
+    param(
+        [Parameter()]
+        [switch]
+        $FirstImport
+    )
+    if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $script:KoanFolder) {
+            Write-Verbose "Removing the entire koans folder..."
+            Remove-Item -Recurse -Path $script:KoanFolder -Force
+        }
+        Write-Debug "Copying koans to folder"
+        Copy-Item -Path "$PSScriptRoot\Koans" -Recurse -Destination $script:KoanFolder
+        Write-Verbose "Koans copied to '$script:KoanFolder'"
+    }
+}
+
+$script:ZenSayings = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
+$script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
+
+if (-not (Test-Path -Path $script:KoanFolder)) {
+    Initialize-KoanDirectory -FirstImport
 }
