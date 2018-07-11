@@ -95,6 +95,7 @@ function Write-MeditationPrompt {
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
     $Koan = $Script:Koans | Get-Random
+    $SleepTime = @{Milliseconds = 500}
 
     if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
         Write-Host -ForegroundColor Cyan @"
@@ -107,13 +108,17 @@ function Write-MeditationPrompt {
     Write-Host @Red @"
     {Describe "$DescribeName"} has damaged your karma.
 "@
+    Start-Sleep @SleepTime
     Write-Host @Blue @"
 
     You have not yet reached enlightenment.
     
     The answers you seek...
 "@
-    Write-Host @Red $Expectation
+    Write-Host @Red @"
+    $Expectation
+"@
+    Start-Sleep @SleepTime
     Write-Host @Blue @"
     
     Please meditate on the following code:
@@ -122,6 +127,7 @@ function Write-MeditationPrompt {
     [It] $ItName
     $Meditation
 "@
+    Start-Sleep @SleepTime
     Write-Host @Blue @"
 
     $($Koan -replace "`n","`n    ")
