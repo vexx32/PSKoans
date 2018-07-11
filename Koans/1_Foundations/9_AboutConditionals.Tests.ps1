@@ -1,10 +1,10 @@
 <#
     Conditionals and Branching
 
-    Conditionals operate with language keywords like if, else, and switch, and utilise 
+    Conditionals operate with language keywords like if, else, and switch, and utilise
     boolean statements to determine program control flow.
 
-    Due to how PowerShell handles output, its conditional statements can return output 
+    Due to how PowerShell handles output, its conditional statements can return output
     data, as is usually seen in functional programming languages.
 #>
 Describe 'Conditionals' {
@@ -20,7 +20,7 @@ Describe 'Conditionals' {
                     'ODD'
                 }
             }
-        
+
             Assert-IsEven -Number 2 | Should -Be '__'
             Assert-IsEven -Number __ | Should -Be 'ODD'
         }
@@ -50,7 +50,7 @@ Describe 'Conditionals' {
             $Result | Should -Be __
         }
         It 'can also apply a condition to an else' {
-            
+            #
         }
     }
     Describe 'Switch' {
