@@ -1,7 +1,7 @@
 $script:Koans = Import-CliXml -Path "$PSScriptRoot\Data\Meditations.clixml"
-function Invoke-PSKoans {
+function Test-Koans {
     [CmdletBinding()]
-    [Alias('Rake')]
+    [Alias('Rake', 'Invoke-PSKoans')]
     param(
         [bool]
         $Clear = $true,
