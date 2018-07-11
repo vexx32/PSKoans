@@ -1,6 +1,6 @@
-function Test-Koans {
+function Get-Enlightenment {
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-    [Alias('Rake', 'Invoke-PSKoans')]
+    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
     param(
         [Parameter(ParameterSetName = "Default")]
         [ValidateNotNull()]
