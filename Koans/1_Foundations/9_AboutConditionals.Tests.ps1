@@ -51,6 +51,23 @@ Describe 'Conditionals' {
         }
     }
     Describe 'Switch' {
+        It "is used to create multiple possible branches" {
 
+        }
+        It "can also be used to conditionally assign values" {
+
+        }
+        It "can go through multiple branches" {
+
+        }
+        It "can stop after the first matching condition" {
+
+        }
+        It "accepts wildcard conditions" {
+
+        }
+        It "accepts regex conditions" {
+            
+        }
     }
 }
