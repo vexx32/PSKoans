@@ -70,7 +70,7 @@ Describe "Pipelines and Loops" {
         $Values | Should -Be @(0, 1, 2, 3, 4)
 
         $Values = while ($true) { # watch out for infinite loops!
-            $Tick++ # Remember: an undeclared variable acts as zero (or $null/$false), until we increment it!
+            $Tick++ # Remember: an undeclared variable acts as zero until we increment it!
             if ($Tick -gt 2) {
                 break # the break statement breaks out of the current loop.
             }
