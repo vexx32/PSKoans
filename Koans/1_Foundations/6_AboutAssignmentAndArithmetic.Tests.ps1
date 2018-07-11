@@ -48,6 +48,7 @@ Describe 'Arithmetic Operators' {
             $Array = 1, 2, 3, 4, 5
             $NewArray = $Array + 7
 
+            # Match the input with what's actually in $NewArray!
             1, 2, 3, 4, 5, 6, 7, 8 | Should -Be $NewArray
         }
         It 'behaves according to the type of the left-hand item' {
