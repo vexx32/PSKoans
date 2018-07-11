@@ -7,7 +7,7 @@ function Test-Koans {
         [bool]
         $Clear = $true,
 
-        [Parameter(ParameterSetName = "Meditate")]
+        [Parameter(Mandatory, ParameterSetName = "Meditate")]
         [switch]
         $Meditate,
 
