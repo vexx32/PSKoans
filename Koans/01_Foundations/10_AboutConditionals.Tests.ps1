@@ -39,7 +39,7 @@ Describe 'Conditionals' {
                 return (Get-ChildItem -Path $env:TEMP | Select-Object -Skip 3).Length
             }
             $Thing = Get-Thing
-            $Result = if ($Thing.Length -gt 5) {
+            $Result = if ($Thing -gt 5) {
                 # The item dropped to output is stored in the assigned variable
                 $Thing
             }
