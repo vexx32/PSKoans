@@ -1,7 +1,13 @@
 <#
     Strings
 
+    Strings in PowerShell come in two flavours: standard strings, and string literals.
+    Standard strings in PoSH are created using double-quotes, whereas string literals
+    are created with single quotes.
 
+    Unlike most other languages, standard strings in PowerShell are not literal and
+    can evaluate expressions or variables mid-string in order to dynamically insert
+    values into a preset string.
 #>
 Describe 'Strings' {
     It 'Is a simple string' {
