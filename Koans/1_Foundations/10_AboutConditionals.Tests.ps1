@@ -80,7 +80,7 @@ Describe 'Conditionals' {
             $Amount | Should -Be '__'
         }
         It 'can also be used to conditionally assign values' {
-            $Case = 25 + (4/3) * 17 - (2/3)
+            $Case = __
             $Variable = switch ($Case) {
                 45 {
                     'hello!'
@@ -90,7 +90,7 @@ Describe 'Conditionals' {
                     4.5
                     break
                 }
-                default {
+                57 {
                     -1
                     break
                 }
@@ -113,14 +113,16 @@ Describe 'Conditionals' {
             $Values | Should -Be __
         }
         It 'will process each element of arrays' {
-            $Array = 1..10
+            $Array = __
 
             $Result = switch ($Array) {
-                1 {
+                $null {
                     '-2'
+                    # Without either a continue or a break here, anything that gets here will
+                    # also match the default case!
                 }
                 4 {
-                    $_
+                    $_ * $_
                     <#
                         The continue keyword is like break, except it only skips the rest
                         of the switch for the current value and goes back to test all the
@@ -141,7 +143,7 @@ Describe 'Conditionals' {
                 }
             }
 
-            $Result[4] | Should -Be __
+            $Result | Should -Be 16
         }
         It 'accepts wildcard conditions' {
             $Condition = __
@@ -171,7 +173,23 @@ Describe 'Conditionals' {
             $Result | Should -BeTrue
         }
         It 'allows use of conditional expressions' {
+            $TestValue = __
 
+            # Unlike many other languages, PowerShell allows you to customise switches immensely
+            # through the use of script blocks to create dynamic conditions
+            switch ($TestValue) {
+                # Condition blocks need a boolean outcome, or it will be coerced to boolean
+                {$_ -gt 7} {
+                    # Only one of these test cases needs to pass!
+                    $_ | Should -Be 9
+                }
+                {$_ -is [decimal]} {
+                    $_ | Should -Be 1.5
+                }
+                {$_.Length -gt 4} {
+                    $_ | Should -BeOfType [string]
+                }
+            }
         }
     }
 }
