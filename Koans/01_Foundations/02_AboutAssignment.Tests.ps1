@@ -23,13 +23,13 @@ Describe 'Variable Assignment' {
 
     <#
         PowerShell variables will infer the data type where possible, for
-        example [int] for whole numbers, [double] for decimals and fractions, 
+        example [int] for whole numbers, [double] for decimals and fractions,
         [string] for text.
     #>
     It "infers types on its own" {
         $Number = 10
         $TypeOfNumber = $Number.GetType()
-        
+
         $TypeOfNumber | Should -Be ([int])
     }
 
@@ -73,10 +73,10 @@ Describe 'Variable Assignment' {
 
     It "allows you to declare constant variables" {
         {
-            Set-Variable -Name 'Constant' -Value 25 -Option Constant 
+            Set-Variable -Name 'Constant' -Value 25 -Option Constant
             # Thie next operation will never succeed; constant variables cannot be altered.
             # Try uncommenting the below line to see what happens.
-            
+
             # $Constant = "NewValue"
         } | Should -Not -Throw
         {
@@ -84,6 +84,7 @@ Describe 'Variable Assignment' {
             Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
             Remove-Variable -Name 'Constant' -Force
             $Constant = 2
+            $Constant++
         } | Should -Not -Throw
     }
 }

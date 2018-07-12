@@ -6,7 +6,7 @@
     is one way to iterate over a collection with a good deal of efficiency.
 
     There are a few 'array-like' collection types available in PowerShell, all
-    of which are rooted in .NET classes and data types, and behave much the 
+    of which are rooted in .NET classes and data types, and behave much the
     same as they do in C# and VB.NET.
 
     Arrays in particular have a close relationship with the PowerShell pipeline,
@@ -21,13 +21,13 @@ Describe "Arrays and Enumerable Collections" {
         # Arrays are zero-indexed; the first element is at index 0, the second at 1, etc.
         $Ages[0] | Should -Be 12
         $Ages[3] | Should -Be __
-        <# 
+        <#
             The array subexpression operator @() is used to create an array from multiple values
-            or expressions. Within the parentheses, either commas, semicolons, or even line 
+            or expressions. Within the parentheses, either commas, semicolons, or even line
             breaks can be used to divide array elements. Although in many cases in PowerShell
             an expression that only returns one value will not become an array, this operator
             forces the value or object to be wrapped in an array.
-        #> 
+        #>
         $Names = @(
             "Steve"
             "John";"Jaime" # This is a messy way to do things, but it does work
@@ -49,9 +49,9 @@ Describe "Arrays and Enumerable Collections" {
         $Jim, $Ashley, $Others = $Ages
         # What would be stored in $Others?
         $Others | Should -Be __
-        <# 
+        <#
             If you know the contents of the array and want to skip specific elements, you can
-            assign specific elements to $null to discard them. $null is one of PowerShell's 
+            assign specific elements to $null to discard them. $null is one of PowerShell's
             automatic variable values, like $true and $false, and cannot be altered. Any data
             you attempt to assign to it will be ignored.
         #>

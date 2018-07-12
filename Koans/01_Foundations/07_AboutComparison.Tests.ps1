@@ -36,13 +36,13 @@ Describe 'Comparison Operators' {
         It 'has a strict behaviour with most strings' {
             # Strings containing text behave a little differently in some cases
             'string' -eq 1 | Should -Be $false
-            
+
             # How should strings cast to boolean?
-            $true -eq 'Hello!' | Should -Be __ 
-            
+            $true -eq 'Hello!' | Should -Be __
+
             # What about an empty string?
-            $true -eq '' | Should -Be __ 
-            
+            $true -eq '' | Should -Be __
+
             # What about a string containing a number?
             $false -ne '0' | Should -Be __
 
@@ -77,7 +77,7 @@ Describe 'Comparison Operators' {
     Describe 'GreaterOrEqual and LessOrEqual' {
         It 'is a combination of the above two types' {
             $Array = 1, 2, 3, 4, 5
-            
+
             $Array -ge 3 | Should -Be @(3, 4, 5)
             $Array -le 2 | Should -Be @(1, 2, 3, 4)
             $Array -ge 5 | Should -Be __
