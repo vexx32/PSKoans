@@ -26,12 +26,12 @@ function Get-Enlightenment {
             if ($Clear) {Clear-Host}
             Write-MeditationPrompt -Greeting
 
-            $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None | 
+            $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None |
                 Select-Object -ExpandProperty TotalCount
 
             $Tests = Get-ChildItem -Path $script:KoanFolder -Filter '*.Tests.ps1' -Recurse
             $KoansPassed = 0
-        
+
             foreach ($KoanFile in $Tests) {
                 $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
                 $KoansPassed += $PesterTests.PassedCount
@@ -42,10 +42,10 @@ function Get-Enlightenment {
             }
 
             if ($PesterTests.FailedCount -gt 0) {
-                $NextKoanFailed = $PesterTests.TestResult | 
+                $NextKoanFailed = $PesterTests.TestResult |
                     Where-Object Result -eq 'Failed' |
                     Select-Object -First 1
-    
+
                 $Meditation = @{
                     DescribeName = $NextKoanFailed.Describe
                     Expectation  = $NextKoanFailed.ErrorRecord
@@ -76,12 +76,12 @@ function Write-MeditationPrompt {
         [ValidateNotNullOrEmpty()]
         [string]
         $Expectation,
-        
+
         [Parameter(Mandatory, ParameterSetName = "Meditation")]
         [ValidateNotNullOrEmpty()]
         [string]
         $ItName,
-        
+
         [Parameter(Mandatory, ParameterSetName = "Meditation")]
         [ValidateNotNullOrEmpty()]
         [string]
@@ -109,7 +109,7 @@ function Write-MeditationPrompt {
 
     if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
         Write-Host -ForegroundColor Cyan @"
-    Welcome, seeker of enlightenment. 
+    Welcome, seeker of enlightenment.
     Please wait a moment while we examine your karma...
 
 "@
@@ -122,7 +122,7 @@ function Write-MeditationPrompt {
     Write-Host @Blue @"
 
     You have not yet reached enlightenment.
-    
+
     The answers you seek...
 "@
     Write-Host @Red @"
@@ -130,7 +130,7 @@ function Write-MeditationPrompt {
 "@
     Start-Sleep @SleepTime
     Write-Host @Blue @"
-    
+
     Please meditate on the following code:
 "@
     Write-Host @Red @"
@@ -141,22 +141,22 @@ function Write-MeditationPrompt {
     Write-Host @Blue @"
 
     $($Koan -replace "`n","`n    ")
-        
-    Your path thus far: 
+
+    Your path thus far:
 
 "@
     $ProgressAmount = "$KoansPassed/$TotalKoans"
-    $ProgressWidth = $host.UI.RawUI.WindowSize.Width - (3 + $ProgressAmount.Length)
+    [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
     $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
-    "[{0}{1}] {2}" -f @(
+    " [{0}{1}] {2}" -f @(
         "$([char]0x25a0)" * $PortionDone
         "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
         $ProgressAmount
     ) | Write-Host @Blue
 
     Write-Host @Blue @"
-    
+
     You may run 'rake -Meditate' to begin your meditation.
 
 "@
