@@ -1,3 +1,5 @@
+class FILL_ME_IN {}
+class __ : FILL_ME_IN {}
 function Get-Enlightenment {
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
