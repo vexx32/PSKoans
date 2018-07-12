@@ -116,10 +116,10 @@ Describe 'Conditionals' {
             $Array = __
 
             $Result = switch ($Array) {
-                $null {
+                1 {
                     '-2'
-                    # Without either a continue or a break here, anything that gets here will
-                    # also match the default case!
+                    # Even without a break or continue here, if any branch is taken,
+                    # the default case will be skipped!
                 }
                 4 {
                     $_ * $_
