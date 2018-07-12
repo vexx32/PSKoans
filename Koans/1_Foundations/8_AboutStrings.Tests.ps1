@@ -10,7 +10,7 @@
     values into a preset string.
 #>
 Describe 'Strings' {
-    It 'Is a simple string' {
+    It 'is a simple string of text' {
         'string' | Should -Be __
     }
     Describe 'Literal Strings' {
@@ -18,45 +18,42 @@ Describe 'Strings' {
             $var = 'Some things you must take literally'
             $var | Should -Be __
         }
-        It 'Can contain special characters' {
+        It 'can contain special characters' {
             $complexVar = 'They have $ or : or ; or _'
-            $complexVar | Should be __
+            $complexVar | Should be '__'
         }
 
     }
-    It "Can expand variables" {
-        $var = "apple"
-        "My favorite fruit is $var" | Should -Be __
+    Describe 'Expandable Strings' {
+        It 'can expand variables' {
+            $var = 'apple'
+            "My favorite fruit is $var" | Should -Be __
+        }
+
+        $Windows = Get-Item 'C:\Windows' | Select-Object -ExpandProperty FullName
+
+        It 'can do a simple expansion' {
+            "The windows directory is located here: $Windows" | Should -Be __
+        }
+
+        It 'handles other ways of doing the same thing' {
+
+            "The windows directory is located $(Get-ChildItem 'C:\Windows' | Select-Object -ExpandProperty FullName)" |
+                Should -Be __
+        }
     }
+    Describe 'String Concatenation' {
+        It 'adds strings together' {
+            $String1 = 'This string'
+            $String2 = 'is cool.'
 
-    Describe "Strings can contain methods"{
-        $file = Get-ChildItem C:\Windows | Select-Object -ExpandProperty FullName
-
-        It "Can do a simple expansion" {
-        "The windows directory is located here: $file" | Should -Be __
+            $String1 + ' ' + $String2 | Should -Be 'This string is cool.'
         }
+        It 'can be done simpler' {
+            $String1 = 'This string'
+            $String2 = 'is cool.'
 
-        It "Handles other ways of doing the same thing" {
-
-            "The windows directory is located $(Get-ChildItem C:\Windows | Select-Object -ExpandProperty FullName)" |
-            Should -Be __
+            "$String1 __" | Should -Be 'This string is cool'
         }
-
-        Describe "Strings can be concatenated" {
-           It "Adds strings together" {
-            $string1 = "This string"
-            $string2 = "is cool."
-            $sentence = $string1 + $string2 | Should -Be "This string is cool."
-
-            It "Can be done simpler" {
-                $string1 = "This string"
-                $string2 = "is cool."
-                __ | Should -Be "This string is cool"
-            }
-           
-        }
-        }
-
-
     }
 }
