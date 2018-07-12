@@ -32,17 +32,17 @@ Install-Module Pester -Scope CurrentUser
 3. Choose the `PSKoans-master` folder, you'll get a folder tree on the left.
 4. Double click on the `PSKoans.psm1` file, and VS Code will launch a powershell console
 5. In that console, enter `Import-Module c:\path\to\pskoans-master\PSKoans-Master`
-6. Run `Invoke-PSKoans` (or `rake`)  and it should run and fail a test.
+6. Run `Get-Enlightenment` (or `rake`)  and it should run and fail a test.
 7. Read the error, open the file it points you to and start fixing the errors!
-8. Periodically run `rake` or `Invoke-PSKoans` to re-test your progress.
+8. Periodically run `rake` or `Get-Enlightenment` to re-test your progress.
 
 ### From the PowerShell Console
 
 1. Run `Import-Module 'C:\Path\To\Downloaded\PSKoans\Folder\PSKoans-master'`
-2. Run `rake` or `Invoke-PSKoans` and it will run and fail a test.
+2. Run `rake` or `Get-Enlightenment` and it will run and fail a test.
 3. Run `rake -Meditate` as prompted to open the Koans folder.
 4. Edit the file in your favourite editor as instructed, in order to resolve the error.
-5. Re-run `rake` or `Invoke-PSKoans` in order to reevaluate the tests and check your progress.
+5. Re-run `rake` or `Get-Enlightenment` in order to reevaluate the tests and check your progress.
 
 ### Can I help out / contribute?
 
