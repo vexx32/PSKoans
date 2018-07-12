@@ -163,7 +163,7 @@ Describe 'Conditionals' {
             $Pattern = "a.*z.n"
 
             # If you need a regex refresher, check out https://regexr.com/
-            # Remember that unless specified, it doesn't need to match the entire string!
+            # Remember that it doesn't need to match the entire string unless the match says so!
 
             switch -Regex ($Value) {
                 $Pattern {

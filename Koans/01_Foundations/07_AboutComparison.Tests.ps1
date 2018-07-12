@@ -48,6 +48,8 @@ Describe 'Comparison Operators' {
 
             # In short: strings don't care about their contents when cast to boolean
             $true -eq 'False' | Should -Be __
+            $false -eq [string]$false | Should -Be __
+            [string]$false | Should -Be '__'
         }
         It 'changes behaviour with arrays' {
             # Note that the array must always be on the left hand side of the comparison
