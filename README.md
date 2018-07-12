@@ -44,7 +44,7 @@ Install-Module Pester -Scope CurrentUser
 4. Edit the file in your favourite editor as instructed, in order to resolve the error.
 5. Re-run `rake` or `Get-Enlightenment` in order to reevaluate the tests and check your progress.
 
-### Can I help out / contribute?
+### Can I help out / contribute
 
 Of course you can! We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
 
