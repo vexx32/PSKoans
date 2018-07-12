@@ -1,18 +1,18 @@
 <#
     Assignment and Arithmetic Operators
 
-    Just like many other programming languages, PowerShell has special operators designed to 
+    Just like many other programming languages, PowerShell has special operators designed to
     work with data.
-    
+
     You can use the following command to get a full overview of how operators work:
 
         Get-Help about_Operators
 
-    Loosely, operators fall into a few categories: assignment (=), arithmetic, comparison, 
+    Loosely, operators fall into a few categories: assignment (=), arithmetic, comparison,
     redirection, and string operators.
 
-    In terms of order of operations, arithmetic operators typically execute before 
-    comparison operators, followed by string operators, redirection operators, and finally 
+    In terms of order of operations, arithmetic operators typically execute before
+    comparison operators, followed by string operators, redirection operators, and finally
     assignment operators execute last.
 #>
 Describe 'Assignment Operator' {
@@ -53,7 +53,7 @@ Describe 'Arithmetic Operators' {
         }
         It 'behaves according to the type of the left-hand item' {
             '10.5' + 11 | Should -Be 21.5 # Or should it?
-        
+
             11 + '12.5' | Should -Be __
             12.21 + 'FILL_ME_IN' -eq 23.43 | Should -BeTrue
 
@@ -91,6 +91,7 @@ Describe 'Arithmetic Operators' {
             # As with subtraction, there's no useful meaning of using division on a string
             # so any attempts to do so will throw an error.
             {'hello!' / 3} | Should -Throw
+
             # Unlike with other numerical operators, however, division often results
             # in a non-integer (double) value even when both operands are integers.
             3 / 4 | Should -Be 0.75
@@ -108,11 +109,11 @@ Describe 'Arithmetic Operators' {
             {
                 $String = "hello!"
                 $String % 4
-            }  | Should -Throw
+            }  | Should -Throw -ExceptionType __
             {
                 $Array = 1, 10, 20
                 $Array % 4
-            } | Should -Not -Throw
+            } | Should -Throw -ExceptionType __
         }
     }
 }
