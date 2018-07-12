@@ -83,7 +83,7 @@ Describe 'Conditionals' {
             $Case = 25 + (4/3) * 17 - (2/3)
             $Variable = switch ($Case) {
                 45 {
-                    "hello!"
+                    'hello!'
                     break
                 }
                 47 {
@@ -101,18 +101,74 @@ Describe 'Conditionals' {
         }
         It 'can go through multiple branches' {
             # Omitting the break statement allows one condition to match several cases
-        }
-        It 'can stop after the first matching condition' {
-
+            $Values = switch ('Condition') {
+                # As with most PowerShell string matching logic, switches are not case sensitive
+                'CONDITION' {
+                    1
+                }
+                'condition' {
+                    2
+                }
+            }
+            $Values | Should -Be __
         }
         It 'will process each element of arrays' {
+            $Array = 1..10
 
+            $Result = switch ($Array) {
+                1 {
+                    '-2'
+                }
+                4 {
+                    $_
+                    <#
+                        The continue keyword is like break, except it only skips the rest
+                        of the switch for the current value and goes back to test all the
+                        other input values.
+
+                        If there is only a single input value, it functions like break.
+                    #>
+                    continue
+                }
+                7 {
+                    '14'
+                    # Using break in an array-input situation means all the rest of
+                    # the items don't get tested in the switch. Be careful!
+                    break
+                }
+                default {
+                    '-1'
+                }
+            }
+
+            $Result[4] | Should -Be __
         }
         It 'accepts wildcard conditions' {
+            $Condition = __
+            # ... but only if you ask nicely, that is!
+            $Result = switch -Wildcard ($Condition) {
+                # Wildcarded switches work with ? for single character and * for multiple characters
+                'Harm*' {
+                    $_ -replace '(.)', '$1,a,'
+                }
+            }
 
+            $Result | Should -Be '__'
         }
         It 'accepts regex conditions' {
+            # Enter a regex string that matches the pattern to pass the test.
+            $Value = '__'
+            $Pattern = "a.*z.n"
 
+            # If you need a regex refresher, check out https://regexr.com/
+            # Remember that unless specified, it doesn't need to match the entire string!
+
+            switch -Regex ($Value) {
+                $Pattern {
+                    $Result = $true
+                }
+            }
+            $Result | Should -BeTrue
         }
         It 'allows use of conditional expressions' {
 
