@@ -56,7 +56,7 @@ Describe "Lists" {
     }
     It "can accept loose typing" {
         # We can cast convert an array. [object] or [PSObject] typed lists hold any type(s) of items.
-        $List = [System.Collections.Generic.List[PSObject]]@(1, 2)
+        $List = [System.Collections.Generic.List[Object]]@(1, 2)
 
         # Items must be added to Lists using their .Add() or .AddRange() method.
         # .AddRange() takes an array or other collection object.
@@ -86,5 +86,27 @@ Describe "Lists" {
         # Feel free to add an additional ' | Should -Be ' test if you need it to guide your way!
         
         $List | Should -Be @('12', '10')
+    }
+    It 'allows you to remove multiple entries based on conditions' {
+        $List = [System.Collections.Generic.List[string]]@(1..11)
+        
+        # This method takes a lambda expression in C#, which translates to a script block for PowerShell
+        # It also outputs a $true or $false depending on whether elements were removed, so we'll check that
+        $List.RemoveAll({
+            # The input variable representing each entry must be named, or use $args[0]
+            param($_) 
+            # Remove everything that contains the number 9, essentially
+            $_ -match '9' 
+            # The output must boil down to a $true/$false, or will be coerced to it
+        }) | Should -BeTrue
+        $List | Should -Be @('1','2','3','4','5','6','7','8','9','10','11')
+
+        $List.RemoveAll({
+            param($_)
+            # Change this expression to make the assertions below true
+            
+        }) | Should -BeTrue
+
+        $List | Should -Be @(1, 3, 5, 7, 11)
     }
 }

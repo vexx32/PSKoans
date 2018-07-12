@@ -44,7 +44,7 @@ Describe "Functions" {
     It "can accept parameters" {
         # Simplicity is a two-sided coin.
         function Add-Things {
-            return (args[0] + args[1])
+            return ($args[0] + $args[1])
         }
 
         # Values are supplied separated by spaces, without parentheses.

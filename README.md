@@ -32,14 +32,25 @@ Install-Module Pester -Scope CurrentUser
 3. Choose the `PSKoans-master` folder, you'll get a folder tree on the left.
 4. Double click on the `PSKoans.psm1` file, and VS Code will launch a powershell console
 5. In that console, enter `Import-Module c:\path\to\pskoans-master\PSKoans-Master`
-6. Run `Invoke-PSKoans` (or `rake`)  and it should run and fail a test.
+6. Run `Get-Enlightenment` (or `rake`)  and it should run and fail a test.
 7. Read the error, open the file it points you to and start fixing the errors!
-8. Periodically run `rake` or `Invoke-PSKoans` to re-test your progress.
+8. Periodically run `rake` or `Get-Enlightenment` to re-test your progress.
 
 ### From the PowerShell Console
 
 1. Run `Import-Module 'C:\Path\To\Downloaded\PSKoans\Folder\PSKoans-master'`
-2. Run `rake` or `Invoke-PSKoans` and it will run and fail a test.
+2. Run `rake` or `Get-Enlightenment` and it will run and fail a test.
 3. Run `rake -Meditate` as prompted to open the Koans folder.
 4. Edit the file in your favourite editor as instructed, in order to resolve the error.
-5. Re-run `rake` or `Invoke-PSKoans` in order to reevaluate the tests and check your progress.
+5. Re-run `rake` or `Get-Enlightenment` in order to reevaluate the tests and check your progress.
+
+### Can I Help Out / Contribute
+
+Of course you can! We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
+
+* Feel more than free to clone the repository, make some changes, and submit a pull request!
+* Submit any small changes you'd like make to any of the koans as an issue on the repository, and either myself or one of the helpers here will be happy to talk it over and get it sorted out.
+
+The goal of the koans is to help those who have very limited knowledge learn PowerShell. In order to do that, simplicity and accessibility are key. There are some advanced topics out there that deserve coverage, and in order to cover them effectively we need to deal with them as clearly and simply as possible.
+
+If you just want to make a general comment or some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue.
