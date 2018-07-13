@@ -20,8 +20,8 @@
 
 Describe 'Get-Help' {
     It 'shows help information about cmdlets' {
-        
-    }
+
+    } -
 }
 Describe 'Get-Member' {
     It 'displays the members and methods of objects' {
