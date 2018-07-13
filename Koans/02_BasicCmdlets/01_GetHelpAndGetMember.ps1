@@ -19,9 +19,29 @@
 #>
 
 Describe 'Get-Help' {
-    It 'shows help information about cmdlets' {
+    Context 'shows help information about cmdlets' {
+        # Try calling 'Get-Help Get-Help' in a console to see the built in help available
+        # for the help command.
 
-    } -
+        $HelpInfo = Get-Help 'Get-Help'
+        $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
+
+        # Using the information from Get-Help, fill in the missing parameters in alphabetical order.
+        $GetHelpParams | Should -Be @(
+            'Category'
+            'Component'
+            '__'
+            'Examples'
+            '__'
+            '__'
+            'Name'
+            'Online'
+            '__'
+            'Path'
+            'Role'
+            '__'
+        )
+    }
 }
 Describe 'Get-Member' {
     It 'displays the members and methods of objects' {
