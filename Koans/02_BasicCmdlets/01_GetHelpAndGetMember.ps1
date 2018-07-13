@@ -17,3 +17,14 @@
     Google searches, it is possible to learn a significant amount about native
     PowerShell cmdlets and functions, and more advanced .NET classes, and methods.
 #>
+
+Describe 'Get-Help' {
+    It 'shows help information about cmdlets' {
+        
+    }
+}
+Describe 'Get-Member' {
+    It 'displays the members and methods of objects' {
+
+    }
+}
