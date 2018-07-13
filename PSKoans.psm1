@@ -8,11 +8,11 @@ function Get-Enlightenment {
 	.DESCRIPTION
 		Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary corrections for success.
 	.Parameter Clear
-		Default parameter to execute tests
+		Clear the screen before giving feedback. Defaults to True.
 	.Parameter Meditate
-		Creates a directory with the koans populated.
+		Opens your local koan folder.
 	.Parameter Reset
-		Resets koan directory to default.
+		Resets everything in your local koan folder to a blank slate. Use with caution.
 	#>
 	[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
 	[Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
@@ -171,16 +171,16 @@ $($Koan -replace "`n","`n    ")
 Your path thus far:
 
 "@
-$ProgressAmount = "$KoansPassed/$TotalKoans"
-[int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
-$PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
+	$ProgressAmount = "$KoansPassed/$TotalKoans"
+	[int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
+	$PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
-" [{0}{1}] {2}" -f @(
-	"$([char]0x25a0)" * $PortionDone
-	"$([char]0x2015)" * ($ProgressWidth - $PortionDone)
-	$ProgressAmount
-) | Write-Host @Blue
-Write-Host @Blue @"
+	" [{0}{1}] {2}" -f @(
+		"$([char]0x25a0)" * $PortionDone
+		"$([char]0x2015)" * ($ProgressWidth - $PortionDone)
+		$ProgressAmount
+	) | Write-Host @Blue
+	Write-Host @Blue @"
 
 You may run 'rake -Meditate' to begin your meditation.
 
@@ -207,16 +207,16 @@ function Initialize-KoanDirectory {
 	if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
 		if (Test-Path -Path $script:KoanFolder) {
 			Write-Verbose "Removing the entire koans folder..."
-			Remove-Item -Recurse -Path $script:KoanFolder -Force
+			Remove-Item -Recurse -Path $KoanFolder -Force
 		}
 		Write-Debug "Copying koans to folder"
 		Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-		Write-Verbose "Koans copied to '$script:KoanFolder'"
+		Write-Verbose "Koans copied to '$KoanFolder'"
 	}
 }
 
 $script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
-$script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
+$KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
 	Initialize-KoanDirectory -FirstImport
