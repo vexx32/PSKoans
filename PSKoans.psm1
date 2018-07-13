@@ -116,7 +116,7 @@ function Write-MeditationPrompt {
         return
     }
     Write-Host @Red @"
-    {Describe "$DescribeName"} has damaged your karma.
+{Describe "$DescribeName"} has damaged your karma.
 "@
     Start-Sleep @SleepTime
     Write-Host @Blue @"
@@ -124,18 +124,20 @@ function Write-MeditationPrompt {
     You have not yet reached enlightenment.
 
     The answers you seek...
+
 "@
     Write-Host @Red @"
-    $Expectation
+$Expectation
 "@
     Start-Sleep @SleepTime
     Write-Host @Blue @"
 
     Please meditate on the following code:
+
 "@
     Write-Host @Red @"
-    [It] $ItName
-    $Meditation
+[It] $ItName
+$Meditation
 "@
     Start-Sleep @SleepTime
     Write-Host @Blue @"
