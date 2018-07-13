@@ -58,4 +58,38 @@ Describe "Arrays and Enumerable Collections" {
         $null, $Number1, $Number2 = $Others
         $Number1 | Should -Be __
     }
+    It "lets you build a subset of the original array" {
+        $Array = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        $Start = __
+        $Finish = __
+
+        # Arrays let you pick a range of indexes to build new arrays
+        $Array[$Start..$Finish] | Should -Be @(6, 7, 8)
+
+        # You can also select specific index numbers
+        $Index = __
+        $Array[1, $Index, 4] | Should -Be @(2, 9, 5)
+    }
+    It "allows use of negative indexes" {
+        $Array = 1, 2, 3, 4, 5, 6, 7
+        $Array[-1] | Should -Be __ # What is the -1th item?
+
+        # Negative numbers can also form a range and extract subsets
+        $Array[-4..-1] | Should -Be @(5, 6, 7)
+        $Index = __
+        $Array[-3, $Index, -6] | Should -Be @(5, 1, 2)
+
+        # You can make clever use of this to reverse an entire array!
+        $LastIndex = __ # Hint: needs to be a negative number!
+        $Array[-1..$LastIndex] | Should -Be @(7, 6, 5, 4, 3, 2, 1)
+    }
+    It "will not allow selection of undefined indexes" {
+        $Array = 1, 2, 3, 4
+
+        # It allows negative indexes, but what about indexes out of range?
+        $Array[4] | Should -Be __
+
+        # What about undefined negative indexes?
+        $Array[-10] | Should -Be __
+    }
 }
