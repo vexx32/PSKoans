@@ -1,19 +1,19 @@
 function Get-Enlightenment {
 	<#
-    .NOTES
+	.NOTES
 		Name: Get-Enlightenment
 		Author: vexx32
 	.SYNOPSIS
 		Reflect on your progress and check your answers.
-    .DESCRIPTION
-        Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary corrections for success.
-    .Parameter Clear
-        Default parameter to execute tests
-    .Parameter Meditate
-        Creates a directory with the koans populated.
-    .Parameter Reset
-        Resets koan directory to default.
-    #>
+	.DESCRIPTION
+		Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary corrections for success.
+	.Parameter Clear
+		Default parameter to execute tests
+	.Parameter Meditate
+		Creates a directory with the koans populated.
+	.Parameter Reset
+		Resets koan directory to default.
+	#>
 	[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
 	[Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
 	param(
@@ -64,7 +64,7 @@ function Get-Enlightenment {
 				$Meditation = @{
 					DescribeName = $NextKoanFailed.Describe
 					Expectation  = $NextKoanFailed.ErrorRecord
-					ItName       = $NextKoanFailed.Name
+					ItName		 = $NextKoanFailed.Name
 					Meditation   = $NextKoanFailed.StackTrace
 					KoansPassed  = $KoansPassed
 					TotalKoans   = $PesterTestCount
@@ -75,20 +75,20 @@ function Get-Enlightenment {
 	}
 } # end function
 function Get-Blank {
-    [Alias('__', 'FILL_ME_IN')]
-    param()
-    $null
+	[Alias('__', 'FILL_ME_IN')]
+	param()
+	$null
 }
 function Write-MeditationPrompt {
 	<#
-    .NOTES
+	.NOTES
 		Name: Write-MeditationPrompt
 		Author: vexx32
 	.SYNOPSIS
 		Provides "useful" output for enlightenment results.
-    .DESCRIPTION
-        Provides a mechanism for Get-Enlightenment to write clean output. 
-    #>
+	.DESCRIPTION
+		Provides a mechanism for Get-Enlightenment to write clean output. 
+	#>
 	[CmdletBinding(DefaultParameterSetName = 'Meditation')]
 	param(
 		[Parameter(Mandatory, ParameterSetName = "Meditation")]
@@ -159,7 +159,7 @@ Write-Host @Blue @"
 Please meditate on the following code:
 
 "@
-	Write-Host @Red @"
+Write-Host @Red @"
 [It] $ItName
 $Meditation
 "@
@@ -176,11 +176,10 @@ $ProgressAmount = "$KoansPassed/$TotalKoans"
 $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
 " [{0}{1}] {2}" -f @(
-    "$([char]0x25a0)" * $PortionDone
-    "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
-    $ProgressAmount
+	"$([char]0x25a0)" * $PortionDone
+	"$([char]0x2015)" * ($ProgressWidth - $PortionDone)
+	$ProgressAmount
 ) | Write-Host @Blue
-
 Write-Host @Blue @"
 
 You may run 'rake -Meditate' to begin your meditation.
@@ -189,16 +188,16 @@ You may run 'rake -Meditate' to begin your meditation.
 }
 function Initialize-KoanDirectory {
 	<#
-    .NOTES
+	.NOTES
 		Name: Initialize-KoanDirectory
 		Author: vexx32
 	.SYNOPSIS
 		Provides a blank slate for Koans.
-    .DESCRIPTION
-        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
-    .Parameter FirstImport
-        Indicates that the folder structure should be created/refreshed.
-    #>
+	.DESCRIPTION
+		If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
+	.Parameter FirstImport
+		Indicates that the folder structure should be created/refreshed.
+	#>
 	[CmdletBinding(SupportsShouldProcess, ConfirmImpact = "Medium")]
 	param(
 		[Parameter()]
@@ -220,5 +219,5 @@ $script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "
 $script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
-    Initialize-KoanDirectory -FirstImport
+	Initialize-KoanDirectory -FirstImport
 }
