@@ -12,8 +12,8 @@
     Arrays in particular have a close relationship with the PowerShell pipeline,
     which will be covered a shortly.
 #>
-Describe "Arrays and Enumerable Collections" {
-    It "is useful for grouping related objects and values" {
+Describe 'Arrays and Enumerable Collections' {
+    It 'is useful for grouping related objects and values' {
         # The comma operator is used to create an array. Spaces are ignored, for the most part.
         $Ages = 12, 25, 18, 64
 
@@ -29,15 +29,15 @@ Describe "Arrays and Enumerable Collections" {
             forces the value or object to be wrapped in an array.
         #>
         $Names = @(
-            "Steve"
-            "John";"Jaime" # This is a messy way to do things, but it does work
-            "Abigail", "Serena", "Kali"
+            'Steve'
+            'John';'Jaime' # This is a messy way to do things, but it does work
+            'Abigail', 'Serena', 'Kali'
             # Having everything on its own line would be much cleaner and is a common usage of this syntax.
         )
         # Where is index 4 in the above array?
         $Names[4] | Should -Be __
     }
-    It "allows the collection to be split into multiple parts" {
+    It 'allows the collection to be split into multiple parts' {
         $Ages = 11, 18, 25, 74, 19
         # An array can be split by assigning it to multiple variables at once:
         $Jim, $Ashley, $Theresa, $Bob, $Janice = $Ages
@@ -58,7 +58,7 @@ Describe "Arrays and Enumerable Collections" {
         $null, $Number1, $Number2 = $Others
         $Number1 | Should -Be __
     }
-    It "lets you build a subset of the original array" {
+    It 'lets you build a subset of the original array' {
         $Array = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         $Start = __
         $Finish = __
@@ -70,7 +70,7 @@ Describe "Arrays and Enumerable Collections" {
         $Index = __
         $Array[1, $Index, 4] | Should -Be @(2, 9, 5)
     }
-    It "allows use of negative indexes" {
+    It 'allows use of negative indexes' {
         $Array = 1, 2, 3, 4, 5, 6, 7
         $Array[-1] | Should -Be __ # What is the -1th item?
 
@@ -83,7 +83,7 @@ Describe "Arrays and Enumerable Collections" {
         $LastIndex = __ # Hint: needs to be a negative number!
         $Array[-1..$LastIndex] | Should -Be @(7, 6, 5, 4, 3, 2, 1)
     }
-    It "will not allow selection of undefined indexes" {
+    It 'does not throw exceptions with invalid indexes' {
         $Array = 1, 2, 3, 4
 
         # It allows negative indexes, but what about indexes out of range?
