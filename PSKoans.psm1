@@ -137,9 +137,9 @@ Welcome, seeker of enlightenment.
 Please wait a moment while we examine your karma...
 
 "@
-		return
-	}
-	Write-Host @Red @"
+return
+}
+Write-Host @Red @"
 {Describe "$DescribeName"} has damaged your karma.
 "@
 Start-Sleep @SleepTime
