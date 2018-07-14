@@ -207,16 +207,16 @@ function Initialize-KoanDirectory {
 	if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
 		if (Test-Path -Path $script:KoanFolder) {
 			Write-Verbose "Removing the entire koans folder..."
-			Remove-Item -Recurse -Path $KoanFolder -Force
+			Remove-Item -Recurse -Path $script:KoanFolder -Force
 		}
 		Write-Debug "Copying koans to folder"
 		Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-		Write-Verbose "Koans copied to '$KoanFolder'"
+		Write-Verbose "Koans copied to '$script:KoanFolder'"
 	}
 }
 
 $script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
-$KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
+$script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
 	Initialize-KoanDirectory -FirstImport
