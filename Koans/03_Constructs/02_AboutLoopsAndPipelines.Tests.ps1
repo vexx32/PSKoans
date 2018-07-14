@@ -16,7 +16,7 @@
 Describe "Pipelines and Loops" {
     It "is used to process input in several stages" {
         # The .. operator is used to quickly create arrays with a range of numbers
-        $Values = 1..5 
+        $Values = 1..5
         # Where-Object is a filtering cmdlet, used to discard selected objects mid-pipeline.
         $Values | Where-Object {$_ -lt 3} | Should -Be @(1, 2)
     }
@@ -33,7 +33,7 @@ Describe "Pipelines and Loops" {
                 automatic variables used to denote 'the current object in the pipeline'.
             #>
             $_ | Should -Be $PSItem
-            <# 
+            <#
                 Expressions not stored in a variable are dropped back to the output stream. In pipelines,
                 this means that they are passed along to the next pipeline command. If a pipeline ends and
                 it is not stored in a variable, all output will eventually end up in the main output stream.
@@ -43,10 +43,10 @@ Describe "Pipelines and Loops" {
             $_ + 2
         } | Should -Be __ # What happens to the array after we change each value?
 
-        # Values can be stored at the end of a pipeline by storing the entire pipeline sequence in a 
+        # Values can be stored at the end of a pipeline by storing the entire pipeline sequence in a
         # variable. This will create an array of the final values.
-        $Strings = 1..10 | 
-            ForEach-Object {"Hello $_!"} | # Line breaks after a pipe character are OK! 
+        $Strings = 1..10 |
+            ForEach-Object {"Hello $_!"} | # Line breaks after a pipe character are OK!
             Where-Object {$_ -notlike "*5*"} # (Indents are optional.)
         $Strings | Should -Be __
     }

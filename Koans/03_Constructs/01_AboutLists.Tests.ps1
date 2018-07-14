@@ -1,4 +1,4 @@
-<# 
+<#
     Lists - Flexible, Generic Collections
 
     Arrays have one critical weakness: they are immutable collections. While the
@@ -13,20 +13,20 @@
     # You might think it should fail with an error, but it won't!
 
     Actually, in PowerShell, the addition operator for arrays is defined something like:
-    
+
         "Take the elements in this array, and the thing(s) we're adding in, and
         build a new array with them."
 
     This is very convenient, but it can create a problem - this gets significantly more
     expensive if you need to do it a lot. For large collections, adding items to them
-    becomes very slow to do. 
+    becomes very slow to do.
 
     Introducing: Lists!
 
-    Lists are generic collections, which means that they have a defined type when 
-    created, and will only hold objects of that type. Other types will either be 
-    converted, or cause an error to be thrown if there is no available conversion. 
-    However, all objects in PowerShell inherit from [PSObject] or [object], so a 
+    Lists are generic collections, which means that they have a defined type when
+    created, and will only hold objects of that type. Other types will either be
+    converted, or cause an error to be thrown if there is no available conversion.
+    However, all objects in PowerShell inherit from [PSObject] or [object], so a
     List with that typing will hold any mix of data types.
 
     There are several ways to create a List object, but we'll just cover the main
@@ -94,9 +94,9 @@ Describe "Lists" {
         # It also outputs a $true or $false depending on whether elements were removed, so we'll check that
         $List.RemoveAll({
             # The input variable representing each entry must be named, or use $args[0]
-            param($_) 
+            param($_)
             # Remove everything that contains the number 9, essentially
-            $_ -match '9' 
+            $_ -match '9'
             # The output must boil down to a $true/$false, or will be coerced to it
         }) | Should -BeTrue
         $List | Should -Be @('1','2','3','4','5','6','7','8','9','10','11')
