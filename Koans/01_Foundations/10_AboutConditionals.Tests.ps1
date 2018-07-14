@@ -7,8 +7,11 @@
     Due to how PowerShell handles output, its conditional statements can return output
     data, as is usually seen in functional programming languages.
 #>
-Describe 'Conditionals' {
-    Describe 'If/Else' {
+
+Describe 'If/Else' {
+
+    Context 'Control Flow' {
+
         It 'is used to alter which code should be executed based on input' {
             function Assert-IsEven ($Number) {
                 if ($Number % 2 -eq 0) {
@@ -24,6 +27,7 @@ Describe 'Conditionals' {
             Assert-IsEven -Number 2 | Should -Be '__'
             Assert-IsEven -Number __ | Should -Be 'ODD'
         }
+
         It 'can be used alone' {
             function Set-Number ($Number) {
                 if ($Number -gt 5) {
@@ -34,6 +38,10 @@ Describe 'Conditionals' {
             Set-Number -Number 4 | Should -Be __
             Set-Number -Number __ | Should -Be 70
         }
+    }
+
+    Context 'Assigning Values' {
+
         It 'can be used to select a value for a variable' {
             function Get-Thing {
                 return (Get-ChildItem -Path $env:TEMP | Select-Object -Skip 3).Length
@@ -49,13 +57,29 @@ Describe 'Conditionals' {
             }
             $Result | Should -Be __
         }
+
         It 'can also apply a condition to an else' {
-            #
+            $Value = if (4 -lt 5) {
+                10
+            }
+            elseif ("string" -is [string]) {
+                'hi'
+            }
+            else {
+                -1
+            }
+            $Value += 1
+            $Value | Should -Be __
         }
     }
-    Describe 'Switch' {
-        # Switches often replace stacks of if/elseif/../else conditionals
-        # If you have more than an if/else, you might find a switch useful.
+}
+
+Describe 'Switch' {
+
+    # Switches often replace stacks of if/elseif/../else conditionals
+    # If you have more than an if/else, you might find a switch useful.
+    Context 'Control Flow' {
+
         It 'is used to create multiple possible branches' {
             $Folders = 4..9 | ForEach-Object {"$_" * $_}
 
@@ -79,6 +103,8 @@ Describe 'Conditionals' {
 
             $Amount | Should -Be '__'
         }
+    }
+    Context 'Assigning Values' {
         It 'can also be used to conditionally assign values' {
             $Case = __
             $Variable = switch ($Case) {
@@ -99,6 +125,7 @@ Describe 'Conditionals' {
             $Variable | Should -Be -1
             $Variable | Should -BeOfType [__]
         }
+
         It 'can go through multiple branches' {
             # Omitting the break statement allows one condition to match several cases
             $Values = switch ('Condition') {
@@ -112,6 +139,9 @@ Describe 'Conditionals' {
             }
             $Values | Should -Be __
         }
+    }
+
+    Context 'Use With Arrays' {
         It 'will process each element of arrays' {
             $Array = __
 
@@ -124,12 +154,12 @@ Describe 'Conditionals' {
                 4 {
                     $_ * $_
                     <#
-                        The continue keyword is like break, except it only skips the rest
-                        of the switch for the current value and goes back to test all the
-                        other input values.
+                    The continue keyword is like break, except it only skips the rest
+                    of the switch for the current value and goes back to test all the
+                    other input values.
 
-                        If there is only a single input value, it functions like break.
-                    #>
+                    If there is only a single input value, it functions like break.
+                #>
                     continue
                 }
                 7 {
@@ -145,6 +175,10 @@ Describe 'Conditionals' {
 
             $Result | Should -Be 16
         }
+    }
+
+    Context 'Types of Switch' {
+
         It 'accepts wildcard conditions' {
             $Condition = __
             # ... but only if you ask nicely, that is!
@@ -157,6 +191,7 @@ Describe 'Conditionals' {
 
             $Result | Should -Be '__'
         }
+
         It 'accepts regex conditions' {
             # Enter a regex string that matches the pattern to pass the test.
             $Value = '__'
@@ -172,6 +207,7 @@ Describe 'Conditionals' {
             }
             $Result | Should -BeTrue
         }
+
         It 'allows use of conditional expressions' {
             $TestValue = __
 

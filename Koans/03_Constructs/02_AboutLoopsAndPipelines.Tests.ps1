@@ -13,15 +13,15 @@
     to take an input and perform multiple actions before storing or outputting the result.
 #>
 
-Describe "Pipelines and Loops" {
-    It "is used to process input in several stages" {
+Describe 'Pipelines and Loops' {
+    It 'is used to process input in several stages' {
         # The .. operator is used to quickly create arrays with a range of numbers
         $Values = 1..5
         # Where-Object is a filtering cmdlet, used to discard selected objects mid-pipeline.
         $Values | Where-Object {$_ -lt 3} | Should -Be @(1, 2)
     }
 
-    It "works with many cmdlets to efficiently process input" {
+    It 'works with many cmdlets to efficiently process input' {
         # The pipeline takes each element of the array and feeds them one by one into the next cmdlet
         1..5 | ForEach-Object {
             <#
@@ -47,11 +47,11 @@ Describe "Pipelines and Loops" {
         # variable. This will create an array of the final values.
         $Strings = 1..10 |
             ForEach-Object {"Hello $_!"} | # Line breaks after a pipe character are OK!
-            Where-Object {$_ -notlike "*5*"} # (Indents are optional.)
+            Where-Object {$_ -notlike '*5*'} # (Indents are optional.)
         $Strings | Should -Be __
     }
 
-    It "is like a specialised loop" {
+    It 'is like a specialised loop' {
         # Standard loops are also available in PowerShell, but unlike other languages we can still utilise
         # PowerShell's output stream to bundle all their output.
 
@@ -85,7 +85,7 @@ Describe "Pipelines and Loops" {
             but will always execute the loop at least once.
         #>
         $Values = do {
-            "eat me!"
+            'eat me!'
         } while ($false) # had we put our while at the head of the loop, there would be zero iterations
         $Values | Should -Be __
     }
