@@ -9,6 +9,7 @@
     a name as needed.
 #>
 Describe "Functions" {
+
     It "allows you to assign a name to a sequence of commands" {
         <#
             An apt name eases the transition to abstraction.
@@ -78,6 +79,7 @@ Describe "Functions" {
     }
 }
 Describe "Script Block" {
+
     It "is an anonymous function" {
         <#
             Script blocks can be used to group commands without defining a function.
