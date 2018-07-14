@@ -187,37 +187,31 @@ You may run 'rake -Meditate' to begin your meditation.
 "@
 }
 function Initialize-KoanDirectory {
-	<#
+    <#
 	.NOTES
 		Name: Initialize-KoanDirectory
 		Author: vexx32
 	.SYNOPSIS
 		Provides a blank slate for Koans.
 	.DESCRIPTION
-		If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
-	.Parameter FirstImport
-		Indicates that the folder structure should be created/refreshed.
-	#>
-	[CmdletBinding(SupportsShouldProcess, ConfirmImpact = "Medium")]
-	param(
-		[Parameter()]
-		[switch]
-		$FirstImport
-	)
-	if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
-		if (Test-Path -Path $script:KoanFolder) {
-			Write-Verbose "Removing the entire koans folder..."
-			Remove-Item -Recurse -Path $script:KoanFolder -Force
-		}
-		Write-Debug "Copying koans to folder"
-		Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-		Write-Verbose "Koans copied to '$script:KoanFolder'"
-	}
+        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
+    #>
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
+    param()
+    if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $script:KoanFolder) {
+            Write-Verbose "Removing the entire koans folder..."
+            Remove-Item -Recurse -Path $script:KoanFolder -Force
+        }
+        Write-Debug "Copying koans to folder"
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
+        Write-Verbose "Koans copied to '$script:KoanFolder'"
+    }
 }
 
 $script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
 $script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
-	Initialize-KoanDirectory -FirstImport
+	Initialize-KoanDirectory -Confirm:$false
 }
