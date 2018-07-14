@@ -105,12 +105,21 @@ Describe 'Get-Member' {
         }
     }
     Context 'Members of objects returned from cmdlets' {
-        $TempFile = New-TemporaryFile
+        It 'can help you discover information about unfamiliar objects' {
+            # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random location,
+            # and returns the object representation of this file.
+            $TempFile = New-TemporaryFile
+            Test-Path -Path $TempFile.FullName | Should -BeTrue
 
+            $TempFiles = 1..10 | ForEach-Object {
+                New-TemporaryFile
+            }
 
-        $TempFile.Exists | Should -BeTrue
-    }
-    Context 'Using object methods' {
+            # Which method can be used to remove these files?
+            $MethodName = '__'
+            $TempFiles | ForEach-Object $MethodName
 
+            $TempFiles | Test-Path | Should -BeFalse
+        }
     }
 }
