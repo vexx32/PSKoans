@@ -55,7 +55,7 @@ Describe 'Get-Help' {
 Describe 'Get-Member' {
     Context 'Members and methods of objects' {
         It 'can help you find useful properties' {
-            $String = "Hello!"
+            $String = 'Hello!'
 
             # If you try to access a property that doesn't exist, PowerShell returns $null for it.
             $String.ThisDoesntExist | Should -Be $null
@@ -64,11 +64,44 @@ Describe 'Get-Member' {
                     "Hello!" | Get-Member
 
                 You may need to try some of these in a PowerShell console for yourself to find the best
-                way to solve the problem!
+                way to solve the problem! Tab-completion can also help you find method and property
+                names; try typing 'string'.<tab> into a console and cycling through the suggested
+                properties and methods.
+
+                Which property of the above string has the expected value?
             #>
-            # Which property of the above string has the expected value?
-            $PropertyName = "__"
+            $PropertyName = '__'
             $String.$PropertyName | Should -Be 6
+        }
+        It 'can also find useful methods' {
+            $String = "Methods are handy!"
+
+            # Methods can be accessed just like properties, but have parentheses and often parameters!
+            $String.EndsWith('__') | Should -BeTrue
+            <#
+                If you have trouble figuring out which parameters a method requires, you can check the
+                OverloadDefinitions by calling the method name without the parentheses. For the above
+                method, these look like this:
+
+                PS> 'string'.EndsWith
+
+                OverloadDefinitions
+                -------------------
+                bool EndsWith(string value)
+                bool EndsWith(string value, System.StringComparison comparisonType)
+                bool EndsWith(string value, bool ignoreCase, cultureinfo culture)
+
+                Note that each overload is separate, and mentions what object type it returns first,
+                followed by the type and number of arguments it will accept. Only one overload can
+                be used at a time, and usually the number of arguments and type of the arguments
+                determine the overload that PowerShell will apply when calling the method.
+            #>
+            $MethodName = '__'
+            $MethodArguments = @('__', '__')
+            # The ForEach-Object cmdlet can be used to call methods as well.
+            '7', '8', '9', '10' |
+                ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
+                Should -Be @('000007', '000008', '000009', '000010')
         }
     }
     Context 'Members of objects returned from cmdlets' {
