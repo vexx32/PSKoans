@@ -121,5 +121,10 @@ Describe 'Get-Member' {
 
             $TempFiles | Test-Path | Should -BeFalse
         }
+        It 'actually returns objects itself' {
+            $MemberData = 'string' | Get-Member
+            # We can all betray our own selves.
+            $MemberData | Should -BeOfType __
+        }
     }
 }
