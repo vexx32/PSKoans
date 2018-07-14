@@ -145,8 +145,8 @@ function Write-MeditationPrompt {
 
 	if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
 		Write-Host -ForegroundColor Cyan @"
-Welcome, seeker of enlightenment.
-Please wait a moment while we examine your karma...
+    Welcome, seeker of enlightenment.
+    Please wait a moment while we examine your karma...
 
 "@
 return
@@ -157,9 +157,9 @@ Write-Host @Red @"
 Start-Sleep @SleepTime
 Write-Host @Blue @"
 
-You have not yet reached enlightenment.
+    You have not yet reached enlightenment.
 
-The answers you seek...
+    The answers you seek...
 
 "@
 	Write-Host @Red @"
@@ -168,7 +168,7 @@ $Expectation
 Start-Sleep @SleepTime
 Write-Host @Blue @"
 
-Please meditate on the following code:
+    Please meditate on the following code:
 
 "@
 Write-Host @Red @"
@@ -178,9 +178,9 @@ $Meditation
 Start-Sleep @SleepTime
 Write-Host @Blue @"
 
-$($Koan -replace "`n","`n    ")
+    $($Koan -replace "`n","`n    ")
 
-Your path thus far:
+    Your path thus far:
 
 "@
 	$ProgressAmount = "$KoansPassed/$TotalKoans"
