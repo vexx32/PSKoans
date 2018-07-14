@@ -8,8 +8,6 @@ function Get-Enlightenment {
 	.DESCRIPTION
         Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
         corrections for success.
-	.PARAMETER Clear
-		Clear the screen before giving feedback. Defaults to True.
 	.PARAMETER Meditate
 		Opens your local koan folder.
 	.PARAMETER Reset
