@@ -1,78 +1,90 @@
 function Get-Enlightenment {
-	<#
+    <#
 	.NOTES
 		Name: Get-Enlightenment
 		Author: vexx32
 	.SYNOPSIS
 		Reflect on your progress and check your answers.
 	.DESCRIPTION
-		Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary corrections for success.
-	.Parameter Clear
-		Clear the screen before giving feedback. Defaults to True.
-	.Parameter Meditate
+        Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
+        corrections for success.
+	.PARAMETER Meditate
 		Opens your local koan folder.
-	.Parameter Reset
-		Resets everything in your local koan folder to a blank slate. Use with caution.
+	.PARAMETER Reset
+        Resets everything in your local koan folder to a blank slate. Use with caution.
+    .EXAMPLE
+        PS> Get-Enlightenment
+
+        Assesses the results of the Pester tests, and builds the meditation prompt.
+    .EXAMPLE
+        PS> rake
+
+        Assesses the results of the Pester tests, and builds the meditation prompt.
+    .EXAMPLE
+        PS> rake -Meditate
+
+        Opens the user's koans folder, housed in $home\PSKoans
+    .EXAMPLE
+        PS> rake -Reset
+
+        Prompts for confirmation, before wiping out the user's koans folder and restoring it back
+        to its initial state.
 	#>
-	[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-	[Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
-	param(
-		[Parameter(ParameterSetName = "Default")]
-		[ValidateNotNull()]
-		[bool]
-		$Clear = $true,
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
+    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
+    param(
+        [Parameter(Mandatory, ParameterSetName = "Meditate")]
+        [switch]
+        $Meditate,
 
-		[Parameter(Mandatory, ParameterSetName = "Meditate")]
-		[switch]
-		$Meditate,
+        [Parameter(Mandatory, ParameterSetName = "Reset")]
+        [switch]
+        $Reset
+    )
+    switch ($PSCmdlet.ParameterSetName) {
+        "Reset" {
+            Initialize-KoanDirectory
+        }
+        "Meditate" {
+            Invoke-Item $script:KoanFolder
+        }
+        "Default" {
+            Clear-Host
 
-		[Parameter(Mandatory, ParameterSetName = "Reset")]
-		[switch]
-		$Reset
-	)
-	switch ($PSCmdlet.ParameterSetName) {
-		"Reset" {
-			Initialize-KoanDirectory
-		}
-		"Meditate" {
-			Invoke-Item $script:KoanFolder
-		}
-		"Default" {
-			if ($Clear) {Clear-Host}
-			Write-MeditationPrompt -Greeting
+            Write-MeditationPrompt -Greeting
 
-			$PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None |
-				Select-Object -ExpandProperty TotalCount
+            $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None |
+                Select-Object -ExpandProperty TotalCount
 
-			$Tests = Get-ChildItem -Path $script:KoanFolder -Filter '*.Tests.ps1' -Recurse
-			$KoansPassed = 0
+            $Tests = Get-ChildItem -Path $script:KoanFolder -Filter '*.Tests.ps1' -Recurse
+            $KoansPassed = 0
 
-			foreach ($KoanFile in $Tests) {
-				$PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
-				$KoansPassed += $PesterTests.PassedCount
+            foreach ($KoanFile in $Tests) {
+                $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
+                $KoansPassed += $PesterTests.PassedCount
 
-				if ($PesterTests.FailedCount -gt 0) {
-					break
-				}
-			}
+                if ($PesterTests.FailedCount -gt 0) {
+                    break
+                }
+            }
 
-			if ($PesterTests.FailedCount -gt 0) {
-				$NextKoanFailed = $PesterTests.TestResult |
-					Where-Object Result -eq 'Failed' |
-					Select-Object -First 1
+            if ($PesterTests.FailedCount -gt 0) {
+                $NextKoanFailed = $PesterTests.TestResult |
+                    Where-Object Result -eq 'Failed' |
+                    Select-Object -First 1
 
-				$Meditation = @{
-					DescribeName = $NextKoanFailed.Describe
-					Expectation  = $NextKoanFailed.ErrorRecord
-					ItName		 = $NextKoanFailed.Name
-					Meditation   = $NextKoanFailed.StackTrace
-					KoansPassed  = $KoansPassed
-					TotalKoans   = $PesterTestCount
-				}
-				Write-MeditationPrompt @Meditation
-			}
-		}
-	}
+                $Meditation = @{
+                    DescribeName = $NextKoanFailed.Describe
+                    Expectation  = $NextKoanFailed.ErrorRecord
+                    ItName       = $NextKoanFailed.Name
+                    Meditation   = $NextKoanFailed.StackTrace
+                    KoansPassed  = $KoansPassed
+                    TotalKoans   = $PesterTestCount
+                }
+                Write-MeditationPrompt @Meditation
+            }
+        }
+    }
 } # end function
 function Get-Blank {
 	[Alias('__', 'FILL_ME_IN')]
@@ -87,7 +99,7 @@ function Write-MeditationPrompt {
 	.SYNOPSIS
 		Provides "useful" output for enlightenment results.
 	.DESCRIPTION
-		Provides a mechanism for Get-Enlightenment to write clean output. 
+		Provides a mechanism for Get-Enlightenment to write clean output.
 	#>
 	[CmdletBinding(DefaultParameterSetName = 'Meditation')]
 	param(
@@ -133,8 +145,8 @@ function Write-MeditationPrompt {
 
 	if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
 		Write-Host -ForegroundColor Cyan @"
-Welcome, seeker of enlightenment.
-Please wait a moment while we examine your karma...
+    Welcome, seeker of enlightenment.
+    Please wait a moment while we examine your karma...
 
 "@
 return
@@ -145,9 +157,9 @@ Write-Host @Red @"
 Start-Sleep @SleepTime
 Write-Host @Blue @"
 
-You have not yet reached enlightenment.
+    You have not yet reached enlightenment.
 
-The answers you seek...
+    The answers you seek...
 
 "@
 	Write-Host @Red @"
@@ -156,7 +168,7 @@ $Expectation
 Start-Sleep @SleepTime
 Write-Host @Blue @"
 
-Please meditate on the following code:
+    Please meditate on the following code:
 
 "@
 Write-Host @Red @"
@@ -166,9 +178,9 @@ $Meditation
 Start-Sleep @SleepTime
 Write-Host @Blue @"
 
-$($Koan -replace "`n","`n    ")
+    $($Koan -replace "`n","`n    ")
 
-Your path thus far:
+    Your path thus far:
 
 "@
 	$ProgressAmount = "$KoansPassed/$TotalKoans"
@@ -187,37 +199,34 @@ You may run 'rake -Meditate' to begin your meditation.
 "@
 }
 function Initialize-KoanDirectory {
-	<#
+    <#
 	.NOTES
 		Name: Initialize-KoanDirectory
 		Author: vexx32
 	.SYNOPSIS
 		Provides a blank slate for Koans.
 	.DESCRIPTION
-		If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
-	.Parameter FirstImport
-		Indicates that the folder structure should be created/refreshed.
-	#>
-	[CmdletBinding(SupportsShouldProcess, ConfirmImpact = "Medium")]
-	param(
-		[Parameter()]
-		[switch]
-		$FirstImport
-	)
-	if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
-		if (Test-Path -Path $script:KoanFolder) {
-			Write-Verbose "Removing the entire koans folder..."
-			Remove-Item -Recurse -Path $script:KoanFolder -Force
-		}
-		Write-Debug "Copying koans to folder"
-		Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-		Write-Verbose "Koans copied to '$script:KoanFolder'"
-	}
+        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
+    #>
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
+    param()
+    if ($PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $script:KoanFolder) {
+            Write-Verbose "Removing the entire koans folder..."
+            Remove-Item -Recurse -Path $script:KoanFolder -Force
+        }
+        Write-Debug "Copying koans to folder"
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
+        Write-Verbose "Koans copied to '$script:KoanFolder'"
+    }
+    else {
+        Write-Verbose "Operation cancelled; no modifications made to koans folder."
+    }
 }
 
 $script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
 $script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
-	Initialize-KoanDirectory -FirstImport
+	Initialize-KoanDirectory -Confirm:$false
 }
