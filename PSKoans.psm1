@@ -198,7 +198,7 @@ function Initialize-KoanDirectory {
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
-    if ($FirstImport -or $PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
+    if ($PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
         if (Test-Path -Path $script:KoanFolder) {
             Write-Verbose "Removing the entire koans folder..."
             Remove-Item -Recurse -Path $script:KoanFolder -Force
