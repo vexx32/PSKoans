@@ -12,7 +12,7 @@
     to evaluate first.
 #>
 Describe "Order of Operations" {
-    
+
     It "requires parameter argument expressions to be enclosed in parentheses" {
         function Add-Numbers {
             param(
@@ -27,7 +27,7 @@ Describe "Order of Operations" {
         Add-Numbers (4 + 1) 18 | Should -Be __
         Add-Numbers 3 * 4 7 | Should -Be 19 # Add parentheses to the function call to make this true.
     }
-    
+
     It "will evaluate an entire expression if it is the first element in a pipeline" {
         # A pipe character evaluates everything before it on the line before 
         # passing along the value(s).

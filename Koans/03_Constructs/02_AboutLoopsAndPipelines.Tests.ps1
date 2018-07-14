@@ -24,7 +24,7 @@ Describe "Pipelines and Loops" {
     It "works with many cmdlets to efficiently process input" {
         # The pipeline takes each element of the array and feeds them one by one into the next cmdlet
         1..5 | ForEach-Object {
-            <# 
+            <#
                 ForEach-Object is a cmdlet that utilises the pipeline to create a sort of loop, where
                 each object that it receives from the pipeline has the same set of actions performed
                 on it.
