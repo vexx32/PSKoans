@@ -207,6 +207,9 @@ function Initialize-KoanDirectory {
         Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
         Write-Verbose "Koans copied to '$script:KoanFolder'"
     }
+    else {
+        Write-Verbose "Operation cancelled; no modifications made to koans folder."
+    }
 }
 
 $script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
