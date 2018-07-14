@@ -149,13 +149,13 @@ function Write-MeditationPrompt {
     Please wait a moment while we examine your karma...
 
 "@
-return
-}
-Write-Host @Red @"
+    return
+    }
+    Write-Host @Red @"
 {Describe "$DescribeName"} has damaged your karma.
 "@
-Start-Sleep @SleepTime
-Write-Host @Blue @"
+    Start-Sleep @SleepTime
+    Write-Host @Blue @"
 
     You have not yet reached enlightenment.
 
@@ -165,18 +165,18 @@ Write-Host @Blue @"
 	Write-Host @Red @"
 $Expectation
 "@
-Start-Sleep @SleepTime
-Write-Host @Blue @"
+    Start-Sleep @SleepTime
+    Write-Host @Blue @"
 
     Please meditate on the following code:
 
 "@
-Write-Host @Red @"
+    Write-Host @Red @"
 [It] $ItName
 $Meditation
 "@
-Start-Sleep @SleepTime
-Write-Host @Blue @"
+    Start-Sleep @SleepTime
+    Write-Host @Blue @"
 
     $($Koan -replace "`n","`n    ")
 
