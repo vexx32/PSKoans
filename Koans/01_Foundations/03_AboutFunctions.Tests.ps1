@@ -15,7 +15,7 @@ Describe "Functions" {
             PowerShell function names are named in convention following
             the cmdlets; Verb-Noun. To see the list of approved
             PowerShell verbs, run 'Get-Verb' in the console.
-            
+
             There are many methods of sending output from a function.
         #>
 
@@ -58,7 +58,7 @@ Describe "Functions" {
 
         Add-Numbers 1 7 | Should -Be __
         Add-Numbers __ 15 | Should -Be 31
-        
+
         # Values can be passed to specified parameters
         Add-Numbers -Number2 8 -Number1 12 | Should -Be 20
     }
@@ -83,7 +83,7 @@ Describe "Script Block" {
             Script blocks can be used to group commands without defining a function.
             These can be used for various things, most commonly for parameters or
             defining a sequence of actions to be executed multiple times.
-            
+
             Many PowerShell cmdlets take script blocks as parameters, particularly pipeline cmdlets.
         #>
         $Script = {

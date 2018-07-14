@@ -37,12 +37,12 @@
 #>
 
 Describe "Lists" {
-    It "can enforce strict typing on its contents" {        
+    It "can enforce strict typing on its contents" {
         # New integer-only List
         $IntList = New-Object System.Collections.Generic.List[int]
         $IntList.Add(7)
         $IntList.Add(5.34)
-        
+
         # Items are accessed by index just like arrays.
         $IntList[0] | Should -Be __
         $IntList[1] | Should -Be __
@@ -84,12 +84,12 @@ Describe "Lists" {
         # Now see if you can reduce the list down to only two values using the
         # .RemoveRange($Index, $Count) method
         # Feel free to add an additional ' | Should -Be ' test if you need it to guide your way!
-        
+
         $List | Should -Be @('12', '10')
     }
     It 'allows you to remove multiple entries based on conditions' {
         $List = [System.Collections.Generic.List[string]]@(1..11)
-        
+
         # This method takes a lambda expression in C#, which translates to a script block for PowerShell
         # It also outputs a $true or $false depending on whether elements were removed, so we'll check that
         $List.RemoveAll({
@@ -104,7 +104,7 @@ Describe "Lists" {
         $List.RemoveAll({
             param($_)
             # Change this expression to make the assertions below true
-            
+
         }) | Should -BeTrue
 
         $List | Should -Be @(1, 3, 5, 7, 11)
