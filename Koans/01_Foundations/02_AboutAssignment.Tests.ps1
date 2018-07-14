@@ -74,7 +74,7 @@ Describe 'Variable Assignment' {
     It "allows you to declare constant variables" {
         {
             Set-Variable -Name 'Constant' -Value 25 -Option Constant
-            # Thie next operation will never succeed; constant variables cannot be altered.
+            # The next operation will never succeed; constant variables cannot be altered.
             # Try uncommenting the below line to see what happens.
 
             # $Constant = "NewValue"
