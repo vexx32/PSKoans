@@ -53,7 +53,31 @@ Describe 'Get-Help' {
     }
 }
 Describe 'Get-Member' {
-    It 'displays the members and methods of objects' {
+    Context 'Members and methods of objects' {
+        It 'can help you find useful properties' {
+            $String = "Hello!"
+
+            # If you try to access a property that doesn't exist, PowerShell returns $null for it.
+            $String.ThisDoesntExist | Should -Be $null
+            <#
+                To use Get-Member, pipe an object into it like so:
+                    "Hello!" | Get-Member
+
+                You may need to try some of these in a PowerShell console for yourself to find the best
+                way to solve the problem!
+            #>
+            # Which property of the above string has the expected value?
+            $PropertyName = "__"
+            $String.$PropertyName | Should -Be 6
+        }
+    }
+    Context 'Members of objects returned from cmdlets' {
+        $TempFile = New-TemporaryFile
+
+
+        $TempFile.Exists | Should -BeTrue
+    }
+    Context 'Using object methods' {
 
     }
 }
