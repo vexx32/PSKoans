@@ -23,30 +23,32 @@ Describe 'Get-Help' {
         # Try calling 'Get-Help Get-Help' in a console to see the built in help available
         # for the help command.
 
-        $HelpInfo = Get-Help 'Get-Help'
-        $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
+        It "gives exhaustive information for cmdlets and functions" {
+            $HelpInfo = Get-Help 'Get-Help'
+            $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
 
-        # Using the information from Get-Help, fill in the missing parameters in alphabetical order.
-        $GetHelpParams | Should -Be @(
-            'Category'
-            'Component'
-            '__'
-            'Examples'
-            '__'
-            '__'
-            'Name'
-            'Online'
-            '__'
-            'Path'
-            'Role'
-            '__'
-        )
-
-        # You can also query specific parameters for more detailed information on what they can do.
-        # For instance, does the Path parameter for Get-Help support pipeline input?
-        $ParameterInfo = Get-Help 'Get-Help' -Parameter Path
-        $ParameterInfo.PipelineInput | Should -Be __
-
+            # Using the information from Get-Help, fill in the missing parameters in alphabetical order.
+            $GetHelpParams | Should -Be @(
+                'Category'
+                'Component'
+                '__'
+                'Examples'
+                '__'
+                '__'
+                'Name'
+                'Online'
+                '__'
+                'Path'
+                'Role'
+                '__'
+            )
+        }
+        It "can give detailed information on specific parameters" {
+            # You can also query specific parameters for more detailed information on what they can do.
+            # For instance, does the Path parameter for Get-Help support pipeline input?
+            $ParameterInfo = Get-Help 'Get-Help' -Parameter Path
+            $ParameterInfo.PipelineInput | Should -Be __
+        }
         # Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full. You'll need it.
     }
 }
