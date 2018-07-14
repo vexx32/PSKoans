@@ -41,6 +41,13 @@ Describe 'Get-Help' {
             'Role'
             '__'
         )
+
+        # You can also query specific parameters for more detailed information on what they can do.
+        # For instance, does the Path parameter for Get-Help support pipeline input?
+        $ParameterInfo = Get-Help 'Get-Help' -Parameter Path
+        $ParameterInfo.PipelineInput | Should -Be __
+
+        # Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full. You'll need it.
     }
 }
 Describe 'Get-Member' {
