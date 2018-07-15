@@ -18,6 +18,8 @@
     -replace            Replace                     Regex: replace characters
     -split              Split                       Regex: split string into array
     -match, -notmatch   Match, Notmatch             Regex: compare string with regex expression
+
+    See 'Get-Help about_Operators' for more information.
 #>
 
 Describe 'String Comparison Operators' {
@@ -72,11 +74,7 @@ Describe 'String Array Operators' {
             It can utilise either a regex match or a simple string character match, but
             defaults to regex.
 
-            There are several formats for -split:
-                $string -split $chars, 0, 'simplematch'
-                $string -split $pattern
-                $string -split $pattern, $MaxSubstrings
-                -split $pattern
+            See 'Get-Help about_Split' for more information.
         #>
         It 'can split one string into several' {
             $String = "hello fellows what a lovely day"
@@ -114,7 +112,12 @@ Describe 'String Array Operators' {
     Context 'Join Operator' {
         <#
             -join is used to splice an array of strings together, optionally with a separator
-            character. It comes in two forms,
+            character. It comes in standard and unary forms:
+
+                'string', 'string2' -join ' ' -> string string2
+                -join ('string','string2') -> stringstring2
+
+            See 'Get-Help about_Join' for more information.
         #>
     }
 }
