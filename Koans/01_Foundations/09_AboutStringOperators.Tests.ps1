@@ -131,15 +131,65 @@ Describe 'String Array Operators' {
 
         It 'can join with any delimiters' {
             $Array = 'This', 'is', 'so', 'embarrassing!'
-            $Array -join 'OW ' | Should -Be '__'
+            $Array -join '__' | Should -Be 'This-OW! is-OW! so-OW! embarrassing!'
         }
     }
 }
 
 Describe 'Regex Operators' {
+    <#
+        Regex is a very complex language that doesn't read well. The examples here will be
+        fairly straightforward. If you are not already familiar with regex, check out
+        https://regexr.com/ and play around with the example patterns given, and try some of
+        your own.
 
+        In this section, try to enter a string that matches the given pattern, using
+        the explanations of each pattern on the website above!
+    #>
     Context 'Match and NotMatch' {
+        # These operators return either $true or $false, indicating whether the string matched.
 
+        It 'can be used as a simple conditional' {
+            $String = '__'
+
+            $String -match '[a-z]' | Should -BeTrue
+            $String -notmatch '[xfd]' | Should -BeTrue
+        }
+
+        It 'can store the matched portions' {
+            $String = '__'
+
+            $Result = if ($String -match '[a-z]{4}') {
+                $Matches[0]
+            }
+
+            $Result | Should -Be '__'
+        }
+
+        It 'supports named matches' {
+            # Regex uses the (?<NAME>$pattern) syntax to name a portion of a matched string
+            $String = '__'
+            $Pattern = '^(?<FirstWord>[a-z]+) (?<SecondWord>[a-z]+)$'
+
+            $Result = $String -match $Pattern
+
+            $Result.FirstWord | Should -Be '__'
+            $Result.SecondWord | Should -Be '__'
+        }
+
+        It 'supports indexed match groups' {
+            # When selecting match groups from unnamed groups, the first group is at index 1
+            # and the 'entire' matched portion is still at index 0
+            $String = '1298-___-0000'
+            $Pattern = '^([0-9]{4})-([0-5]{3})'
+            $Result = $String -match $Pattern
+
+            $Result | Should -BeTrue
+            $Matches[0] | Should -Be '__'
+            $Matches[1] | Should -Be '1298'
+            $Matches[2] | Should -Be
+
+        }
     }
 
     Context 'Replace' {
