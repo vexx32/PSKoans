@@ -187,13 +187,40 @@ Describe 'Regex Operators' {
             $Result | Should -BeTrue
             $Matches[0] | Should -Be '__'
             $Matches[1] | Should -Be '1298'
-            $Matches[2] | Should -Be
+            $Matches[2] | Should -Be '__'
 
         }
     }
 
     Context 'Replace' {
+        <#
+            -replace also utilises regex to change the input string. Similarly to the string
+            method .Replace($a,$b) it will replace every instance of the found pattern in the
+            given string.
+        #>
+        It 'can be used to replace individual characters' {
+            $String = 'Keep calm and carry on.'
+            $Pattern = 'and'
+            $Replacement = '__'
 
+            $String -replace $Pattern, $Replacement | Should -Be 'Keep kalm and karry on.'
+        }
+
+        It 'can be used to remove specific characters' {
+            $String = 'Polish the granite, boy!'
+            $Pattern = '[aeiou]|[^a-z]'
+
+            $String -replace $Pattern | Should -Be '__'
+        }
+
+        It 'can be used to isolate specific portions of a string' {
+            $String = 'Account Number: 0281.3649.8123'
+            $Pattern = '\w+ \w+: (\d{4})\.(\d{4})\.(\d{4})'
+            # These tokens are Regex variables, not PS ones; literal strings or escaping needed!
+            $Replacement = '$1 $2 $3'
+
+            $String -replace $Pattern | Should -Be '__'
+        }
     }
 
     Context 'Split' {
