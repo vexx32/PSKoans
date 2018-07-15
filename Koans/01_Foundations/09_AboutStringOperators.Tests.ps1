@@ -4,12 +4,13 @@
     While the standard comparison operators can be used with strings, there are also
     several operators that work exclusively with strings.
 
-    In no particular order:
+    The string operators are below:
 
     Operator            Name                        Purpose
     --------            ----                        -------
     -eq, -ne            Equal, Not Equal            Compare string
     -gt, -lt            GreaterThan, LessThan       Compare string sort order
+    -ge, -le            Greater/LessOrEqual         Compare string sort order
     -f                  Format                      Insert and format variables/expressions
     [ ]                 Index                       Access characters in string
     $( )                Subexpression               Insert complex expressions into string
