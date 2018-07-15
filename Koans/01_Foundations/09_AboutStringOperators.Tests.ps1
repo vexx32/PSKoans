@@ -203,7 +203,7 @@ Describe 'Regex Operators' {
             $Pattern = 'and'
             $Replacement = '__'
 
-            $String -replace $Pattern, $Replacement | Should -Be 'Keep kalm and karry on.'
+            $String -replace $Pattern, $Replacement | Should -Be 'Keep calm & carry on.'
         }
 
         It 'can be used to remove specific characters' {
