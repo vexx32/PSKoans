@@ -219,7 +219,7 @@ Describe 'Regex Operators' {
             # These tokens are Regex variables, not PS ones; literal strings or escaping needed!
             $Replacement = '$1 $2 $3'
 
-            $String -replace $Pattern | Should -Be '__'
+            $String -replace $Pattern, $Replacement | Should -Be '__'
         }
     }
 
