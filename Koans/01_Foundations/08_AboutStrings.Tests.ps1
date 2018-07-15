@@ -10,10 +10,13 @@
     values into a preset string.
 #>
 Describe 'Strings' {
+
     It 'is a simple string of text' {
         'string' | Should -Be __
     }
-    Describe 'Literal Strings' {
+
+    Context 'Literal Strings' {
+
         It 'assumes everything is literal' {
             $var = 'Some things you must take literally'
             $var | Should -Be __
@@ -24,15 +27,15 @@ Describe 'Strings' {
         }
 
     }
-    Describe 'Expandable Strings' {
+    Context 'Expandable Strings' {
+
         It 'can expand variables' {
             $var = 'apple'
             "My favorite fruit is $var" | Should -Be __
         }
 
-        $Windows = Get-Item 'C:\Windows' | Select-Object -ExpandProperty FullName
-
         It 'can do a simple expansion' {
+            $Windows = Get-Item 'C:\Windows' | Select-Object -ExpandProperty FullName
             "The windows directory is located here: $Windows" | Should -Be __
         }
 
@@ -42,7 +45,9 @@ Describe 'Strings' {
                 Should -Be __
         }
     }
-    Describe 'String Concatenation' {
+
+    Context 'String Concatenation' {
+
         It 'adds strings together' {
             $String1 = 'This string'
             $String2 = 'is cool.'
