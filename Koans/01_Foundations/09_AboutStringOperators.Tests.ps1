@@ -67,11 +67,55 @@ Describe 'String Comparison Operators' {
 Describe 'String Array Operators' {
 
     Context 'Split Operator' {
+        <#
+            The -split operator is used to break a longer string into several smaller strings.
+            It can utilise either a regex match or a simple string character match, but
+            defaults to regex.
 
+            There are several formats for -split:
+                $string -split $chars, 0, 'simplematch'
+                $string -split $pattern
+                $string -split $pattern, $MaxSubstrings
+                -split $pattern
+        #>
+        It 'can split one string into several' {
+            $String = "hello fellows what a lovely day"
+            $String -split ' ' | Should -Be @(
+                'hello'
+                '__'
+                'what'
+                '__'
+                '__'
+                'day'
+            )
+        }
+
+        It 'uses regex by default' {
+            $String = 'hello.dear'
+            $String -split '.' | Should -Be @('__', '__')
+        }
+
+        It 'can use simple matching' {
+            $String = 'hello.dear'
+            $String -split '.', 0, 'simplematch' | Should -Be @('__', '__')
+        }
+
+        It 'can limit the number of substrings' {
+            $Planets = 'Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune'
+            $Planets -split ',', 4 | Should -Be @('__', '__', '__', '__')
+        }
+
+        It 'can be case sensitive' {
+            $String = "applesAareAtotallyAawesome!"
+            $String -csplit 'A' | Should -Be @('__', '__', '__', '__')
+        }
     }
 
     Context 'Join Operator' {
-
+        <#
+            -join is used to splice an array of strings together, optionally with a separator
+            character. It comes in two forms,
+        #>
     }
 }
 
