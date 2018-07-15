@@ -19,11 +19,12 @@
 #>
 
 Describe 'Get-Help' {
+
     Context 'shows help information about cmdlets' {
         # Try calling 'Get-Help Get-Help' in a console to see the built in help available
         # for the help command.
 
-        It "gives exhaustive information for cmdlets and functions" {
+        It 'gives exhaustive information for cmdlets and functions' {
             $HelpInfo = Get-Help 'Get-Help'
             $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
 
@@ -43,7 +44,8 @@ Describe 'Get-Help' {
                 '__'
             )
         }
-        It "can give detailed information on specific parameters" {
+
+        It 'can give detailed information on specific parameters' {
             # You can also query specific parameters for more detailed information on what they can do.
             # For instance, does the Path parameter for Get-Help support pipeline input?
             $ParameterInfo = Get-Help 'Get-Help' -Parameter Path
@@ -52,8 +54,11 @@ Describe 'Get-Help' {
         # Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full. You'll need it.
     }
 }
+
 Describe 'Get-Member' {
+
     Context 'Members and methods of objects' {
+
         It 'can help you find useful properties' {
             $String = 'Hello!'
 
@@ -73,6 +78,7 @@ Describe 'Get-Member' {
             $PropertyName = '__'
             $String.$PropertyName | Should -Be 6
         }
+
         It 'can also find useful methods' {
             $String = "Methods are handy!"
 
@@ -104,7 +110,9 @@ Describe 'Get-Member' {
                 Should -Be @('000007', '000008', '000009', '000010')
         }
     }
+
     Context 'Members of objects returned from cmdlets' {
+
         It 'can help you discover information about unfamiliar objects' {
             # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random location,
             # and returns the object representation of this file.
@@ -121,6 +129,7 @@ Describe 'Get-Member' {
 
             $TempFiles | Test-Path | Should -BeFalse
         }
+
         It 'actually returns objects itself' {
             $MemberData = 'string' | Get-Member
             # We can all betray our own selves.
