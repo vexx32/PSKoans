@@ -119,10 +119,36 @@ Describe 'String Array Operators' {
 
             See 'Get-Help about_Join' for more information.
         #>
+        It 'can join an array into a single string' {
+            $Array = 'Hi', 'there', ',', 'what', 'are', 'you', 'doing?'
+            $Array -join ' ' | Should -Be '__'
+        }
+
+        It 'always produces a string result' {
+            $Array = 1, 3, 6, 71, 9, 22, 1, 3, 4, 55,6,7,8
+            -join $Array | Should -Be '__'
+        }
+
+        It 'can join with any delimiters' {
+            $Array = 'This', 'is', 'so', 'embarrassing!'
+            $Array -join 'OW ' | Should -Be '__'
+        }
     }
 }
 
 Describe 'Regex Operators' {
+
+    Context 'Match and NotMatch' {
+
+    }
+
+    Context 'Replace' {
+
+    }
+
+    Context 'Split' {
+
+    }
 
 }
 
