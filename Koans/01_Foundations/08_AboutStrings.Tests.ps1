@@ -27,22 +27,44 @@ Describe 'Strings' {
         }
 
     }
-    Context 'Expandable Strings' {
+
+    Context 'Evaluated Strings' {
 
         It 'can expand variables' {
             $var = 'apple'
-            "My favorite fruit is $var" | Should -Be __
+            "My favorite fruit is $var" | Should -Be '__'
         }
 
         It 'can do a simple expansion' {
             $Windows = Get-Item 'C:\Windows' | Select-Object -ExpandProperty FullName
-            "The windows directory is located here: $Windows" | Should -Be __
+            "The windows directory is located here: $Windows" | Should -Be '__'
         }
 
         It 'handles other ways of doing the same thing' {
 
-            "The windows directory is located $(Get-ChildItem 'C:\Windows' | Select-Object -ExpandProperty FullName)" |
-                Should -Be __
+            "The windows directory is located at $(Get-Item 'C:\Windows')" |
+                Should -Be '__'
+        }
+
+        It 'can escape special characters with backticks' {
+            $LetterA = 'Apple'
+            $String = "`$LetterA contains $LetterA."
+
+            $String | Should -Be '__'
+        }
+
+        It 'can escape quotation marks' {
+            $String = "This is a `"string`" value."
+
+            $String | Should -Be '__'
+        }
+
+        It 'can insert special characters with escape sequences' {
+            $ExpectedValue = [char] 9
+            $ActualValue = "`_"
+
+            # Look over Get-Help about_Special_Characters for the escape sequence you need.
+            $ActualValue | Should -Be $ExpectedValue
         }
     }
 
@@ -54,6 +76,7 @@ Describe 'Strings' {
 
             $String1 + ' ' + $String2 | Should -Be 'This string is cool.'
         }
+
         It 'can be done simpler' {
             $String1 = 'This string'
             $String2 = 'is cool.'
