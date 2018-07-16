@@ -134,6 +134,27 @@ Describe 'String Array Operators' {
             $Array -join '__' | Should -Be 'This-OW! is-OW! so-OW! embarrassing!'
         }
     }
+
+    Context 'Index Operator' {
+
+        It 'lets you treat strings as [char[]] arrays' {
+            $String = 'Beware the man-eating rabbit'
+
+            $String[5] | Should -Be '__'
+        }
+
+        It 'can create a [char[]] array from a string' {
+            $String = 'Good luck!'
+
+            $String[0..3] | Should -Be @('__', '__', '__', '__', '__')
+        }
+
+        It 'can be combined with -join to create substrings' {
+            $String = 'Mountains are merely mountains.'
+
+            -join $String[0..8] | Should -Be '__'
+        }
+    }
 }
 
 Describe 'Regex Operators' {
@@ -222,13 +243,10 @@ Describe 'Regex Operators' {
             $String -replace $Pattern, $Replacement | Should -Be '__'
         }
     }
-
-    Context 'Split' {
-
-    }
-
 }
 
 Describe 'Formatting Operators' {
+    Context 'String Format Operator' {
 
+    }
 }
