@@ -246,7 +246,28 @@ Describe 'Regex Operators' {
 }
 
 Describe 'Formatting Operators' {
+
     Context 'String Format Operator' {
+        <#
+            The format operator (-f) uses the same formatting parser as the .NET method
+            [string]::Format(), allowing for more complex strings to be constructed in
+            a clear and concise fashion.
+        #>
+        It 'allows you to insert values into a literal string' {
+            $String = 'Hello {0}, my name is also {0}!'
+            $Name = '__'
+
+            $String -f $Name | Should -Be '__'
+        }
+
+        It 'can insert multiple values with formatting on each' {
+            $String = 'Employee #{0:000000}, you are due in room #{0:000} for a drug test.'
+
+            $String -f 154, 19 | Should -Be '__'
+        }
+    }
+
+    Context 'Subexpression Operator' {
 
     }
 }
