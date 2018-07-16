@@ -1,3 +1,0 @@
-Describe 'Miscellaneous Operators' {
-
-}
