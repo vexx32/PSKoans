@@ -15,9 +15,8 @@
 #>
 Describe 'Comparison Operators' {
 
-    Context 'Equality and Inequality' {
+    Context '-eq and -ne' {
 
-        # The equality operator is '-eq', and inequality is '-ne'
         It 'is a simple test' {
             $true -eq $false | Should -Be $false
             1 -eq 1 | Should -Be __
@@ -66,7 +65,7 @@ Describe 'Comparison Operators' {
         }
     }
 
-    Context 'GreaterThan and LessThan' {
+    Context '-gt and -lt' {
 
         It 'will compare values' {
             11 -gt 6 | Should -BeTrue
@@ -85,7 +84,7 @@ Describe 'Comparison Operators' {
         }
     }
 
-    Context 'GreaterOrEqual and LessOrEqual' {
+    Context '-ge and -le' {
 
         It 'is a combination of the above two types' {
             $Array = 1, 2, 3, 4, 5
@@ -96,7 +95,7 @@ Describe 'Comparison Operators' {
         }
     }
 
-    Context 'Contains and NotContains' {
+    Context '-contains and -notcontains' {
 
         It 'returns $true if the right hand value occurs in the left hand array' {
             $Array = 1, 2, 3, 4, 5
@@ -122,7 +121,7 @@ Describe 'Comparison Operators' {
         }
     }
 
-    Context 'In and NotIn' {
+    Context '-in and -notin' {
 
         It 'is the inverse of -contains' {
             $Array = 1, 2, 3, 4, 5
@@ -145,7 +144,7 @@ Describe 'Logical Operators' {
         Logical operators have lower precedence in PowerShell than comparison operators, and compare
         against boolean values.
     #>
-    Context 'And Operator' {
+    Context '-and' {
 
         It 'returns $true only if both inputs are $true' {
             $true -and $true | Should -BeTrue
@@ -160,7 +159,7 @@ Describe 'Logical Operators' {
         }
     }
 
-    Context 'Or Operator' {
+    Context '-or' {
 
         It 'returns $true if either input is $true' {
             $true -or $false | Should -Be $true
@@ -176,7 +175,7 @@ Describe 'Logical Operators' {
         }
     }
 
-    Context 'XOr Operator' {
+    Context '-xor' {
 
         It 'returns $true if only one input is $true' {
             $true -xor $false | Should -Be $true
@@ -185,7 +184,7 @@ Describe 'Logical Operators' {
         }
     }
 
-    Context 'Not Operator' {
+    Context '-not' {
 
         It 'negates a boolean value' {
             -not $true | Should -Be $false
@@ -193,7 +192,7 @@ Describe 'Logical Operators' {
         }
 
         It 'can be shortened to !' {
-            !true | Should -Be __
+            !$true | Should -Be __
         }
     }
 }
