@@ -41,9 +41,8 @@ Describe 'Strings' {
         }
 
         It 'handles other ways of doing the same thing' {
-
-            "The windows directory is located at $(Get-Item 'C:\Windows')" |
-                Should -Be '__'
+            $String = "The windows directory is located at $(Get-Item 'C:\Windows')"
+            $String | Should -Be '__'
         }
 
         It 'can escape special characters with backticks' {
