@@ -272,5 +272,17 @@ Describe 'Formatting Operators' {
             The subexpression operator $() is used to insert complex values into strings.
             Any valid PowerShell code is permitted inside the parentheses.
         #>
+        It 'will convert any object to string' {
+            $String = "Hello, user $(1..10)"
+
+            $String | Should -Be '__'
+        }
+
+        It 'is necessary to insert object properties into strings' {
+            $Object = Get-Item $Home
+
+            "$Object.Parent" | Should -Be '__'
+            "$($Object.Parent)" | Should -Be '__'
+        }
     }
 }
