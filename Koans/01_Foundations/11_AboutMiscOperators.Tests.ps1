@@ -1,5 +1,0 @@
-<#
-    Miscellaneous Operators
-
-    Logical operators
-#>

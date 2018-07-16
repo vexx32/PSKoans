@@ -138,22 +138,6 @@ Describe 'Comparison Operators' {
             $SearchValue -notin $Array | Should -BeFalse
         }
     }
-
-    Context 'Is and IsNot' {
-
-        It 'examines the type of the left hand object' {
-            45 -isnot [double] | Should -BeTrue
-            'string' -is [__] | Should -BeTrue
-        }
-
-        It 'is useful for determining available methods' {
-            $Value = __
-
-            if ($Value -is [double]) {
-                $Value | Should -BeOfType [__]
-            }
-        }
-    }
 }
 
 Describe 'Logical Operators' {
