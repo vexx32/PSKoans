@@ -21,7 +21,8 @@ Install-Module Pester -Scope CurrentUser
 
 ## Getting Started with the PowerShell Koans
 
-1. Download and extract the repository as a .zip file into a directory of your choice.
+1. a) `git clone` the repository into your desired directory, or
+   b) Download and extract the repository as a .zip file into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 
