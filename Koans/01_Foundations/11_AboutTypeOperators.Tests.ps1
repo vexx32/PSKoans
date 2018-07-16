@@ -6,8 +6,9 @@
 
     For more detailed information, refer to 'Get-Help about_Type_Operators'
 #>
+Describe 'Type Operators' {
 
-    Context 'Is and IsNot' {
+    Context 'Is and IsNot Operators' {
 
         It 'examines the type of the left hand object' {
             45 -isnot [double] | Should -BeTrue
@@ -22,3 +23,15 @@
             }
         }
     }
+
+    Context 'As Operator' {
+
+        It 'is used to convert objects to other types' {
+            $Value = '__'
+            $Value | Should -BeOfType [string]
+
+            $NewValue = $Value -as [int]
+            $NewValue | Should -BeOfType [int]
+        }
+    }
+}
