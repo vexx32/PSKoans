@@ -19,7 +19,10 @@ Describe 'Type Operators' {
             $Value = __
 
             if ($Value -is [double]) {
-                $Value | Should -BeOfType [__]
+                $Value | Should -BeOfType __
+            }
+            else {
+                throw '$Value was of incorrect type.'
             }
         }
     }
@@ -31,7 +34,29 @@ Describe 'Type Operators' {
             $Value | Should -BeOfType [string]
 
             $NewValue = $Value -as [int]
-            $NewValue | Should -BeOfType [int]
+            $NewValue | Should -BeOfType int
+        }
+
+        It 'is similar to casting' {
+            $String = '04'
+            $Number = [int] $String
+            $Number2 = $String -as [int]
+
+            $Number | Should -Be $Number2
+            $Number | Should -BeOfType __
+        }
+
+        It 'does not throw errors on a failed conversion' {
+            $Casting = {
+                [int]'string'
+            }
+            $Conversion = {
+                'string' -as [int]
+            }
+
+            $Casting | Should -Throw -ExceptionType __
+            $Conversion | Should -Not -Throw
+            $Conversion | Should -Be __
         }
     }
 }
