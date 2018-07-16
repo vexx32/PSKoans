@@ -94,3 +94,28 @@ Describe 'Comparison Operators' {
         }
     }
 }
+
+Describe 'Logical Operators' {
+    <#
+        Logical operators have lower precedence in PowerShell than comparison operators, and compare
+        against boolean values.
+    #>
+    Context 'And Operator' {
+
+        It 'returns $true only if both inputs are $true' {
+            $true -and $true | Should -BeTrue
+            __ -and $true | Should -Be $false
+        }
+
+        It 'may coerce values to boolean' {
+            $String = ''
+            $Number = 1
+
+            $String -and $Number | Should -Be __
+        }
+    }
+
+    Context 'Or Operator' {
+
+    }
+}
