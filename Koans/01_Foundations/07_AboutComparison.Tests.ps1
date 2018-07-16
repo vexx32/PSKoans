@@ -8,10 +8,10 @@
     Mathematical comparison operators are two letters preceded by a hyphen:
     -eq, -ne, -gt, -lt, -le, -ge
 
-    It's important to remember that when working with arrays, this behaviour
-    changes completely, as you will see shortly, and they instead return
-    all items in the array that match the condition, or $null if no items
-    satisfy the condition.
+    Logical comparison operators include:
+    -and, -or, -xor, -not
+
+    For more information, see: 'Get-Help about_Operators'
 #>
 Describe 'Comparison Operators' {
 
@@ -65,6 +65,7 @@ Describe 'Comparison Operators' {
             $Array -ne 5 | Should -Be @(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         }
     }
+
     Context 'GreaterThan and LessThan' {
 
         It 'will compare values' {
@@ -83,6 +84,7 @@ Describe 'Comparison Operators' {
 
         }
     }
+
     Context 'GreaterOrEqual and LessOrEqual' {
 
         It 'is a combination of the above two types' {
@@ -91,6 +93,65 @@ Describe 'Comparison Operators' {
             $Array -ge 3 | Should -Be @(3, 4, 5)
             $Array -le 2 | Should -Be @(1, 2, 3, 4)
             $Array -ge 5 | Should -Be __
+        }
+    }
+
+    Context 'Contains and NotContains' {
+
+        It 'returns $true if the right hand value occurs in the left hand array' {
+            $Array = 1, 2, 3, 4, 5
+            $SearchValue = __
+
+            $Array -contains $SearchValue | Should -BeTrue
+        }
+
+        It 'will always return $false with an array on the right hand side' {
+            $Value = '1'
+            $Array = 1, 2, 3, 4, 5
+
+            $Value -contains $Array | Should -Be __
+
+            $Array -contains @(1, 2) | Should -Be __
+        }
+
+        It 'has a logical opposite' {
+            $Array = 1, 2, 3, 4, 5
+            $Value = __
+
+            $Array -notcontains $Value | Should -Be $false
+        }
+    }
+
+    Context 'In and NotIn' {
+
+        It 'is the inverse of -contains' {
+            $Array = 1, 2, 3, 4, 5
+            $SearchValue = __
+
+            $SearchValue -in $Array | Should -BeTrue
+        }
+
+        It 'also has a logical opposite' {
+            $Array = 4, 3, 1, 5, 2
+            $SearchValue = __
+
+            $SearchValue -notin $Array | Should -BeFalse
+        }
+    }
+
+    Context 'Is and IsNot' {
+
+        It 'examines the type of the left hand object' {
+            45 -isnot [double] | Should -BeTrue
+            'string' -is [__] | Should -BeTrue
+        }
+
+        It 'is useful for determining available methods' {
+            $Value = __
+
+            if ($Value -is [double]) {
+                $Value | Should -BeOfType [__]
+            }
         }
     }
 }
@@ -117,5 +178,38 @@ Describe 'Logical Operators' {
 
     Context 'Or Operator' {
 
+        It 'returns $true if either input is $true' {
+            $true -or $false | Should -Be $true
+            $false -or $true | Should -Be __
+            $true -or $true | Should -Be __
+        }
+
+        It 'may coerce values to boolean' {
+            $String = '__'
+            $Number = 0
+
+            $String -or $Number | Should -BeFalse
+        }
+    }
+
+    Context 'XOr Operator' {
+
+        It 'returns $true if only one input is $true' {
+            $true -xor $false | Should -Be $true
+            $true -xor $true | Should -Be __
+            $false -xor $false | Should -Be __
+        }
+    }
+
+    Context 'Not Operator' {
+
+        It 'negates a boolean value' {
+            -not $true | Should -Be $false
+            -not $false | Should -Be __
+        }
+
+        It 'can be shortened to !' {
+            !true | Should -Be __
+        }
     }
 }
