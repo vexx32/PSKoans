@@ -41,9 +41,8 @@ Describe 'Strings' {
         }
 
         It 'handles other ways of doing the same thing' {
-
-            "The windows directory is located at $(Get-Item 'C:\Windows')" |
-                Should -Be '__'
+            $String = "The windows directory is located at $(Get-Item 'C:\Windows')"
+            $String | Should -Be '__'
         }
 
         It 'can escape special characters with backticks' {
@@ -82,6 +81,16 @@ Describe 'Strings' {
             $String2 = 'is cool.'
 
             "$String1 __" | Should -Be 'This string is cool'
+        }
+    }
+
+    Context 'Substrings' {
+
+        It 'lets you select portions of a string' {
+            $String = 'At the very top!'
+
+            $String.Substring(0, 6) | Should -Be '__'
+            $String.Substring(7) | Should -Be '__'
         }
     }
 }
