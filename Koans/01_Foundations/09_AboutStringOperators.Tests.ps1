@@ -268,6 +268,9 @@ Describe 'Formatting Operators' {
     }
 
     Context 'Subexpression Operator' {
-
+        <#
+            The subexpression operator $() is used to insert complex values into strings.
+            Any valid PowerShell code is permitted inside the parentheses.
+        #>
     }
 }
