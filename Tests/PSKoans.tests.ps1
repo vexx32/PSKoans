@@ -8,7 +8,7 @@ Describe -Name "Initialize-KoanDirectory Unit Testing" -Fixture {
         Mock -CommandName Remove-Item -MockWith {}
         Mock -CommandName Copy-Item -MockWith {}
 
-        Initialize-TSTKoanDirectory -FirstImport
+        Initialize-TSTKoanDirectory -Confirm:$false
 
         It -name "Assert Test-Path mocked" -test {
             Assert-MockCalled -CommandName Test-Path -Times 1
@@ -28,7 +28,7 @@ Describe -Name "Initialize-KoanDirectory Unit Testing" -Fixture {
         Mock -CommandName Remove-Item -MockWith {}
         Mock -CommandName Copy-Item -MockWith {}
 
-        Initialize-TSTKoanDirectory -FirstImport
+        Initialize-TSTKoanDirectory -Confirm:$false
 
         It -name "Assert Remove-Item mocked" -test {
             Assert-MockCalled -CommandName Remove-Item -Times 0
@@ -62,7 +62,7 @@ Describe -Name "Get-Enlightenment Unit Testing" -Fixture {
         Mock -CommandName Clear-Host -MockWith {}
 
         Get-TSTEnlightenment -Reset
-        
+
         It -name "Assert Initialize-KoanDirectory mocked in Reset switch" -test{
             Assert-MockCalled Initialize-KoanDirectory -Times 1
         }#It Initialize-KoanDirectory Mocked
@@ -93,7 +93,7 @@ Describe -Name "Get-Enlightenment Unit Testing" -Fixture {
             Assert-MockCalled Invoke-Pester -Times 0
             Assert-MockCalled Clear-Host -Times 0
         }#It Invoke-Item Mocked
-    }#Context 
+    }#Context
     Context -Name "Mocked Functions: Get-TSTEnlightenment" -Fixture{
         #Because the import-module above using a prefix
         #We have to import the module a second time to appropriately mock the internal functions.

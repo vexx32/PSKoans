@@ -60,7 +60,7 @@ function Get-Enlightenment {
             $KoansPassed = 0
 
             foreach ($KoanFile in $Tests) {
-                $PesterTests = Invoke-Pester -PassThru -Show None -Script $KoanFile.FullName
+                $PesterTests = Invoke-Pester -Script $KoanFile.FullName -PassThru -Show None
                 $KoansPassed += $PesterTests.PassedCount
 
                 if ($PesterTests.FailedCount -gt 0) {
@@ -206,7 +206,8 @@ function Initialize-KoanDirectory {
 	.SYNOPSIS
 		Provides a blank slate for Koans.
 	.DESCRIPTION
-        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder structure is produced.
+        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder
+        structure is produced.
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
