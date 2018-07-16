@@ -84,4 +84,14 @@ Describe 'Strings' {
             "$String1 __" | Should -Be 'This string is cool'
         }
     }
+
+    Context 'Substrings' {
+
+        It 'lets you select portions of a string' {
+            $String = 'At the very top!'
+
+            $String.Substring(0, 6) | Should -Be '__'
+            $String.Substring(7) | Should -Be '__'
+        }
+    }
 }
