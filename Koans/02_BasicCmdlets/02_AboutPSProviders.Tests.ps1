@@ -17,6 +17,9 @@
 
     On Windows, PowerShell also comes with a Registry provider, for interacting with the Windows
     registry.
+
+    All providers that have a defined function with the Get-Content cmdlet can also be accessed
+    similarly to variable scopes, e.g., { $env:Path } instead of { Get-Content 'Env:Path' }
 #>
 Describe 'Alias:' {
     <#
@@ -77,6 +80,17 @@ Describe 'Alias:' {
             $File = grok '__'
 
             $File | Should -BeOfType 'System.IO.FileInfo'
+        }
+    }
+
+    Context 'Variable Access' {
+
+        It 'can be accessed like a variable' {
+            $Alias:gci | Should -Be __
+        }
+        It 'is the same as using Get-Content on the path' {
+            Get-Content -Path 'Alias:\gcm' | Should -Be $Alias:gcm
+            Get-Content -Path 'Alias:\echo' | Should -Be __
         }
     }
 }
