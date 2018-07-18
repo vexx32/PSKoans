@@ -88,6 +88,7 @@ Describe 'Alias:' {
         It 'can be accessed like a variable' {
             $Alias:gci | Should -Be __
         }
+
         It 'is the same as using Get-Content on the path' {
             Get-Content -Path 'Alias:\gcm' | Should -Be $Alias:gcm
             Get-Content -Path 'Alias:\echo' | Should -Be __
