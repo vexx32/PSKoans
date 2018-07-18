@@ -24,25 +24,44 @@ Describe 'Alias:' {
         list of all command shortcuts in the current session. The available aliases may increase
         when a new module is imported.
     #>
-    It 'can be queried with cmdlets' {
-        $Aliases = Get-ChildItem 'Alias:'
+    Context 'Direct Access' {
 
-        $Aliases.Count | Should -Be __
+        It 'can be queried with cmdlets' {
+            $Aliases = Get-ChildItem 'Alias:'
+
+            $Aliases.Count | Should -Be __
+        }
+
+        It 'maps aliases to the full command' {
+            $Alias = '__'
+            $AliasObject = Get-Item "Alias:\$Alias" -ErrorAction SilentlyContinue
+
+            $AliasObject.Definition | Should -Be 'Set-Location'
+        }
     }
 
-    It 'maps aliases to the full command' {
-        $Alias = '__'
-        $AliasObject = Get-Item "Alias:\$Alias" -ErrorAction SilentlyContinue
+    Context 'Access Via Cmdlet' {
 
-        $AliasObject.Definition | Should -Be 'Set-Location'
-    }
+        It 'can be accessed with Get-Alias' {
+            $AliasObjects = Get-ChildItem 'Alias:'
+            $AliasObjects2 = Get-Alias
 
-    It 'can be accessed with Get-Alias' {
-        $AliasObjects = Get-ChildItem 'Alias:'
-        $AliasObjects2 = Get-Alias
+            $AliasObjects2.Count | Should -Be __
+            $AliasObjects | Should -Be $AliasObjects2
+        }
 
-        $AliasObjects2.Count | Should -Be __
-        $AliasObjects | Should -Be $AliasObjects2
+        It 'allows for seeking out aliases for a command' {
+            $CmdletName = '__'
+            $AliasData = Get-Alias -Definition $CmdletName
+
+            $AliasData.Name | Should -Be 'gcm'
+        }
+
+        It 'can be used to find the exact command' {
+            $AliasData = Get-Alias -Name 'ft'
+
+            $AliasData.Definition | Should -Be '__'
+        }
     }
 }
 
