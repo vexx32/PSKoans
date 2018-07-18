@@ -26,17 +26,19 @@ Describe 'Alias:' {
     #>
     Context 'Direct Access' {
 
-        It 'can be queried with cmdlets' {
+        It 'can be queried with generic provider cmdlets' {
             $Aliases = Get-ChildItem 'Alias:'
 
             $Aliases.Count | Should -Be __
+            $Aliases.Name[7] | Should -Be __
+            $Aliases.Definition[7] | Should -Be __
         }
 
         It 'maps aliases to the full command' {
             $Alias = '__'
             $AliasObject = Get-Item "Alias:\$Alias" -ErrorAction SilentlyContinue
 
-            $AliasObject.Definition | Should -Be 'Set-Location'
+            $AliasObject | Get-Content | Should -Be 'Set-Location'
         }
     }
 
