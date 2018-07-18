@@ -40,6 +40,13 @@ Describe 'Alias:' {
 
             $AliasObject | Get-Content | Should -Be 'Set-Location'
         }
+
+        It 'can create aliases too!' {
+            New-Item -Name 'Alias:\grok' -Value 'Get-Item'
+            $File = grok '__'
+
+            $File | Should -BeOfType 'System.IO.FileInfo'
+        }
     }
 
     Context 'Access Via Cmdlet' {
@@ -63,6 +70,13 @@ Describe 'Alias:' {
             $AliasData = Get-Alias -Name 'ft'
 
             $AliasData.Definition | Should -Be '__'
+        }
+
+        It 'can create aliases too!' {
+            Set-Alias -Name 'grok' -Value 'Get-Item'
+            $File = grok '__'
+
+            $File | Should -BeOfType 'System.IO.FileInfo'
         }
     }
 }
