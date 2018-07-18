@@ -30,8 +30,8 @@ Describe 'Alias:' {
             $Aliases = Get-ChildItem 'Alias:'
 
             $Aliases.Count | Should -Be __
-            $Aliases.Name[7] | Should -Be __
-            $Aliases.Definition[7] | Should -Be __
+            $Aliases.Name[0] | Should -Be __
+            $Aliases.Definition[0] | Should -Be __
         }
 
         It 'maps aliases to the full command' {
