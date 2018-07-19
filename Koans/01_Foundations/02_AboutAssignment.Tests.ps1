@@ -1,3 +1,5 @@
+[Koan(2)]
+param()
 <#
     Variables
 

@@ -1,3 +1,5 @@
+[Koan(5)]
+param()
 <#
     Arrays and Iterable Collections
 

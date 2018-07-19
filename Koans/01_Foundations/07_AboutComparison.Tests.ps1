@@ -1,3 +1,5 @@
+[Koan(7)]
+param()
 <#
     Comparison Operators
 

@@ -1,3 +1,5 @@
+[Koan(6)]
+param()
 <#
     Assignment and Arithmetic Operators
 

@@ -1,3 +1,5 @@
+[Koan(9]
+param()
 <#
     String Operators
 
