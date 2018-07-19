@@ -1,3 +1,5 @@
+[Koan(12)]
+param()
 <#
     Get-Help
 
