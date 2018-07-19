@@ -1,3 +1,5 @@
+[Koan(3)]
+param()
 <#
     Functions & Script Blocks (I)
 

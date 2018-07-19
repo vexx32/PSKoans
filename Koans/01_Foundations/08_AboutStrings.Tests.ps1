@@ -1,3 +1,5 @@
+[Koan(8)]
+param()
 <#
     Strings
 
