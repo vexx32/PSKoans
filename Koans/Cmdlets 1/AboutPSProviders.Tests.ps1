@@ -113,6 +113,10 @@ Describe 'Environment' {
         $SelectedItem | Get-Content | Should -Be '__'
         $SelectedItem.Name | Should -Be '__'
     }
+
+    It 'can be accessed via variables' {
+        $env:Path | Should -Be '__'
+    }
 }
 
 Describe 'FileSystem' {
