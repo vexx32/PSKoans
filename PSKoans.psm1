@@ -147,6 +147,7 @@ function Write-MeditationPrompt {
 	$Koan = $Script:ZenSayings | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
+    #region Prompt Text
     $Prompts = @{
         Welcome     = @"
     Welcome, seeker of enlightenment.
@@ -186,6 +187,7 @@ You may run 'rake -Meditate' to begin your meditation.
 
 "@
     }
+    #endregion Prompt Text
 
 	if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
 		Write-Host -ForegroundColor Cyan $Prompts['Welcome']
