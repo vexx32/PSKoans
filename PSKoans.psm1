@@ -145,48 +145,62 @@ function Write-MeditationPrompt {
 	$Red = @{ForegroundColor = "Red"}
 	$Blue = @{ForegroundColor = "Cyan"}
 	$Koan = $Script:ZenSayings | Get-Random
-	$SleepTime = @{Milliseconds = 500}
+    $SleepTime = @{Milliseconds = 50}
 
-	if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
-		Write-Host -ForegroundColor Cyan @"
+    $Prompts = @{
+        Welcome     = @"
     Welcome, seeker of enlightenment.
     Please wait a moment while we examine your karma...
 
 "@
-    return
-    }
-    Write-Host @Red @"
+        Describe    = @"
 {Describe "$DescribeName"} has damaged your karma.
 "@
-    Start-Sleep @SleepTime
-    Write-Host @Blue @"
+        TestFailed  = @"
 
     You have not yet reached enlightenment.
 
     The answers you seek...
 
 "@
-	Write-Host @Red @"
-$Expectation
-"@
-    Start-Sleep @SleepTime
-    Write-Host @Blue @"
+        Expectation = $Expectation
+        Meditate    = @"
 
     Please meditate on the following code:
 
 "@
-    Write-Host @Red @"
+        Subject     = @"
 [It] $ItName
 $Meditation
 "@
-    Start-Sleep @SleepTime
-    Write-Host @Blue @"
+        Wisdom      = @"
 
     $($Koan -replace "`n","`n    ")
 
     Your path thus far:
 
 "@
+        OpenFolder  = @"
+
+You may run 'rake -Meditate' to begin your meditation.
+
+"@
+    }
+
+	if ($PSCmdlet.ParameterSetName -eq 'Greeting') {
+		Write-Host -ForegroundColor Cyan $Prompts['Welcome']
+        return
+    }
+    Write-Host @Red $Prompts['Describe']
+    Start-Sleep @SleepTime
+    Write-Host @Blue $Prompts['TestFailed']
+	Write-Host @Red $Prompts['Expectation']
+    Start-Sleep @SleepTime
+    Write-Host @Blue $Prompts['Meditate']
+    Write-Host @Red $Prompts['Subject']
+    Start-Sleep @SleepTime
+    Write-Host @Blue $Prompts['Wisdom']
+
 	$ProgressAmount = "$KoansPassed/$TotalKoans"
 	[int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
 	$PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
@@ -195,12 +209,9 @@ $Meditation
 		"$([char]0x25a0)" * $PortionDone
 		"$([char]0x2015)" * ($ProgressWidth - $PortionDone)
 		$ProgressAmount
-	) | Write-Host @Blue
-	Write-Host @Blue @"
+    ) | Write-Host @Blue
 
-You may run 'rake -Meditate' to begin your meditation.
-
-"@
+	Write-Host @Blue $Prompts['OpenFolder']
 }
 function Initialize-KoanDirectory {
     <#
