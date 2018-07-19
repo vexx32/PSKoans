@@ -56,11 +56,15 @@ function Get-Enlightenment {
             $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None |
                 Select-Object -ExpandProperty TotalCount
 
-            $Tests = Get-ChildItem -Path $script:KoanFolder -Filter '*.Tests.ps1' -Recurse
+            $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Tests.ps1' |
+                Get-Command {$_.FullName} |
+                Sort-Object {$_.ScriptBlock.Attributes.Position} |
+                Select-Object -ExpandProperty Path
+
             $KoansPassed = 0
 
-            foreach ($KoanFile in $Tests) {
-                $PesterTests = Invoke-Pester -Script $KoanFile.FullName -PassThru -Show None
+            foreach ($KoanFile in $SortedKoanList) {
+                $PesterTests = Invoke-Pester -Script $KoanFile -PassThru -Show None
                 $KoansPassed += $PesterTests.PassedCount
 
                 if ($PesterTests.FailedCount -gt 0) {
