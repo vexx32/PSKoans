@@ -97,7 +97,20 @@ Describe 'Alias:' {
 }
 
 Describe 'Environment' {
+    <#
+        The Env: drive contains system environment data. Its contents can vary wildly from OS to OS,
+        especially between Windows, Mac, and Linux, for example.
 
+        The only shared Env: items across all OS's currently are Path and PSModulePath.
+    #>
+    $EnvironmentData = Get-ChildItem -Path 'Env:'
+
+    It 'allows access to system environment data' {
+        $SelectedItem = $EnvironmentData.Where{ $_.Value -is [string] }[7]
+
+        $SelectedItem | Get-Content | Should -Be '__'
+        $SelectedItem.Name | Should -Be '__'
+    }
 }
 
 Describe 'FileSystem' {
@@ -111,6 +124,8 @@ Describe 'Function' {
 Describe 'Variable' {
 
 }
+
+Describe
 
 Describe 'Registry' -Tag 'Windows' {
 
