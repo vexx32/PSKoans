@@ -131,8 +131,6 @@ Describe 'Variable' {
 
 }
 
-Describe
-
 Describe 'Registry' -Tag 'Windows' {
 
 }
