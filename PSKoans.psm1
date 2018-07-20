@@ -58,6 +58,7 @@ function Get-Enlightenment {
 
             $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Tests.ps1' |
                 Get-Command {$_.FullName} |
+                Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {$_.ScriptBlock.Attributes.Where{$_.TypeID -match 'KoanAttribute'}.Position} |
                 Select-Object -ExpandProperty Path
 
