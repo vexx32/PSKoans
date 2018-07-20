@@ -120,9 +120,9 @@ Describe 'Environment' {
 }
 
 Describe 'FileSystem' {
-    $Path = $home | Join-Path 'File001.tmp'
+    $Path = $home | Join-Path -ChildPath 'File001.tmp'
     if (-not (Test-Path $Path)) {
-        $File = New-Item -Path $Path
+        New-Item -Path $Path > $null
 
         -join (1..10000 | ForEach-Object {
             Get-Random -Minimum 32 -Maximum 96 |
@@ -130,12 +130,39 @@ Describe 'FileSystem' {
             if ((Get-Random) -match '[25]0$') {
                 "`n"
             }
-        }) | Set-Content -Path $File.FullName
-    }
-    else {
-        $File = Get-Item -Path $Path
+        }) | Set-Content -Path $Path
     }
 
+    It 'allows access to various files and their properties' {
+        $File = Get-Item -Path $Path
+
+        $File.Name | Should -Be '__'
+        $File.Attributes | Should -Be '__'
+        $File.Length | Should -Be '__'
+    }
+
+    It 'allows you to extract the contents of files' {
+        $FirstLine = Get-Content -Path $Path | Select-Object -First 1
+        $FirstLine | Should -Be '__'
+    }
+
+    It 'allows you to copy, rename, or delete files' {
+        $File = Get-Item -Path $Path
+
+        $NewPath = "$Path-002"
+        $NewFile = Copy-Item -Path $Path -Destination $NewPath -PassThru
+
+        $NewFile.Length | Should -Be $File.Length
+        $NewFile.Name | Should -Be '__'
+
+        $NewFile = Rename-Item -Path $NewPath -NewName 'TESTNAME.tmp' -PassThru
+        $NewFile.Name | Should -Be '__'
+        $NewFile.Length | Should -Be '__'
+
+        $FilePath = $NewFile.FullName
+        Remove-Item -Path $FilePath
+        {Get-Item -Path $FilePath -ErrorAction Stop} | Should -Throw -ExceptionType '__'
+    }
 }
 
 Describe 'Function' {
