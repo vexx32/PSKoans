@@ -3,7 +3,7 @@ param()
 <#
     PSProviders
 
-    Providers are PowerShell's generial-purpose solution for accessing resources. The default set of
+    Providers are PowerShell's general-purpose solution for accessing resources. The default set of
     providers that come with PowerShell on all platforms are listed below:
 
     Name                 Capabilities                            Drives
