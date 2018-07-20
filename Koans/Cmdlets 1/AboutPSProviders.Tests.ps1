@@ -120,6 +120,21 @@ Describe 'Environment' {
 }
 
 Describe 'FileSystem' {
+    $Path = $home | Join-Path 'File001.tmp'
+    if (-not (Test-Path $Path)) {
+        $File = New-Item -Path $Path
+
+        -join (1..10000 | ForEach-Object {
+            Get-Random -Minimum 32 -Maximum 96 |
+                ForEach-Object {[char]$_ -as [string]}
+            if ((Get-Random) -match '[25]0$') {
+                "`n"
+            }
+        }) | Set-Content -Path $File.FullName
+    }
+    else {
+        $File = Get-Item -Path $Path
+    }
 
 }
 
