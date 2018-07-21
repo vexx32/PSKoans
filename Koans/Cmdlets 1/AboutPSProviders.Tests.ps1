@@ -219,6 +219,10 @@ Describe 'Function Provider' {
 }
 
 Describe 'Variable Provider' {
+    <#
+        The variable provider allows direct access to variables as objects, allowing you to determine
+        the name, value, and metadata of variables that are available in the current session and scope.
+    #>
 
 }
 
