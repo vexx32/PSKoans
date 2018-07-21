@@ -23,7 +23,7 @@ param()
     All providers that have a defined function with the Get-Content cmdlet can also be accessed
     similarly to variable scopes, e.g., { $env:Path } instead of { Get-Content 'Env:Path' }
 #>
-Describe 'Alias:' {
+Describe 'Alias Provider' {
     <#
         Aliases are PowerShell command shortcuts. By querying the Alias: provider, you can get a
         list of all command shortcuts in the current session. The available aliases may increase
@@ -98,7 +98,7 @@ Describe 'Alias:' {
     }
 }
 
-Describe 'Environment' {
+Describe 'Environment Provider' {
     <#
         The Env: drive contains system environment data. Its contents can vary wildly from OS to OS,
         especially between Windows, Mac, and Linux, for example.
@@ -119,7 +119,7 @@ Describe 'Environment' {
     }
 }
 
-Describe 'FileSystem' {
+Describe 'FileSystem Provider' {
     $Path = $home | Join-Path -ChildPath 'File001.tmp'
     if (-not (Test-Path $Path)) {
         New-Item -Path $Path > $null
@@ -165,20 +165,64 @@ Describe 'FileSystem' {
     }
 }
 
-Describe 'Function' {
+Describe 'Function Provider' {
+    $Functions = Get-ChildItem 'Function:'
 
     It 'allows access to all currently loaded functions' {
-        $Functions = Get-ChildItem 'Function:'
+        # Most proper functions are named in the Verb-Noun convention
+        $Functions[5].Verb | Should -Be '__'
+        $Functions[5].Noun | Should -Be '__'
+        $Functions[5].Name | Should -Be '__'
 
         $Functions[4].Name | Should -Be '__'
     }
+
+    It 'exposes the entire script block of a function' {
+        $Functions[3].ScriptBlock | Should -BeOfType ScriptBlock
+        $Functions[1].ScriptBlock.ToString().Length | Should -Be __
+
+        $Functions[4] | Get-Content | Should -BeOfType __
+    }
+
+    It 'allows you to rename the functions however you wish' {
+        function Test-Function {'Hello!'}
+
+        $TestItem = Get-Item 'Function:\Test-Function'
+        Test-Function | Should -Be 'Hello!'
+
+        $TestItem | Rename-Item -NewName 'Get-Greeting'
+        Get-Greeting | Should -Be '__'
+    }
+
+    It 'can also be accessed via variables' {
+        function Test-Function {'Bye!'}
+        <#
+            Because most functions use hyphens, their names are atypical for variables, and the ${} syntax
+            must be used to indicate to the PowerShell parser that all contained characters are part of
+            the variable name.
+        #>
+        ${function:Test-Function} | Should -BeOfType __
+    }
+
+    It 'can be defined using variable syntax' {
+        <#
+            Although slower than the usual method of creating functions, it is a quick way to make a
+            function out of a script block.
+        #>
+        $Script = {
+            1..3
+        }
+        ${function:Get-Numbers} = $Script
+
+        Get-Numbers | Should -Be __
+    }
 }
 
-Describe 'Variable' {
+Describe 'Variable Provider' {
 
 }
 
-Describe 'Registry' -Tag 'Windows' {
+Describe 'Registry Provider' -Tag 'Windows' {
 
 }
 
