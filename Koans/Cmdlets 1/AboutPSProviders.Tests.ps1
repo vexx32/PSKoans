@@ -170,7 +170,7 @@ Describe 'Function' {
     It 'allows access to all currently loaded functions' {
         $Functions = Get-ChildItem 'Function:'
 
-        $Function[4].Name | Should -Be '__'
+        $Functions[4].Name | Should -Be '__'
     }
 }
 
