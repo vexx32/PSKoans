@@ -1,3 +1,4 @@
+#Requires -Module PSKoans
 [Koan(11)]
 param()
 <#
