@@ -141,5 +141,13 @@ Describe 'Hashtables' {
             $Hashtable[0] | Should -Be '__'
             $Hashtable['0'] | Should -Be '__'
         }
+
+        It 'can access keys like properties' {
+            $Hashtable = @{0 = 'Zero'; Name = 'Jim'}
+            $Key = '__'
+
+            $Hashtable.0 | Should -Be '__'
+            $Hashtable.$Key | Should -Be 'Jim'
+        }
     }
 }
