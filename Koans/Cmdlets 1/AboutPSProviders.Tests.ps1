@@ -66,7 +66,7 @@ Describe 'Alias Provider' {
         }
 
         It 'allows for seeking out aliases for a command' {
-            $CmdletName = '__'
+            $CmdletName = __
             $AliasData = Get-Alias -Definition $CmdletName
 
             $AliasData.Name | Should -Be 'gcm'
@@ -80,9 +80,9 @@ Describe 'Alias Provider' {
 
         It 'can create aliases too!' {
             Set-Alias -Name 'grok' -Value 'Get-Item'
-            $File = grok '__'
+            $File = grok $home
 
-            $File | Should -BeOfType 'System.IO.FileInfo'
+            $File | Should -BeOfType __
         }
     }
 
