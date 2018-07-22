@@ -1,5 +1,5 @@
 [#Requires -Module PSKoans
-Koan(6)]
+Koan(106)]
 param()
 <#
     Assignment and Arithmetic Operators

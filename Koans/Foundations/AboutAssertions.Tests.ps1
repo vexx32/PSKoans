@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(1)]
+[Koan(101)]
 param()
 <#
     Getting Started
