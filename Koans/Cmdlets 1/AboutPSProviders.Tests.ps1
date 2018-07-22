@@ -265,11 +265,22 @@ Describe 'Variable Provider' {
 
     Context 'Variable Cmdlets' {
 
+        It 'works similarly to the generic cmdlets' {
+            Set-Variable 'test' -Value 7357
+
+            $Info = Get-Variable -Name 'Test'
+            $Info.Options | Should -Be __
+            $Info.Name | Should -Be 'test'
+            $Info.Value | Should -Be __
+        }
+
+        It 'can retrieve just the value' {
+            Set-Variable 'GetMe' -Value 'GOT!'
+
+            $Get = Get-Variable -Name 'GetMe' -ValueOnly
+
+            $Get | Should -Be __
+        }
     }
 }
-
-Describe 'Registry Provider' -Tag 'Windows' {
-
-}
-
 
