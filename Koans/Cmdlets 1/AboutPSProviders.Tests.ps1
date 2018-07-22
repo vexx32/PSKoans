@@ -223,16 +223,36 @@ Describe 'Variable Provider' {
         The variable provider allows direct access to variables as objects, allowing you to determine
         the name, value, and metadata of variables that are available in the current session and scope.
     #>
-    It 'allows access to variables in the current scope' {
-        $Test = 22
-        $VariableData = Get-Item 'Variable:\Test'
+    Context 'Generic Cmdlets' {
 
-        $VariableData.Name | Should -Be 'Test'
-        $VariableData.Value | Should -Be __
-        $VariableData.Options | Should -Be __
+        It 'allows access to variables in the current scope' {
+            Set-Variable -Name 'Test' -Value 22
+            $VariableData = Get-Item 'Variable:\Test'
+
+            $VariableData.Name | Should -Be 'Test'
+            $VariableData.Value | Should -Be __
+            $VariableData.Options | Should -Be __
+        }
+
+        It 'allows you to remove variables' {
+            $Test = 123
+
+            $Test | Should -Be __
+
+            Remove-Item 'Variable:\Test'
+            $Test | Should -Be __
+            {Get-Item 'Variable:\Test'} | Should -Throw -ExceptionType __
+        }
+
+        It 'exposes data from default variables' {
+            $Variables = Get-ChildItem 'Variable:'
+
+            $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value | Should -Be __
+            $Variables.Where{$_.Name -eq 'MaximumAliasCount'}.Value | Should -Be __
+        }
     }
 
-    It '' {
+    Context 'Variable Cmdlets' {
 
     }
 }
