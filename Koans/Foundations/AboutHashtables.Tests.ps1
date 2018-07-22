@@ -25,6 +25,41 @@ Describe 'Hashtables' {
 
     Context 'Building Hashtables' {
 
+        It 'can be built with a hash literal' {
+            # A hash literal is similar to the array literal @(), just with curly braces
+            $Hashtable = @{
+                # Hashtables always consist of key/value pairs
+                Name     = 'Hashtable'
+                Color    = 'Blue'
+                Spectrum = 'Ultraviolet'
+            }
+
+            $Hashtable | Should -BeOfType __
+            # Values in the hashtable can be retrieved by specifying their corresponding key
+            $Hashtable['Color'] | Should -Be '__'
+            $Hashtable['Spectrum'] | Should -Be '__'
+        }
+
+        It 'can be built in pieces' {
+            $Hashtable = @{}
+            # By specifying a key, we can insert or overwrite values in the hashtable
+            $Hashtable['Name'] = 'Hashtable'
+            $Hashtable['Color'] = 'Red'
+            $Hashtable['Spectrum'] = 'Infrared'
+            $Hashtable['Spectrum'] = 'Microwave'
+
+            $Hashtable['Color'] | Should -Be '__'
+            $Hashtable['Spectrum'] | Should -Be '__'
+        }
+
+        It 'can be built using the Hashtable object methods' {
+            $Hashtable = @{}
+            $Hashtable.Add('Name', 'John')
+            $Hashtable.Add('Age', 52)
+            $Hashtable.Add('Radiation', 'Infrared')
+
+            $Hashtable['Age'] | Should -Be __
+        }
     }
 
     Context 'Working with Hashtables' {
