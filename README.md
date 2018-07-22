@@ -49,8 +49,20 @@ Install-Module Pester -Scope CurrentUser
 
 Of course you can! We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
 
-* Feel more than free to clone the repository, make some changes, and submit a pull request!
-* Submit any small changes you'd like make to any of the koans as an issue on the repository, and either myself or one of the helpers here will be happy to talk it over and get it sorted out.
+There are two main ways you can contribute:
+
+1. Feel more than free to clone the repository, make some changes, and submit a pull request!
+2. Submit any small changes you'd like make to any of the koans as an issue on the repository, and either myself or one of the helpers here will be happy to talk it over and get it sorted out.
+
+Do note that if you are writing a koan file, the header of the file *must* be as follows:
+
+```powershell
+#Requires -Module PSKoans
+[Koan($Index)]
+param()
+```
+
+Where `$Index` is simple an unsigned integer indicating the order in which the koans should be sorted. Try to pick an index that is unused and makes sense. If you think it should go in between two other koan files, make sure to modify other indexes as necessary so that we can properly review the pull request.
 
 The goal of the koans is to help those who have very limited knowledge learn PowerShell. In order to do that, simplicity and accessibility are key. There are some advanced topics out there that deserve coverage, and in order to cover them effectively we need to deal with them as clearly and simply as possible.
 
