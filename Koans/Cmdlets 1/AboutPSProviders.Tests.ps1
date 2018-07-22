@@ -197,9 +197,9 @@ Describe 'Function Provider' {
     It 'can also be accessed via variables' {
         function Test-Function {'Bye!'}
         <#
-            Because most functions use hyphens, their names are atypical for variables, and the ${} syntax
-            must be used to indicate to the PowerShell parser that all contained characters are part of
-            the variable name.
+            Because most functions use hyphens, their names are atypical for variables, and the ${}
+            syntax must be used to indicate to the PowerShell parser that all contained characters
+            are part of the variable name.
         #>
         ${function:Test-Function} | Should -BeOfType __
     }
@@ -249,6 +249,16 @@ Describe 'Variable Provider' {
 
             $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value | Should -Be __
             $Variables.Where{$_.Name -eq 'MaximumAliasCount'}.Value | Should -Be __
+        }
+
+        It 'allows you to set variable options' {
+            Set-Variable -Name 'Test' -Value 'TEST'
+
+            $Var = Get-Item 'Variable:\Test'
+            $Var.Options = [System.Management.Automation.ScopedItemOptions]::ReadOnly
+
+            $Var | Should -Be __
+            {Remove-Item 'Variable:\Test'} | Should -Throw -ExceptionType __
         }
     }
 
