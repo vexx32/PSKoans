@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(21)]
+param()
 <#
     The Pipeline & Loops
 

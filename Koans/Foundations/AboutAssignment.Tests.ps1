@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(2)]
+param()
 <#
     Variables
 

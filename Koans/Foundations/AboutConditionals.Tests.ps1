@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(10)]
+param()
 <#
     Conditionals and Branching
 

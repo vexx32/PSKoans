@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(4)]
+param()
 <#
     Order of Operations
 

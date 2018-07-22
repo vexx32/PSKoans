@@ -1,4 +1,0 @@
-
-Describe 'Redirection Operators' {
-
-}

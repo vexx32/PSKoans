@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(9)]
+param()
 <#
     String Operators
 

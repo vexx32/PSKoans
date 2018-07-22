@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(1)]
+param()
 <#
     Getting Started
 

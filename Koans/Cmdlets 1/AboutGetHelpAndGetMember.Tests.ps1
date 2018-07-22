@@ -1,3 +1,6 @@
+#Requires -Module PSKoans
+[Koan(12)]
+param()
 <#
     Get-Help
 
