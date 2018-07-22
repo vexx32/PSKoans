@@ -223,7 +223,18 @@ Describe 'Variable Provider' {
         The variable provider allows direct access to variables as objects, allowing you to determine
         the name, value, and metadata of variables that are available in the current session and scope.
     #>
+    It 'allows access to variables in the current scope' {
+        $Test = 22
+        $VariableData = Get-Item 'Variable:\Test'
 
+        $VariableData.Name | Should -Be 'Test'
+        $VariableData.Value | Should -Be __
+        $VariableData.Options | Should -Be __
+    }
+
+    It '' {
+
+    }
 }
 
 Describe 'Registry Provider' -Tag 'Windows' {
