@@ -53,9 +53,6 @@ function Get-Enlightenment {
 
             Write-MeditationPrompt -Greeting
 
-            $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None |
-                Select-Object -ExpandProperty TotalCount
-
             $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Tests.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
@@ -65,6 +62,9 @@ function Get-Enlightenment {
                     }).Position
                 } |
                 Select-Object -ExpandProperty Path
+
+            $PesterTestCount = Invoke-Pester -Script $SortedKoanList -PassThru -Show None |
+                Select-Object -ExpandProperty TotalCount
 
             $KoansPassed = 0
 
@@ -174,7 +174,7 @@ function Write-MeditationPrompt {
 
 "@
         Describe       = @"
-{Describe "$DescribeName"} has damaged your karma.
+Describing '$DescribeName' has damaged your karma.
 "@
         TestFailed     = @"
 
