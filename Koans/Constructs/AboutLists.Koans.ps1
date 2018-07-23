@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(302)]
+[Koan(301)]
 param()
 <#
     Lists - Flexible, Generic Collections
