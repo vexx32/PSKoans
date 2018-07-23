@@ -114,7 +114,8 @@ function Write-MeditationPrompt {
 		Name: Write-MeditationPrompt
 		Author: vexx32
 	.SYNOPSIS
-		Provides "useful" output for enlightenment results.
+        Provides simplified and targeted output for koan test results. Only shows the next
+        failing koan; all other output is suppressed.
 	.DESCRIPTION
 		Provides a mechanism for Get-Enlightenment to write clean output.
 	#>
