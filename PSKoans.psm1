@@ -29,6 +29,8 @@ function Get-Enlightenment {
 
         Prompts for confirmation, before wiping out the user's koans folder and restoring it back
         to its initial state.
+    .LINK
+        https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
@@ -57,10 +59,10 @@ function Get-Enlightenment {
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
-                    $_.ScriptBlock.Attributes.Where({
+                $_.ScriptBlock.Attributes.Where( {
                         $_.TypeID -match 'KoanAttribute'
                     }).Position
-                } |
+            } |
                 Select-Object -ExpandProperty Path
 
             $PesterTestCount = Invoke-Pester -Script $SortedKoanList -PassThru -Show None |
