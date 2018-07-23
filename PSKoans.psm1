@@ -164,7 +164,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $Script:ZenSayings | Get-Random
+    $Koan = $script:ZenSayings | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -294,7 +294,7 @@ function Initialize-KoanDirectory {
     }
 }
 
-$script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
+$script:ZenSayings = Import-CliXml -Path ("$PSScriptRoot/Data/Meditations.clixml")
 $script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $script:KoanFolder)) {
