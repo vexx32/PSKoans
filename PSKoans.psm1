@@ -53,7 +53,7 @@ function Get-Enlightenment {
 
             Write-MeditationPrompt -Greeting
 
-            $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Tests.ps1' |
+            $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
