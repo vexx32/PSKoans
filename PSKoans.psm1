@@ -48,14 +48,14 @@ function Get-Enlightenment {
             Initialize-KoanDirectory
         }
         "Meditate" {
-            Invoke-Item $script:KoanFolder
+            Invoke-Item ${env:PSKoans:KoanFolder}
         }
         "Default" {
             Clear-Host
 
             Write-MeditationPrompt -Greeting
 
-            $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Koans.ps1' |
+            $SortedKoanList = Get-ChildItem "${env:PSKoans:KoanFolder}" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
@@ -166,7 +166,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $script:ZenSayings | Get-Random
+    $Koan = ${env:PSKoans:Meditations} | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -282,23 +282,23 @@ function Initialize-KoanDirectory {
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
-    if ($PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
-        if (Test-Path -Path $script:KoanFolder) {
+    if ($PSCmdlet.ShouldProcess(${env:PSKoans:KoanFolder}, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path ${env:PSKoans:KoanFolder}) {
             Write-Verbose "Removing the entire koans folder..."
-            Remove-Item -Recurse -Path $script:KoanFolder -Force
+            Remove-Item -Recurse -Path ${env:PSKoans:KoanFolder} -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-        Write-Verbose "Koans copied to '$script:KoanFolder'"
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination ${env:PSKoans:KoanFolder}
+        Write-Verbose "Koans copied to '${env:PSKoans:KoanFolder}'"
     }
     else {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."
     }
 }
 
-$script:ZenSayings = Import-CliXml -Path ("$PSScriptRoot/Data/Meditations.clixml")
-$script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
+${env:PSKoans:Meditations} = Import-CliXml -Path ("$PSScriptRoot/Data/Meditations.clixml")
+${env:PSKoans:KoanFolder} = $Home | Join-Path -ChildPath 'PSKoans'
 
-if (-not (Test-Path -Path $script:KoanFolder)) {
+if (-not (Test-Path -Path ${env:PSKoans:KoanFolder})) {
 	Initialize-KoanDirectory -Confirm:$false
 }
