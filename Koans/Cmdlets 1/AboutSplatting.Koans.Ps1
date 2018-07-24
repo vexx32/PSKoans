@@ -17,24 +17,6 @@ param()
 
 Describe 'Splatting' {
 
-    Context 'Array Splatting' {
-
-        It 'only works with positional parameters' {
-            <#
-                Positional parameters are listed in the Get-Help output as 'Position? <Number>'
-                All others are listed as 'Position? named' -- switches are always named, and
-                cannot be used with this sort of splatting.
-            #>
-            $Parameters = @(${env:PSKoans:KoanFolder}, 'A*')
-            @(Get-ChildItem @Parameters).Count | Should -Be __
-
-            {
-                $Parameters = @(${env:PSKoans:KoanFolder}, '-Recurse')
-                Get-ChildItem @Parameters
-            } | Should -Throw -ExpectedMessage __
-        }
-    }
-
     Context 'Hashtable Splatting' {
         <#
             Splatting truly shines when it comes to hashtables. All cmdlet parameters, including
@@ -44,11 +26,11 @@ Describe 'Splatting' {
             # Here are a few common ways a detailed command to find files in a folder might be written:
 
             # 1. Super long lines; hard to follow along with.
-            $LongLines = Get-ChildItem -Path ${env:PSKoans:KoanFolder} -Include '*.ps1' -Recurse -Depth 2
+            $LongLines = Get-ChildItem -Path $env:PSKoans:KoanFolder -Include '*.ps1' -Recurse -Depth 2
 
             # 2. Escaping linebreaks; more readable, but very fragile and prone to errors
             $Escaping = Get-ChildItem `
-                -Path ${env:PSKoans:KoanFolder} `
+                -Path $env:PSKoans:KoanFolder `
                 -Include '*.ps1' `
                 -Recurse `
                 -Depth 2
@@ -75,5 +57,29 @@ Describe 'Splatting' {
 
     Context 'Advanced Splatting Techniques' {
 
+        It 'can be built up in parts' {
+            $Parameters = @{Path = $env:PSKoans:KoanFolder}
+
+            $Value = __
+            if ($Value -eq 7) {
+                $Parameters.Add('File', $true)
+            }
+            else {
+                $Parameters.Add('Directory', $true)
+            }
+
+            Get-ChildItem @Parameters | Select-Object -First 1 | Should -BeOfType System.IO.FileInfo
+        }
+
+        It 'can be built from automatic hashtables' {
+            $String = "Folders:__"
+            $Parameters = if ($String -match 'Folders:(?<Filter>[a-z ])$') {
+                $Matches.Remove(0) # Remove the 'whole' match and keep only the portions we asked for
+                $Matches.Clone()
+            }
+            $Parameters.Add('Path', $env:PSKoans:KoanFolder)
+            $Parameters.Add('Directory', $true)
+            (Get-ChildItem @Parameters).Count | Should -Be 2
+        }
     }
 }
