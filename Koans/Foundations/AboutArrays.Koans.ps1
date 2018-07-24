@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(5)]
+[Koan(105)]
 param()
 <#
     Arrays and Iterable Collections

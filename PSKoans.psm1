@@ -29,6 +29,8 @@ function Get-Enlightenment {
 
         Prompts for confirmation, before wiping out the user's koans folder and restoring it back
         to its initial state.
+    .LINK
+        https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
@@ -46,21 +48,25 @@ function Get-Enlightenment {
             Initialize-KoanDirectory
         }
         "Meditate" {
-            Invoke-Item $script:KoanFolder
+            Invoke-Item $env:PSKoans:KoanFolder
         }
         "Default" {
             Clear-Host
 
             Write-MeditationPrompt -Greeting
 
-            $PesterTestCount = Invoke-Pester -Script $script:KoanFolder -PassThru -Show None |
-                Select-Object -ExpandProperty TotalCount
-
-            $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Tests.ps1' |
+            $SortedKoanList = Get-ChildItem "$env:PSKoans:KoanFolder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
-                Sort-Object {$_.ScriptBlock.Attributes.Where{$_.TypeID -match 'KoanAttribute'}.Position} |
+                Sort-Object {
+                $_.ScriptBlock.Attributes.Where( {
+                        $_.TypeID -match 'KoanAttribute'
+                    }).Position
+            } |
                 Select-Object -ExpandProperty Path
+
+            $PesterTestCount = Invoke-Pester -Script $SortedKoanList -PassThru -Show None |
+                Select-Object -ExpandProperty TotalCount
 
             $KoansPassed = 0
 
@@ -110,7 +116,8 @@ function Write-MeditationPrompt {
 		Name: Write-MeditationPrompt
 		Author: vexx32
 	.SYNOPSIS
-		Provides "useful" output for enlightenment results.
+        Provides simplified and targeted output for koan test results. Only shows the next
+        failing koan; all other output is suppressed.
 	.DESCRIPTION
 		Provides a mechanism for Get-Enlightenment to write clean output.
 	#>
@@ -159,7 +166,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $Script:ZenSayings | Get-Random
+    $Koan = $env:PSKoans:Meditations | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -170,7 +177,7 @@ function Write-MeditationPrompt {
 
 "@
         Describe       = @"
-{Describe "$DescribeName"} has damaged your karma.
+Describing '$DescribeName' has damaged your karma.
 "@
         TestFailed     = @"
 
@@ -275,23 +282,23 @@ function Initialize-KoanDirectory {
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
-    if ($PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
-        if (Test-Path -Path $script:KoanFolder) {
+    if ($PSCmdlet.ShouldProcess($env:PSKoans:KoanFolder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $env:PSKoans:KoanFolder) {
             Write-Verbose "Removing the entire koans folder..."
-            Remove-Item -Recurse -Path $script:KoanFolder -Force
+            Remove-Item -Recurse -Path $env:PSKoans:KoanFolder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-        Write-Verbose "Koans copied to '$script:KoanFolder'"
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $env:PSKoans:KoanFolder
+        Write-Verbose "Koans copied to '$env:PSKoans:KoanFolder'"
     }
     else {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."
     }
 }
 
-$script:ZenSayings = Import-CliXml -Path ($PSScriptRoot | Join-Path -ChildPath "Data/Meditations.clixml")
-$script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
+${env:PSKoans:Meditations} = Import-CliXml -Path ("$PSScriptRoot/Data/Meditations.clixml")
+${env:PSKoans:KoanFolder} = $Home | Join-Path -ChildPath 'PSKoans'
 
-if (-not (Test-Path -Path $script:KoanFolder)) {
+if (-not (Test-Path -Path $env:PSKoans:KoanFolder)) {
 	Initialize-KoanDirectory -Confirm:$false
 }
