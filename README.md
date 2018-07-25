@@ -23,29 +23,18 @@ Install-Module Pester -Scope CurrentUser
 
 ## Getting Started with the PowerShell Koans
 
-1. a) `git clone` the repository into your desired directory, or
-   b) Download and extract the repository as a .zip file into a directory of your choice.
+### Install from Gallery
+
+1. `Install-Module PSKoans -Scope CurrentUser`
+2. Run `rake` / `Get-Enlightenment` to get things started.
+3. Run `rake -Meditate` to open your Koans folder either directly or in VS Code (if installed).
+
+### Clone the Repo
+
+1. `git clone` the repository into your desired directory, or download and extract the repository as a .zip file into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
-
-### With Visual Studio Code
-
-1. Ensure you have the VSCode PowerShell extension installed.
-2. Load Visual Studio Code, and select `File -> Open Folder`
-3. Choose the `PSKoans-master` folder, you'll get a folder tree on the left.
-4. Double click on the `PSKoans.psm1` file, and VS Code will launch a powershell console
-5. In that console, enter `Import-Module c:\path\to\pskoans-master\PSKoans-Master`
-6. Run `Get-Enlightenment` (or `rake`)  and it should run and fail a test.
-7. Read the error, open the file it points you to and start fixing the errors!
-8. Periodically run `rake` or `Get-Enlightenment` to re-test your progress.
-
-### From the PowerShell Console
-
-1. Run `Import-Module 'C:\Path\To\Downloaded\PSKoans\Folder\PSKoans-master'`
-2. Run `rake` or `Get-Enlightenment` and it will run and fail a test.
-3. Run `rake -Meditate` as prompted to open the Koans folder.
-4. Edit the file in your favourite editor as instructed, in order to resolve the error.
-5. Re-run `rake` or `Get-Enlightenment` in order to reevaluate the tests and check your progress.
+4. Before working with the module, run `rake` once to initialise everything, and then run `rake -Meditate` to open the Koans folder for you to begin your journey.
 
 ### Can I Help Out / Contribute
 
