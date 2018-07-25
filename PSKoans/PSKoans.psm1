@@ -23,7 +23,8 @@ function Get-Enlightenment {
     .EXAMPLE
         PS> rake -Meditate
 
-        Opens the user's koans folder, housed in $home\PSKoans. If VS Code is in $env:Path, opens in VS Code.
+        Opens the user's koans folder, housed in $home\PSKoans. If VS Code is in $env:Path, opens in
+        VS Code.
     .EXAMPLE
         PS> rake -Reset
 
