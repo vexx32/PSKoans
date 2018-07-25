@@ -6,7 +6,7 @@ Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMar
 
 When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
 
-Your journey towards PowerShell enlightenment starts in the `1_AboutAssertions.Tests.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
+Your journey towards PowerShell enlightenment starts in the `1_AboutAssertions.Koans.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
 
 ## Prerequisites
 
