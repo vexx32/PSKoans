@@ -4,7 +4,7 @@ $moduleName = Split-Path $moduleRoot -Leaf
 
 Describe "General project validation: $moduleName" {
 
-    $scripts = Get-ChildItem $projectRoot -Include *.ps1, *.psm1, *.psd1 -Recurse
+    $scripts = Get-ChildItem $projectRoot -Include '*.ps1', '*.psm1', '*.psd1' -Recurse -Exclude '*.Koans.ps1'
 
     # TestCases are splatted to the script so we need hashtables
     $testCase = $scripts | Foreach-Object {@{file = $_}}
