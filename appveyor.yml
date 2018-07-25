@@ -16,7 +16,7 @@ build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-- ps: . .\build\build.ps1 -Default
+- ps: . .\build\build.ps1
 
 for:
 -
@@ -25,4 +25,4 @@ for:
     - master
 
   test_script:
-  - ps: . .\build\build.ps1 -Deploy
+  - ps: . .\build\build.ps1 -Task Deploy
