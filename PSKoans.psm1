@@ -48,10 +48,10 @@ function Get-Enlightenment {
             Initialize-KoanDirectory
         }
         "Meditate" {
-            try {
+            if (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
                 Start-Process -FilePath 'code' -ArgumentList $env:PSKoans:KoanFolder -NoNewWindow
             }
-            catch {
+            else {
                 Invoke-Item $env:PSKoans:KoanFolder
             }
         }
