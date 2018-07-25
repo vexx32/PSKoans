@@ -50,10 +50,10 @@ function Get-Enlightenment {
         }
         "Meditate" {
             if (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
-                Start-Process -FilePath 'code' -ArgumentList $env:PSKoans:KoanFolder -NoNewWindow
+                Start-Process -FilePath 'code' -ArgumentList $env:PSKoans_Folder -NoNewWindow
             }
             else {
-                Invoke-Item $env:PSKoans:KoanFolder
+                Invoke-Item $env:PSKoans_Folder
             }
         }
         "Default" {
@@ -61,7 +61,7 @@ function Get-Enlightenment {
 
             Write-MeditationPrompt -Greeting
 
-            $SortedKoanList = Get-ChildItem "$env:PSKoans:KoanFolder" -Recurse -Filter '*.Koans.ps1' |
+            $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
@@ -172,7 +172,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $env:PSKoans:Meditations | Get-Random
+    $Koan = Import-CliXml -Path "$PSScriptRoot/Data/Meditations.clixml" | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -288,23 +288,22 @@ function Initialize-KoanDirectory {
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
-    if ($PSCmdlet.ShouldProcess($env:PSKoans:KoanFolder, "Restore the koans to a blank slate")) {
-        if (Test-Path -Path $env:PSKoans:KoanFolder) {
+    if ($PSCmdlet.ShouldProcess($env:PSKoans_Folder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $env:PSKoans_Folder) {
             Write-Verbose "Removing the entire koans folder..."
-            Remove-Item -Recurse -Path $env:PSKoans:KoanFolder -Force
+            Remove-Item -Recurse -Path $env:PSKoans_Folder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $env:PSKoans:KoanFolder
-        Write-Verbose "Koans copied to '$env:PSKoans:KoanFolder'"
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $env:PSKoans_Folder
+        Write-Verbose "Koans copied to '$env:PSKoans_Folder'"
     }
     else {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."
     }
 }
 
-${env:PSKoans:Meditations} = Import-CliXml -Path ("$PSScriptRoot/Data/Meditations.clixml")
-${env:PSKoans:KoanFolder} = $Home | Join-Path -ChildPath 'PSKoans'
+$env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 
-if (-not (Test-Path -Path $env:PSKoans:KoanFolder)) {
+if (-not (Test-Path -Path $env:PSKoans_Folder)) {
 	Initialize-KoanDirectory -Confirm:$false
 }
