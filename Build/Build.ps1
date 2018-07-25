@@ -6,8 +6,8 @@ param (
 # Grab nuget bits, install modules, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
-Install-Module Psake, PSDeploy, BuildHelpers -Force
-Install-Module Pester -Force -SkipPublisherCheck
+Install-Module Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
+Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 Import-Module Psake, BuildHelpers
 
 Set-BuildEnvironment
