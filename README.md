@@ -36,7 +36,7 @@ Install-Module Pester -Scope CurrentUser
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 4. Before working with the module, run `rake` once to initialise everything, and then run `rake -Meditate` to open the Koans folder for you to begin your journey.
 
-### Can I Help Out / Contribute
+## Can I Help Out / Contribute
 
 Of course you can! We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
 
