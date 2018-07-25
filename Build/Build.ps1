@@ -10,7 +10,7 @@ Install-Module Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
 Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 Import-Module Psake, BuildHelpers
 
-Set-BuildEnvironment -Path "$PSScriptRoot\.."
+Set-BuildEnvironment -Path "$PSScriptRoot"
 
 Invoke-Psake -BuildFile "$PSScriptRoot\psake.ps1" -TaskList $Task -NoLogo
 

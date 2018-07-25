@@ -4,7 +4,7 @@ Properties {
     # Find the build folder based on build system
     $ProjectRoot = $env:BHProjectPath
     if (-not $ProjectRoot) {
-        $ProjectRoot = Resolve-Path "$PSScriptRoot\..\.."
+        $ProjectRoot = Resolve-Path "$PSScriptRoot\.."
     }
 
     $Timestamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
@@ -79,7 +79,7 @@ Task Deploy -Depends Build {
     $lines
 
     $Params = @{
-        Path    = "$ProjectRoot\Build"
+        Path    = "$ProjectRoot"
         Force   = $true
         Recurse = $false # We keep psdeploy artifacts, avoid deploying those : )
     }
