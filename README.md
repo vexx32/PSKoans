@@ -1,5 +1,7 @@
 # PowerShell Koans
 
+![Build status](https://ci.appveyor.com/api/projects/status/2r78iucsyc89b918/branch/master?svg=true)
+
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell through Pester unit testing.
 
 When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
