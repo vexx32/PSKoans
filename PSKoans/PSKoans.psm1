@@ -172,7 +172,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $env:PSKoans_Meditations | Get-Random
+    $Koan = Import-CliXml -Path "$PSScriptRoot/Data/Meditations.clixml" | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -301,8 +301,7 @@ function Initialize-KoanDirectory {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."
     }
 }
-$KoanPath = Resolve-Path -Path "$PSScriptRoot/Data/Meditations.clixml"
-$env:PSKoans_Meditations = Import-CliXml -Path $KoanPath
+
 $env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 
 if (-not (Test-Path -Path $env:PSKoans_Folder)) {
