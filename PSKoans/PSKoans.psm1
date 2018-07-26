@@ -23,12 +23,15 @@ function Get-Enlightenment {
     .EXAMPLE
         PS> rake -Meditate
 
-        Opens the user's koans folder, housed in $home\PSKoans
+        Opens the user's koans folder, housed in $home\PSKoans. If VS Code is in $env:Path, opens in
+        VS Code.
     .EXAMPLE
         PS> rake -Reset
 
         Prompts for confirmation, before wiping out the user's koans folder and restoring it back
         to its initial state.
+    .LINK
+        https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
@@ -46,21 +49,26 @@ function Get-Enlightenment {
             Initialize-KoanDirectory
         }
         "Meditate" {
-            Invoke-Item $script:KoanFolder
+            if (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
+                Start-Process -FilePath 'code' -ArgumentList $env:PSKoans_Folder -NoNewWindow
+            }
+            else {
+                Invoke-Item $env:PSKoans_Folder
+            }
         }
         "Default" {
             Clear-Host
 
             Write-MeditationPrompt -Greeting
 
-            $SortedKoanList = Get-ChildItem "$script:KoanFolder" -Recurse -Filter '*.Koans.ps1' |
+            $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
-                    $_.ScriptBlock.Attributes.Where({
+                $_.ScriptBlock.Attributes.Where( {
                         $_.TypeID -match 'KoanAttribute'
                     }).Position
-                } |
+            } |
                 Select-Object -ExpandProperty Path
 
             $PesterTestCount = Invoke-Pester -Script $SortedKoanList -PassThru -Show None |
@@ -164,7 +172,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = $script:ZenSayings | Get-Random
+    $Koan = Import-CliXml -Path "$PSScriptRoot/Data/Meditations.clixml" | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -280,23 +288,22 @@ function Initialize-KoanDirectory {
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
-    if ($PSCmdlet.ShouldProcess($script:KoanFolder, "Restore the koans to a blank slate")) {
-        if (Test-Path -Path $script:KoanFolder) {
+    if ($PSCmdlet.ShouldProcess($env:PSKoans_Folder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $env:PSKoans_Folder) {
             Write-Verbose "Removing the entire koans folder..."
-            Remove-Item -Recurse -Path $script:KoanFolder -Force
+            Remove-Item -Recurse -Path $env:PSKoans_Folder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $script:KoanFolder
-        Write-Verbose "Koans copied to '$script:KoanFolder'"
+        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $env:PSKoans_Folder
+        Write-Verbose "Koans copied to '$env:PSKoans_Folder'"
     }
     else {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."
     }
 }
 
-$script:ZenSayings = Import-CliXml -Path ("$PSScriptRoot/Data/Meditations.clixml")
-$script:KoanFolder = $Home | Join-Path -ChildPath 'PSKoans'
+$env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 
-if (-not (Test-Path -Path $script:KoanFolder)) {
+if (-not (Test-Path -Path $env:PSKoans_Folder)) {
 	Initialize-KoanDirectory -Confirm:$false
 }

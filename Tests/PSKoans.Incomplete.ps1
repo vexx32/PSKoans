@@ -1,6 +1,6 @@
 $here = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'Tests', ''
 $sut = "PSKoans.psm1"
-Import-Module "$here\$sut" -Prefix "TST"
+Import-Module ($here | Join-Path -ChildPath "PSKoans\$sut") -Prefix "TST"
 
 Describe -Name "Initialize-KoanDirectory Unit Testing" -Fixture {
     Context -Name "Mocked Functions: Test-Path,Remove-Item, and Copy-Item" -Tag @("Mocking") -Fixture {
