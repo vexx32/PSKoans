@@ -48,8 +48,8 @@ Describe 'Alias Provider' {
         }
 
         It 'can create aliases too!' {
-            New-Item -Path 'Alias:\grok' -Value 'Get-Item'
-            $File = grok '__'
+            New-Item -Path 'Alias:\grok' -Value 'Get-Item' -ErrorAction SilentlyContinue
+            $File = grok '__' -ErrorAction SilentlyContinue
 
             $File | Should -BeOfType 'System.IO.FileInfo'
         }
