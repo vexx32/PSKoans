@@ -42,14 +42,14 @@ Describe 'Alias Provider' {
 
         It 'maps aliases to the full command' {
             $Alias = '__'
-            $AliasObject = Get-Item "Alias:\$Alias"
+            $AliasObject = Get-Item "Alias:\$Alias" -ErrorAction SilentlyContinue
 
             $AliasObject | Get-Content | Should -Be 'Set-Location'
         }
 
         It 'can create aliases too!' {
-            New-Item -Path 'Alias:\grok' -Value 'Get-Item'
-            $File = grok '__'
+            New-Item -Path 'Alias:\grok' -Value 'Get-Item' -ErrorAction SilentlyContinue
+            $File = grok '__' -ErrorAction SilentlyContinue
 
             $File | Should -BeOfType 'System.IO.FileInfo'
         }
