@@ -71,13 +71,25 @@ function Get-Enlightenment {
             } |
                 Select-Object -ExpandProperty Path
 
-            $PesterTestCount = Invoke-Pester -Script $SortedKoanList -PassThru -Show None |
+            $PesterParams = @{
+                Script      = $SortedKoanList
+                PassThru    = $true
+                Show        = 'None'
+                ErrorAction = 'SilentlyContinue'
+            }
+            $PesterTestCount = Invoke-Pester @PesterParams |
                 Select-Object -ExpandProperty TotalCount
 
             $KoansPassed = 0
 
             foreach ($KoanFile in $SortedKoanList) {
-                $PesterTests = Invoke-Pester -Script $KoanFile -PassThru -Show None
+                $PesterParams = @{
+                    Script      = $KoanFile
+                    PassThru    = $true
+                    Show        = 'None'
+                    ErrorAction = 'SilentlyContinue'
+                }
+                $PesterTests = Invoke-Pester @PesterParams
                 $KoansPassed += $PesterTests.PassedCount
 
                 if ($PesterTests.FailedCount -gt 0) {
