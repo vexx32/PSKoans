@@ -75,7 +75,6 @@ function Get-Enlightenment {
                 Script      = $SortedKoanList
                 PassThru    = $true
                 Show        = 'None'
-                ErrorAction = 'SilentlyContinue'
             }
             $PesterTestCount = Invoke-Pester @PesterParams |
                 Select-Object -ExpandProperty TotalCount
@@ -87,7 +86,6 @@ function Get-Enlightenment {
                     Script      = $KoanFile
                     PassThru    = $true
                     Show        = 'None'
-                    ErrorAction = 'SilentlyContinue'
                 }
                 $PesterTests = Invoke-Pester @PesterParams
                 $KoansPassed += $PesterTests.PassedCount
