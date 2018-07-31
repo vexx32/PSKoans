@@ -12,6 +12,24 @@ Context 'Non-Pipeline Cmdlets' {
 
     Describe 'New-Object' {
 
+        It 'can create objects of a specified type' {
+            $Object = New-Object -TypeName 'string'
+            $String = 'string'
+
+            $String | Should -BeOfType string
+            $Object | Should -BeOfType __
+        }
+
+        It 'can create objects of any available type' {
+            $Object = New-Object -TypeName 'System.Collections.ArrayList'
+            $Object | Should -BeOfType __
+        }
+
+        It 'can accept arguments for the constructor' {
+            $Object = New-Object 'string' -ArgumentList ([char[]]@('b','a','n','a','n','a'), 0, 3)
+            '__' | Should -Be $Object
+            $Object | Should -BeOfType string
+        }
     }
 
     Describe 'Compare-Object' {
