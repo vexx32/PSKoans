@@ -195,10 +195,10 @@ Describe 'Regex Operators' {
             $String = '__'
             $Pattern = '^(?<FirstWord>[a-z]+) (?<SecondWord>[a-z]+)$'
 
-            $Result = $String -match $Pattern
+            $String -match $Pattern | Should -BeTrue
 
-            $Result.FirstWord | Should -Be '__'
-            $Result.SecondWord | Should -Be '__'
+            $Matches.FirstWord | Should -Be '__'
+            $Matches.SecondWord | Should -Be '__'
         }
 
         It 'supports indexed match groups' {
