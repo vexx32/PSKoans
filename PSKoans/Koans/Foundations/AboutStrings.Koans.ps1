@@ -83,7 +83,7 @@ Describe 'Strings' {
             $String1 = 'This string'
             $String2 = 'is cool.'
 
-            "$String1 __" | Should -Be 'This string is cool'
+            "$String1 __" | Should -Be 'This string is cool.'
         }
     }
 
