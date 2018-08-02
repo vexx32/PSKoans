@@ -36,17 +36,19 @@ Properties {
 Task 'Default' -Depends 'Test'
 
 Task 'Init' {
-    Write-Information $Lines @Continue
     Set-Location -Path $ProjectRoot
-    Write-Information "Build System Details:" @Continue
-    Get-Item ENV:BH*
-    Write-Information "`n" @Continue
+    Write-Information @Continue @"
+$Lines
+Build System Details:
+"@
+    Get-Item 'ENV:BH*'
 }
 
 Task 'Test' -Depends 'Init' {
-    Write-Information $Lines @Continue
-    Write-Information "`n`tSTATUS: Testing with PowerShell $PSVersion" @Continue
-
+    Write-Information @Continue @"
+$Lines
+    STATUS: Testing with PowerShell $PSVersion
+"@
     # Testing links on github requires >= tls 1.2
     $SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -59,6 +61,7 @@ Task 'Test' -Depends 'Init' {
         OutputFile   = "$ProjectRoot\$TestFile"
     }
     $TestResults = Invoke-Pester @PesterParams
+
     [Net.ServicePointManager]::SecurityProtocol = $SecurityProtocol
 
     # In Appveyor?  Upload our tests!
@@ -76,12 +79,13 @@ Task 'Test' -Depends 'Init' {
     if ($TestResults.FailedCount -gt 0) {
         Write-Error "Failed '$($TestResults.FailedCount)' tests; build failed!"
     }
-    Write-Information "`n" @Continue
 }
 
 Task 'Build' -Depends 'Test' {
-    Write-Information $Lines @Continue
+    Write-Information @Continue @"
 
+$Lines
+"@
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
     Set-ModuleFunctions
 
@@ -94,8 +98,10 @@ Task 'Build' -Depends 'Test' {
         }
     }
     catch {
-        Write-Information "Failed to update version for '$env:BHProjectName': $_." @Continue
-        Write-Information "Continuing with existing version" @Continue
+        Write-Information @Continue @"
+Failed to update version for '$env:BHProjectName': $_.
+Continuing with existing version.
+"@
     }
 }
 
