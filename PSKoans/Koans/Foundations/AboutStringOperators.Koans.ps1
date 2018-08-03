@@ -264,7 +264,7 @@ Describe 'Formatting Operators' {
         }
 
         It 'can insert multiple values with formatting on each' {
-            $String = 'Employee #{0:000000}, you are due in room #{0:000} for a drug test.'
+            $String = 'Employee #{1:000000}, you are due in room #{0:000} for a drug test.'
 
             $String -f 154, 19 | Should -Be '__'
         }
