@@ -4,6 +4,14 @@
 |     :---:     |      :---:      |
 | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji/branch/master?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans) |
 
+## Table of Contents
+
+* [Prerequisites](#prerequisites)
+* [Getting Started](#getting-started)
+  * [Install From Gallery](#install-from-gallery)
+  * [Clone the Repo](#clone-the-repo)
+* [Contributing](#contributing)
+
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell through Pester unit testing.
 
 When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
@@ -23,7 +31,7 @@ Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 Install-Module Pester -Scope CurrentUser
 ```
 
-## Getting Started with the PowerShell Koans
+## Getting Started
 
 ### Install from Gallery
 
@@ -38,9 +46,11 @@ Install-Module Pester -Scope CurrentUser
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 4. Before working with the module, run `rake` once to initialise everything, and then run `rake -Meditate` to open the Koans folder for you to begin your journey.
 
-## Can I Help Out / Contribute
+## Contributing
 
-Of course you can! We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
+We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
+
+Naturally, we're happy to accept any and _all_ help that comes our way!
 
 There are two main ways you can contribute:
 
