@@ -64,7 +64,27 @@ Context 'Non-Pipeline Cmdlets' {
 Context 'Pipeline Cmdlets' {
 
     Describe 'Select-Object' {
+        <#
+            Select-Object is a utility cmdlet that is used to 'trim' objects down to just
+            the 'selected' properties. It is particularly useful to get custom displays
+            of data, and is capable of adding new properties as well.
+        #>
 
+        It 'selects specific properties of an object' {
+
+        }
+
+        It 'changes the object type' {
+
+        }
+
+        It 'can exclude properties' {
+
+        }
+
+        It 'can retrieve just the contents or value of a property' {
+
+        }
     }
 
     Describe 'Where-Object' {
