@@ -4,6 +4,12 @@
 |     :---:     |      :---:      |
 | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji/branch/master?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans) |
 
+Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell through Pester unit testing.
+
+When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
+
+Your journey towards PowerShell enlightenment starts in the `1_AboutAssertions.Koans.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
+
 ## Table of Contents
 
 * [Prerequisites](#prerequisites)
@@ -11,12 +17,6 @@
   * [Install From Gallery](#install-from-gallery)
   * [Clone the Repo](#clone-the-repo)
 * [Contributing](#contributing)
-
-Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell through Pester unit testing.
-
-When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
-
-Your journey towards PowerShell enlightenment starts in the `1_AboutAssertions.Koans.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
 
 ## Prerequisites
 
