@@ -1,6 +1,8 @@
 # PowerShell Koans
 
-[![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans)
+|Current Release|Most Recent Build|
+|     :---:     |      :---:      |
+| [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji/branch/master?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans) |
 
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell through Pester unit testing.
 
