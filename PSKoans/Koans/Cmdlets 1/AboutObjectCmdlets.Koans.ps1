@@ -66,7 +66,14 @@ Describe 'Select-Object' {
     #>
 
     It 'selects specific properties of an object' {
+        $File = New-TemporaryFile
+        "Hello" | Set-Content -Path $File.FullName
+        $File = Get-Item -Path $File.FullName
 
+        $Selected = $File | Select-Object -Property Name, Length
+        $Selected.PSObject.Properties.Name | Should -Be @('Name', '__')
+
+        $Selected.Length | Should -Be __
     }
 
     It 'can exclude specific properties from an object' {
