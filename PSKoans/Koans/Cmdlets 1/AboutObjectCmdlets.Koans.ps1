@@ -69,6 +69,10 @@ Describe 'Select-Object' {
 
     }
 
+    It 'can exclude specific properties from an object' {
+
+    }
+
     It 'changes the object type' {
 
     }
@@ -78,6 +82,14 @@ Describe 'Select-Object' {
     }
 
     It 'can retrieve just the contents or value of a property' {
+
+    }
+
+    It 'can pick specific numbers of objects' {
+
+    }
+
+    It 'can ignore duplicate objects' {
 
     }
 }
