@@ -12,8 +12,46 @@ Describe 'Get-Blank' {
 Describe 'Get-Enlightenment' {
     BeforeAll {
         Mock Initialize-KoanDirectory
-        Mock Start-Process
+        Mock Start-Process {$FilePath}
         Mock Invoke-Item
+    }
+
+    Context 'Get-Enlightenment -Reset' {
+
+        It 'should call Initialize-KoanDirectory' {
+            Get-Enlightenment -Reset
+
+            Assert-MockCalled Initialize-KoanDirectory -Times 1
+        }
+    }
+
+    Context 'Get-Enlightenment -Meditate' {
+
+        Context 'VS Code Installed' {
+            BeforeAll {
+                Mock Get-Command {$true}
+            }
+
+            It 'should start VS Code with Start-Process' {
+                Get-Enlightenment -Meditate | Should -Be 'code'
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Start-Process -Times 1
+            }
+        }
+
+        Context 'VS Code Not Installed' {
+            BeforeAll {
+                Mock Get-Command {$false}
+            }
+
+            It 'should open the koans directory with Invoke-Item' {
+                Get-Enlightenment -Meditate
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Invoke-Item -Times 1
+            }
+        }
     }
 }
 
