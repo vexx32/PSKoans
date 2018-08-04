@@ -143,9 +143,10 @@ InModuleScope 'PSKoans' {
                     @{Path = "$env:PSKoans_Folder\$FileName"}
                 }
 
-                $TestCases = Get-ChildItem -Path (Get-ModuleKoanFolder) -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                    @{File = $_.FullName -replace '.+\\Koans\\'}
-                }
+                $TestCases = Get-ChildItem -Path "$((Get-Module -Name 'PSKoans').ModuleBase)\Koans" -Recurse -File -Filter '*.Koans.ps1' |
+                    ForEach-Object {
+                        @{File = $_.FullName -replace '.+\\Koans\\'}
+                    }
             }
 
             It 'should not produce output' {
@@ -176,9 +177,10 @@ InModuleScope 'PSKoans' {
 
         Context 'Koan Folder Does Not Exist' {
             BeforeAll {
-                $TestCases = Get-ChildItem -Path (Get-ModuleKoanFolder) -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                    @{File = $_.FullName -replace '.+\\Koans\\'}
-                }
+                $TestCases = Get-ChildItem -Path "$((Get-Module -Name 'PSKoans').ModuleBase)\Koans" -Recurse -File -Filter '*.Koans.ps1' |
+                    ForEach-Object {
+                        @{File = $_.FullName -replace '.+\\Koans\\'}
+                    }
             }
 
             It 'should not produce output' {

@@ -300,7 +300,7 @@ function Initialize-KoanDirectory {
             Remove-Item -Recurse -Path $env:PSKoans_Folder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path (Get-ModuleKoanFolder) -Recurse -Destination $env:PSKoans_Folder
+        Copy-Item -Path "$PSScriptRoot\Koans" -Recurse -Destination $env:PSKoans_Folder
         Write-Verbose "Koans copied to '$env:PSKoans_Folder'"
     }
     else {
@@ -308,12 +308,6 @@ function Initialize-KoanDirectory {
     }
 }
 
-function Get-ModuleKoanFolder {
-    [CmdletBinding()]
-    param()
-
-    $PSScriptRoot | Join-Path -ChildPath "Koans"
-}
 
 function Get-Blank {
     [Alias('__', 'FILL_ME_IN')]
