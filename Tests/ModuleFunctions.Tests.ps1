@@ -142,13 +142,6 @@ InModuleScope 'PSKoans' {
                     1..($_ * 10) | Set-Content -Path "$env:PSKoans_Folder\$FileName"
                     @{Path = "$env:PSKoans_Folder\$FileName"}
                 }
-
-                $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
-                $TestCases = Get-ChildItem -Path "$ModuleFolder\Koans" -Recurse -File -Filter '*.Koans.ps1' |
-                    ForEach-Object {
-                        @{File = $_.FullName -replace '.+\\Koans\\'}
-                    }
-
             }
 
             It 'should not produce output' {
@@ -161,7 +154,12 @@ InModuleScope 'PSKoans' {
                 Test-Path -Path $Path | Should -BeFalse
             }
 
-            It 'should copy <File> to the Koans folder' -TestCases $TestCases {
+            $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
+            $KoanFiles = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
+                @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
+            }
+
+            It 'should copy <File> to the Koans folder' -TestCases $KoanFiles {
                 param($File)
 
                 Test-Path -Path "$env:PSKoans_Folder\$File" | Should -BeTrue
@@ -178,16 +176,14 @@ InModuleScope 'PSKoans' {
         }
 
         Context 'Koan Folder Does Not Exist' {
-            BeforeAll {
-                $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
-                $TestCases = Get-ChildItem -Path "$ModuleFolder\Koans" -Recurse -File -Filter '*.Koans.ps1' |
-                    ForEach-Object {
-                        @{File = $_.FullName -replace '.+\\Koans\\'}
-                    }
-            }
 
             It 'should not produce output' {
                 Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
+            }
+
+            $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
+            $TestCases = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
+                @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
             }
 
             It 'should copy <File> to the Koans folder' -TestCases $TestCases {
