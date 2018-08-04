@@ -15,7 +15,7 @@ param()
 
     Be sure to review AboutStrings and AboutArrays if you need to!
 #>
-Describe "The Stock Example" {
+Describe "The Stock Challenge" {
 
     $StockData = @(
         "Date,Open,High,Low,Close,Volume,Adj Close"
