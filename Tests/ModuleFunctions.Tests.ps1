@@ -139,8 +139,8 @@ InModuleScope 'PSKoans' {
 
                 $DummyFiles = 1..10 | ForEach-Object {
                     $FileName = '{0:000}' -f $_
-                    1..($_ * 10) | Set-Content -Path "$env:PSKoans_Folder\$FileName"
-                    @{Path = "$env:PSKoans_Folder\$FileName"}
+                    1..($_ * 10) | Set-Content -Path "$env:PSKoans_Folder/$FileName"
+                    @{Path = "$env:PSKoans_Folder/$FileName"}
                 }
             }
 
@@ -156,16 +156,19 @@ InModuleScope 'PSKoans' {
 
             $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             $KoanFiles = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
+                @{
+                    File         = $_.FullName -replace '.+[/\\]Koans[/\\]'
+                    ModuleFolder = $ModuleFolder
+                }
             }
 
             It 'should copy <File> to the Koans folder' -TestCases $KoanFiles {
-                param($File)
+                param($File, $ModuleFolder)
 
-                Test-Path -Path "$env:PSKoans_Folder\$File" | Should -BeTrue
+                Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
 
-                $CopiedFile = Get-Item -Path "$env:PSKoans_Folder\$File"
-                $OriginalFile = Get-Item -Path "$ModuleFolder\Koans\$File"
+                $CopiedFile = Get-Item -Path "$env:PSKoans_Folder/$File"
+                $OriginalFile = Get-Item -Path "$ModuleFolder/Koans/$File"
                 $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                 $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
@@ -183,16 +186,19 @@ InModuleScope 'PSKoans' {
 
             $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             $TestCases = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
+                @{
+                    File         = $_.FullName -replace '.+[/\\]Koans[/\\]'
+                    ModuleFolder = $ModuleFolder
+                }
             }
 
             It 'should copy <File> to the Koans folder' -TestCases $TestCases {
-                param($File)
+                param($File, $ModuleFolder)
 
-                Test-Path -Path "$env:PSKoans_Folder\$File" | Should -BeTrue
+                Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
 
-                $CopiedFile = Get-Item -Path "$env:PSKoans_Folder\$File"
-                $OriginalFile = Get-Item -Path "$ModuleFolder\Koans\$File"
+                $CopiedFile = Get-Item -Path "$env:PSKoans_Folder/$File"
+                $OriginalFile = Get-Item -Path "$ModuleFolder/Koans/$File"
                 $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                 $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
