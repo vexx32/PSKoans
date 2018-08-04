@@ -1,6 +1,7 @@
 $ProjectRoot = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'Tests'
 $ModuleFolder = "$ProjectRoot\PSKoans"
 Import-Module $ModuleFolder -Prefix "TST"
+Import-Module Microsoft.PowerShell.Core
 
 Describe 'Get-Blank' {
 
@@ -156,14 +157,11 @@ InModuleScope 'PSKoans' {
 
             $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             $KoanFiles = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                @{
-                    File         = $_.FullName -replace '.+[/\\]Koans[/\\]'
-                    ModuleFolder = $ModuleFolder
-                }
+                @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
             }
 
             It 'should copy <File> to the Koans folder' -TestCases $KoanFiles {
-                param($File, $ModuleFolder)
+                param($File)
 
                 Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
 
@@ -186,14 +184,11 @@ InModuleScope 'PSKoans' {
 
             $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             $TestCases = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                @{
-                    File         = $_.FullName -replace '.+[/\\]Koans[/\\]'
-                    ModuleFolder = $ModuleFolder
-                }
+                @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
             }
 
             It 'should copy <File> to the Koans folder' -TestCases $TestCases {
-                param($File, $ModuleFolder)
+                param($File)
 
                 Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
 
