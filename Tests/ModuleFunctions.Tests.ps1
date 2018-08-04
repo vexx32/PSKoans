@@ -131,8 +131,6 @@ InModuleScope 'PSKoans' {
                 $LocalKoanFolder = $env:PSKoans_Folder
             }
             $env:PSKoans_Folder = "TestDrive:\Koans"
-
-            $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
         }
 
         Context 'Koan Folder Exists' {
@@ -149,6 +147,8 @@ InModuleScope 'PSKoans' {
                     ForEach-Object {
                         @{File = $_.FullName -replace '.+\\Koans\\'}
                     }
+
+                $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             }
 
             It 'should not produce output' {
@@ -183,6 +183,8 @@ InModuleScope 'PSKoans' {
                     ForEach-Object {
                         @{File = $_.FullName -replace '.+\\Koans\\'}
                     }
+
+                $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             }
 
             It 'should not produce output' {
