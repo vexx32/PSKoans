@@ -50,12 +50,12 @@ Describe "The Stock Example" {
 
     It 'should determine the correct answer' {
         function Get-GreatestVarianceDate {
-            param([string[]]$InputData)
+            param([string[]]$Data)
 
             # Add the solution code here!
 
         }
 
-        Get-GreatestVarianceDate | Should -Be "2012-03-13"
+        Get-GreatestVarianceDate -Data $StockData | Should -Be "2012-03-13"
     }
 }
