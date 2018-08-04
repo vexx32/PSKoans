@@ -4,8 +4,8 @@ Import-Module $ModuleFolder -Prefix "TST"
 
 Describe 'Get-Blank' {
 
-    It 'should output $null' {
-        Get-TSTBlank | Should -Be $null
+    It 'should produce no output' {
+        Get-TSTBlank | Should -BeNullOrEmpty
     }
 }
 
@@ -74,9 +74,10 @@ Describe 'Get-Enlightenment' {
                 Mock Get-Command {$false}
             }
 
+            It 'should produce no output' {
+                Get-TSTEnlightenment -Meditate | Should -BeNullOrEmpty
+            }
             It 'should open the koans directory with Invoke-Item' {
-                Get-TSTEnlightenment -Meditate
-
                 Assert-MockCalled Get-Command -Times 1
                 Assert-MockCalled Invoke-Item -Times 1
             }
@@ -96,9 +97,11 @@ InModuleScope 'PSKoans' {
                 Mock Test-Path {$true}
             }
 
-            It 'should try to remove the existing folder and then copy files' {
-                Initialize-KoanDirectory -Confirm:$false
+            It 'should not produce output' {
+                Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
+            }
 
+            It 'should try to remove the existing folder and then copy files' {
                 Assert-MockCalled Test-Path -Times 1
                 Assert-MockCalled Remove-Item -Times 1
                 Assert-MockCalled Copy-Item -Times 1
