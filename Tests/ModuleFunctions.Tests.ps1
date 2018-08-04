@@ -1,7 +1,6 @@
 $ProjectRoot = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'Tests'
 $ModuleFolder = "$ProjectRoot\PSKoans"
 Import-Module $ModuleFolder -Prefix "TST"
-Import-Module Microsoft.PowerShell.Core
 
 Describe 'Get-Blank' {
 
@@ -132,6 +131,10 @@ InModuleScope 'PSKoans' {
                 $LocalKoanFolder = $env:PSKoans_Folder
             }
             $env:PSKoans_Folder = "TestDrive:\Koans"
+
+            $ModuleFolder = Get-Module -Name 'PSKoans' |
+                Where-Object Name -eq 'PSKoans' |
+                Select-Object -ExpandProperty ModuleBase
         }
 
         Context 'Koan Folder Exists' {
@@ -155,7 +158,6 @@ InModuleScope 'PSKoans' {
                 Test-Path -Path $Path | Should -BeFalse
             }
 
-            $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             $KoanFiles = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
                 @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
             }
@@ -182,7 +184,6 @@ InModuleScope 'PSKoans' {
                 Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
             }
 
-            $ModuleFolder = (Get-Module -Name 'PSKoans').ModuleBase
             $TestCases = Get-ChildItem -Path $ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
                 @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
             }
