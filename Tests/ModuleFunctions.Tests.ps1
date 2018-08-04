@@ -10,22 +10,51 @@ Describe 'Get-Blank' {
 }
 
 Describe 'Get-Enlightenment' {
-    BeforeAll {
-        Mock Initialize-KoanDirectory
-        Mock Start-Process {$FilePath}
-        Mock Invoke-Item
+
+    Context 'Get-Enlightenment (Default Behaviour)' {
+        BeforeAll {
+            Mock Clear-Host
+            Mock Write-MeditationPrompt
+            Mock Get-ChildItem {Get-Item -Path "$ModuleFolder\Koans\*\*" -Filter '*.Koans.ps1'}
+            Mock Invoke-Pester
+        }
+
+        It 'should produce no output' {
+            Get-TSTEnlightenment | Should -BeNullOrEmpty
+        }
+
+        It 'should clear the screen' {
+            Assert-MockCalled Clear-Host -Times 1
+        }
+
+        It 'should write the meditation prompts' {
+            Assert-MockCalled Write-MeditationPrompt -Times 2
+        }
+
+        It 'should Invoke-Pester globally, and again for every file in the Koans folder' {
+            Assert-MockCalled Invoke-Pester -Times ((Get-ChildItem).Count + 1)
+        }
     }
 
     Context 'Get-Enlightenment -Reset' {
+        BeforeAll {
+            Mock Initialize-KoanDirectory
+        }
+
+        It 'should produce no output' {
+            Get-TSTEnlightenment -Reset | Should -BeNullOrEmpty
+        }
 
         It 'should call Initialize-KoanDirectory' {
-            Get-Enlightenment -Reset
-
             Assert-MockCalled Initialize-KoanDirectory -Times 1
         }
     }
 
     Context 'Get-Enlightenment -Meditate' {
+        BeforeAll {
+            Mock Start-Process {$FilePath}
+            Mock Invoke-Item
+        }
 
         Context 'VS Code Installed' {
             BeforeAll {
@@ -33,7 +62,7 @@ Describe 'Get-Enlightenment' {
             }
 
             It 'should start VS Code with Start-Process' {
-                Get-Enlightenment -Meditate | Should -Be 'code'
+                Get-TSTEnlightenment -Meditate | Should -Be 'code'
 
                 Assert-MockCalled Get-Command -Times 1
                 Assert-MockCalled Start-Process -Times 1
@@ -46,7 +75,7 @@ Describe 'Get-Enlightenment' {
             }
 
             It 'should open the koans directory with Invoke-Item' {
-                Get-Enlightenment -Meditate
+                Get-TSTEnlightenment -Meditate
 
                 Assert-MockCalled Get-Command -Times 1
                 Assert-MockCalled Invoke-Item -Times 1
