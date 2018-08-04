@@ -1,25 +1,30 @@
-$projectRoot = Resolve-Path "$PSScriptRoot\.."
-$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psm1")
-$moduleName = Split-Path $moduleRoot -Leaf
+$ProjectRoot = Resolve-Path "$PSScriptRoot\.."
+$ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psm1")
+$ModuleName = Split-Path $ModuleRoot -Leaf
 
-Describe "General project validation: $moduleName" {
+Describe "General project validation: $ModuleName" {
 
-    $scripts = Get-ChildItem $projectRoot -Include '*.ps1', '*.psm1', '*.psd1' -Recurse -Exclude '*.Koans.ps1'
+    $FileSearch = @{
+        Path    = $ProjectRoot
+        Include = '*.ps1', '*.psm1', '*.psd1'
+        Recurse = $true
+        Exclude = '*.Koans.ps1'
+    }
+    $Scripts = Get-ChildItem @FileSearch
 
     # TestCases are splatted to the script so we need hashtables
-    $testCase = $scripts | Foreach-Object {@{file = $_}}
-    It "Script <file> should be valid powershell" -TestCases $testCase {
-        param($file)
+    $TestCases = $Scripts | ForEach-Object { @{File = $_} }
+    It "<File> should be valid powershell" -TestCases $TestCases {
+        param($File)
 
-        $file.fullname | Should Exist
+        $File.FullName | Should -Exist
 
-        $contents = Get-Content -Path $file.fullname -ErrorAction Stop
-        $errors = $null
-        $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
-        $errors.Count | Should Be 0
+        $FileContents = Get-Content -Path $File.FullName -ErrorAction Stop
+        $Errors = $null
+        [System.Management.Automation.PSParser]::Tokenize($FileContents, [ref]$Errors) > $null
+        $Errors.Count | Should -Be 0
     }
-
-    It "Module '$moduleName' can import cleanly" {
-        {Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -Force } | Should -Not -Throw
+    It "'$ModuleName' can import cleanly" {
+        {Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force} | Should -Not -Throw
     }
 }
