@@ -61,19 +61,32 @@ Describe 'Pipelines and Loops' {
         $Values = foreach ($Number in 1..5) {
             # In these kinds of loops, the specified variable name ($Number in this case) takes the place
             # of the $_ or $PSItem automatic variables instead.
-            $Number++
+            $Number
         }
         $Values | Should -Be __
 
         $Values = for ($i = 0; $i -lt 5; $i++) {
             # For loops are quite rare in native PowerShell code. They have their uses, but are
             # frequently too semantically obscure to have a place in PS's verbose ecosystem.
+            # Remember, ++ after the variable mean assign the value then increment.
+            # ++ before the variable means increment and the assign the value.
             $i
         }
         $Values | Should -Be @(0, 1, 2, 3, 4)
 
-        $Values = while ($true) { # watch out for infinite loops!
-            $Tick++ # Remember: an undeclared variable acts as zero until we increment it!
+        $Values = while ($true) {
+            # watch out for infinite loops!
+
+            # Remember: an undeclared variable acts as zero until we increment it!
+            # Incrementing a variable won't output the value
+            # unless the expression is wrapped in parentheses.
+            (++$Tick)
+
+            # An alternative would be the following:
+            # $returnvalue = ++$Tick
+            # $returnvalue
+            # Perhaps slightly more clear but more verbose
+
             if ($Tick -gt 2) {
                 break # the break statement breaks out of the current loop.
             }
