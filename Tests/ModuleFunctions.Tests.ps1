@@ -168,7 +168,7 @@ InModuleScope 'PSKoans' {
                 Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
 
                 $CopiedFile = Get-Item -Path "$env:PSKoans_Folder/$File"
-                $OriginalFile = Get-Item -Path "$ModuleFolder/Koans/$File"
+                $OriginalFile = $ModuleFolder | Join-Path -ChildPath "Koans/$File" | Get-Item
                 $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                 $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
@@ -198,7 +198,7 @@ InModuleScope 'PSKoans' {
                 Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
 
                 $CopiedFile = Get-Item -Path "$env:PSKoans_Folder/$File"
-                $OriginalFile = Get-Item -Path "$ModuleFolder/Koans/$File"
+                $OriginalFile = $ModuleFolder | Join-Path -ChildPath "Koans/$File" | Get-Item
                 $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                 $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
