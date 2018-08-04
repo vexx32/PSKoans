@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(103)]
+[Koan(Position = 103)]
 param()
 <#
     Functions & Script Blocks (I)

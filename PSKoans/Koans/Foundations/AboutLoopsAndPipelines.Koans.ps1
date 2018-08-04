@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(113)]
+[Koan(Position = 113)]
 param()
 <#
     The Pipeline & Loops

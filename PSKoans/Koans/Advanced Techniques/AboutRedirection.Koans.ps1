@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(601)]
+[Koan(Position = 601)]
 param()
 <#
     Redirection

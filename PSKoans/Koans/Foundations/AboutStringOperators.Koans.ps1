@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(109)]
+[Koan(Position = 109)]
 param()
 <#
     String Operators

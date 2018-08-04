@@ -64,7 +64,7 @@ If you are writing a koan file, the header of the file _must_ follow this format
 
 ```powershell
 #Requires -Module PSKoans
-[Koan($Index)]
+[Koan(Position = $Index)]
 param()
 ```
 
