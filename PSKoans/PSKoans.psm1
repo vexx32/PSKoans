@@ -68,8 +68,7 @@ function Get-Enlightenment {
                 $_.ScriptBlock.Attributes.Where( {
                         $_.TypeID -match 'KoanAttribute'
                     }).Position
-            } |
-                Select-Object -ExpandProperty Path
+            } | Select-Object -ExpandProperty Path
 
             $PesterParams = @{
                 Script      = $SortedKoanList
