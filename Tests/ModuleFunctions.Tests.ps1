@@ -4,7 +4,7 @@ Import-Module $ModuleFolder -Prefix "TST"
 
 Describe 'Get-Blank' {
 
-    It 'should produce no output' {
+    It 'should not produce output' {
         Get-TSTBlank | Should -BeNullOrEmpty
     }
 }
@@ -19,7 +19,7 @@ Describe 'Get-Enlightenment' {
             Mock Invoke-Pester
         }
 
-        It 'should produce no output' {
+        It 'should not produce output' {
             Get-TSTEnlightenment | Should -BeNullOrEmpty
         }
 
@@ -41,7 +41,7 @@ Describe 'Get-Enlightenment' {
             Mock Initialize-KoanDirectory
         }
 
-        It 'should produce no output' {
+        It 'should not produce output' {
             Get-TSTEnlightenment -Reset | Should -BeNullOrEmpty
         }
 
@@ -74,7 +74,7 @@ Describe 'Get-Enlightenment' {
                 Mock Get-Command {$false}
             }
 
-            It 'should produce no output' {
+            It 'should not produce output' {
                 Get-TSTEnlightenment -Meditate | Should -BeNullOrEmpty
             }
             It 'should open the koans directory with Invoke-Item' {
@@ -113,9 +113,10 @@ InModuleScope 'PSKoans' {
                 Mock Test-Path {$false}
             }
 
-            It 'should just copy files' {
+            It 'should not produce output' {
                 Initialize-KoanDirectory -Confirm:$false
-
+            }
+            It 'should just copy files' {
                 Assert-MockCalled Test-Path -Times 1
                 Assert-MockCalled Remove-Item -Times 0
                 Assert-MockCalled Copy-Item -Times 1
@@ -142,7 +143,9 @@ InModuleScope 'PSKoans' {
                 }
             }
 
-            Initialize-KoanDirectory -Confirm:$false
+            It 'should not produce output' {
+                Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
+            }
 
             It 'should remove the file from: <Path>' -TestCases $DummyFiles {
                 param($Path)
@@ -176,7 +179,9 @@ InModuleScope 'PSKoans' {
                 }
             }
 
-            Initialize-KoanDirectory -Confirm:$false
+            It 'should not produce output' {
+                Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
+            }
 
             It 'should copy <File> to the Koans folder' -TestCases $TestCases {
                 param($File)
@@ -211,7 +216,7 @@ InModuleScope 'PSKoans' {
         Context 'Greeting Prompt' {
 
             It 'should only write a single string to host' {
-                Write-MeditationPrompt -Greeting
+                Write-MeditationPrompt -Greeting | Should -BeNullOrEmpty
 
                 Assert-MockCalled Write-Host -Times 1
             }
@@ -229,8 +234,8 @@ InModuleScope 'PSKoans' {
                 }
             }
 
-            It 'should display the entire prompt' {
-                Write-MeditationPrompt @Meditation
+            It 'should only display the complete prompt' {
+                Write-MeditationPrompt @Meditation | Should -BeNullOrEmpty
 
                 Assert-MockCalled Import-Clixml -Times 1
                 Assert-MockCalled Write-Host -Times 8
@@ -247,8 +252,8 @@ InModuleScope 'PSKoans' {
                 }
             }
 
-            It 'should display the enlightened prompt' {
-                Write-MeditationPrompt @Meditation
+            It 'should display only the enlightened prompt' {
+                Write-MeditationPrompt @Meditation | Should -BeNullOrEmpty
 
                 Assert-MockCalled Write-Host -Times 3
             }
