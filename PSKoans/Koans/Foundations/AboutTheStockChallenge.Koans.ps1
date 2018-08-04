@@ -11,7 +11,7 @@ param()
     The following operations may be of use:
 
     [double] $value           # Casts (converts) the value into numerical data
-    $String -split $Delimiter # Creates an array by splitting the string
+    $String -split ','        # Creates an array by splitting the string
 
     Be sure to review AboutStrings and AboutArrays if you need to!
 #>
