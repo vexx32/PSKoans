@@ -1,4 +1,4 @@
-$ProjectRoot = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'Tests', ''
+$ProjectRoot = (Split-Path -Parent $MyInvocation.MyCommand.Path) -replace 'Tests'
 $ModuleFolder = "$ProjectRoot\PSKoans"
 Import-Module $ModuleFolder -Prefix "TST"
 
@@ -142,6 +142,10 @@ InModuleScope 'PSKoans' {
                     1..($_ * 10) | Set-Content -Path "$env:PSKoans_Folder\$FileName"
                     @{Path = "$env:PSKoans_Folder\$FileName"}
                 }
+
+                $TestCases = Get-ChildItem -Path (Get-ModuleKoanFolder) -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
+                    @{File = $_.FullName -replace '.+\\Koans\\'}
+                }
             }
 
             It 'should not produce output' {
@@ -154,9 +158,6 @@ InModuleScope 'PSKoans' {
                 Test-Path -Path $Path | Should -BeFalse
             }
 
-            $TestCases = Get-ChildItem -Path "$ModuleFolder\Koans" -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                @{File = $_.FullName -replace '.+\\Koans\\'}
-            }
             It 'should copy <File> to the Koans folder' -TestCases $TestCases {
                 param($File)
 
@@ -175,7 +176,7 @@ InModuleScope 'PSKoans' {
 
         Context 'Koan Folder Does Not Exist' {
             BeforeAll {
-                $TestCases = Get-ChildItem -Path "$ModuleFolder\Koans" -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
+                $TestCases = Get-ChildItem -Path (Get-ModuleKoanFolder) -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
                     @{File = $_.FullName -replace '.+\\Koans\\'}
                 }
             }

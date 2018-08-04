@@ -120,11 +120,7 @@ function Get-Enlightenment {
         }
     }
 } # end function
-function Get-Blank {
-	[Alias('__', 'FILL_ME_IN')]
-	param()
-	$null
-}
+
 function Write-MeditationPrompt {
     <#
 	.NOTES
@@ -284,6 +280,7 @@ You may run 'rake -Meditate' to begin your meditation.
         }
     }
 }
+
 function Initialize-KoanDirectory {
     <#
 	.NOTES
@@ -303,12 +300,25 @@ function Initialize-KoanDirectory {
             Remove-Item -Recurse -Path $env:PSKoans_Folder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot/Koans" -Recurse -Destination $env:PSKoans_Folder
+        Copy-Item -Path (Get-ModuleKoanFolder) -Recurse -Destination $env:PSKoans_Folder
         Write-Verbose "Koans copied to '$env:PSKoans_Folder'"
     }
     else {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."
     }
+}
+
+function Get-ModuleKoanFolder {
+    [CmdletBinding()]
+    param()
+
+    $PSScriptRoot | Join-Path -ChildPath "Koans"
+}
+
+function Get-Blank {
+    [Alias('__', 'FILL_ME_IN')]
+    param()
+    $null
 }
 
 $env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
