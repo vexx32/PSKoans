@@ -11,22 +11,30 @@ param()
 Describe 'New-Object' {
 
     It 'can create objects of a specified type' {
-        $Object = New-Object -TypeName 'string'
-        $String = 'string'
+        $Object = New-Object -TypeName 'System.Collections.Hashtable'
+        $Hashtable = @{}
 
-        $String | Should -BeOfType string
+        $Hashtable | Should -BeOfType System.Collections.Hashtable
         $Object | Should -BeOfType __
     }
 
     It 'can create objects of any available type' {
-        $Object = New-Object -TypeName 'System.Collections.ArrayList'
-        $Object | Should -BeOfType __
+        $PSObject = New-Object -TypeName 'PSObject'
+        $PSObject | Should -BeOfType __
     }
 
     It 'can accept arguments for the constructor' {
         $Object = New-Object 'string' -ArgumentList ([char[]]@('b','a','n','a','n','a'), 0, 3)
         '__' | Should -Be $Object
         $Object | Should -BeOfType string
+    }
+
+    It 'is just one way to instantiate an object' {
+        $Object = New-Object 'PSObject'
+        $Object2 = [PSObject]::new()
+
+        $Object | Should -BeOfType System.Management.Automation.PSObject
+        $Object2 | Should -BeOfType __
     }
 }
 
@@ -77,19 +85,31 @@ Describe 'Select-Object' {
     }
 
     It 'can exclude specific properties from an object' {
+        $File = New-TemporaryFile
 
+        $File.Attributes | Should -Be '__'
+
+        $Object = $File | Select-Object -Property * -ExcludeProperty Attributes, Length
+
+        $Object.Attributes | Should -Be $null
+        $Object.Length | Should -Be __
     }
 
     It 'changes the object type' {
+        $FileObject = Get-Item -Path $home
 
-    }
+        $FileObject | Should -BeOfType __
 
-    It 'can exclude properties' {
-
+        $Object = $FileObject | Select-Object -Property FullName, Name, DirectoryName
+        $Object | Should -BeOfType __
     }
 
     It 'can retrieve just the contents or value of a property' {
+        $FileObject = Get-Item -Path $home
 
+        $FileName = $FileObject | Select-Object -ExpandProperty __ -ErrorAction SilentlyContinue
+
+        $FileName | Should -Be $FileObject.Name
     }
 
     It 'can pick specific numbers of objects' {
