@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(201)]
+[Koan(Position = 201)]
 param()
 <#
     Get-Help

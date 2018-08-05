@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(107)]
+[Koan(Position = 107)]
 param()
 <#
     Comparison Operators

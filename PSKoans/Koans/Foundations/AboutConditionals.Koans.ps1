@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(110)]
+[Koan(Position = 110)]
 param()
 <#
     Conditionals and Branching

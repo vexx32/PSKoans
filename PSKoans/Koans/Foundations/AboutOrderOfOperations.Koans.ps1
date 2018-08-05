@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(104)]
+[Koan(Position = 104)]
 param()
 <#
     Order of Operations

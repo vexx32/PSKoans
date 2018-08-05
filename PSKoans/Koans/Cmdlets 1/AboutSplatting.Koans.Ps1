@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(204)]
+[Koan(Position = 204)]
 param()
 <#
     Splatting

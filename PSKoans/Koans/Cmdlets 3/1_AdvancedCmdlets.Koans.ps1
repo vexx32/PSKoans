@@ -1,3 +1,3 @@
 #Requires -Module PSKoans
-[Koan(500)]
+[Koan(Position = 500)]
 param()
