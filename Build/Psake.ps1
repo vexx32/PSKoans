@@ -10,7 +10,7 @@ Properties {
     }
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
-    $PSVersion = $PSVersionTable.PSVersion.Major
+    $PSVersion = $PSVersionTable.PSVersion
     $TestFile = "TestResults_PS${PSVersion}_${TimeStamp}.xml"
     $Lines = '-' * 70
 
@@ -38,15 +38,15 @@ Task 'Default' -Depends 'Test'
 Task 'Init' {
     Set-Location -Path $ProjectRoot
     Write-Information @Continue @"
-$Lines
-Build System Details:
+    $Lines
+    Build System Details:
 "@
     Get-Item 'ENV:BH*'
 }
 
 Task 'Test' -Depends 'Init' {
     Write-Information @Continue @"
-$Lines
+    $Lines
     STATUS: Testing with PowerShell $PSVersion
 "@
     # Testing links on github requires >= tls 1.2
@@ -87,7 +87,7 @@ $Lines
 Task 'Build' -Depends 'Test' {
     Write-Information @Continue @"
 
-$Lines
+    $Lines
 "@
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
     Set-ModuleFunctions
@@ -102,8 +102,8 @@ $Lines
     }
     catch {
         Write-Information @Continue @"
-Failed to update version for '$env:BHProjectName': $_.
-Continuing with existing version.
+    Failed to update version for '$env:BHProjectName': $_.
+    Continuing with existing version.
 "@
     }
 }
