@@ -17,7 +17,7 @@ function Initialize-KoanDirectory {
             Remove-Item -Recurse -Path $env:PSKoans_Folder -Force
         }
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$PSScriptRoot\Koans" -Recurse -Destination $env:PSKoans_Folder
+        Copy-Item -Path "$script:ModuleFolder\Koans" -Recurse -Destination $env:PSKoans_Folder
         Write-Verbose "Koans copied to '$env:PSKoans_Folder'"
     }
     else {
