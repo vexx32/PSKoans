@@ -113,11 +113,23 @@ Describe 'Select-Object' {
     }
 
     It 'can pick specific numbers of objects' {
+        $Array = 1..100
 
+        $FirstThreeValues = __
+        $Array | Select-Object -First 3 | Should -Be $FirstThreeValues
+
+        $LastFourValues = __
+        $Array | Select-Object -Last 4 | Should -Be $LastFourValues
+
+        $Array | Select-Object -Skip 10 -First 5 | Should -Be __
     }
 
     It 'can ignore duplicate objects' {
+        $Array = 6, 1, 4, 8, 7, 5, 3, 9, 2, 3, 2, 1, 5, 1, 6, 2, 8, 4,
+        7, 3, 1, 2, 6, 3, 7, 1, 4, 5, 2, 1, 3, 6, 2, 5, 1, 4
 
+        $UniqueItems = 5, '__', 10, 9, '__', '__', '__', 7, '__', '__'
+        $Array | Select-Object -Unique | Should -Be $UniqueItems
     }
 }
 
