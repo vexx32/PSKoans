@@ -53,6 +53,9 @@ $Lines
     $SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
+    # Import the module
+    Import-Module "$ProjectRoot\PSKoans\PSKoans.psd1"
+
     # Gather test results. Store them in a variable and file
     $PesterParams = @{
         Path         = "$ProjectRoot\Tests"
@@ -77,7 +80,7 @@ $Lines
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
     if ($TestResults.FailedCount -gt 0) {
-        Write-Error "Failed '$($TestResults.FailedCount)' tests; build failed!"
+        Write-Error "Failed $($TestResults.FailedCount) tests; build failed!"
     }
 }
 
