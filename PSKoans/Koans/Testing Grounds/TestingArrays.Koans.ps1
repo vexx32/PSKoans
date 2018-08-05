@@ -67,7 +67,7 @@ Context 'First Test: Arrays' {
 
     Describe 'Function' {
 
-        $TestCases = 10..100 | Get-Random -Count 5
+        $TestCases = 10, 25, 50, 100 | ForEach-Object {@{Number = $_}}
         It 'should handle a selection of <Number> numbers properly' -TestCases $TestCases {
             param($Number)
 
