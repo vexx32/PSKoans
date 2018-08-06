@@ -24,7 +24,6 @@ param()
 
     See 'Get-Help about_Operators' for more information.
 #>
-
 Describe 'String Comparison Operators' {
     <#
         String comparisons work a bit differently to other comparisons. Rather than comparing

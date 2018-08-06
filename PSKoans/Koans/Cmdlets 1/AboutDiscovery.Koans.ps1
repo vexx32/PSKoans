@@ -13,7 +13,6 @@ param()
     searches, it is straightforward to learn a significant amount about native PowerShell
     cmdlets and functions, as well as more advanced .NET classes, and methods.
 #>
-
 Describe 'Get-Help' {
     <#
         Get-Help

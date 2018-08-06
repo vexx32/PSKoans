@@ -38,7 +38,6 @@ param()
 
     [System.Collections.Generic.List[psobject]]::new
 #>
-
 Describe 'Lists' {
 
     Context 'Strict Typing' {

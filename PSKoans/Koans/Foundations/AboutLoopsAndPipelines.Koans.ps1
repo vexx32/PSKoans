@@ -15,7 +15,6 @@ param()
     As such, modifying the 'collection' mid-pipeline is very common. Pipelines are commonly used
     to take an input and perform multiple actions before storing or outputting the result.
 #>
-
 Describe 'Pipelines and Loops' {
     It 'is used to process input in several stages' {
         # The .. operator is used to quickly create arrays with a range of numbers
