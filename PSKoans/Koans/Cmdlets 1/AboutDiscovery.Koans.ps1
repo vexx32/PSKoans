@@ -54,6 +54,15 @@ Describe 'Get-Help' {
             $ParameterInfo.PipelineInput | Should -Be __
         }
         # Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full. You'll need it.
+
+        It 'can search for commands by parameter names' {
+            $RemoteCommands = Get-Help -Name * -Parameter ComputerName |
+                Select-Object -ExpandProperty Name
+
+            $RemoteCommands.Count | Should -Be __
+
+            $RemoteCommands[4] | Should -Be __
+        }
     }
 }
 
