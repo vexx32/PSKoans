@@ -200,4 +200,11 @@ Describe 'Get-Command' {
         $DateCommands.Count | Should -Be __
         $DateCommands[0].Name | Should -Be '__'
     }
+
+    It 'can look for commands by module' {
+        $KoanCommands = Get-Command -Module 'PSKoans'
+
+        $KoanCommands.Count | Should -Be __
+        $KoanCommands.Name | Should -Be @('__', '__', '__', '__')
+    }
 }
