@@ -1,0 +1,58 @@
+#Requires -Module PSKoans
+[Koan(Position = 206)]
+param()
+<#
+    Measure-Object
+
+    Measure-Object is, as its name implies, a utility cmdlet that
+    performs mathematical operations on collections of objects.
+#>
+Describe 'Measure-Object' {
+    BeforeAll {
+        $Numbers = @(
+            839, 339, 763, 663, 238, 427, 577, 613, 284, 453
+            850, 130, 250, 843, 669, 972, 572, 41, 172, 155
+            729, 616, 285, 231, 128, 540, 204, 584, 407, 98
+            668, 85, 320, 435, 87, 719, 936, 25, 75, 122
+            665, 154, 943, 35, 391, 816, 420, 229, 3, 938
+        )
+
+        $Files = Get-ChildItem -Path $home -Recurse -Depth 2
+    }
+
+    It 'can count objects' {
+        $Numbers |
+            Measure-Object -Count |
+            Select-Object -ExpandProperty Count |
+            Should -Be __
+
+        $Files |
+            Measure-Object -Count |
+            Select-Object -ExpandProperty Count |
+            Should -Be __
+    }
+
+    It 'can sum numerical objects' {
+
+    }
+
+    It 'can average numerical objects' {
+
+    }
+
+    It 'can find the largest or smallest value' {
+
+    }
+
+    It 'can find multiple values at once' {
+
+    }
+
+    It 'can operate on object properties' {
+
+    }
+
+    It 'can measure text lines, characters, and words of strings' {
+
+    }
+}
