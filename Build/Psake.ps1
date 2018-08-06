@@ -10,7 +10,7 @@ Properties {
     }
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
-    $PSVersion = $PSVersionTable.PSVersion.Major
+    $PSVersion = $PSVersionTable.PSVersion
     $TestFile = "TestResults_PS${PSVersion}_${TimeStamp}.xml"
     $Lines = '-' * 70
 
@@ -47,7 +47,7 @@ Build System Details:
 Task 'Test' -Depends 'Init' {
     Write-Information @Continue @"
 $Lines
-    STATUS: Testing with PowerShell $PSVersion
+STATUS: Testing with PowerShell $PSVersion
 "@
     # Testing links on github requires >= tls 1.2
     $SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol

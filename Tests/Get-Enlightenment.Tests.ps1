@@ -3,7 +3,7 @@
 InModuleScope 'PSKoans' {
     Describe 'Get-Enlightenment' {
 
-        Context 'Get-Enlightenment (Default Behaviour)' {
+        Context 'Default Behaviour' {
             BeforeAll {
                 Mock Clear-Host
                 Mock Write-MeditationPrompt
@@ -31,7 +31,7 @@ InModuleScope 'PSKoans' {
             }
         }
 
-        Context 'Get-Enlightenment -Reset' {
+        Context 'With -Reset Switch' {
             BeforeAll {
                 Mock Initialize-KoanDirectory
             }
@@ -45,7 +45,7 @@ InModuleScope 'PSKoans' {
             }
         }
 
-        Context 'Get-Enlightenment -Meditate' {
+        Context 'With -Meditate Switch' {
 
             Context 'VS Code Installed' {
                 BeforeAll {
