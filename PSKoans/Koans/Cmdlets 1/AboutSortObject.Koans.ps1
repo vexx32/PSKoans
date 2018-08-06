@@ -14,5 +14,25 @@ param()
     late in the pipeline sequence as possible.
 #>
 Describe 'Sort-Object' {
+    BeforeAll {
+        $Numbers = 5, 2, 7, 1, 4, 6, 8, 3, 10, 9
+        $Strings = 'hello', 'goodbye', 'who', 'Steve', 'PowerShell'
+    }
 
+    It 'sorts a collection of objects' {
+        $Numbers | Sort-Object | Should -Be __
+    }
+
+    It 'can sort in descending order' {
+        $Strings | Sort-Object -Descending | Should -Be __
+    }
+
+    It 'can sort based on the properties of objects' {
+        $Sorted = 'who', 'Steve', 'hello', 'goodbye', 'PowerShell'
+        $Strings | Sort-Object -Property __ | Should -Be $Sorted
+    }
+
+    It 'can sort based on custom criteria' {
+        $Numbers | Sort-Object {$_ % 3} | Should -Be __
+    }
 }
