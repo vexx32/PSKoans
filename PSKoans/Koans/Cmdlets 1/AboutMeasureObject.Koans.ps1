@@ -33,11 +33,21 @@ Describe 'Measure-Object' {
     }
 
     It 'can sum numerical objects' {
+        $StopIndex = __
 
+        $Numbers[0..$StopIndex] |
+            Measure-Object -Sum |
+            Select-Object -ExpandProperty Sum |
+            Should -Be 6046
     }
 
     It 'can average numerical objects' {
+        $StartIndex = __
 
+        $Numbers[$StartIndex..25] |
+            Measure-Object -Average |
+            Select-Object -ExpandProperty Average |
+            Should -Be 421.5
     }
 
     It 'can find the largest or smallest value' {
