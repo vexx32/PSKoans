@@ -158,5 +158,46 @@ Describe 'Get-Command' {
         As the vast majority of PowerShell commands are packaged with help files, it is
         also an invaluable tool in finding possible help topics to look up in the first
         place!
+
+        When looking for related commands, use of the -Verb and -Noun search options
+        is often easier than figuring out how many wildcards you need in a -Name search.
     #>
+    BeforeAll {
+        # Try calling Get-Command in a PowerShell console to see the typical output!
+        $Commands = Get-Command
+    }
+
+    It 'lists available commands' {
+        $Commands.Count | Should -Be __
+        $Commands[7].Name | Should -Be '__'
+    }
+
+    It 'indicates the type of command' {
+        $CommandTypes = $Commands | Select-Object -ExpandProperty CommandType | Sort-Object -Unique
+
+        @('__', '__', 'Cmdlet') | Should -Be $CommandTypes
+    }
+
+    It 'can filter the output by keywords' {
+        $Command = Get-Command -Name "*-Child*"
+        $CimCommand = Get-Command -Name '__'
+
+        $Command.CommandType | Should -Be 'Cmdlet'
+        $Command.Name | Should -Be '__'
+        $CimCommand.Name | Should -Be 'Get-CimClass'
+    }
+
+    It 'can look for commands by verb' {
+        $GetCommands = Get-Command -Verb 'Get'
+        $GetCommands.Count | Should -Be __
+
+        $GetCommands[4].Name | Should -Be '__'
+    }
+
+    It 'can look for commands by noun' {
+        $DateCommands = Get-Command -Noun 'Date'
+
+        $DateCommands.Count | Should -Be __
+        $DateCommands[0].Name | Should -Be '__'
+    }
 }
