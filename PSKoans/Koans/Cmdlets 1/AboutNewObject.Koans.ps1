@@ -2,11 +2,11 @@
 [Koan(Position = 204)]
 param()
 <#
-    *-Object Cmdlets
+    New-Object
 
-    There are 9 standard '-Object' cmdlets in PowerShell, each designed to work with, well,
-    objects! They are, in no specific order: Compare-Object, ForEach-Object, Group-Object,
-    Measure-Object, New-Object, Select-Object, Sort-Object, Tee-Object, and Where-Object.
+    New-Object, as the name implies, is used to create objects. For the most part,
+    it is used to instantiate .NET objects, but can also be used to create COM
+    objects for interactions with the Windows COM interfaces.
 #>
 Describe 'New-Object' {
 
