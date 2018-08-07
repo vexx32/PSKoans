@@ -51,18 +51,41 @@ Describe 'Measure-Object' {
     }
 
     It 'can find the largest or smallest value' {
+        $StopIndex = __
 
+        $Values = $Numbers[5..$StopIndex] |
+            Measure-Object -Minimum -Maximum
+
+        $Values.Minimum | Should -Be 130
+        $Values.Maximum | Should -Be 972
     }
 
     It 'can find multiple values at once' {
+        $StartIndex = __
+        $StopIndex = __
 
+        $Values = $Numbers[$StartIndex..$StopIndex] |
+            Measure-Object -Average -Minimum -Sum
+
+        $Values.Average | Should -Be 377
+        # 'Count' is always present in the data from Measure-Object
+        $Values.Count | Should -Be 11
+        $Values.Minimum | Should -Be 85
+        $Values.Sum | Should -Be 4147
     }
 
     It 'can operate on object properties' {
-
+        $Data = $Files.BaseName | Measure-Object -Property Length -Sum -Average
+        $Data.Sum | Should -Be __
+        $Data.Average | Should -Be __
     }
 
     It 'can measure text lines, characters, and words of strings' {
+        $Text = Get-Content "$env:PSKoans_Folder/Foundations/AboutTheStockChallenge.Koans.ps1"
+        $Data = $Text | Measure-Object -Line -Word -Character
 
+        $Data.Lines | Should -Be __
+        $Data.Words | Should -Be __
+        $Data.Characters | Should -Be __
     }
 }
