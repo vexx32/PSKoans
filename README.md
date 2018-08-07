@@ -37,15 +37,15 @@ Install-Module Pester -Scope CurrentUser
 ### Install from Gallery
 
 1. `Install-Module PSKoans -Scope CurrentUser`
-2. Run `rake` / `Get-Enlightenment` to get things started.
-3. Run `rake -Meditate` to open your Koans folder either directly or in VS Code (if installed).
+2. Run `Measure-Karma` to get things started.
+3. Run `Measure-Karma -Meditate` to open your Koans folder either directly or in VS Code (if installed).
 
 ### Clone the Repo
 
 1. `git clone` the repository into your desired directory, or download and extract the repository as a .zip file into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
-4. Before working with the module, run `rake` once to initialise everything, and then run `rake -Meditate` to open the Koans folder for you to begin your journey.
+4. Before working with the module, run `Measure-Karma` once to initialise everything, and then run `Measure-Karma -Meditate` to open the Koans folder for you to begin your journey.
 
 ## Contributing
 
