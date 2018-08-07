@@ -100,13 +100,13 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags = @('Pester','Koans','Educational')
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri = 'https://github.com/vexx32/PSKoans/blob/dev/LICENSE'
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/vexx32/PSKoans'
 
             # A URL to an icon representing this module.
             # IconUri = ''
