@@ -61,26 +61,28 @@ function Get-Enlightenment {
 
             Write-MeditationPrompt -Greeting
 
+            $KoanScripts = $null
+
             $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
-                $_.ScriptBlock.Attributes.Where( {
-                        $_.TypeID -match 'KoanAttribute'
-                    }).Position
-            } | Select-Object -ExpandProperty Path
+                    $_.ScriptBlock.Attributes.Where( {
+                            $_.TypeID -match 'KoanAttribute'
+                        }).Position
+                }
 
-            $PesterParams = @{
-                Script   = $SortedKoanList
-                PassThru = $true
-                Show     = 'None'
-            }
-            $PesterTestCount = Invoke-Pester @PesterParams |
-                Select-Object -ExpandProperty TotalCount
+            $TotalKoans = $SortedKoanList.ScriptBlock.Ast.FindAll(
+                {
+                    param($Item)
+                    $Item -is [System.Management.Automation.Language.CommandAst] -and
+                    $Item.GetCommandName() -eq 'It'
+                }, $true
+            ).Count
 
             $KoansPassed = 0
 
-            foreach ($KoanFile in $SortedKoanList) {
+            foreach ($KoanFile in $SortedKoanList.Path) {
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
@@ -105,7 +107,7 @@ function Get-Enlightenment {
                     ItName       = $NextKoanFailed.Name
                     Meditation   = $NextKoanFailed.StackTrace
                     KoansPassed  = $KoansPassed
-                    TotalKoans   = $PesterTestCount
+                    TotalKoans   = $TotalKoans
                 }
                 Write-MeditationPrompt @Meditation
             }

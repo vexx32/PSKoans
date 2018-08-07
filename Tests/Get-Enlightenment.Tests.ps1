@@ -11,7 +11,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should not produce output' {
-                Get-Enlightenment | Should -BeNullOrEmpty
+                Get-Enlightenment | Should -Be $null
             }
 
             It 'should clear the screen' {
@@ -22,12 +22,12 @@ InModuleScope 'PSKoans' {
                 Assert-MockCalled Write-MeditationPrompt -Times 2
             }
 
-            It 'should Invoke-Pester globally, and on each of the koans' {
+            It 'should Invoke-Pester on each of the koans' {
                 $ValidKoans = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                     Get-Command {$_.FullName} |
                     Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'}
 
-                Assert-MockCalled Invoke-Pester -Times ($ValidKoans.Count + 1)
+                Assert-MockCalled Invoke-Pester -Times ($ValidKoans.Count)
             }
         }
 

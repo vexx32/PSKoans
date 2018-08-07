@@ -1,6 +1,7 @@
-Get-ChildItem "$PSScriptRoot\Public", "$PSScriptRoot\Private" | ForEach-Object {
+Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     . $_.FullName
 }
+. "$PSScriptRoot/ExportedTypes.ps1"
 
 $env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 $script:ModuleFolder = $PSScriptRoot
