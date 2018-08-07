@@ -61,8 +61,6 @@ function Measure-Karma {
 
             Write-MeditationPrompt -Greeting
 
-            $KoanScripts = $null
-
             $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
