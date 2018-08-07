@@ -38,7 +38,7 @@ Task 'Default' -Depends 'Test'
 Task 'Init' {
     Set-Location -Path $ProjectRoot
 
-    $CommitTag = if ($env:APPVEYOR_REPO_TAG) {
+    $CommitTag = if ($env:APPVEYOR_REPO_TAG_NAME) {
         $env:APPVEYOR_REPO_TAG_NAME
     }
     else {
