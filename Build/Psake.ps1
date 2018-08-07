@@ -47,10 +47,10 @@ Task 'Init' {
 
     Write-Information @Continue @"
 $Lines
-Build System Details:
-
 Repository Branch: $env:APPVEYOR_REPO_BRANCH
 Commit Tag: $CommitTag
+
+Build System Details:
 "@
     Get-Item 'ENV:BH*'
 }
