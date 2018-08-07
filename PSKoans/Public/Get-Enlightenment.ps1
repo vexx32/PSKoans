@@ -67,22 +67,22 @@ function Get-Enlightenment {
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
-                $_.ScriptBlock.Attributes.Where( {
-                        $_.TypeID -match 'KoanAttribute'
-                    }).Position
-            } | Tee-Object -Variable 'KoanScripts' |
-                Select-Object -ExpandProperty Path
+                    $_.ScriptBlock.Attributes.Where( {
+                            $_.TypeID -match 'KoanAttribute'
+                        }).Position
+                }
 
-            $TotalKoans = $KoanScripts.ScriptBlock.Ast.FindAll(
+            $TotalKoans = $SortedKoanList.ScriptBlock.Ast.FindAll(
                 {
                     param($Item)
-                    $Item -is [System.Management.Automation.Language.CommandAst]
+                    $Item -is [System.Management.Automation.Language.CommandAst] -and
+                    $Item.GetCommandName() -eq 'It'
                 }, $true
-            ).GetCommandName().Where{$_ -eq 'It'}.Count
+            ).Count
 
             $KoansPassed = 0
 
-            foreach ($KoanFile in $SortedKoanList) {
+            foreach ($KoanFile in $SortedKoanList.Path) {
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
