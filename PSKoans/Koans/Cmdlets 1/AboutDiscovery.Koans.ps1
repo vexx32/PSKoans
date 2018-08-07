@@ -166,20 +166,18 @@ Describe 'Get-Command' {
         When looking for related commands, use of the -Verb and -Noun search options
         is often easier than figuring out how many wildcards you need in a -Name search.
     #>
-    BeforeAll {
-        # Try calling Get-Command in a PowerShell console to see the typical output!
-        $Commands = Get-Command
-    }
 
     It 'lists available commands' {
-        $Commands.Count | Should -Be __
-        $Commands[7].Name | Should -Be '__'
+        # Try calling Get-Command in a PowerShell console to see the typical output!
+        $CommandCount = Get-Command | Measure-Object | Select-Object -ExpandProperty Count
+        $CommandCount | Should -Be __
+        Get-Command | Select-Object -First 1 -ExpandProperty Name | Should -Be '__'
     }
 
     It 'indicates the type of command' {
-        $CommandTypes = $Commands | Select-Object -ExpandProperty CommandType | Sort-Object -Unique
+        $CommandType = Get-Command | Select-Object -Skip 3 -First 1 -ExpandProperty CommandType
 
-        @('__', '__', 'Cmdlet') | Should -Be $CommandTypes
+        '__' | Should -Be $CommandType
     }
 
     It 'can filter the output by keywords' {
