@@ -1,4 +1,4 @@
-function Get-Enlightenment {
+function Measure-Karma {
     <#
 	.NOTES
 		Name: Get-Enlightenment
@@ -34,7 +34,7 @@ function Get-Enlightenment {
         https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans')]
+    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment')]
     param(
         [Parameter(Mandatory, ParameterSetName = "Meditate")]
         [switch]

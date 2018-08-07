@@ -1,7 +1,7 @@
 #Requires -Module PSKoans
 
 InModuleScope 'PSKoans' {
-    Describe 'Get-Enlightenment' {
+    Describe 'Measure-Karma' {
 
         Context 'Default Behaviour' {
             BeforeAll {
@@ -11,7 +11,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should not produce output' {
-                Get-Enlightenment | Should -Be $null
+                Measure-Karma | Should -Be $null
             }
 
             It 'should clear the screen' {
@@ -37,7 +37,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should not produce output' {
-                Get-Enlightenment -Reset | Should -BeNullOrEmpty
+                Measure-Karma -Reset | Should -BeNullOrEmpty
             }
 
             It 'should call Initialize-KoanDirectory' {
@@ -54,7 +54,7 @@ InModuleScope 'PSKoans' {
                 }
 
                 It 'should start VS Code with Start-Process' {
-                    Get-Enlightenment -Meditate | Should -Be 'code'
+                    Measure-Karma -Meditate | Should -Be 'code'
 
                     Assert-MockCalled Get-Command -Times 1
                     Assert-MockCalled Start-Process -Times 1
@@ -68,7 +68,7 @@ InModuleScope 'PSKoans' {
                 }
 
                 It 'should not produce output' {
-                    Get-Enlightenment -Meditate | Should -BeNullOrEmpty
+                    Measure-Karma -Meditate | Should -BeNullOrEmpty
                 }
                 It 'should open the koans directory with Invoke-Item' {
                     Assert-MockCalled Get-Command -Times 1
