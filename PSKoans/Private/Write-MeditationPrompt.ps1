@@ -54,7 +54,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = Import-CliXml -Path "$PSScriptRoot/Data/Meditations.clixml" | Get-Random
+    $Koan = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml" | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
