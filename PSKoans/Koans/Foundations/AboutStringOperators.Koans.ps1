@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(109)]
+[Koan(Position = 109)]
 param()
 <#
     String Operators
@@ -24,7 +24,6 @@ param()
 
     See 'Get-Help about_Operators' for more information.
 #>
-
 Describe 'String Comparison Operators' {
     <#
         String comparisons work a bit differently to other comparisons. Rather than comparing
@@ -195,10 +194,10 @@ Describe 'Regex Operators' {
             $String = '__'
             $Pattern = '^(?<FirstWord>[a-z]+) (?<SecondWord>[a-z]+)$'
 
-            $Result = $String -match $Pattern
+            $String -match $Pattern | Should -BeTrue
 
-            $Result.FirstWord | Should -Be '__'
-            $Result.SecondWord | Should -Be '__'
+            $Matches.FirstWord | Should -Be '__'
+            $Matches.SecondWord | Should -Be '__'
         }
 
         It 'supports indexed match groups' {
@@ -264,7 +263,7 @@ Describe 'Formatting Operators' {
         }
 
         It 'can insert multiple values with formatting on each' {
-            $String = 'Employee #{0:000000}, you are due in room #{0:000} for a drug test.'
+            $String = 'Employee #{1:000000}, you are due in room #{0:000} for a drug test.'
 
             $String -f 154, 19 | Should -Be '__'
         }

@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(110)]
+[Koan(Position = 110)]
 param()
 <#
     Conditionals and Branching
@@ -10,7 +10,6 @@ param()
     Due to how PowerShell handles output, its conditional statements can return output
     data, as is usually seen in functional programming languages.
 #>
-
 Describe 'If/Else' {
 
     Context 'Control Flow' {

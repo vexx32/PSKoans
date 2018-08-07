@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(301)]
+[Koan(Position = 301)]
 param()
 <#
     Lists - Flexible, Generic Collections
@@ -38,7 +38,6 @@ param()
 
     [System.Collections.Generic.List[psobject]]::new
 #>
-
 Describe 'Lists' {
 
     Context 'Strict Typing' {

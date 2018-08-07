@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(204)]
+[Koan(Position = 203)]
 param()
 <#
     Splatting
@@ -14,7 +14,6 @@ param()
     In both cases, the parameter object is first defined and stored in a $Variable. This is then
     'splatted' into the command by specifying the variable name with an @ symbol: @Variable
 #>
-
 Describe 'Splatting' {
 
     Context 'Hashtable Splatting' {

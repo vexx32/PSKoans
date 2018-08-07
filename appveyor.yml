@@ -1,11 +1,18 @@
 # See http://www.appveyor.com/docs/appveyor-yml for many more options
 
+image: Visual Studio 2017
+version: '1.0.{build}'
+clone_folder: c:\projects\PSKoans
+
 environment:
   NugetApiKey:
     secure: G4KH7AVKvqA+2gNNtmnF1YxP9r2MWe55HbTy9no7fmACcNj6tXy0l4VKMOR8s0lx
 
-# Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
+install:
+  - pwsh: >-
+      Install-Module -Name Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
+
+      Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message
@@ -16,4 +23,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-- ps: . .\build\build.ps1
+- pwsh: . .\build\build.ps1

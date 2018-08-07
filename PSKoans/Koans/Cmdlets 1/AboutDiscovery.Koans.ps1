@@ -1,28 +1,26 @@
 #Requires -Module PSKoans
-[Koan(201)]
+[Koan(Position = 201)]
 param()
 <#
-    Get-Help
+    Help & Discovery
 
-    Get-Help is a built-in PowerShell cmdlet that is used to retrieve help data for
-    cmdlets and functions. It contains usage examples, parameter information,
-    and a significant amount of otherwise difficult to discover tidbits.
+    PowerShell's help and discovery systems are a key component to its ecosystem. A great
+    many things can be learned simply by knowing where to look and which few cmdlets to
+    use in order to find what you're looking for.
 
-    Get-Member
-
-    Get-Member is another built-in cmdlet that is invaluable in retrieving
-    information about any object in PowerShell. It can be used to inspect the type
-    name of an object, as well as all available methods and properties that can be
-    accessed for that object.
-
-    These cmdlets are quintessential discovery tools, and regular use of them will
-    vastly expedite any unfamiliar task in PowerShell. Combined with well-placed
-    Google searches, it is possible to learn a significant amount about native
-    PowerShell cmdlets and functions, and more advanced .NET classes, and methods.
+    Discovery cmdlets are quintessential learning tools, and regular use of them will
+    vastly expedite any unfamiliar task in PowerShell. Combined with targeted online
+    searches, it is straightforward to learn a significant amount about native PowerShell
+    cmdlets and functions, as well as more advanced .NET classes, and methods.
 #>
-
 Describe 'Get-Help' {
+    <#
+        Get-Help
 
+        Get-Help is a built-in PowerShell cmdlet that is used to retrieve help data for
+        cmdlets and functions. It contains usage examples, parameter information, and
+        a significant amount of otherwise difficult to discover tidbits.
+    #>
     Context 'shows help information about cmdlets' {
         # Try calling 'Get-Help Get-Help' in a console to see the built in help available
         # for the help command.
@@ -55,11 +53,27 @@ Describe 'Get-Help' {
             $ParameterInfo.PipelineInput | Should -Be __
         }
         # Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full. You'll need it.
+
+        It 'can search for commands by parameter names' {
+            $RemoteCommands = Get-Help -Name * -Parameter ComputerName |
+                Select-Object -ExpandProperty Name
+
+            $RemoteCommands.Count | Should -Be __
+
+            $RemoteCommands[4] | Should -Be __
+        }
     }
 }
 
 Describe 'Get-Member' {
+    <#
+        Get-Member
 
+        Get-Member is another built-in cmdlet that is invaluable in retrieving
+        information about any object in PowerShell. It can be used to inspect the type
+        name of an object, as well as all available methods and properties that can be
+        accessed for that object.
+    #>
     Context 'Members and methods of objects' {
 
         It 'can help you find useful properties' {
@@ -117,8 +131,8 @@ Describe 'Get-Member' {
     Context 'Members of objects returned from cmdlets' {
 
         It 'can help you discover information about unfamiliar objects' {
-            # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random location,
-            # and returns the object representation of this file.
+            # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random
+            # location, and returns the object representing this file.
             $TempFile = New-TemporaryFile
             Test-Path -Path $TempFile.FullName | Should -BeTrue
 
@@ -138,5 +152,67 @@ Describe 'Get-Member' {
             # We can all betray our own selves.
             $MemberData | Should -BeOfType __
         }
+    }
+}
+
+Describe 'Get-Command' {
+    <#
+        Get-Command
+
+        Get-Command is one of the most useful cmdlets for discovery. It allows you to
+        list all available commands, specify a module to look for available commands in,
+        and filter based on command name, module name, etc.
+
+        As the vast majority of PowerShell commands are packaged with help files, it is
+        also an invaluable tool in finding possible help topics to look up in the first
+        place!
+
+        When looking for related commands, use of the -Verb and -Noun search options
+        is often easier than figuring out how many wildcards you need in a -Name search.
+    #>
+    BeforeAll {
+        # Try calling Get-Command in a PowerShell console to see the typical output!
+        $Commands = Get-Command
+    }
+
+    It 'lists available commands' {
+        $Commands.Count | Should -Be __
+        $Commands[7].Name | Should -Be '__'
+    }
+
+    It 'indicates the type of command' {
+        $CommandTypes = $Commands | Select-Object -ExpandProperty CommandType | Sort-Object -Unique
+
+        @('__', '__', 'Cmdlet') | Should -Be $CommandTypes
+    }
+
+    It 'can filter the output by keywords' {
+        $Command = Get-Command -Name "*-Child*"
+        $CimCommand = Get-Command -Name '__'
+
+        $Command.CommandType | Should -Be 'Cmdlet'
+        $Command.Name | Should -Be '__'
+        $CimCommand.Name | Should -Be 'Get-CimClass'
+    }
+
+    It 'can look for commands by verb' {
+        $GetCommands = Get-Command -Verb 'Get'
+        $GetCommands.Count | Should -Be __
+
+        $GetCommands[4].Name | Should -Be '__'
+    }
+
+    It 'can look for commands by noun' {
+        $DateCommands = Get-Command -Noun 'Date'
+
+        $DateCommands.Count | Should -Be __
+        $DateCommands[0].Name | Should -Be '__'
+    }
+
+    It 'can look for commands by module' {
+        $KoanCommands = Get-Command -Module 'PSKoans'
+
+        $KoanCommands.Count | Should -Be __
+        $KoanCommands.Name | Should -Be @('__', '__', '__', '__')
     }
 }

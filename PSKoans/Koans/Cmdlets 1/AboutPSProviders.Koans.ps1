@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(202)]
+[Koan(Position = 202)]
 param()
 <#
     PSProviders

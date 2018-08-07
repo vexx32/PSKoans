@@ -1,5 +1,5 @@
 #Requires -Module PSKoans
-[Koan(108)]
+[Koan(Position = 108)]
 param()
 <#
     Strings
@@ -83,7 +83,7 @@ Describe 'Strings' {
             $String1 = 'This string'
             $String2 = 'is cool.'
 
-            "$String1 __" | Should -Be 'This string is cool'
+            "$String1 __" | Should -Be 'This string is cool.'
         }
     }
 
