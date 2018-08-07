@@ -52,16 +52,12 @@ Describe 'Get-Help' {
             $ParameterInfo = Get-Help 'Get-Help' -Parameter Path
             $ParameterInfo.PipelineInput | Should -Be __
         }
-        # Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full. You'll need it.
+        <#
+            Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full.
+            You can also search for commands with a certain parameter using Get-Help:
 
-        It 'can search for commands by parameter names' {
-            $RemoteCommands = Get-Help -Name * -Parameter ComputerName |
-                Select-Object -ExpandProperty Name
-
-            $RemoteCommands.Count | Should -Be __
-
-            $RemoteCommands[4] | Should -Be __
-        }
+                Get-Help -Name * -Parameter ComputerName
+        #>
     }
 }
 
@@ -74,14 +70,14 @@ Describe 'Get-Member' {
         name of an object, as well as all available methods and properties that can be
         accessed for that object.
     #>
-    Context 'Members and methods of objects' {
+        Context 'Members and methods of objects' {
 
-        It 'can help you find useful properties' {
-            $String = 'Hello!'
+            It 'can help you find useful properties' {
+                $String = 'Hello!'
 
-            # If you try to access a property that doesn't exist, PowerShell returns $null for it.
-            $String.ThisDoesntExist | Should -Be $null
-            <#
+                # If you try to access a property that doesn't exist, PowerShell returns $null for it.
+                $String.ThisDoesntExist | Should -Be $null
+                <#
                 To use Get-Member, pipe an object into it like so:
                     "Hello!" | Get-Member
 
@@ -92,16 +88,16 @@ Describe 'Get-Member' {
 
                 Which property of the above string has the expected value?
             #>
-            $PropertyName = '__'
-            $String.$PropertyName | Should -Be 6
-        }
+                $PropertyName = '__'
+                $String.$PropertyName | Should -Be 6
+            }
 
-        It 'can also find useful methods' {
-            $String = "Methods are handy!"
+            It 'can also find useful methods' {
+                $String = "Methods are handy!"
 
-            # Methods can be accessed just like properties, but have parentheses and often parameters!
-            $String.EndsWith('__') | Should -BeTrue
-            <#
+                # Methods can be accessed just like properties, but have parentheses and often parameters!
+                $String.EndsWith('__') | Should -BeTrue
+                <#
                 If you have trouble figuring out which parameters a method requires, you can check the
                 OverloadDefinitions by calling the method name without the parentheses. For the above
                 method, these look like this:
@@ -119,41 +115,41 @@ Describe 'Get-Member' {
                 be used at a time, and usually the number of arguments and type of the arguments
                 determine the overload that PowerShell will apply when calling the method.
             #>
-            $MethodName = '__'
-            $MethodArguments = @('__', '__')
-            # The ForEach-Object cmdlet can be used to call methods as well.
-            '7', '8', '9', '10' |
-                ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
-                Should -Be @('000007', '000008', '000009', '000010')
+                $MethodName = '__'
+                $MethodArguments = @('__', '__')
+                # The ForEach-Object cmdlet can be used to call methods as well.
+                '7', '8', '9', '10' |
+                    ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
+                    Should -Be @('000007', '000008', '000009', '000010')
+            }
         }
-    }
 
-    Context 'Members of objects returned from cmdlets' {
+        Context 'Members of objects returned from cmdlets' {
 
-        It 'can help you discover information about unfamiliar objects' {
-            # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random
-            # location, and returns the object representing this file.
-            $TempFile = New-TemporaryFile
-            Test-Path -Path $TempFile.FullName | Should -BeTrue
+            It 'can help you discover information about unfamiliar objects' {
+                # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random
+                # location, and returns the object representing this file.
+                $TempFile = New-TemporaryFile
+                Test-Path -Path $TempFile.FullName | Should -BeTrue
 
-            $TempFiles = 1..10 | ForEach-Object {
-                New-TemporaryFile
+                $TempFiles = 1..10 | ForEach-Object {
+                    New-TemporaryFile
+                }
+
+                # Which method can be used to remove these files?
+                $MethodName = '__'
+                $TempFiles | ForEach-Object $MethodName
+
+                $TempFiles | Test-Path | Should -BeFalse
             }
 
-            # Which method can be used to remove these files?
-            $MethodName = '__'
-            $TempFiles | ForEach-Object $MethodName
-
-            $TempFiles | Test-Path | Should -BeFalse
-        }
-
-        It 'actually returns objects itself' {
-            $MemberData = 'string' | Get-Member
-            # We can all betray our own selves.
-            $MemberData | Should -BeOfType __
+            It 'actually returns objects itself' {
+                $MemberData = 'string' | Get-Member
+                # We can all betray our own selves.
+                $MemberData | Should -BeOfType __
+            }
         }
     }
-}
 
 Describe 'Get-Command' {
     <#
