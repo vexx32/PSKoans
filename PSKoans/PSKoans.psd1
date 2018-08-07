@@ -12,7 +12,7 @@
     RootModule            = 'PSKoans.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '0.39.3'
+    ModuleVersion         = '0.39.4'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop', 'Core')
