@@ -19,3 +19,25 @@ param()
     Script modules commonly consist of .psm1, .psd1, .ps1 and other files, and are
     one of the more common module types.
 #>
+Describe 'Get-Module' {
+
+}
+
+Describe 'Find-Module' {
+    BeforeAll {
+        <#
+            This will effectively produce similar output to the Find-Module cmdlet
+            while only searching the local modules instead of online ones. 'Mock'
+            is a Pester command that will be covered later.
+        #>
+        Mock Find-Module {
+            Get-Module -ListAvailable -Name $Name |
+                Select-Object -Property Version, Name, @{
+                Name       = 'Repository'
+                Expression = {'PSGallery'}
+            }, Description
+        }
+    }
+}
+
+Describe 'Save-Module'
