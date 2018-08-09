@@ -21,6 +21,42 @@ param()
 #>
 Describe 'Get-Module' {
 
+    It 'returns a list of modules in the current session' {
+        # To list all installed modules, use the -ListAvailable switch.
+
+        $Modules = Get-Module
+        $FirstThreeModules = @('__', '__', '__')
+        $VersionOfThirdModule = '__'
+        $TypeOf6thModule = '__'
+
+        $FirstThreeModules | Should -Be $Modules[0..2].Name
+        $VersionOfThirdModule | Should -Be $Module[2].Version
+        $TypeOf6thModule | Should -Be $Modules[5].ModuleType
+    }
+
+    It 'can filter by module name' {
+        $Pester = Get-Module -Name 'Pester'
+
+        $ThreeExportedCommands = @('__', '__', '__')
+
+        $ThreeExportedCommands | Should -BeIn $Pester.ExportedCommands.Values.Name
+    }
+
+    It 'can list nested modules' {
+        $AllModules = Get-Module -All
+
+        $Axioms = $AllModules | Where-Object Name -eq 'Axiom'
+
+        $Commands = @('__', '__', '__')
+        $Commands | Should -BeIn $Axioms.ExportedCommands.Values.Name
+        <#
+            Despite us being able to 'see' this module, we cannot use its commands as it
+            is only available in Pester's module scope.
+        #>
+        {if ($Commands[1] -in $Axioms.ExportedCommands.Values.Name) {
+            & $Commands[1]
+        }} | Should -Throw
+    }
 }
 
 Describe 'Find-Module' {
@@ -40,4 +76,6 @@ Describe 'Find-Module' {
     }
 }
 
-Describe 'Save-Module'
+Describe 'Save-Module' {
+
+}
