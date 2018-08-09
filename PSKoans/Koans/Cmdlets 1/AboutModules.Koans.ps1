@@ -20,7 +20,10 @@ param()
     one of the more common module types.
 #>
 Describe 'Get-Module' {
-
+    <#
+        Get-Module is used to find out which modules are presently loaded into
+        the session, or to search available modules on the computer.
+    #>
     It 'returns a list of modules in the current session' {
         # To list all installed modules, use the -ListAvailable switch.
 
@@ -54,12 +57,17 @@ Describe 'Get-Module' {
             is only available in Pester's module scope.
         #>
         {if ($Commands[1] -in $Axioms.ExportedCommands.Values.Name) {
-            & $Commands[1]
-        }} | Should -Throw
+                & $Commands[1]
+            }} | Should -Throw
     }
 }
 
 Describe 'Find-Module' {
+    <#
+        Find-Module is very similar to Get-Module, except that it searches all
+        registered PSRepositories in order to find a module available for
+        install.
+    #>
     BeforeAll {
         <#
             This will effectively produce similar output to the Find-Module cmdlet
