@@ -21,7 +21,7 @@ function Measure-Karma {
 
         Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-        PS> rake -Meditate
+        PS> meditate -Contemplate
 
         Opens the user's koans folder, housed in $home\PSKoans. If VS Code is in $env:Path, opens in
         VS Code.
@@ -34,11 +34,12 @@ function Measure-Karma {
         https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment')]
+    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate')]
     param(
-        [Parameter(Mandatory, ParameterSetName = "Meditate")]
+        [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
+        [Alias('Koans', 'Contemplate', 'Meditate')]
         [switch]
-        $Meditate,
+        $Contemplate,
 
         [Parameter(Mandatory, ParameterSetName = "Reset")]
         [switch]
@@ -48,7 +49,7 @@ function Measure-Karma {
         "Reset" {
             Initialize-KoanDirectory
         }
-        "Meditate" {
+        "OpenFolder" {
             if (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
                 Start-Process -FilePath 'code' -ArgumentList $env:PSKoans_Folder -NoNewWindow
             }
@@ -65,10 +66,10 @@ function Measure-Karma {
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
-                    $_.ScriptBlock.Attributes.Where( {
-                            $_.TypeID -match 'KoanAttribute'
-                        }).Position
-                }
+                $_.ScriptBlock.Attributes.Where( {
+                        $_.TypeID -match 'KoanAttribute'
+                    }).Position
+            }
 
             $TotalKoans = $SortedKoanList.ScriptBlock.Ast.FindAll(
                 {
