@@ -45,7 +45,7 @@ InModuleScope 'PSKoans' {
             }
         }
 
-        Context 'With -Meditate Switch' {
+        Context 'With -Contemplate Switch' {
 
             Context 'VS Code Installed' {
                 BeforeAll {
