@@ -54,7 +54,7 @@ InModuleScope 'PSKoans' {
                 }
 
                 It 'should start VS Code with Start-Process' {
-                    Measure-Karma -Meditate | Should -Be 'code'
+                    Measure-Karma -Contemplate | Should -Be 'code'
 
                     Assert-MockCalled Get-Command -Times 1
                     Assert-MockCalled Start-Process -Times 1
