@@ -37,7 +37,7 @@ function Measure-Karma {
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate')]
     param(
         [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
-        [Alias('Koans', 'Contemplate', 'Meditate')]
+        [Alias('Koans', 'Meditate')]
         [switch]
         $Contemplate,
 
