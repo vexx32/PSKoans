@@ -25,8 +25,8 @@ function Measure-Koans {
     #>
     [CmdletBinding()]
     param(
-        [Parameter()]
-        [VaidateNotNull()]
+        [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
+        [ValidateNotNull()]
         [System.Management.Automation.ExternalScriptInfo[]]
         $KoanInfo
     )
