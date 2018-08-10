@@ -27,7 +27,7 @@ function Measure-Koans {
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]
-        [System.Management.Automation.ExternalScriptInfo[]]
+        [System.Management.Automation.CommandInfo[]]
         $KoanInfo
     )
     begin {
