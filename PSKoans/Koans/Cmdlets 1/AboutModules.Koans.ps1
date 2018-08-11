@@ -104,6 +104,65 @@ Describe 'Find-Module' {
         $Module.Description | Should -Match '__'
     }
 }
+
+Describe 'Import-Module' {
+    <#
+        Import-Module
+
+        Import-Module is an auxiliary cmdlet that imports the requested module
+        into the current session. It is capable of both importing
+    #>
+    Context 'Importing Installed Modules' {
+        BeforeAll {
+            Mock Import-Module {
+                $Module = New-Module -Name $Name -ScriptBlock {}
+                $CommandParams = @{
+                    Name        = 'Import-Module'
+                    Module      = 'Microsoft.PowerShell.Core'
+                    CommandType = 'Cmdlet'
+                }
+
+                & (Get-Command @CommandParams) $Module
+            }
+        }
+
+        It 'does not produce output' {
+            Import-Module -Name 'PSKoans_ImportModuleTest' | Should -BeNull
+        }
+
+        It 'imports the module into the current session' {
+            $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest'
+
+            $ImportedModule.ExportedCommands | Should -BeNull
+            '__' | Should -Be $ImportedModule.Name
+        }
+    }
+
+    Context 'Importing Module From File' {
+        BeforeAll {
+            $ModuleScript = {
+                function Test-ModuleFunction {
+                    __ # Fill in the correct value here
+                }
+                Export-ModuleMember 'Test-ModuleFunction'
+            }
+            $ModuleScript.ToString() | Set-Content -Path 'TestDrive:\TestModule.psm1'
+        }
+
+        It 'does not produce output' {
+            Import-Module 'TestDrive:\TestModule.psm1' | Should -Be __
+        }
+
+        It 'imports the module into the current session' {
+            $ImportedModule = Get-Module -Name '__'
+            '__' | Should -Be $ImportedModule.ExportedCommands
+        }
+
+        It 'makes the module''s exported commands available for use' {
+            @('__') | Should -Be $ImportedModule.ExportedCommands
+        }
+    }
+}
 <#
     Other *-Module Cmdlets
 
