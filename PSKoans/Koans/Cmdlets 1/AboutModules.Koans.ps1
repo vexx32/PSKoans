@@ -105,10 +105,15 @@ Describe 'Find-Module' {
     }
 }
 
+Describe 'New-Module' {
+    <#
+        New-Module is rarely used in practice, but is capable of dynamically generating
+        a module in-memory without needing a file on disk.
+    #>
+}
+
 Describe 'Import-Module' {
     <#
-        Import-Module
-
         Import-Module is an auxiliary cmdlet that imports the requested module
         into the current session. It is capable of both importing
     #>
