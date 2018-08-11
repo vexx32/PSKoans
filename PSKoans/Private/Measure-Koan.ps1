@@ -1,4 +1,4 @@
-function Measure-Koans {
+function Measure-Koan {
     <#
     .SYNOPSIS
     Counts the number of koans in the provided ExternalScriptInfo objects.
@@ -34,6 +34,7 @@ function Measure-Koans {
         $KoanCount = 0
     }
     process {
+        Write-Verbose "Parsing koan files from [$($KoanInfo.Name -join '], [')]"
         $KoanCount += $KoanInfo.ScriptBlock.Ast.FindAll(
             {
                 param($Item)
