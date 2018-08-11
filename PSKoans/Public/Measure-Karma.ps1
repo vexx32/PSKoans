@@ -69,7 +69,7 @@ function Measure-Karma {
                 $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
             }
 
-            $TotalKoans = $SortedKoanList | Measure-Koans
+            $TotalKoans = $SortedKoanList | Measure-Koan
 
             $KoansPassed = 0
 
