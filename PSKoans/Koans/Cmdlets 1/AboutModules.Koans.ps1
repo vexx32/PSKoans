@@ -110,6 +110,24 @@ Describe 'New-Module' {
         New-Module is rarely used in practice, but is capable of dynamically generating
         a module in-memory without needing a file on disk.
     #>
+
+    It 'creates a dynamic module object' {
+        $Module = New-Module -Name 'PSKoans_TestModule' -ScriptBlock {}
+        $Module | Should -Not -BeNullOrEmpty
+    }
+
+    It 'has many properties with $null defaults' {
+        # For most modules, ModuleBase lists their primary storage location
+        $Module.ModuleBase | Should -Be __
+    }
+
+    It 'supplies the module with a GUID based random path' {
+        '__' | Should -Be $Module.Path
+    }
+
+    AfterAll {
+        Remove-Module -Name 'PSKoans_TestModule'
+    }
 }
 
 Describe 'Import-Module' {
