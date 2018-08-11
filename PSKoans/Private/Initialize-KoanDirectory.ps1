@@ -1,13 +1,15 @@
 function Initialize-KoanDirectory {
     <#
-	.NOTES
-		Name: Initialize-KoanDirectory
-		Author: vexx32
 	.SYNOPSIS
-		Provides a blank slate for Koans.
+    Provides a blank slate for Koans.
+
 	.DESCRIPTION
-        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder
-        structure is produced.
+    If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder
+    structure is produced.
+
+	.NOTES
+    Name: Initialize-KoanDirectory
+    Author: vexx32
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
