@@ -132,8 +132,7 @@ Describe 'Import-Module' {
         }
 
         It 'imports the module into the current session' {
-            $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest' |
-                Select-Object -First 1
+            $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest'
 
             $ImportedModule.ExportedCommands.Keys | Should -BeNull
             '__' | Should -Be $ImportedModule.Name
@@ -156,8 +155,7 @@ Describe 'Import-Module' {
         }
 
         It 'imports the module into the current session' {
-            $ImportedModule = Get-Module -Name '__' |
-                Select-Object -First 1
+            $ImportedModule = Get-Module -Name '__'
             $ImportedModule | Should -Not -BeNullOrEmpty
         }
 
