@@ -188,4 +188,6 @@ Describe 'Import-Module' {
 
         Get-Help *-Module
         Get-Command -Noun Module
+
+    You'll need Install-Module to install new ones, at least!
 #>
