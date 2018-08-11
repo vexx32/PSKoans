@@ -54,6 +54,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
+    Write-Verbose 'Importing meditation koans'
     $Koan = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml" | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
@@ -126,6 +127,7 @@ You may run 'rake -Meditate' to begin your meditation.
             Start-Sleep @SleepTime
             Write-Host @Blue $Prompts['Wisdom']
 
+            Write-Verbose 'Calculating progress...'
             $ProgressAmount = "$KoansPassed/$TotalKoans"
             [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
             $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
