@@ -165,6 +165,10 @@ Describe 'Import-Module' {
             @('__') | Should -Be $ImportedModule.ExportedCommands.Keys
         }
     }
+
+    AfterAll {
+        Remove-Module -Name 'TestModule', 'PSKoans_ImportModuleTest'
+    }
 }
 <#
     Other *-Module Cmdlets
