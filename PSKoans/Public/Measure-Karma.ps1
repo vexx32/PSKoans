@@ -1,37 +1,46 @@
 function Measure-Karma {
     <#
 	.NOTES
-		Name: Measure-Karma
-		Author: Joel Sallow
+    Name: Measure-Karma
+    Author: Joel Sallow
+
 	.SYNOPSIS
-		Reflect on your progress and check your answers.
-	.DESCRIPTION
-        Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
-        corrections for success.
+    Reflect on your progress and check your answers.
+
+    .DESCRIPTION
+    Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
+    corrections for success.
+
 	.PARAMETER Contemplate
-		Opens your local koan folder.
+    Opens your local koan folder.
+
 	.PARAMETER Reset
-        Resets everything in your local koan folder to a blank slate. Use with caution.
-    .EXAMPLE
-        PS> Measure-Karma
+    Resets everything in your local koan folder to a blank slate. Use with caution.
 
-        Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-        PS> rake
+    PS> Measure-Karma
 
-        Assesses the results of the Pester tests, and builds the meditation prompt.
+    Assesses the results of the Pester tests, and builds the meditation prompt.
+
     .EXAMPLE
-        PS> meditate -Contemplate
+    PS> rake
 
-        Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
-        opens in VS Code.
+    Assesses the results of the Pester tests, and builds the meditation prompt.
+
     .EXAMPLE
-        PS> Measure-Karma -Reset
+    PS> meditate -Contemplate
 
-        Prompts for confirmation, before wiping out the user's koans folder and restoring it back
-        to its initial state.
+    Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
+    opens in VS Code.
+
+    .EXAMPLE
+    PS> Measure-Karma -Reset
+
+    Prompts for confirmation, before wiping out the user's koans folder and restoring it back
+    to its initial state.
+
     .LINK
-        https://github.com/vexx32/PSKoans
+    https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate')]
@@ -47,9 +56,11 @@ function Measure-Karma {
     )
     switch ($PSCmdlet.ParameterSetName) {
         "Reset" {
+            Write-Verbose "Reinitializing koan directory"
             Initialize-KoanDirectory
         }
         "OpenFolder" {
+            Write-Verbose "Opening koans folder"
             if (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
                 Start-Process -FilePath 'code' -ArgumentList $env:PSKoans_Folder -NoNewWindow
             }
@@ -62,6 +73,7 @@ function Measure-Karma {
 
             Write-MeditationPrompt -Greeting
 
+            Write-Verbose 'Sorting koans...'
             $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
@@ -69,11 +81,13 @@ function Measure-Karma {
                 $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
             }
 
+            Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
 
             $KoansPassed = 0
 
             foreach ($KoanFile in $SortedKoanList.Path) {
+                Write-Verbose "Testing karma with file [$KoanFile]"
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
@@ -82,7 +96,9 @@ function Measure-Karma {
                 $PesterTests = Invoke-Pester @PesterParams
                 $KoansPassed += $PesterTests.PassedCount
 
+                Write-Verbose "Karma: $KoansPassed"
                 if ($PesterTests.FailedCount -gt 0) {
+                    Write-Verbose "Your karma has been damaged."
                     break
                 }
             }
