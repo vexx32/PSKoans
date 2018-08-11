@@ -81,9 +81,34 @@ Describe 'Find-Module' {
                 Expression = {'PSGallery'}
             }, Description
         }
+
+        $Module = Find-Module -Name 'Pester'
+    }
+
+    It 'finds modules that can be installed' {
+        $Module.Name | Select-Object -First 1 | Should -Be '__'
+    }
+
+    It 'lists the latest version of the module' {
+        $Module.Version | Select-Object -First 1 | Should -Be '__'
+    }
+
+    It 'indicates which repository stores the module' {
+        <#
+            Unless an additional repository has been configured, all modules
+            from Find-Module will come from the PowerShell Gallery.
+        #>
+        $Module.Repository | Should -Be '__'
+    }
+    It 'gives a brief description of the module' {
+        $Module.Description | Should -Match '__'
     }
 }
+<#
+    Other *-Module Cmdlets
 
-Describe 'Save-Module' {
+    Check out the other module cmdlets with:
 
-}
+        Get-Help *-Module
+        Get-Command -Noun Module
+#>
