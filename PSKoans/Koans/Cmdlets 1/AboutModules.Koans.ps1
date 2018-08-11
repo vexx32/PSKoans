@@ -114,21 +114,11 @@ Describe 'Import-Module' {
     #>
     Context 'Importing Installed Modules' {
         BeforeAll {
-            Mock Import-Module {
-                $Name = $Name | Select-Object -First 1
-                $Module = New-Module -Name $Name -ScriptBlock {}
-                $CommandParams = @{
-                    Name        = 'Import-Module'
-                    Module      = 'Microsoft.PowerShell.Core'
-                    CommandType = 'Cmdlet'
-                }
-
-                & (Get-Command @CommandParams) $Module
-            }
+            $Module = New-Module -Name 'PSKoans_ImportModuleTest' {}
         }
 
         It 'does not produce output' {
-            Import-Module -Name 'PSKoans_ImportModuleTest' | Should -BeNull
+            Import-Module $Module | Should -BeNull
         }
 
         It 'imports the module into the current session' {
