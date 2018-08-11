@@ -82,15 +82,15 @@ Describe 'Find-Module' {
             }, Description
         }
 
-        $Module = Find-Module -Name 'Pester'
+        $Module = Find-Module -Name 'Pester' | Select-Object -First 1
     }
 
     It 'finds modules that can be installed' {
-        $Module.Name | Select-Object -First 1 | Should -Be '__'
+        '__' | Should -Be $Module.Name
     }
 
     It 'lists the latest version of the module' {
-        $Module.Version | Select-Object -First 1 | Should -Be '__'
+        '__' | Should -Be $Module.Version
     }
 
     It 'indicates which repository stores the module' {
@@ -98,10 +98,10 @@ Describe 'Find-Module' {
             Unless an additional repository has been configured, all modules
             from Find-Module will come from the PowerShell Gallery.
         #>
-        $Module.Repository | Should -Be '__'
+        '__' | Should -Be $Module.Repository
     }
     It 'gives a brief description of the module' {
-        $Module.Description | Should -Match '__'
+        '__' | Should -Match  $Module.Description
     }
 }
 
@@ -115,6 +115,7 @@ Describe 'Import-Module' {
     Context 'Importing Installed Modules' {
         BeforeAll {
             Mock Import-Module {
+                $Name = $Name | Select-Object -First 1
                 $Module = New-Module -Name $Name -ScriptBlock {}
                 $CommandParams = @{
                     Name        = 'Import-Module'
@@ -131,9 +132,10 @@ Describe 'Import-Module' {
         }
 
         It 'imports the module into the current session' {
-            $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest'
+            $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest' |
+                Select-Object -First 1
 
-            $ImportedModule.ExportedCommands | Should -BeNull
+            $ImportedModule.ExportedCommands.Keys | Should -BeNull
             '__' | Should -Be $ImportedModule.Name
         }
     }
@@ -154,12 +156,13 @@ Describe 'Import-Module' {
         }
 
         It 'imports the module into the current session' {
-            $ImportedModule = Get-Module -Name '__'
-            '__' | Should -Be $ImportedModule.ExportedCommands
+            $ImportedModule = Get-Module -Name '__' |
+                Select-Object -First 1
+            $ImportedModule | Should -Not -BeNullOrEmpty
         }
 
         It 'makes the module''s exported commands available for use' {
-            @('__') | Should -Be $ImportedModule.ExportedCommands
+            @('__') | Should -Be $ImportedModule.ExportedCommands.Keys
         }
     }
 }
