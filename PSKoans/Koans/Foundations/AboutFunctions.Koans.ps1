@@ -22,21 +22,28 @@ Describe "Functions" {
 
             There are many methods of sending output from a function.
         #>
-
-        # Explicit use of Write-Output allows multiple items to be output within the function
-        # without causing the function to exit.
         function Get-Number {
+            <#
+                Explicit use of Write-Output allows multiple items to be output
+                within the function without causing the function to exit.
+            #>
             Write-Output 20
         }
-        # Use of the return statement causes all output previously declared to be sent,
-        # along with any output passed to the return statement itself, then ends the function.
         function Get-ReturnedNumber {
+            <#
+                Use of the return statement causes all output previously declared
+                to be sent, along with any output passed to the return statement
+                itself, then ends the function.
+            #>
             return __
         }
-        # Leaving a value or a statement that returns a value on a line by itself causes
-        # that output to be "dropped" to the output stream, similar to functional languages.
-        # It can be considered an implicit (and faster) 'Write-Output'
         function Get-DroppedNumber {
+            <#
+                Leaving a value, or a statement that returns a value on a line
+                by itself causes that output to be "dropped" to the output
+                stream, similar to functional languages. It can be considered
+                an implicit (and faster) 'Write-Output'
+            #>
             12
         }
 
@@ -69,8 +76,10 @@ Describe "Functions" {
 
     It "can declare parameters explicitly" {
         function Measure-String {
-            # Declaring parameters in this way allows for more advanced techniques,
-            # which will be covered in AboutAdvancedFunctions
+            <#
+                Declaring parameters in this way allows for more advanced techniques,
+                which will be covered in AboutAdvancedFunctions
+            #>
             param(
                 $InputString
             )
@@ -91,17 +100,17 @@ Describe "Script Block" {
 
             Many PowerShell cmdlets take script blocks as parameters, particularly pipeline cmdlets.
         #>
-        $Script = {
-            throw "This is a script block that just throws an error."
-        }
+            $Script = {
+                throw "This is a script block that just throws an error."
+            }
 
-        # Sometimes, you just want to watch things burn, and the console to stream red errors.
-        $Script2 = {
-            # Currently, this will just output the script block as an object
-            $Script # Try appending .Invoke() to this line to cause the original block to be executed
-        }
-        $Script | Should -Throw
-        $Script2 | Should -Throw
+            # Sometimes, you just want to watch things burn, and the console to stream red errors.
+            $Script2 = {
+                # Currently, this will just output the script block as an object
+                $Script # Try appending .Invoke() to this line to cause the original block to be executed
+            }
+            $Script | Should -Throw
+            $Script2 | Should -Throw
 
-    }
+        }
 }
