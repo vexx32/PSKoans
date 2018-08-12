@@ -8,7 +8,7 @@ InModuleScope 'PSKoans' {
                 Mock Clear-Host
                 Mock Write-MeditationPrompt
                 Mock Invoke-Pester
-                Mock Measure-Koans
+                Mock Measure-Koan
             }
 
             It 'should not produce output' {
@@ -24,7 +24,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should count the koans' {
-                Assert-MockCalled Measure-Koans
+                Assert-MockCalled Measure-Koan
             }
 
             It 'should Invoke-Pester on each of the koans' {

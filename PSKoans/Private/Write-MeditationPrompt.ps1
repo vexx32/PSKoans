@@ -1,13 +1,15 @@
 function Write-MeditationPrompt {
     <#
-	.NOTES
-		Name: Write-MeditationPrompt
-		Author: vexx32
 	.SYNOPSIS
+        Provides a mechanism for Measure-Karma to write clean output.
+	.DESCRIPTION
         Provides simplified and targeted output for koan test results. Only shows the next
         failing koan; all other output is suppressed.
-	.DESCRIPTION
-		Provides a mechanism for Get-Enlightenment to write clean output.
+    .NOTES
+        Author: Joel Sallow
+        Module: PSKoans
+    .LINK
+        https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(DefaultParameterSetName = 'Meditation')]
     param(
@@ -54,7 +56,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    $Koan = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml" | Get-Random
+    $Koan = $script:Meditations | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
@@ -126,6 +128,7 @@ You may run 'rake -Meditate' to begin your meditation.
             Start-Sleep @SleepTime
             Write-Host @Blue $Prompts['Wisdom']
 
+            Write-Verbose 'Calculating progress...'
             $ProgressAmount = "$KoansPassed/$TotalKoans"
             [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
             $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
