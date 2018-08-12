@@ -1,15 +1,15 @@
 function Initialize-KoanDirectory {
     <#
 	.SYNOPSIS
-    Provides a blank slate for Koans.
-
+        Provides a blank slate for Koans.
 	.DESCRIPTION
-    If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder
-    structure is produced.
-
-	.NOTES
-    Name: Initialize-KoanDirectory
-    Author: vexx32
+        If Koans folder already exists, the folder(s) are overwritten. Otherwise a new folder
+        structure is produced.
+    .NOTES
+        Author: Joel Sallow
+        Module: PSKoans
+    .LINK
+        https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()

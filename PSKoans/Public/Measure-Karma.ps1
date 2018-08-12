@@ -1,46 +1,37 @@
 function Measure-Karma {
     <#
-	.NOTES
-    Name: Measure-Karma
-    Author: Joel Sallow
-
 	.SYNOPSIS
-    Reflect on your progress and check your answers.
-
+        Reflect on your progress and check your answers.
     .DESCRIPTION
-    Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
-    corrections for success.
-
-	.PARAMETER Contemplate
-    Opens your local koan folder.
-
+        Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
+        corrections for success.
+    .PARAMETER Contemplate
+        Opens your local koan folder.
 	.PARAMETER Reset
-    Resets everything in your local koan folder to a blank slate. Use with caution.
-
+        Resets everything in your local koan folder to a blank slate. Use with caution.
     .EXAMPLE
-    PS> Measure-Karma
+        PS> Measure-Karma
 
-    Assesses the results of the Pester tests, and builds the meditation prompt.
-
+        Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-    PS> rake
+        PS> rake
 
-    Assesses the results of the Pester tests, and builds the meditation prompt.
-
+        Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-    PS> meditate -Contemplate
+        PS> meditate -Contemplate
 
-    Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
-    opens in VS Code.
-
+        Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
+        opens in VS Code.
     .EXAMPLE
-    PS> Measure-Karma -Reset
+        PS> Measure-Karma -Reset
 
-    Prompts for confirmation, before wiping out the user's koans folder and restoring it back
-    to its initial state.
-
+        Prompts for confirmation, before wiping out the user's koans folder and restoring it back
+        to its initial state.
     .LINK
-    https://github.com/vexx32/PSKoans
+        https://github.com/vexx32/PSKoans
+	.NOTES
+        Author: Joel Sallow
+        Module: PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
     [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate')]

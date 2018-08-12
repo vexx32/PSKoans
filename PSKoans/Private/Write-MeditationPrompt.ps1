@@ -1,13 +1,15 @@
 function Write-MeditationPrompt {
     <#
-	.NOTES
-		Name: Write-MeditationPrompt
-		Author: vexx32
 	.SYNOPSIS
+        Provides a mechanism for Measure-Karma to write clean output.
+	.DESCRIPTION
         Provides simplified and targeted output for koan test results. Only shows the next
         failing koan; all other output is suppressed.
-	.DESCRIPTION
-		Provides a mechanism for Get-Enlightenment to write clean output.
+    .NOTES
+        Author: Joel Sallow
+        Module: PSKoans
+    .LINK
+        https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(DefaultParameterSetName = 'Meditation')]
     param(
