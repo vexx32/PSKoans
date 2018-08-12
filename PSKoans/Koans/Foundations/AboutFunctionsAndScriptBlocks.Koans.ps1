@@ -90,6 +90,7 @@ Describe "Functions" {
         Measure-String "Muffins" | Should -Be __
     }
 }
+
 Describe "Script Block" {
 
     It "is an anonymous function" {
@@ -98,7 +99,8 @@ Describe "Script Block" {
             These can be used for various things, most commonly for parameters or
             defining a sequence of actions to be executed multiple times.
 
-            Many PowerShell cmdlets take script blocks as parameters, particularly pipeline cmdlets.
+            Many PowerShell cmdlets can take script blocks as parameters, particularly
+            pipeline cmdlets.
         #>
             $Script = {
                 throw "This is a script block that just throws an error."
