@@ -99,6 +99,9 @@ Describe "Script Block" {
 
         Many PowerShell cmdlets can take script blocks as parameters, particularly
         pipeline cmdlets.
+
+        .FORWARDHELPTARGETNAME
+        about_Script_Blocks
     #>
     It "is an anonymous function" {
         $Script = {
