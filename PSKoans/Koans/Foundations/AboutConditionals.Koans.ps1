@@ -17,8 +17,10 @@ Describe 'If/Else' {
         It 'is used to alter which code should be executed based on input' {
             function Assert-IsEven ($Number) {
                 if ($Number % 2 -eq 0) {
-                    # Values or objects dropped to output on conditionals will still
-                    # be used as output for the function.
+                    <#
+                        Values or objects dropped to output on conditionals will still
+                        be used as output for the function.
+                    #>
                     'EVEN'
                 }
                 else {
@@ -32,10 +34,10 @@ Describe 'If/Else' {
 
         It 'can be used alone' {
             function Set-Number ($Number) {
+                # What happens if the conditional completely skips the if statement?
                 if ($Number -gt 5) {
                     $Number * 10
                 }
-                # What happens if the conditional completely skips the if statement?
             }
             Set-Number -Number 4 | Should -Be __
             Set-Number -Number __ | Should -Be 70
@@ -46,7 +48,7 @@ Describe 'If/Else' {
 
         It 'can be used to select a value for a variable' {
             function Get-Thing {
-                return (Get-ChildItem -Path $env:TEMP | Select-Object -Skip 3).Length
+                return (Get-ChildItem -Path $home -File | Select-Object -Skip 3).Length
             }
             $Thing = Get-Thing
             $Result = if ($Thing -gt 5) {
@@ -77,9 +79,10 @@ Describe 'If/Else' {
 }
 
 Describe 'Switch' {
-
-    # Switches often replace stacks of if/elseif/../else conditionals
-    # If you have more than an if/else, you might find a switch useful.
+    <#
+        Switches often replace stacks of if/elseif/../else conditionals
+        If you have more than an if/else, you might find a switch useful.
+    #>
     Context 'Control Flow' {
 
         It 'is used to create multiple possible branches' {
@@ -145,37 +148,44 @@ Describe 'Switch' {
 
     Context 'Use With Arrays' {
         It 'will process each element of arrays' {
-            $Array = __
+            $Array = @(
+                __
+                4
+            )
 
             $Result = switch ($Array) {
                 1 {
                     '-2'
-                    # Even without a break or continue here, if any branch is taken,
-                    # the default case will be skipped!
+                    <#
+                        Even without a break or continue here, if any branch is taken,
+                        the default case will be skipped!
+                    #>
                 }
                 4 {
                     $_ * $_
                     <#
-                    The continue keyword is like break, except it only skips the rest
-                    of the switch for the current value and goes back to test all the
-                    other input values.
+                        The continue keyword is like break, except it only skips the rest
+                        of the switch for the current value and goes back to test all the
+                        other input values.
 
-                    If there is only a single input value, it functions like break.
-                #>
+                        If there is only a single input value, it functions like break.
+                    #>
                     continue
                 }
                 7 {
-                    '14'
-                    # Using break in an array-input situation means all the rest of
-                    # the items don't get tested in the switch. Be careful!
+                    '15'
+                    <#
+                        Using break in an array-input situation means all the rest of
+                        the items don't get tested in the switch. Be careful!
+                    #>
                     break
                 }
                 default {
                     '-1'
                 }
             }
-
-            $Result | Should -Be 16
+            # Since the input is an array, both items must get the correct output
+            $Result | Should -BeIn @(16, '15')
         }
     }
 
@@ -198,10 +208,10 @@ Describe 'Switch' {
             # Enter a regex string that matches the pattern to pass the test.
             $Value = '__'
             $Pattern = "a.*z.n"
-
-            # If you need a regex refresher, check out https://regexr.com/
-            # Remember that it doesn't need to match the entire string unless the match says so!
-
+            <#
+                If you need a regex refresher, check out https://regexr.com/
+                Remember that it doesn't need to match the entire string unless the match says so!
+            #>
             switch -Regex ($Value) {
                 $Pattern {
                     $Result = $true
@@ -212,9 +222,10 @@ Describe 'Switch' {
 
         It 'allows use of conditional expressions' {
             $TestValue = __
-
-            # Unlike many other languages, PowerShell allows you to customise switches immensely
-            # through the use of script blocks to create dynamic conditions
+            <#
+                Unlike many other languages, PowerShell allows you to customise switches immensely
+                through the use of script blocks to create dynamic conditions
+            #>
             switch ($TestValue) {
                 # Condition blocks need a boolean outcome, or it will be coerced to boolean
                 {$_ -gt 7} {
