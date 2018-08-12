@@ -1,17 +1,18 @@
 #Requires -Module PSKoans
 
 InModuleScope 'PSKoans' {
-    Describe 'Get-Enlightenment' {
+    Describe 'Measure-Karma' {
 
         Context 'Default Behaviour' {
             BeforeAll {
                 Mock Clear-Host
                 Mock Write-MeditationPrompt
                 Mock Invoke-Pester
+                Mock Measure-Koan
             }
 
             It 'should not produce output' {
-                Get-Enlightenment | Should -Be $null
+                Measure-Karma | Should -Be $null
             }
 
             It 'should clear the screen' {
@@ -20,6 +21,10 @@ InModuleScope 'PSKoans' {
 
             It 'should write the meditation prompts' {
                 Assert-MockCalled Write-MeditationPrompt -Times 2
+            }
+
+            It 'should count the koans' {
+                Assert-MockCalled Measure-Koan
             }
 
             It 'should Invoke-Pester on each of the koans' {
@@ -37,7 +42,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should not produce output' {
-                Get-Enlightenment -Reset | Should -BeNullOrEmpty
+                Measure-Karma -Reset | Should -BeNullOrEmpty
             }
 
             It 'should call Initialize-KoanDirectory' {
@@ -45,7 +50,7 @@ InModuleScope 'PSKoans' {
             }
         }
 
-        Context 'With -Meditate Switch' {
+        Context 'With -Contemplate Switch' {
 
             Context 'VS Code Installed' {
                 BeforeAll {
@@ -54,7 +59,7 @@ InModuleScope 'PSKoans' {
                 }
 
                 It 'should start VS Code with Start-Process' {
-                    Get-Enlightenment -Meditate | Should -Be 'code'
+                    Measure-Karma -Contemplate | Should -Be 'code'
 
                     Assert-MockCalled Get-Command -Times 1
                     Assert-MockCalled Start-Process -Times 1
@@ -68,7 +73,7 @@ InModuleScope 'PSKoans' {
                 }
 
                 It 'should not produce output' {
-                    Get-Enlightenment -Meditate | Should -BeNullOrEmpty
+                    Measure-Karma -Meditate | Should -BeNullOrEmpty
                 }
                 It 'should open the koans directory with Invoke-Item' {
                     Assert-MockCalled Get-Command -Times 1

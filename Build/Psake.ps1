@@ -37,8 +37,19 @@ Task 'Default' -Depends 'Test'
 
 Task 'Init' {
     Set-Location -Path $ProjectRoot
+
+    $CommitTag = if ($env:APPVEYOR_REPO_TAG_NAME) {
+        $env:APPVEYOR_REPO_TAG_NAME
+    }
+    else {
+        "None"
+    }
+
     Write-Information @Continue @"
 $Lines
+Repository Branch: $env:APPVEYOR_REPO_BRANCH
+Commit Tag: $CommitTag
+
 Build System Details:
 "@
     Get-Item 'ENV:BH*'

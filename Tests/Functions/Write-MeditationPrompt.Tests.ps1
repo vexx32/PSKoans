@@ -5,7 +5,6 @@ InModuleScope 'PSKoans' {
         BeforeAll {
             Mock Write-Host
             Mock Start-Sleep
-            Mock Import-CliXml {"Test"}
         }
 
         Context 'Greeting Prompt' {
@@ -32,7 +31,6 @@ InModuleScope 'PSKoans' {
             It 'should only display the complete prompt' {
                 Write-MeditationPrompt @Meditation | Should -BeNullOrEmpty
 
-                Assert-MockCalled Import-Clixml -Times 1
                 Assert-MockCalled Write-Host -Times 8
                 Assert-MockCalled Start-Sleep -Times 3
             }

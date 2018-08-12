@@ -12,7 +12,7 @@
     RootModule            = 'PSKoans.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '0.39.5'
+    ModuleVersion         = '0.40.0'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Desktop', 'Core')
@@ -74,7 +74,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport     = @('Get-Blank','Get-Enlightenment')
+    FunctionsToExport     = @('Get-Blank','Measure-Karma')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport       = @()
@@ -83,7 +83,7 @@
     VariablesToExport     = '*'
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport       = @('rake', 'Invoke-PSKoans', 'Test-Koans', '__', 'FILL_ME_IN')
+    AliasesToExport       = @('Rake','Invoke-PSKoans','Test-Koans','Get-Enlightenment','__','FILL_ME_IN')
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
@@ -100,13 +100,13 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags = @('Pester','Koans','Educational')
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri = 'https://github.com/vexx32/PSKoans/blob/dev/LICENSE'
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/vexx32/PSKoans'
 
             # A URL to an icon representing this module.
             # IconUri = ''

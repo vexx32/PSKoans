@@ -3,7 +3,8 @@ param (
     $Task = 'Default'
 )
 
-if ($env:APPVEYOR_REPO_BRANCH -eq 'master' -and -not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
+if ($env:APPVEYOR_REPO_BRANCH -eq 'master' -and
+    $env:APPVEYOR_REPO_TAG_NAME) {
     $Task = 'Deploy'
 }
 

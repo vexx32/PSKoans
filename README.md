@@ -8,7 +8,7 @@ Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMar
 
 When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
 
-Your journey towards PowerShell enlightenment starts in the `1_AboutAssertions.Koans.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
+Your journey towards PowerShell enlightenment starts in the `Foundations/AboutAssertions.Koans.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
 
 ## Table of Contents
 
@@ -37,15 +37,16 @@ Install-Module Pester -Scope CurrentUser
 ### Install from Gallery
 
 1. `Install-Module PSKoans -Scope CurrentUser`
-2. Run `rake` / `Get-Enlightenment` to get things started.
-3. Run `rake -Meditate` to open your Koans folder either directly or in VS Code (if installed).
+2. Run `Measure-Karma` to get things started.
+3. Run `Measure-Karma -Meditate` to open your Koans folder either directly or in VS Code (if installed).
 
 ### Clone the Repo
 
-1. `git clone` the repository into your desired directory, or download and extract the repository as a .zip file into a directory of your choice.
+1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
-4. Before working with the module, run `rake` once to initialise everything, and then run `rake -Meditate` to open the Koans folder for you to begin your journey.
+4. Run `Install-Module -Path .\Path\To\PSKoans-master`
+5. Before working with the module, run `Measure-Karma` (`rake` for short) once to initialise everything, and then run `Measure-Karma -Koans` (or `-Meditate`) to open the Koans folder for you to begin your journey.
 
 ## Contributing
 
