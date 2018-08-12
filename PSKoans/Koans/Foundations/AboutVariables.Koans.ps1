@@ -67,10 +67,10 @@ Describe 'Variable Assignment' {
         #>
 
         $Integer = 100
-        $Double = 12.0
+        $NotInteger = 12.0
 
         $Integer | Should -BeOfType [int]
-        $Double | Should -BeOfType [__]
+        $NotInteger | Should -BeOfType [__]
     }
 
     It 'allows you to declare constant variables' {
@@ -80,7 +80,7 @@ Describe 'Variable Assignment' {
             # Try uncommenting the below line to see what happens.
 
             # $Constant = 'NewValue'
-        } | Should -Not -Throw
+        } | Should -Throw
         {
             # Contrast Read-Only variables, which can be later removed
             Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
