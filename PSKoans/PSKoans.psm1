@@ -25,6 +25,9 @@ Write-Verbose "Koans folder set to $env:PSKoans_Folder"
 
 $script:ModuleFolder = $PSScriptRoot
 
+Write-Verbose 'Importing meditation koans'
+$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
+
 if (-not (Test-Path -Path $env:PSKoans_Folder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
 	Initialize-KoanDirectory -Confirm:$false

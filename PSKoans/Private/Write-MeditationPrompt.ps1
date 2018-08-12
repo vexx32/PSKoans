@@ -56,8 +56,7 @@ function Write-MeditationPrompt {
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
-    Write-Verbose 'Importing meditation koans'
-    $Koan = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml" | Get-Random
+    $Koan = $script:Meditations | Get-Random
     $SleepTime = @{Milliseconds = 50}
 
     #region Prompt Text
