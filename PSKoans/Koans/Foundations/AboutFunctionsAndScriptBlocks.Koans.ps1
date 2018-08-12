@@ -92,27 +92,25 @@ Describe "Functions" {
 }
 
 Describe "Script Block" {
+    <#
+        Script blocks can be used to group commands without defining a function.
+        These can be used for various things, most commonly for parameters or
+        defining a sequence of actions to be executed multiple times.
 
+        Many PowerShell cmdlets can take script blocks as parameters, particularly
+        pipeline cmdlets.
+    #>
     It "is an anonymous function" {
-        <#
-            Script blocks can be used to group commands without defining a function.
-            These can be used for various things, most commonly for parameters or
-            defining a sequence of actions to be executed multiple times.
-
-            Many PowerShell cmdlets can take script blocks as parameters, particularly
-            pipeline cmdlets.
-        #>
-            $Script = {
-                throw "This is a script block that just throws an error."
-            }
-
-            # Sometimes, you just want to watch things burn, and the console to stream red errors.
-            $Script2 = {
-                # Currently, this will just output the script block as an object
-                $Script # Try appending .Invoke() to this line to cause the original block to be executed
-            }
-            $Script | Should -Throw
-            $Script2 | Should -Throw
-
+        $Script = {
+            throw "This is a script block that just throws an error."
         }
+
+        # Sometimes, you just want to watch things burn, and the console to stream red errors.
+        $Script2 = {
+            # Currently, this will just output the script block as an object
+            $Script # Try appending .Invoke() to this line to cause the original block to be executed
+        }
+        $Script | Should -Throw
+        $Script2 | Should -Throw
+    }
 }
