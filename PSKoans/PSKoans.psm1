@@ -12,6 +12,11 @@
 .NOTES
     Author: Joel Sallow
 #>
+$script:ModuleFolder = $PSScriptRoot
+
+Write-Verbose 'Importing meditation koans'
+$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
+
 Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     Write-Verbose "Importing functions from file: [$($_.Name)]"
     . $_.FullName
@@ -23,10 +28,6 @@ Write-Verbose 'Importing class-based types'
 $env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 Write-Verbose "Koans folder set to $env:PSKoans_Folder"
 
-$script:ModuleFolder = $PSScriptRoot
-
-Write-Verbose 'Importing meditation koans'
-$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
 
 if (-not (Test-Path -Path $env:PSKoans_Folder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
