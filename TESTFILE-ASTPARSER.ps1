@@ -12,28 +12,37 @@ $Parameter = $ItCommands.CommandElements | Where-Object {
     $_.ParameterName -eq 'TestCases'
 }
 if ($Parameter) {
-    $ParameterArgument = $ItCommands.CommandElements[$ItCommands.CommandElements.IndexOf($Parameter) + 1]
+    $Index = $ItCommands.CommandElements.IndexOf($Parameter) + 1
+    $ParameterArgument = $ItCommands.CommandElements[$Index]
+
     # Track back and attempt to find the assignment
-    $SimpleTestCases = @($SyntaxTree.FindAll({
-        param ($AstItem)
+    $SimpleTestCases = @(
+        $SyntaxTree.FindAll(
+            {
+                param ($AstItem)
 
-        $AstItem -is [AssignmentStatementAst] -and
-        $AstItem.Left.VariablePath.UserPath -eq $ParameterArgument.VariablePath.UserPath
-    }, $true ).Right.Expression.SafeGetValue()).Count
+                $AstItem -is [AssignmentStatementAst] -and
+                $AstItem.Left.VariablePath.UserPath -eq $ParameterArgument.VariablePath.UserPath
+            }, $true
+        ).Right.Expression.SafeGetValue()
+    ).Count
 
-    $Variables = $TestCases.PipelineElements.Extent.Text -match '\$[a-z0-9_{}]'
+    $Variables = $TestCases.PipelineElements.Extent.Text -match '\$([a-z0-9_]+|\{.+\})'
 
-    $TestCasesExpressions = @($Variables | ForEach-Object {
+    $TestCasesExpressions = @(
+        $Variables | ForEach-Object {
+            $SimpleTestCases--
             $Var = $_
-            $SyntaxTree.FindAll( {
+
+            $SyntaxTree.FindAll(
+                {
                     param($AstItem)
                     $AstItem -is [AssignmentStatementAst] -and
                     $AstItem.Left.Extent.Text -eq $Var
-                }, $true).Extent.Text | ForEach-Object {
-                $SimpleTestCases--
-                Invoke-Expression $_
-            }
-        }).Count
+                }, $true
+            ).Extent.Text | Invoke-Expression
+        }
+    ).Count
 
     return $SimpleTestCases + $TestCasesExpressions + ($ItCommands.Count - $Parameter.Count)
 }
