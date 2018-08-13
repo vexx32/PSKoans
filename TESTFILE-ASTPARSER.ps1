@@ -31,7 +31,7 @@ if ($Parameter) {
                     $AstItem.Left.Extent.Text -eq $Var
                 }, $true).Extent.Text | ForEach-Object {
                 $SimpleTestCases--
-                Invoke-Expression
+                Invoke-Expression $_
             }
         }).Count
 
