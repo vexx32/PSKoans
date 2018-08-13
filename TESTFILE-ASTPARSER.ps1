@@ -18,32 +18,42 @@ if ($Parameter) {
     $ParameterArgument = $ItCommands.CommandElements[$Index]
 
     # Track back and attempt to find the assignment
-    $SimpleTestCases = @(
-        $SyntaxTree.FindAll(
+    $TestCases = @(
+        $ParameterValues = $SyntaxTree.FindAll(
             {
                 param ($AstItem)
 
                 $AstItem -is [AssignmentStatementAst] -and
                 $AstItem.Left.VariablePath.UserPath -eq $ParameterArgument.VariablePath.UserPath
             }, $true
-        ).Right.Expression.SafeGetValue()
+        ).Right
+
+        if ($ParameterValues.Expression) {
+            $ParameterValues.Expression.SafeGetValue()
+        }
+
+        if ($ParameterValues.PipelineElements) {
+            $MatchString = '\$(?!\{?(_|PSItem)\}?)([a-z0-9_]+|\{.+\})'
+            $Variables = @($ParameterValues.PipelineElements.Extent.Text) -match $MatchString
+            $AssignmentExpression = $ParameterValues.Extent.Text
+
+            foreach ($VariableName in $Variables) {
+
+                $VariableValue = $SyntaxTree.FindAll(
+                    {
+                        param($AstItem)
+
+                        $AstItem -is [AssignmentStatementAst] -and
+                        $AstItem.Left.Extent.Text -eq $VariableName
+                    }, $true
+                ).Right.Extent.Text
+                $AssignmentExpression = $AssignmentExpression -replace [RegEx]::Escape($VariableName), "($VariableValue)"
+            }
+            Invoke-Expression $AssignmentExpression
+        }
     ).Count
 
     $Variables = $TestCases.PipelineElements.Extent.Text -match '\$([a-z0-9_]+|\{.+\})'
-
-    $TestCasesExpressions = @(
-        $Variables | ForEach-Object {
-            $Var = $_
-
-            $SyntaxTree.FindAll(
-                {
-                    param($AstItem)
-                    $AstItem -is [AssignmentStatementAst] -and
-                    $AstItem.Left.Extent.Text -eq $Var
-                }, $true
-            ).Extent.Text | Invoke-Expression
-        }
-    ).Count
 }
 
-return $SimpleTestCases + $TestCasesExpressions + ($ItCommands.Count - $Parameter.Count)
+return $TestCases + ($ItCommands.Count - $Parameter.Count)
