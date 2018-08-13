@@ -18,33 +18,42 @@ if ($Parameter) {
     $ParameterArgument = $ItCommands.CommandElements[$Index]
 
     # Track back and attempt to find the assignment
-    $SimpleTestCases = @(
-        $SyntaxTree.FindAll(
+    $TestCases = @(
+        $ParameterValues = $SyntaxTree.FindAll(
             {
                 param ($AstItem)
 
                 $AstItem -is [AssignmentStatementAst] -and
                 $AstItem.Left.VariablePath.UserPath -eq $ParameterArgument.VariablePath.UserPath
             }, $true
-        ).Right.Expression.SafeGetValue()
-    ).Count
+        ).Right
 
-    $Variables = $TestCases.PipelineElements.Extent.Text -match '\$([a-z0-9_]+|\{.+\})'
+        if ($ParameterValues.Expression) {
+            $ParameterValues.Expression.SafeGetValue()
+        }
 
-    $TestCasesExpressions = @(
-        $Variables | ForEach-Object {
-            $SimpleTestCases--
-            $Var = $_
+        if ($ParameterValues.PipelineElements) {
+            $MatchString = '\$(?!\{?(_|PSItem)\}?)([a-z0-9_]+|\{.+\})'
+            $Variables = @($ParameterValues.PipelineElements.Extent.Text) -match $MatchString
+            $AssignmentExpression = $ParameterValues.Extent.Text
 
-            $SyntaxTree.FindAll(
-                {
-                    param($AstItem)
-                    $AstItem -is [AssignmentStatementAst] -and
-                    $AstItem.Left.Extent.Text -eq $Var
-                }, $true
-            ).Extent.Text | Invoke-Expression
+            foreach ($VariableName in $Variables) {
+
+                $VariableValue = $SyntaxTree.FindAll(
+                    {
+                        param($AstItem)
+
+                        $AstItem -is [AssignmentStatementAst] -and
+                        $AstItem.Left.Extent.Text -eq $VariableName
+                    }, $true
+                ).Right.Extent.Text
+                $AssignmentExpression = $AssignmentExpression -replace [RegEx]::Escape($VariableName), "($VariableValue)"
+            }
+            Invoke-Expression $AssignmentExpression
         }
     ).Count
 
-    return $SimpleTestCases + $TestCasesExpressions + ($ItCommands.Count - $Parameter.Count)
+    $Variables = $TestCases.PipelineElements.Extent.Text -match '\$([a-z0-9_]+|\{.+\})'
 }
+
+return $TestCases + ($ItCommands.Count - $Parameter.Count)
