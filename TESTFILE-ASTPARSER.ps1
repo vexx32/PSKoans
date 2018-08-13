@@ -45,6 +45,6 @@ if ($Parameter) {
             ).Extent.Text | Invoke-Expression
         }
     ).Count
-
-    return $SimpleTestCases + $TestCasesExpressions + ($ItCommands.Count - $Parameter.Count)
 }
+
+return $SimpleTestCases + $TestCasesExpressions + ($ItCommands.Count - $Parameter.Count)
