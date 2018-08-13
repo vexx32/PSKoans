@@ -33,7 +33,6 @@ if ($Parameter) {
 
     $TestCasesExpressions = @(
         $Variables | ForEach-Object {
-            $SimpleTestCases--
             $Var = $_
 
             $SyntaxTree.FindAll(
