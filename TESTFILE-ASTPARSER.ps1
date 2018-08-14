@@ -1,21 +1,8 @@
+using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
-$SyntaxTree = {
-    Describe 'Test Thing' {
-        It 'should manage to work with <Item>' {
-            param($Item)
-            $Item | Should -BeLessOrEqual 10
-        } -TestCases @{
-            Item = 1
-        }, @{
-            Item = 3
-        }, @{
-            Item = 5
-        }, @{
-            Item = 10
-        }
-    }
-}.Ast
+
+
 $ItCommands = $SyntaxTree.FindAll(
     {
         param ($AstItem)
@@ -29,26 +16,26 @@ $Parameter = $ItCommands.CommandElements | Where-Object {
     $_.ParameterName -eq 'TestCases'
 }
 if ($Parameter) {
-    $Index = $ItCommands.CommandElements.IndexOf($Parameter) + 1
+    $Index = $Parameter.ForEach{$ItCommands.CommandElements.IndexOf($_) + 1}
     $ParameterArgument = $ItCommands.CommandElements[$Index]
 
-    # Track back and attempt to find the assignment
-    $TestCases = @(
-        $ParameterValues = $SyntaxTree.FindAll(
-            {
-                param ($AstItem)
-
-                $AstItem -is [AssignmentStatementAst] -and
-                $AstItem.Left.VariablePath.UserPath -eq $ParameterArgument.VariablePath.UserPath
-            }, $true
-        ).Right
-
-        if ($ParameterValues.Expression) {
-            $ParameterValues.Expression.SafeGetValue()
-        }
-    ).Count
-
-    $Variables = $TestCases.PipelineElements.Extent.Text -match '\$([a-z0-9_]+|\{.+\})'
+    try {
+        $TestCases = $ParameterArgument.SafeGetValue().Count
+    }
+    catch {
+        # We aren't parsing complex or variable expressions, so exit here (violently)
+        $ParseException = [ParseException]::new(
+            "Unable to parse unsafe expression in Koan -TestCase syntax.",
+            $_.Exception
+        )
+        $ErrorRecord = [ErrorRecord]::new(
+            $ParseException,
+            "KoanAstParseError",
+            [ErrorCategory]::ParserError,
+            $ParameterValues.PipelineElements.Extent.Text
+        )
+        $PSCmdlet.ThrowTerminatingError($ErrorRecord)
+    }
 }
 
-return $TestCases + ($ItCommands.Count - $Parameter.Count)
+return ($TestCases + $ItCommands.Count - $Parameter.Count)
