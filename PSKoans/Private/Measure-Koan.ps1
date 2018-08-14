@@ -1,3 +1,6 @@
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
 function Measure-Koan {
     <#
     .SYNOPSIS
@@ -33,13 +36,48 @@ function Measure-Koan {
     }
     process {
         Write-Verbose "Parsing koan files from [$($KoanInfo.Name -join '], [')]"
-        $KoanCount += $KoanInfo.ScriptBlock.Ast.FindAll(
+
+        # Find all Pester 'It' commands
+        $ItCommands = $KoanInfo.ScriptBlock.Ast.FindAll(
             {
                 param($Item)
                 $Item -is [System.Management.Automation.Language.CommandAst] -and
                 $Item.GetCommandName() -eq 'It'
             }, $true
-        ).Count
+        )
+
+        # Find the -TestCases parameters
+        $TestCasesParameters = $ItCommands.CommandElements | Where-Object {
+            $_ -is [CommandParameterAst] -and
+            $_.ParameterName -eq 'TestCases'
+        }
+
+        if ($TestCasesParameters) {
+            # Get the right CommandElements indexes for their arguments
+            $Indexes = $TestCasesParameters.ForEach{$ItCommands.CommandElements.IndexOf($_) + 1}
+            # Get value of the argument for each -TestCases
+            $ParameterArgument = $ItCommands.CommandElements[$Indexes]
+
+            try {
+                $TestCaseCount = $ParameterArgument.SafeGetValue().Count
+            }
+            catch {
+                # We aren't parsing complex or variable expressions, so exit here (violently)
+                $ParseException = [ParseException]::new(
+                    "Unable to parse unsafe expression in Koan -TestCase syntax.",
+                    $_.Exception
+                )
+                $ErrorRecord = [ErrorRecord]::new(
+                    $ParseException,
+                    "KoanAstParseError",
+                    [ErrorCategory]::ParserError,
+                    $ParameterValues.PipelineElements.Extent.Text
+                )
+                $PSCmdlet.ThrowTerminatingError($ErrorRecord)
+            }
+        }
+
+        $KoanCount += $TestCaseCount + $ItCommands.Count - $TestCasesParameters.Count
     }
     end {
         Write-Verbose "Total Koans: $KoanCount"
