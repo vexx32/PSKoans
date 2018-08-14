@@ -3,19 +3,15 @@
 InModuleScope 'PSKoans' {
     Describe 'Measure-Koan' {
 
-        It 'counts the number of tests in <File>' {
-            param($File, $ExpectedValue)
-
-            Get-Item -Path $File |
+        It 'should correctly count the number of It blocks in a file' {
+            Get-Item -Path  |
                 Get-Command {$_.FullName} |
                 Measure-Koan |
-                Should -Be $ExpectedValue
+                Should -Be 1
         } -TestCases @{
-            File          = "$script:ModuleFolder\..\Tests\Functions\Measure-Koan_Tests\TestFile.Tests.ps1"
-            ExpectedValue = 3
+            File =
         }, @{
-            File          = "$script:ModuleFolder\..\Tests\Functions\Get-Blank.Tests.ps1"
-            ExpectedValue = 1
+            "$script:ModuleFolder\..\Tests\Functions\Measure-Koan.Tests.ps1"
         }
     }
 }
