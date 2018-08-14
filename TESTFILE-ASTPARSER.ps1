@@ -1,6 +1,21 @@
 using namespace System.Management.Automation.Language
 
-$SyntaxTree = (Get-Command "Z:\Scripts\PSKoans\Tests\KoanValidation.Tests.ps1").ScriptBlock.Ast
+$SyntaxTree = {
+    Describe 'Test Thing' {
+        It 'should manage to work with <Item>' {
+            param($Item)
+            $Item | Should -BeLessOrEqual 10
+        } -TestCases @{
+            Item = 1
+        }, @{
+            Item = 3
+        }, @{
+            Item = 5
+        }, @{
+            Item = 10
+        }
+    }
+}.Ast
 $ItCommands = $SyntaxTree.FindAll(
     {
         param ($AstItem)
@@ -30,26 +45,6 @@ if ($Parameter) {
 
         if ($ParameterValues.Expression) {
             $ParameterValues.Expression.SafeGetValue()
-        }
-
-        if ($ParameterValues.PipelineElements) {
-            $MatchString = '\$(?!\{?(_|PSItem)\}?)([a-z0-9_]+|\{.+\})'
-            $Variables = @($ParameterValues.PipelineElements.Extent.Text) -match $MatchString
-            $AssignmentExpression = $ParameterValues.Extent.Text
-
-            foreach ($VariableName in $Variables) {
-
-                $VariableValue = $SyntaxTree.FindAll(
-                    {
-                        param($AstItem)
-
-                        $AstItem -is [AssignmentStatementAst] -and
-                        $AstItem.Left.Extent.Text -eq $VariableName
-                    }, $true
-                ).Right.Extent.Text
-                $AssignmentExpression = $AssignmentExpression -replace [RegEx]::Escape($VariableName), "($VariableValue)"
-            }
-            Invoke-Expression $AssignmentExpression
         }
     ).Count
 
