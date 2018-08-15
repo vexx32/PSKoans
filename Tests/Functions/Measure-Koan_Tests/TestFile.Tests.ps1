@@ -1,7 +1,7 @@
 Describe 'This is a test file only' {
     It 'should check each individual <TestCase>' {
         param($TestCase)
-        $TestCaste | Should -Throw
+        $TestCaste | Should -BeOfType int
     } -TestCases @{
         TestCase = 1
     },
