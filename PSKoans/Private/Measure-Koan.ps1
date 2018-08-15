@@ -19,6 +19,14 @@ function Measure-Koan {
         PS> Get-Command .\KoanDirectory\*\*.ps1 | Measure-Koans
         422
     .NOTES
+        Measure-Koan is NOT designed to handle dynamic -TestCases values. It will handle
+        simple counts of directly attached -TestCases hashtables only if they do not
+        contain variables, pipelines, and other dynamic expressions.
+
+        Handling dynamic scripts with pipelines and variables is beyond scope and will
+        not be handled; we'd essentially end up reimplementing the PS parser. If it can't
+        be got with .GetSafeValue() we simply aren't working with it.
+
         Author: Joel Sallow
         Module: PSKoans
     .LINK
