@@ -59,68 +59,126 @@ Describe 'System.Text.StringBuilder' {
         }
 
         It 'can append new lines' {
+            $StringBuilder = [System.Text.StringBuilder]::new()
+            $StringBuilder.AppendLine('Hello!')
+            $StringBuilder.AppendLine('Goodbye!')
 
+            $ExpectedString = @"
+__
+__
+"@
+            $ExpectedString | Should -Be $StringBuilder.ToString()
         }
 
         It 'can append format strings' {
+            # Using the same underlying framework as the -f formatting operator.
+            $StringBuilder = [System.Text.StringBuilder]::new()
 
+            $FormatItems = '__', '__'
+            $StringBuilder.AppendFormat("{0} is {1}.")
+
+            $StringBuilder.ToString() | Should -Be "Water is wet."
+        }
+
+        It 'returns a reference to the object' {
+            # So you can either hide that output, or use it to chain the method!
+            $StringBuilder = [System.Text.StringBuilder]::new()
+            $StringBuilder.Append('Hello!') > $null # Hide output from console
+
+            # The reference returned points back to the original StringBuilder object.
+            $StringBuilder.Append(' Who ').Append('are ').Append('you?') | Should -Be $StringBuilder
+
+            $StringBuilder.ToString() | Should -Be '__'
         }
     }
 
     Context 'Constructing the Final String Object' {
-
-        It 'simply returns a string' {
-
+        BeforeAll {
+            $SB = [System.Text.StringBuilder]::new("Hello!")
+            $SB.Append("BYE!")
         }
 
-        It 'is no longer a StringBuilder' {
-
+        It 'is as simple as calling .ToString()' {
+            $SB.ToString() | Should -BeOfType String
+            $SB.ToString() | Should -Be '__'
         }
 
         It 'can be retained and reused' {
-
+            $SB.Append('Hello')
+            $SB.ToString() | Should -Be '__'
+            $SB.Append(' DONE')
+            $SB.ToString() | Should -Be '__'
         }
     }
 
     Context 'Other StringBuilder Methods' {
-
-        It 'can be cleared' {
-
+        BeforeAll {
+            $StringBuilder = [System.Text.StringBuilder]::new("TEXT")
         }
-
-        It 'can copy to a char array' {
-
+        It 'can be cleared' {
+            $StringBuilder.Clear()
+            $StringBuilder.Length | Should -Be 0
         }
 
         It 'can insert sequences' {
+            $StringBuilder.Append('is my dog.')
+            $StringBuilder.Insert(0, 'Ben ')
 
+            '__' | Should -Be $StringBuilder.ToString()
         }
 
         It 'can remove sequences' {
-
+            '__' | Should -Be $StringBuilder.Remove(0, 4).ToString()
         }
 
         It 'can replace existing sequences' {
+            $StringBuilder.Insert(0, 'Steve ')
+            $StringBuilder.Replace('dog', 'draconian leech')
 
+            '__' | Should -Be $StringBuilder.ToString()
         }
     }
 
     Context 'StringBuilder Properties' {
+        BeforeAll {
+            $StringBuilder = [System.Text.StringBuilder]::new()
+            $StringBuilder.AppendLine('When you look into the void,')
+            $StringBuilder.AppendLine('The void also looks into you.')
+        }
 
         It 'has only a few properties' {
+            $PropertyCount = __
+            $PropertyName = __
 
+            $Properties = $StringBuilder |
+                Get-Member |
+                Where-Object MemberType -eq 'Property'
+
+            $ExpectedCount = $Properties |
+                Measure-Object |
+                Select-Object -ExpandProperty Count
+
+            $PropertyCount | Should -Be $ExpectedPropertyCount
+            $PropertyName | Should -BeIn $Properties.Name
         }
 
         It 'indicates the current length of the string' {
+            $FinalStringLength = __
 
+            $StringBuilder.ToString().Length | Should -Be $StringBuilder.Length
+            $FinalStringLength | Should -Be $StringBuilder.Length
         }
 
         It 'indicates the currently allocated capactity' {
+            $Capacity = __
 
+            $Capacity | Should -Be $StringBuilder.Capacity
         }
 
         It 'indicates the maximum capacity of the StringBuilder' {
+            $MaxCapacity = __
 
+            $MaxCapacity | Should -Be $StringBuilder.MaxCapacity
         }
     }
 }
