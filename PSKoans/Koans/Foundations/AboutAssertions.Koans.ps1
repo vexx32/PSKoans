@@ -20,20 +20,20 @@ param()
     next failing koan. With each  passing koan, you'll learn more about
     PowerShell, and add another weapon to your PowerShell scripting arsenal.
 #>
-Describe "Equality" {
+Describe 'Equality' {
 
-    It "is a simple comparison" {
+    It 'is a simple comparison' {
         # Some truths are absolute.
         $false | Should -Be $true
     }
 
-    It "expects you to fill in values" {
+    It 'expects you to fill in values' {
         # Initiative will be rewarded.
         1 + 2 | Should -Be __
         __ + 5 -eq 10 | Should -BeTrue
     }
 
-    It "sets the expectations" {
+    It 'sets the expectations' {
         # Many roads converge, yet some paths are less clear.
         $ExpectedValue = 1 + 1
         $ActualValue = __
@@ -43,7 +43,7 @@ Describe "Equality" {
 
     # Easy, right? Try one more!
 
-    It "demands balance" {
+    It 'demands balance' {
         # Both sides of the scale must be of equal measure.
         __ + 2 -eq 3 | Should -BeTrue
     }

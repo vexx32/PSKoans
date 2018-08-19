@@ -36,9 +36,10 @@ Describe 'Assignment Operator' {
 }
 
 Describe 'Arithmetic Operators' {
-
-    # These can be used for standard arithmetic with numerical values, as well as some limited
-    # usage with arrays and strings that can come in handy.
+    <#
+        These can be used for standard arithmetic with numerical values, as well as some limited
+        usage with arrays and strings that can come in handy.
+    #>
     Context 'Addition' {
 
         It 'is used to add two items together' {
@@ -53,8 +54,10 @@ Describe 'Arithmetic Operators' {
         }
 
         It 'can be used to create arrays' {
-            # As we covered in AboutArrays, this is not so much 'adding' arrays together as it is
-            # building a totally new array. It does, however, have its uses.
+            <#
+                As we covered in AboutArrays, this is not so much 'adding' arrays together as it is
+                building a totally new array. It does, however, have its uses.
+            #>
             $Array = 1, 2, 3, 4, 5
             $NewArray = $Array + 7
 
@@ -128,7 +131,7 @@ Describe 'Arithmetic Operators' {
 
         It 'cannot be used on non-numeric values' {
             {
-                $String = "hello!"
+                $String = 'hello!'
                 $String % 4
             }  | Should -Throw -ExceptionType __
             {
