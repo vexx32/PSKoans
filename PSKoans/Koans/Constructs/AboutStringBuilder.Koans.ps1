@@ -19,22 +19,43 @@ Describe 'System.Text.StringBuilder' {
     Context 'Creating a StringBuilder' {
 
         It 'can be created with New-Object' {
+            # All things, ultimately, are carved from a blank slate.
+            $StringBuilder = New-Object System.Text.StringBuilder
 
+            $StringBuilder | Should -BeOfType __
         }
 
         It 'can be created from a type accelerator' {
-
+            # Control of the initial conditions is sometimes critical.
+            $StringBuilder = [System.Text.StringBuilder]::new()
+            $SBFromString = [System.Text.StringBuilder]::new('Initial String')
+            $SBWithSetCapacity = [System.Text.StringBuilder]::new(10)
+            <#
+                You can call
+                    [System.Text.StringBuilder]::new
+                without parentheses in the console to see available overload
+                definitions that can be used to construct the object.
+            #>
+            $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType __
+            $SBFromString.Length | Should -Be __
         }
 
         It 'can be created by casting an existing string' {
+            # Two sides of a coin.
+            [System.Text.StringBuilder]$StringBuilder = 'Initial String'
 
+            $StringBuilder | Should -BeOfType __
         }
     }
 
     Context 'Appending to a StringBuilder String' {
 
         It 'can append strings' {
+            $StringBuilder = [System.Text.StringBuilder]::new()
 
+            # Quantity comes first. Quality soon follows.
+            $StringBuilder.Append('__')
+            $StringBuilder.Length | Should -Be 10
         }
 
         It 'can append new lines' {
@@ -42,6 +63,21 @@ Describe 'System.Text.StringBuilder' {
         }
 
         It 'can append format strings' {
+
+        }
+    }
+
+    Context 'Constructing the Final String Object' {
+
+        It 'simply returns a string' {
+
+        }
+
+        It 'is no longer a StringBuilder' {
+
+        }
+
+        It 'can be retained and reused' {
 
         }
     }
