@@ -11,9 +11,9 @@ param()
     function, and can be assigned to a variable or even later assigned
     a name as needed.
 #>
-Describe "Functions" {
+Describe 'Functions' {
 
-    It "allows you to assign a name to a sequence of commands" {
+    It 'allows you to assign a name to a sequence of commands' {
         <#
             An apt name eases the transition to abstraction.
             PowerShell function names are named in convention following
@@ -40,7 +40,7 @@ Describe "Functions" {
         function Get-DroppedNumber {
             <#
                 Leaving a value, or a statement that returns a value on a line
-                by itself causes that output to be "dropped" to the output
+                by itself causes that output to be 'dropped' to the output
                 stream, similar to functional languages. It can be considered
                 an implicit (and faster) 'Write-Output'
             #>
@@ -52,14 +52,14 @@ Describe "Functions" {
         Get-DroppedNumber | Should -Be __
     }
 
-    It "can accept parameters" {
+    It 'can accept parameters' {
         # Simplicity is a two-sided coin.
         function Add-Things {
             return ($args[0] + $args[1])
         }
 
         # Values are supplied separated by spaces, without parentheses.
-        Add-Things "7" __ | Should -Be "72" # Strings add differently than numbers!
+        Add-Things '7' __ | Should -Be '72' # Strings add differently than numbers!
         Add-Things 1 2 | Should -Be __
 
         # The road to mastery is travelled with many small steps.
@@ -74,7 +74,7 @@ Describe "Functions" {
         Add-Numbers -Number2 8 -Number1 12 | Should -Be 20
     }
 
-    It "can declare parameters explicitly" {
+    It 'can declare parameters explicitly' {
         function Measure-String {
             <#
                 Declaring parameters in this way allows for more advanced techniques,
@@ -86,12 +86,12 @@ Describe "Functions" {
             return $InputString.Length
         }
         # How long is a piece of string?
-        Measure-String "Hello!" | Should -Be 6
-        Measure-String "Muffins" | Should -Be __
+        Measure-String 'Hello!' | Should -Be 6
+        Measure-String 'Muffins' | Should -Be __
     }
 }
 
-Describe "Script Block" {
+Describe 'Script Block' {
     <#
         Script blocks can be used to group commands without defining a function.
         These can be used for various things, most commonly for parameters or
@@ -103,9 +103,9 @@ Describe "Script Block" {
         .FORWARDHELPTARGETNAME
         about_Script_Blocks
     #>
-    It "is an anonymous function" {
+    It 'is an anonymous function' {
         $Script = {
-            throw "This is a script block that just throws an error."
+            throw 'This is a script block that just throws an error.'
         }
 
         # Sometimes, you just want to watch things burn, and the console to stream red errors.
