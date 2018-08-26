@@ -24,11 +24,19 @@ Describe 'Strings' {
             $var = 'Some things you must take literally'
             $var | Should -Be __
         }
+
         It 'can contain special characters' {
+            # 'Special' is just a title.
             $complexVar = 'They have $ or : or ; or _'
             $complexVar | Should be '__'
         }
 
+        It 'can contain quotation marks' {
+            $Quotes = 'These are ''quotation marks'' you see?'
+
+            # Single quotes go more easily in double-quoted strings.
+            $Quotes | Should -Be "__"
+        }
     }
 
     Context 'Evaluated Strings' {
@@ -57,8 +65,10 @@ Describe 'Strings' {
 
         It 'can escape quotation marks' {
             $String = "This is a `"string`" value."
+            $AlternateString = "This is a ""string"" value."
 
-            $String | Should -Be '__'
+            # A mirror image, a familiar pattern, reflected in the glass.
+            $String, $AlternateString | Should -Be '__'
         }
 
         It 'can insert special characters with escape sequences' {
@@ -73,6 +83,7 @@ Describe 'Strings' {
     Context 'String Concatenation' {
 
         It 'adds strings together' {
+            # Two become one.
             $String1 = 'This string'
             $String2 = 'is cool.'
 
@@ -80,6 +91,7 @@ Describe 'Strings' {
         }
 
         It 'can be done simpler' {
+            # Water mixes seamlessly with itself.
             $String1 = 'This string'
             $String2 = 'is cool.'
 
@@ -90,10 +102,48 @@ Describe 'Strings' {
     Context 'Substrings' {
 
         It 'lets you select portions of a string' {
+            # Few things require the entirety of the library.
             $String = 'At the very top!'
 
             $String.Substring(0, 6) | Should -Be '__'
             $String.Substring(7) | Should -Be '__'
+        }
+    }
+
+    Context 'Here-Strings' {
+        <#
+            Here-strings are a fairly common programming concept, but have some
+            additional quirks in PowerShell that bear mention. They start with
+            the sequence @' or @" and end with the matching reverse "@ or '@
+            sequence.
+
+            The terminating sequence MUST be at the start of the line, or the
+            string will not end where you want it to.
+        #>
+        It 'can be a literal string' {
+            $LiteralString = @'
+            Hullo!
+'@ # This terminating sequence cannot be indented; it must be at the start of the line.
+
+            # "Empty" space, too, is a thing of substance for some.
+            $LiteralString | Should -Be '            __'
+        }
+
+        It 'can be an evaluated string' {
+            # The key is in the patterns.
+            $Number = __
+            $String = @"
+I am number #$Number!
+"@ # These can mess with indentation patterns, but have their uses nonetheless!
+
+            $String | Should -Be '__'
+        }
+
+        It 'allows use of quotation marks easily' {
+            $AllYourQuotes = @"
+All things that are not 'evaluated' are "recognised" as characters.
+"@
+            $AllYourQuotes | Should -Be '__'
         }
     }
 }
