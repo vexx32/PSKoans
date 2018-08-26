@@ -14,12 +14,12 @@ param()
 #>
 Describe 'Variable Assignment' {
 
-    It "gives a name to a value or object" {
+    It 'gives a name to a value or object' {
         # Names give succinct descriptions to pieces of reality.
         $Fifty = 50
         $Value = __
 
-        Set-Variable -Name 'Greeting' -Value "Hello!"
+        Set-Variable -Name 'Greeting' -Value 'Hello!'
 
         $Value -eq $Fifty | Should -BeTrue
         $Greeting | Should -Be __
@@ -30,58 +30,56 @@ Describe 'Variable Assignment' {
         example [int] for whole numbers, [double] for decimals and fractions,
         [string] for text.
     #>
-    It "infers types on its own" {
+    It 'infers types on its own' {
         $Number = 10
-        $TypeOfNumber = $Number.GetType()
 
-        $TypeOfNumber | Should -Be ([int])
+        $Number | Should -BeOfType [__]
     }
 
-    It "can directly compare types" {
+    It 'can directly compare types' {
         # For each task, a different tool.
         $Number = 5
         $Number -is [int] | Should -BeTrue
-        $Number | Should -BeOfType [int]
+        $Number | Should -BeOfType [__]
 
-        $Text = "Every worthwhile step is uphill."
-        $TypeOfText = $Text.GetType()
+        $Text = 'Every worthwhile step is uphill.'
         $ExpectedType = __
 
-        $ExpectedType | Should -BeOfType $TypeOfText
+        $ExpectedType | Should -Be $Text.GetType()
     }
 
-    It "allows types to be explicitly set" {
+    It 'allows types to be explicitly set' {
         # A well-defined container decides the shape of its contents.
         [int]$Number = '42'
-        $TypeOfNumber = $Number.GetType()
 
         # An unrestricted container may hold many different items.
         # Its contents may choose their own kind, or it be chosen for them.
         $String = [string]$true
-        $TypeOfString = $String.GetType()
 
-        $TypeOfNumber | Should -Be [__]
-        $TypeOfString | Should -Be [__]
+        $Number | Should -BeOfType [__]
+        $String | Should -BeOfType [__]
     }
 
-    It "distinguishes between types of numbers" {
-        # There are many kinds of numbers in PowerShell, but the basics are
-        # [int] and [double] for integers and floating-point numbers
+    It 'distinguishes between types of numbers' {
+        <#
+            There are many kinds of numbers in PowerShell, but the basics are
+            [int] and [double] for integers and floating-point numbers
+        #>
 
         $Integer = 100
-        $Double = 12.0
+        $NotInteger = 12.0
 
         $Integer | Should -BeOfType [int]
-        $Double | Should -BeOfType [double]
+        $Double | Should -BeOfType [__]
     }
 
-    It "allows you to declare constant variables" {
+    It 'allows you to declare constant variables' {
         {
             Set-Variable -Name 'Constant' -Value 25 -Option Constant
             # The next operation will never succeed; constant variables cannot be altered.
             # Try uncommenting the below line to see what happens.
 
-            # $Constant = "NewValue"
+            # $Constant = 'NewValue'
         } | Should -Not -Throw
         {
             # Contrast Read-Only variables, which can be later removed

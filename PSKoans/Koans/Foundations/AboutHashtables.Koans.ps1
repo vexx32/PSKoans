@@ -72,7 +72,7 @@ Describe 'Hashtables' {
 
         It 'is a reference type' {
             $HashtableOne = @{
-                Name = "Jim"
+                Name = 'Jim'
                 Age  = 12
             }
 
