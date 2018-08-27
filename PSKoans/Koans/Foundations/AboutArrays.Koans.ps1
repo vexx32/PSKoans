@@ -24,7 +24,7 @@ Describe 'Arrays' {
         # Individual elements of an array can be accessed with square-bracket index syntax.
         # Arrays are zero-indexed; the first element is at index 0, the second at 1, etc.
         $Ages[0] | Should -Be 12
-        $Ages[3] | Should -Be __
+        __ | Should -Be $Ages[3]
         <#
             The array subexpression operator @() is used to create an array from multiple values
             or expressions. Within the parentheses, either commas, semicolons, or even line
@@ -48,12 +48,12 @@ Describe 'Arrays' {
         $Jim, $Ashley, $Theresa, $Bob, $Janice = $Ages
 
         $Jim | Should -Be 11
-        $Bob | Should -Be __
+        __ | Should -Be $Bob
 
         # Arrays can be unevenly split by specifying fewer variables.
         $Jim, $Ashley, $Others = $Ages
         # What would be stored in $Others?
-        $Others | Should -Be __
+        __ | Should -Be $Others
         <#
             If you know the contents of the array and want to skip specific elements, you can
             assign specific elements to $null to discard them. $null is one of PowerShell's
@@ -61,7 +61,7 @@ Describe 'Arrays' {
             you attempt to assign to it will be ignored.
         #>
         $null, $Number1, $Number2 = $Others
-        $Number1 | Should -Be __
+        __ | Should -Be $Number1
     }
 
     It 'lets you build a subset of the original array' {
@@ -79,7 +79,7 @@ Describe 'Arrays' {
 
     It 'allows use of negative indexes' {
         $Array = 1, 2, 3, 4, 5, 6, 7
-        $Array[-1] | Should -Be __ # What is the -1th item?
+        __ | Should -Be $Array[-1] # What is the -1th item?
 
         # Negative numbers can also form a range and extract subsets
         $Array[-4..-1] | Should -Be @(5, 6, 7)
@@ -95,9 +95,9 @@ Describe 'Arrays' {
         $Array = 1, 2, 3, 4
 
         # It allows negative indexes, but what about indexes out of range?
-        $Array[4] | Should -Be __
+        __ | Should -Be $Array[4]
 
         # What about undefined negative indexes?
-        $Array[-10] | Should -Be __
+        __ | Should -Be $Array[-10]
     }
 }
