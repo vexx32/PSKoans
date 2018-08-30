@@ -62,7 +62,10 @@
 	}
 	process
 	{
-		$adviceItem = Get-ChildItem $adviceFolder -Recurse | Where-Object PSIsContainer -EQ $false | Where-Object BaseName -Like $Name | Get-Random
+		$adviceItem = Get-ChildItem $adviceFolder -Recurse |
+		  Where-Object PSIsContainer -EQ $false |
+		    Where-Object BaseName -Like $Name |
+		      Get-Random
 		Write-Host ""
 		Write-Host "  Advice of the session:"
 		foreach ($line in (Get-Content $adviceItem.FullName))
