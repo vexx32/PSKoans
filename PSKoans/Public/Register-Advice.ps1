@@ -31,9 +31,7 @@
 		}
 		elseif (-not ((Get-Content $PROFILE) -match "Invoke-Advice"))
 		{
-			[string[]]$lines = Get-Content $PROFILE
-			$lines += 'Invoke-Advice'
-			$lines | Set-Content $PROFILE
+			'Invoke-Advice' | Add-Content $PROFILE
 		}
 	}
 }
