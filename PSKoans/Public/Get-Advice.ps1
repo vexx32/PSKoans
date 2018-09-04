@@ -18,22 +18,21 @@
 		[string]
 		$Name = "*"
 	)
-	begin
-	{
-		$adviceFolder = Join-Path $script:ModuleFolder 'Data/Advice'
+	begin {
+		$AdviceFolder = Join-Path $script:ModuleFolder 'Data/Advice'
 	}
-	process
-	{
-		$adviceItem = Get-ChildItem $adviceFolder -Recurse -File |
+	process {
+		$AdviceItem = Get-ChildItem $AdviceFolder -Recurse -File |
 			Where-Object BaseName -like $Name |
 			Get-Random
 
 		Write-Host ""
 		Write-Host " Advice of the session:"
-		foreach ($line in (Get-Content $adviceItem.FullName))
-		{
+
+		foreach ($line in (Get-Content $AdviceItem.FullName)) {
 			Write-ConsoleLine $line
 		}
+
 		Write-Host ""
 	}
 }
