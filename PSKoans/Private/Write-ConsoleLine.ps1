@@ -1,33 +1,44 @@
 function Write-ConsoleLine {
+    <#
+    .SYNOPSIS
+        Writes text to the console.
+    .DESCRIPTION
+        Cuts text to console-appropriate widths for viewing, where possible.
+    .EXAMPLE
+        PS C:\> Write-ConsoleLine $String
+
+        Writes the contents of $String to the console, inserting new line characters
+        where appropriate.
+    .INPUTS
+        Inputs (if any)
+    .OUTPUTS
+        Output (if any)
+    .NOTES
+        General notes
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, Mandatory)]
         [string]
         $InputString
     )
-
-    $Width = $host.UI.RawUI.WindowSize.Width
+    $Prefix = " " * 3
+    $Width = $host.UI.RawUI.WindowSize.Width - ($Prefix.Length + 2)
 
     # Ugly mode since width either not detectable or too small to bother
     if ($Width -lt 20) {
         Write-Host "    $InputString"
     }
     else {
-        $remainingLine = $InputString.TrimEnd()
-        $lines = [System.Text.StringBuilder]::new()
+        $RemainingText = $InputString.TrimEnd()
 
-        while ($remainingLine.Length -gt ($Width - 4))
-        {
-            $subString = $remainingLine.Substring(0, ($Width - 4))
-            $end = ($subString -split " |-")[-1]
-            $lines += $subString.Substring(0, ($subString.Length - $end.Length)).TrimEnd()
-            $remainingLine = $remainingLine.Substring(($subString.Length - $end.Length))
-        }
-        $lines += $remainingLine
+        while ($RemainingText.Length -gt $Width) {
+            $CompleteLine = $RemainingText.Substring(0, $Width)
+            $end = ($CompleteLine -split "[- ]")[-1]
 
-        foreach ($lineItem in $lines)
-        {
-            Write-Host "    $lineItem"
+            Write-Host ($Prefix + $CompleteLine.Substring(0, $CompleteLine.Length - $end.Length).TrimEnd())
+            $RemainingText = $RemainingText.Substring($CompleteLine.Length - $end.Length)
         }
+        Write-Host ($Prefix + $RemainingText)
     }
 }
