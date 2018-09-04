@@ -1,4 +1,4 @@
-﻿function Write-Advice {
+﻿function Get-Advice {
 	<#
 		.SYNOPSIS
 			Prints a piece of advice to the screen.
@@ -9,7 +9,7 @@
 		.PARAMETER Name
 			The name of the specific advice to display
 		.EXAMPLE
-			PS C:\> Invoke-Advice
+			PS C:\> Write-Advice
 			Print a random piece of advice to the screen.
 	#>
 	[CmdletBinding()]
@@ -24,12 +24,12 @@
 	}
 	process
 	{
-		$adviceItem = Get-ChildItem $adviceFolder -Recurse |
-		  Where-Object PSIsContainer -EQ $false |
-		    Where-Object BaseName -Like $Name |
-		      Get-Random
+		$adviceItem = Get-ChildItem $adviceFolder -Recurse -File |
+			Where-Object BaseName -like $Name |
+			Get-Random
+
 		Write-Host ""
-		Write-Host "  Advice of the session:"
+		Write-Host " Advice of the session:"
 		foreach ($line in (Get-Content $adviceItem.FullName))
 		{
 			Write-ConsoleLine $line
