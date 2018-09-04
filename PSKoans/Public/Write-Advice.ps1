@@ -18,7 +18,6 @@
 		[string]
 		$Name = "*"
 	)
-
 	begin
 	{
 		$adviceFolder = Join-Path $script:ModuleFolder 'Data/Advice'
@@ -33,7 +32,7 @@
 		Write-Host "  Advice of the session:"
 		foreach ($line in (Get-Content $adviceItem.FullName))
 		{
-			Write-Line $line
+			Write-ConsoleLine $line
 		}
 		Write-Host ""
 	}
