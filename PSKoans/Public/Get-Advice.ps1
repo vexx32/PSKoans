@@ -5,11 +5,11 @@
 		.DESCRIPTION
 			Prints a piece of advice to the screen.
 
-			Use Register-Advice to have a random piece of advice shown on each console start
+			Use Get-Advice to have a random piece of advice shown on each console start
 		.PARAMETER Name
 			The name of the specific advice to display
 		.EXAMPLE
-			PS C:\> Write-Advice
+			PS C:\> Get-Advice
 			Print a random piece of advice to the screen.
 	#>
 	[CmdletBinding()]
