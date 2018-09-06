@@ -7,7 +7,7 @@
 
 			Use Get-Advice to have a random piece of advice shown on each console start
 		.PARAMETER Name
-			The name of the specific advice to display
+			The name of the specific advice to display.
 		.EXAMPLE
 			PS C:\> Get-Advice
 			Print a random piece of advice to the screen.
