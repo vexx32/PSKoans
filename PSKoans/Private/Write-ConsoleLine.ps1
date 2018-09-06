@@ -10,35 +10,39 @@ function Write-ConsoleLine {
         Writes the contents of $String to the console, inserting new line characters
         where appropriate.
     .INPUTS
-        Inputs (if any)
+        Write-ConsoleLine accepts pipeline input for the $InputString parameter.
     .OUTPUTS
-        Output (if any)
-    .NOTES
-        General notes
+        Nothing. All output is sent only to the host / information stream.
     #>
     [CmdletBinding()]
-    param (
-        [Parameter(Position = 0, Mandatory)]
-        [string]
+    param(
+        [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]
         $InputString
     )
-    $Prefix = " " * 3
-    $Width = $host.UI.RawUI.WindowSize.Width - ($Prefix.Length + 2)
-
-    # Ugly mode since width either not detectable or too small to bother
-    if ($Width -lt 20) {
-        Write-Host "    $InputString"
+    begin {
+        $Prefix = " " * 3
+        $Width = $host.UI.RawUI.WindowSize.Width - ($Prefix.Length + 2)
     }
-    else {
-        $RemainingText = $InputString.TrimEnd()
-
-        while ($RemainingText.Length -gt $Width) {
-            $CompleteLine = $RemainingText.Substring(0, $Width)
-            $end = ($CompleteLine -split "[- ]")[-1]
-
-            Write-Host ($Prefix + $CompleteLine.Substring(0, $CompleteLine.Length - $end.Length).TrimEnd())
-            $RemainingText = $RemainingText.Substring($CompleteLine.Length - $end.Length)
+    process {
+        # Ugly mode since width either not detectable or too small to bother
+        if ($Width -lt 20) {
+            Write-Host $InputString
         }
-        Write-Host ($Prefix + $RemainingText)
-    }
+        else {
+            $RemainingText = $InputString.TrimEnd()
+
+            while ($RemainingText.Length -gt $Width) {
+                $CompleteLine = $RemainingText.Substring(0, $Width)
+                $TailFragment = ($CompleteLine -split "[- ]")[-1].Length
+                $BestFitLine = $CompleteLine.Substring(0, $CompleteLine.Length - $TailFragment).TrimEnd()
+
+                Write-Host ($Prefix + $BestFitLine)
+
+                $RemainingText = $RemainingText.Substring($CompleteLine.Length - $TailFragment)
+            }
+            Write-Host ($Prefix + $RemainingText)
+        }
+}
 }
