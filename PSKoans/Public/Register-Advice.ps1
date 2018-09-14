@@ -32,7 +32,7 @@
         if (-not (Test-Path $ProfilePath)) {
             Set-Content -Path $ProfilePath -Value 'Get-Advice'
         }
-        elseif ($ProfilePath | Select-String -Pattern 'Get-Advice' -Quiet) {
+        elseif (-not ($ProfilePath | Select-String -Pattern 'Get-Advice' -Quiet) {
             'Get-Advice' | Add-Content $ProfilePath
         }
     }
