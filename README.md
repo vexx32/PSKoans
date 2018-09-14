@@ -64,7 +64,7 @@ There are two main ways you can contribute:
 If you are writing a koan file, the header of the file _must_ follow this format (comments can be placed around this area if you feel the need to as well.)
 
 ```powershell
-#Requires -Module PSKoans
+#Requires -Modules PSKoans
 [Koan(Position = $Index)]
 param()
 ```
