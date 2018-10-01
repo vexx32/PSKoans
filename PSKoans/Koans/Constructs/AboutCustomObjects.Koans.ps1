@@ -34,15 +34,22 @@ Describe '[PSCustomObject]' {
     It 'can be built by trimming objects down' {
         $Object = Get-ChildItem -Path $Home | Select-Object -First 1 -Property Name, Parent
         $Object | Should -BeOfType PSCustomObject
-        __ | Should -Be $Object.Parent
+        __ | Should -Be $Object.Parent.Name
     }
 
     It 'can have arbitrary properties' {
+        $Object = [PSCustomObject]@{ '__' = 'Enter Property Name' }
+        }
 
+        __ | Should -Be $Object.PSObject.Properties.Count
+        __.PSObject.Properties.Name | Should -Be 'PropertyName'
     }
 
     It 'can be added to' {
+        $Object = [PSCustomObject]@{ 'Property1' = 12 }
+        $Object | Add-Member -MemberType NoteProperty -Name 'Property2' -Value __
 
+        $Object.Property2 | Should -Be $($Object.Property1 - 7)
     }
 
     It 'can have ScriptProperties' {
