@@ -100,14 +100,21 @@ function Measure-Karma {
                     Write-Verbose "Your karma has been damaged."
                     if ($ShowHelp) {
                         $KoanAttribute = (Get-Command $KoanFile).ScriptBlock.Attributes | Where-Object TypeID -match 'KoanAttribute'
-                        Write-Host ($KoanAttribute | Out-String)
-                        if ($KoanAttribute.HelpURL) {
-                            Write-Verbose "Confusion is only the beginning."
-                            start $KoanAttribute.HelpURL
-                        }
-                        if ($KoanAttribute.HelpAction) {
+                        #Write-Host ($KoanAttribute | Out-String)
 
+                        if ($KoanAttribute.HelpAction) {
                             Invoke-Command $KoanAttribute.HelpAction
+                        } 
+                        elseif ($KoanAttribute.HelpPath) {
+                            Write-Host "Confusion is only the beginning"
+                            Write-Host "Snatch the coin from my hand"
+                            Write-Host ("Learn you must about {0}" -f $KoanAttribute.HelpPath)
+                        }
+                        elseif ($KoanAttribute.HelpURL) {
+                            Write-Host "Vexx32 I am certain you will fix this block of nasty"
+                            Write-Host "Confusion is only the beginning"
+                            Write-Host "Your defeat has only made you stronger."
+                            Write-Host $KoanAttribute.HelpURL
                         }
                     }
 
