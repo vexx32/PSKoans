@@ -13,14 +13,16 @@ class KoanAttribute : System.Attribute {
     }
 
     KoanAttribute($Position, $HelpURL) {
-        $this.KoanAttribute($Position, $HelpURL)
+        $this.Position = $Position
+        $this.HelpURL = $HelpUrl
     }
-    
+
     KoanAttribute($Position) {
-        $this.KoanAttribute($Position, $null, $null)
+        $this.Position = $Position
+        
     }
 
     KoanAttribute() {
-        $this.KoanAttribute([uint32]::MaxValue, $null, $null)
+        $this.Position = [uint32]::MaxValue
     }
 }

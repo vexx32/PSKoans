@@ -1,5 +1,5 @@
 #Requires -Modules PSKoans
-[Koan(Position = 101)]
+[Koan(Position = 101, HelpURL = "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-6" )]
 param()
 <#
     Getting Started

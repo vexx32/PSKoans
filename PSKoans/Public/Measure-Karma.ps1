@@ -43,7 +43,13 @@ function Measure-Karma {
 
         [Parameter(Mandatory, ParameterSetName = "Reset")]
         [switch]
-        $Reset
+        $Reset,
+
+        #Help is not listed since it attaches to Karma Default actions
+        [Parameter()]
+        [Alias('Dojo', 'Spar')]
+        [switch]
+        $ShowHelp
     )
     switch ($PSCmdlet.ParameterSetName) {
         "Reset" {
@@ -63,22 +69,24 @@ function Measure-Karma {
             Clear-Host
 
             Write-MeditationPrompt -Greeting
-
+            
             Write-Verbose 'Sorting koans...'
+
             $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
                 $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
             }
-
+            
             Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
-
+            
             $KoansPassed = 0
-
             foreach ($KoanFile in $SortedKoanList.Path) {
+                
                 Write-Verbose "Testing karma with file [$KoanFile]"
+                
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
@@ -90,6 +98,19 @@ function Measure-Karma {
                 Write-Verbose "Karma: $KoansPassed"
                 if ($PesterTests.FailedCount -gt 0) {
                     Write-Verbose "Your karma has been damaged."
+                    if ($ShowHelp) {
+                        $KoanAttribute = (Get-Command $KoanFile).ScriptBlock.Attributes | Where-Object TypeID -match 'KoanAttribute'
+                        Write-Host ($KoanAttribute | Out-String)
+                        if ($KoanAttribute.HelpURL) {
+                            Write-Verbose "Confusion is only the beginning."
+                            start $KoanAttribute.HelpURL
+                        }
+                        if ($KoanAttribute.HelpAction) {
+
+                            Invoke-Command $KoanAttribute.HelpAction
+                        }
+                    }
+
                     break
                 }
             }
