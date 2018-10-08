@@ -4,18 +4,17 @@
 |     :---:     |      :---:      |
 | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji/branch/master?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans/branch/master) | [![Build status](https://ci.appveyor.com/api/projects/status/komkhtba6v3n7iji?svg=true)](https://ci.appveyor.com/project/vexx32/pskoans) |
 
-Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell through Pester unit testing.
+Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions. Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test. Your goal is to make those tests pass by filling out the correct answer, or writing the correct code. The koans start very simple to get you familiar with the basic concepts and progress towards more difficult. Teaching you multiple beginner, intermediate and advanced aspects of PowerShell in the process.
 
-When you first run the koans, you'll be presented with a runtime error and a stack trace indicating where the error occured. Your goal is to make the error go away. As you fix each error, you should learn something about the PowerShell language and programming / scripting in general.
-
-Your journey towards PowerShell enlightenment starts in the `Foundations/AboutAssertions.Koans.ps1` file. These koans will be very straightforward, so try not to overthink them! As you progress through the koans, more types of PowerShell syntax will be introduced which will allow you to solve more complicated problems and use more advanced techniques.
+To get started please navigate to [prerequisites](#prerequisites) and [getting started](#getting-started).
 
 ## Table of Contents
 
 * [Prerequisites](#prerequisites)
 * [Getting Started](#getting-started)
   * [Install From Gallery](#install-from-gallery)
-  * [Clone the Repo](#clone-the-repo)
+  * [Clone the Repo](#or-clone-the-repo)
+  * [Start your Journey](#start-your-journey)
 * [Contributing](#contributing)
   * [Writing Koans](#writing-koans)
 
@@ -37,16 +36,89 @@ Install-Module Pester -Scope CurrentUser
 ### Install from Gallery
 
 1. `Install-Module PSKoans -Scope CurrentUser`
-2. Run `Measure-Karma` to get things started.
-3. Run `Measure-Karma -Meditate` to open your Koans folder either directly or in VS Code (if installed).
 
-### Clone the Repo
+### Or clone the Repo
 
 1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 4. Run `Install-Module -Path .\Path\To\PSKoans-master`
-5. Before working with the module, run `Measure-Karma` (`rake` for short) once to initialise everything, and then run `Measure-Karma -Koans` (or `-Meditate`) to open the Koans folder for you to begin your journey.
+
+### Start your Journey
+
+1. Run `Measure-Karma` to start your journey towards PowerShell enlightenment. You will be presented with a page describing your goal:
+
+```diff
+    Welcome, seeker of enlightenment.
+    Please wait a moment while we examine your karma...
+
+Describing 'Equality' has damaged your karma.
+
+-    You have not yet reached enlightenment.
+
+    The answers you seek...
+
+- Expected $true, but got $null.
+
+    Please meditate on the following code:
+
+- [It] is a simple comparison
+- at <ScriptBlock>, ...\Foundations\AboutAssertions.Koans.ps1: line 27
+- 27:         __ | Should -Be $true
+
+    Even if you speak of the wonder of it all,
+    How do you deal with each thing changing?
+
+    Your path thus far:
+
+ [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/238
+
+You may run 'rake -Meditate' to begin your meditation.
+```
+
+Inspect the red messages carefully, most importantly the last one. The error message contains path to the file that you need to edit in order to progress forward, in this case `Foundations\AboutAssertions.Koans.ps1`. 
+
+2. Run `Measure-Karma -Meditate` to open your Koans folder and navigate to `Foundations\AboutAssertions.Koans.ps1`. Near the top you'll see:
+
+```powershell
+It 'is a simple comparison' {
+    # Some truths are absolute.
+    __ | Should -Be $true
+}
+```
+
+The `__` represents a blank for you to fill, and `| Should -Be $true` shows the expected result. To pass this koan you need to replace `__` with `$true`, like this: `$true | Should -Be $true`.
+
+3. Run `Measure-Karma` again to see how you did. Your progress updated to `1/238` and you are presented with the next challenge. You now passed your first koan! 
+
+```diff
+    Welcome, seeker of enlightenment.
+    Please wait a moment while we examine your karma...
+
+Describing 'Equality' has damaged your karma.
+
+-    You have not yet reached enlightenment.
+
+    The answers you seek...
+
+- Expected '__', but got 3.
+
+    Please meditate on the following code:
+
+- [It] expects you to fill in values
+- at <ScriptBlock>, ...\Foundations\AboutAssertions.Koans.ps1: line 32
+- 32:         1 + 2 | Should -Be __
+
+    Make the mountains dance.
+
+    Your path thus far:
+
++ [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/238
+```
+
+ You are on your own from now, but don't worry the koans start very simple, and you can always seek help on [slack](https://powershell.slack.com/messages/C03MQLV0V/), [reddit](https://www.reddit.com/r/PowerShell/), [twitter](https://twitter.com/hashtag/powershell) or anywhere else where powershell is discussed. 
+
+Good luck!
 
 ## Contributing
 
@@ -64,7 +136,7 @@ There are two main ways you can contribute:
 If you are writing a koan file, the header of the file _must_ follow this format (comments can be placed around this area if you feel the need to as well.)
 
 ```powershell
-#Requires -Module PSKoans
+#Requires -Modules PSKoans
 [Koan(Position = $Index)]
 param()
 ```
