@@ -122,7 +122,7 @@ Describe 'String Array Operators' {
             See 'Get-Help about_Join' for more information.
         #>
         It 'can join an array into a single string' {
-            $Array = 'Hi', 'there', ',', 'what', 'are', 'you', 'doing?'
+            $Array = 'Hi', 'there,', 'what', 'are', 'you', 'doing?'
             $Array -join ' ' | Should -Be '__'
         }
 
