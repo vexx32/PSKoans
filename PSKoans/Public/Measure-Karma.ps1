@@ -75,6 +75,15 @@ function Measure-Karma {
             Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
 
+            if ($TotalKoans -eq 0) {
+                # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
+                Write-Warning 'No koans found in your koan directory. Initiating full reset...'
+                Initialize-KoanDirectory
+                Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
+
+                continue # skip the rest of the function
+            }
+
             $KoansPassed = 0
 
             foreach ($KoanFile in $SortedKoanList.Path) {
