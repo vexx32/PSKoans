@@ -148,7 +148,7 @@ Describe 'String Array Operators' {
         It 'can create a [char[]] array from a string' {
             $String = 'Good luck!'
 
-            $String[0..3] | Should -Be @('__', '__', '__', '__', '__')
+            $String[0..3] | Should -Be @('__', '__', '__', '__')
         }
 
         It 'can be combined with -join to create substrings' {
