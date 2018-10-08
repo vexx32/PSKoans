@@ -122,7 +122,7 @@ Describe 'String Array Operators' {
             See 'Get-Help about_Join' for more information.
         #>
         It 'can join an array into a single string' {
-            $Array = 'Hi', 'there', ',', 'what', 'are', 'you', 'doing?'
+            $Array = 'Hi', 'there,', 'what', 'are', 'you', 'doing?'
             $Array -join ' ' | Should -Be '__'
         }
 
@@ -148,7 +148,7 @@ Describe 'String Array Operators' {
         It 'can create a [char[]] array from a string' {
             $String = 'Good luck!'
 
-            $String[0..3] | Should -Be @('__', '__', '__', '__', '__')
+            $String[0..3] | Should -Be @('__', '__', '__', '__')
         }
 
         It 'can be combined with -join to create substrings' {
