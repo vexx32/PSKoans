@@ -92,7 +92,7 @@ Describe 'String Array Operators' {
 
         It 'uses regex by default' {
             $String = 'hello.dear'
-            $String -split '.' | Should -Be @('__', '__')
+            $String -split '\.' | Should -Be @('__', '__')
         }
 
         It 'can use simple matching' {
@@ -127,7 +127,7 @@ Describe 'String Array Operators' {
         }
 
         It 'always produces a string result' {
-            $Array = 1, 3, 6, 71, 9, 22, 1, 3, 4, 55,6,7,8
+            $Array = 1, 3, 6, 71, 9, 22, 1, 3, 4, 55, 6, 7, 8
             -join $Array | Should -Be '__'
         }
 
