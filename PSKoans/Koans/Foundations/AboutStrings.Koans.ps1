@@ -68,7 +68,7 @@ Describe 'Strings' {
             $AlternateString = "This is a ""string"" value."
 
             # A mirror image, a familiar pattern, reflected in the glass.
-            $String, $AlternateString | Should -Be '__'
+            $String, $AlternateString | Should -Be @('__', '__')
         }
 
         It 'can insert special characters with escape sequences' {
