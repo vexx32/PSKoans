@@ -56,11 +56,7 @@ Describe 'Pipelines and Loops' {
             pipeline sequence in a variable. This will create an array of the final
             values.
         #>
-        $Strings = 3..7 |
-            ForEach-Object {"Hello $_!"} | # Line breaks after a pipe character are OK!
-            Where-Object {$_ -notlike '*5*'} # (Indents are optional.)
         $Strings | Should -Be __
-    }
 
     It 'is like a specialised loop' {
         <#

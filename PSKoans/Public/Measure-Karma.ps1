@@ -82,6 +82,15 @@ function Measure-Karma {
             Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
 
+            if ($TotalKoans -eq 0) {
+                # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
+                Write-Warning 'No koans found in your koan directory. Initiating full reset...'
+                Initialize-KoanDirectory
+                Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
+
+                continue # skip the rest of the function
+            }
+
             $KoansPassed = 0
             foreach ($KoanFile in $SortedKoanList.Path) {
 
@@ -100,24 +109,8 @@ function Measure-Karma {
                     Write-Verbose "Your karma has been damaged."
                     if ($ShowHelp) {
                         $KoanAttribute = (Get-Command $KoanFile).ScriptBlock.Attributes | Where-Object TypeID -match 'KoanAttribute'
-                        #Write-Host ($KoanAttribute | Out-String)
-
-                        if ($KoanAttribute.HelpAction) {
-                            Invoke-Command $KoanAttribute.HelpAction
-                        } 
-                        elseif ($KoanAttribute.HelpPath) {
-                            Write-Host "Confusion is only the beginning"
-                            Write-Host "Snatch the coin from my hand"
-                            Write-Host ("Learn you must about {0}" -f $KoanAttribute.HelpPath)
-                        }
-                        elseif ($KoanAttribute.HelpURL) {
-                            Write-Host "Vexx32 I am certain you will fix this block of nasty"
-                            Write-Host "Confusion is only the beginning"
-                            Write-Host "Your defeat has only made you stronger."
-                            Write-Host $KoanAttribute.HelpURL
-                        }
+                        $KoanAttribute.InvokeHelpInfo()
                     }
-
                     break
                 }
             }
@@ -136,6 +129,12 @@ function Measure-Karma {
                     TotalKoans   = $TotalKoans
                 }
                 Write-MeditationPrompt @Meditation
+
+                #Invoke Koan Help Data.
+                $KoanAttribute = (Get-Command $NextKoanFailed.ErrorRecord.TargetObject.File).ScriptBlock.Attributes |
+                    Where-Object TypeID -match 'KoanAttribute' |
+                    ForEach-Object InvokeHelpInfo
+
             }
             else {
                 $Meditation = @{
