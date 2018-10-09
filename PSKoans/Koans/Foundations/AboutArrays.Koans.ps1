@@ -82,7 +82,7 @@ Describe 'Arrays' {
         __ | Should -Be $Array[-1] # What is the -1th item?
 
         # Negative numbers can also form a range and extract subsets
-        $Array[-4..-1] | Should -Be @(5, 6, 7)
+        $Array[-4..-1] | Should -Be @(5, 6, 7) # Is anything missing?
         $Index = __
         $Array[-3, $Index, -6] | Should -Be @(5, 1, 2)
 
