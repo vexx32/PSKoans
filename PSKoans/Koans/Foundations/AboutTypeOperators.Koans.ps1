@@ -57,7 +57,7 @@ Describe 'Type Operators' {
                 'string' -as [int]
             }
 
-            $Casting | Should -Throw -ExceptionType __
+            $Casting | Should -Throw -ErrorId __
             $Conversion | Should -Not -Throw
             $Conversion | Should -Be __
         }
