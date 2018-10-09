@@ -133,11 +133,11 @@ Describe 'Arithmetic Operators' {
             {
                 $String = 'hello!'
                 $String % 4
-            }  | Should -Throw -ExceptionType __
+            }  | Should -Throw -ExpectedMessage __
             {
                 $Array = 1, 10, 20
                 $Array % 4
-            } | Should -Throw -ExceptionType __
+            } | Should -Throw -ExpectedMessage __
         }
     }
 }

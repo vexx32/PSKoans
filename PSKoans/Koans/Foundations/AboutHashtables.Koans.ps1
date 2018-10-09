@@ -128,11 +128,11 @@ Describe 'Hashtables' {
                 # Enter keys and values in this table to make the below tests pass
             }
 
-            $Hashtable.ContainsKey('Apples') | Should -BeTrue
+            $Hashtable.ContainsKey('Carrots') | Should -BeTrue
             $Hashtable.ContainsValue('Fruit') | Should -BeTrue
 
             $Hashtable['Oranges'] | Should -Be 'Fruit'
-            $Hashtable['Apples'] | Should -Not -Be $Hashtable['Oranges']
+            $Hashtable['Carrots'] | Should -Not -Be $Hashtable['Oranges']
         }
 
         It 'will implicitly convert keys and lookup values' {
