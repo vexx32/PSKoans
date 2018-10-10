@@ -34,7 +34,7 @@ function Measure-Karma {
         Module: PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-    [Alias('Rake', 'Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate','Clear-Path')]
+    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate','Clear-Path')]
     param(
         [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
         [Alias('Koans', 'Meditate')]

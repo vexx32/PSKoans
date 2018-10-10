@@ -95,7 +95,7 @@ $Meditation
 "@
         OpenFolder     = @"
 
-You may run 'rake -Meditate' to begin your meditation.
+You may run 'Measure-Karma -Meditate' to begin your meditation.
 
 "@
         Completed      = @"
