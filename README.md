@@ -73,7 +73,7 @@ Describing 'Equality' has damaged your karma.
 
  [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/238
 
-You may run 'rake -Meditate' to begin your meditation.
+You may run 'Measure-Karma -Meditate' to begin your meditation.
 ```
 
 Inspect the red messages carefully, most importantly the last one. The error message contains path to the file that you need to edit in order to progress forward, in this case `Foundations\AboutAssertions.Koans.ps1`. 
