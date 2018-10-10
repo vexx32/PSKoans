@@ -6,7 +6,10 @@ class KoanAttribute : System.Attribute {
     [String] $HelpURL
     [String] $HelpPath
     [ScriptBlock] $HelpAction
-    
+    [String] $FilePath
+    [System.Management.Automation.CommandInfo] $FileCmdlet
+    [PSObject] $FilePesterTests
+
     KoanAttribute($Position, $HelpURL, $HelpAction) {
         $this.Position = $Position
         $this.HelpURL = $HelpURL
@@ -26,16 +29,29 @@ class KoanAttribute : System.Attribute {
         $this.Position = [uint32]::MaxValue
     }
 
-    [void] InvokeHelpInfo() {
-        if ($this.HelpAction) {
-            $this.InvokeHelpAction()
+    [Object] InvokePester([HashTable]$PesterParams) {
+        Write-Verbose "Testing karma with file [$($this.FileCmdlet.Name)]"
+
+        $PesterParams.Script = $this.FilePath
+        $this.FilePesterTests = Invoke-Pester @PesterParams
+        return $this.FilePesterTests
+    }
+
+    [int] GetFailedCount() {
+        return $this.FilePesterTests.FailedCount
+    }
+
+    [PSObject] GetTestResults([string]$Type) {
+        switch ($Type) {
+            'Failed' {
+                return $this.FilePesterTests.TestResult | Where-Object Result -eq $Type
+            }
+            Default: {
+                throw "Not Expected"
+            }
         }
-        elseif ($this.HelpPath) {
-            $this.InvokeHelpPath()
-        }
-        elseif ($this.HelpURL) {
-            $this.InvokeHelpURL()
-        }
+        
+        return $false
     }
 
     [void] InvokeHelpAction() {
@@ -52,6 +68,18 @@ class KoanAttribute : System.Attribute {
         Write-ConsoleLine "Confusion is only the beginning"
         Write-ConsoleLine "To become Master must be able to snatch the coin from my hand"
         Write-ConsoleLine ("You are improving but you must learn more about {0}" -f $this.HelpPath)
+    }
+    
+    [void] InvokeHelpInfo() {
+        if ($this.HelpAction) {
+            $this.InvokeHelpAction()
+        }
+        elseif ($this.HelpPath) {
+            $this.InvokeHelpPath()
+        }
+        elseif ($this.HelpURL) {
+            $this.InvokeHelpURL()
+        }
     }
 
 }

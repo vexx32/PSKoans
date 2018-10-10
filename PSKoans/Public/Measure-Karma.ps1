@@ -49,7 +49,7 @@ function Measure-Karma {
         [Parameter()]
         [Alias('Dojo', 'Spar')]
         [switch]
-        $ShowHelp
+        $Help
     )
     switch ($PSCmdlet.ParameterSetName) {
         "Reset" {
@@ -74,14 +74,21 @@ function Measure-Karma {
 
             $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
                 Get-Command {$_.FullName} |
-                Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
-                Sort-Object {
-                $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
-            }
-
+                ForEach-Object {
+                    $_Koan = $_
+                    $_.ScriptBlock.Attributes |
+                        Where-Object { $_.TypeID -Match 'KoanAttribute' } |
+                        ForEach-Object {
+                            $_.FilePath = $_Koan.Path;
+                            $_.FileCmdlet = $_Koan;
+                            $_
+                        }
+                    } | 
+                Sort-Object Position
+            
             Write-Verbose 'Counting koans...'
-            $TotalKoans = $SortedKoanList | Measure-Koan
-
+            $TotalKoans = $SortedKoanList.FileCmdlet | Measure-Koan
+            
             if ($TotalKoans -eq 0) {
                 # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
                 Write-Warning 'No koans found in your koan directory. Initiating full reset...'
@@ -90,51 +97,38 @@ function Measure-Karma {
 
                 continue # skip the rest of the function
             }
-
+            
             $KoansPassed = 0
-            foreach ($KoanFile in $SortedKoanList.Path) {
 
-                Write-Verbose "Testing karma with file [$KoanFile]"
-
+            foreach ($Koan in $SortedKoanList) {
                 $PesterParams = @{
-                    Script   = $KoanFile
                     PassThru = $true
                     Show     = 'None'
                 }
-                $PesterTests = Invoke-Pester @PesterParams
+                $PesterTests = $Koan.InvokePester($PesterParams)
                 $KoansPassed += $PesterTests.PassedCount
-
+                
                 Write-Verbose "Karma: $KoansPassed"
-                if ($PesterTests.FailedCount -gt 0) {
+                if ($Koan.GetFailedCount() -gt 0) {
                     Write-Verbose "Your karma has been damaged."
-                    if ($ShowHelp) {
-                        $KoanAttribute = (Get-Command $KoanFile).ScriptBlock.Attributes | Where-Object TypeID -match 'KoanAttribute'
-                        $KoanAttribute.InvokeHelpInfo()
-                    }
                     break
                 }
             }
 
-            if ($PesterTests.FailedCount -gt 0) {
-                $NextKoanFailed = $PesterTests.TestResult |
-                    Where-Object Result -eq 'Failed' |
-                    Select-Object -First 1
-
+            $KoanFailed = $SortedKoanList.GetTestResults('Failed') | select -First 1
+            if ($KoanFailed) {
                 $Meditation = @{
-                    DescribeName = $NextKoanFailed.Describe
-                    Expectation  = $NextKoanFailed.ErrorRecord
-                    ItName       = $NextKoanFailed.Name
-                    Meditation   = $NextKoanFailed.StackTrace
+                    DescribeName = $KoanFailed.Describe
+                    Expectation  = $KoanFailed.ErrorRecord
+                    ItName       = $KoanFailed.Name
+                    Meditation   = $KoanFailed.StackTrace
                     KoansPassed  = $KoansPassed
                     TotalKoans   = $TotalKoans
                 }
                 Write-MeditationPrompt @Meditation
 
                 #Invoke Koan Help Data.
-                $KoanAttribute = (Get-Command $NextKoanFailed.ErrorRecord.TargetObject.File).ScriptBlock.Attributes |
-                    Where-Object TypeID -match 'KoanAttribute' |
-                    ForEach-Object InvokeHelpInfo
-
+                $SortedKoanList | Where-Object { $_.GetFailedCount() -gt 0 } | Select-Object -First 1 | ForEach-Object InvokeHelpInfo
             }
             else {
                 $Meditation = @{
