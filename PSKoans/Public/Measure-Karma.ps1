@@ -115,7 +115,7 @@ function Measure-Karma {
                 }
             }
 
-            $KoanFailed = $SortedKoanList.GetTestResults('Failed') | select -First 1
+            $KoanFailed = $SortedKoanList.GetTestResults('Failed') | Select-Object -First 1
             if ($KoanFailed) {
                 $Meditation = @{
                     DescribeName = $KoanFailed.Describe
