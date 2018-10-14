@@ -18,7 +18,6 @@ param()
     script block.
 #>
 Describe '[PSCustomObject]' {
-
     It 'can be built from a hashtable' {
         <#
             This behaves like a cast, but it's actually a bit different. A directly-cast hashtable
@@ -39,7 +38,6 @@ Describe '[PSCustomObject]' {
 
     It 'can have arbitrary properties' {
         $Object = [PSCustomObject]@{ '__' = 'Enter Property Name' }
-        }
 
         __ | Should -Be $Object.PSObject.Properties.Count
         __.PSObject.Properties.Name | Should -Be 'PropertyName'
@@ -53,6 +51,44 @@ Describe '[PSCustomObject]' {
     }
 
     It 'can have ScriptProperties' {
+        $Object = [PSCustomObject]@{
+            BaseProperty = 17
+        }
 
+        $Object | Add-Member -MemberType ScriptProperty -Name DerivedProperty -Value {
+            # ScriptProperties can reference their parent object using $this
+            $this.BaseProperty++
+            $this.BaseProperty % 4
+        }
+
+        __ | Should -Be $Object.DerivedProperty
+        # What if we call it more than once?
+        __ | Should -Be $Object.DerivedProperty
+    }
+
+    It 'can declare ScriptProperties without Add-Member with custom getters and setters' {
+        $Object = [PSCustomObject]@{
+            BaseProperty = 11
+        }
+
+        $Object.PSObject.Properties.Add(
+            # A script property can consist of a name, a getter, and (optionally) a setter.
+            [psscriptproperty]::new('CustomProperty',
+                {
+                    # getter
+                    $this.BaseProperty + 1
+                },
+                {
+                    # setter
+                    param($val)
+                    $this.BaseProperty = - [int]($val)
+                }
+            )
+        )
+
+        __ | Should -Be $Object.CustomProperty
+        $Object.CustomProperty = 12
+        __ | Should -Be $Object.CustomProperty
+        __ | Should -Be $Object.BaseProperty
     }
 }
