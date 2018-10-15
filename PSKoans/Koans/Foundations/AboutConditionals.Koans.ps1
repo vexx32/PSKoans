@@ -195,9 +195,12 @@ Describe 'Switch' {
             $Condition = __
             # ... but only if you ask nicely, that is!
             $Result = switch -Wildcard ($Condition) {
-                # Wildcarded switches work with ? for single character and * for multiple characters
+                # Wildcarded switches work with * for multiple characters
                 'Harm*' {
-                    $_ -replace '(.)', '$1,a,'
+                    'Safe'
+                }
+                'Clarity' {
+                    'Vision'
                 }
             }
 
