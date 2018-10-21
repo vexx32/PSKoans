@@ -65,7 +65,7 @@ STATUS: Testing with PowerShell $PSVersion
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     # Import the module
-    Install-Module "$ProjectRoot/PSKoans/PSKoans.psd1"
+    Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination ($env:PSModulePath -split ';')[0]
     Import-Module 'PSKoans'
 
     # Gather test results. Store them in a variable and file
