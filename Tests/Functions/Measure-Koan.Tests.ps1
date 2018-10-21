@@ -1,4 +1,4 @@
-#Requires -Module PSKoans
+using module PSKoans
 
 InModuleScope 'PSKoans' {
     Describe 'Measure-Koan' {
@@ -11,10 +11,10 @@ InModuleScope 'PSKoans' {
                 Measure-Koan |
                 Should -Be $ExpectedValue
         } -TestCases @{
-            File          = "$script:ModuleFolder\..\Tests\Functions\Measure-Koan_Tests\TestFile.Tests.ps1"
+            File          = "$env:APPVEYOR_BUILD_FOLDER\Tests\Functions\Measure-Koan_Tests\TestFile.Tests.ps1"
             ExpectedValue = 3
         }, @{
-            File          = "$script:ModuleFolder\..\Tests\Functions\Get-Blank.Tests.ps1"
+            File          = "$env:APPVEYOR_BUILD_FOLDER\Tests\Functions\Get-Blank.Tests.ps1"
             ExpectedValue = 1
         }
     }

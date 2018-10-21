@@ -25,11 +25,11 @@ Properties {
 
     $Continue = @{
         InformationAction = if ($PSBoundParameters['InformationAction']) {
-                $PSBoundParameters['InformationAction']
-            }
-            else {
-                'Continue'
-            }
+            $PSBoundParameters['InformationAction']
+        }
+        else {
+            'Continue'
+        }
     }
 }
 

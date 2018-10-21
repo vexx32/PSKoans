@@ -1,4 +1,4 @@
-#Requires -Module PSKoans
+using module PSKoans
 Describe 'Get-Blank' {
 
     It 'should not produce output' {

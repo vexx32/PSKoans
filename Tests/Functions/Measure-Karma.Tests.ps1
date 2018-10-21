@@ -1,4 +1,4 @@
-#Requires -Module PSKoans
+using module PSKoans
 
 InModuleScope 'PSKoans' {
     Describe 'Measure-Karma' {
