@@ -12,6 +12,26 @@
 .NOTES
     Author: Joel Sallow
 #>
+
+#region SupportingClasses
+
+    class FILL_ME_IN {}
+    class __ : FILL_ME_IN {}
+
+    class KoanAttribute : System.Attribute {
+        [uint32] $Position
+
+        KoanAttribute($Position) {
+            $this.Position = $Position
+        }
+
+        KoanAttribute() {
+            $this.Position = [uint32]::MaxValue
+        }
+    }
+
+#endregion SupportingClasses
+
 $script:ModuleFolder = $PSScriptRoot
 
 Write-Verbose 'Importing meditation koans'
@@ -22,14 +42,11 @@ Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     . $_.FullName
 }
 
-Write-Verbose 'Importing class-based types'
-. "$PSScriptRoot/ExportedTypes.ps1"
-
 $env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 Write-Verbose "Koans folder set to $env:PSKoans_Folder"
 
 
 if (-not (Test-Path -Path $env:PSKoans_Folder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
-	Initialize-KoanDirectory -Confirm:$false
+    Initialize-KoanDirectory -Confirm:$false
 }

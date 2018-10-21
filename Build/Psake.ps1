@@ -25,11 +25,11 @@ Properties {
 
     $Continue = @{
         InformationAction = if ($PSBoundParameters['InformationAction']) {
-                $PSBoundParameters['InformationAction']
-            }
-            else {
-                'Continue'
-            }
+            $PSBoundParameters['InformationAction']
+        }
+        else {
+            'Continue'
+        }
     }
 }
 
@@ -65,7 +65,8 @@ STATUS: Testing with PowerShell $PSVersion
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     # Import the module
-    Import-Module "$ProjectRoot/PSKoans/PSKoans.psd1"
+    Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination ($env:PSModulePath -split ';')[0]
+    Import-Module 'PSKoans'
 
     # Gather test results. Store them in a variable and file
     $PesterParams = @{

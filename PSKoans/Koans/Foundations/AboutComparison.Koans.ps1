@@ -1,4 +1,4 @@
-#Requires -Modules PSKoans
+using module PSKoans
 [Koan(Position = 107)]
 param()
 <#
