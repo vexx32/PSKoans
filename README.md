@@ -42,7 +42,7 @@ Install-Module Pester -Scope CurrentUser
 1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
-4. Run `Install-Module -Path .\Path\To\PSKoans-master`
+4. Run `Install-Module .\Path\To\PSKoans-master`
 
 ### Start your Journey
 
@@ -76,7 +76,7 @@ Describing 'Equality' has damaged your karma.
 You may run 'Measure-Karma -Meditate' to begin your meditation.
 ```
 
-Inspect the red messages carefully, most importantly the last one. The error message contains path to the file that you need to edit in order to progress forward, in this case `Foundations\AboutAssertions.Koans.ps1`. 
+Inspect the red messages carefully, most importantly the last one. The error message contains path to the file that you need to edit in order to progress forward, in this case `Foundations\AboutAssertions.Koans.ps1`.
 
 2. Run `Measure-Karma -Meditate` to open your Koans folder and navigate to `Foundations\AboutAssertions.Koans.ps1`. Near the top you'll see:
 
@@ -89,7 +89,7 @@ It 'is a simple comparison' {
 
 The `__` represents a blank for you to fill, and `| Should -Be $true` shows the expected result. To pass this koan you need to replace `__` with `$true`, like this: `$true | Should -Be $true`.
 
-3. Run `Measure-Karma` again to see how you did. Your progress updated to `1/238` and you are presented with the next challenge. You now passed your first koan! 
+3. Run `Measure-Karma` again to see how you did. Your progress updated to `1/238` and you are presented with the next challenge. You now passed your first koan!
 
 ```diff
     Welcome, seeker of enlightenment.
@@ -116,7 +116,7 @@ Describing 'Equality' has damaged your karma.
 + [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/238
 ```
 
- You are on your own from now, but don't worry the koans start very simple, and you can always seek help on [slack](https://powershell.slack.com/messages/C03MQLV0V/), [reddit](https://www.reddit.com/r/PowerShell/), [twitter](https://twitter.com/hashtag/powershell) or anywhere else where powershell is discussed. 
+ You are on your own from now, but don't worry the koans start very simple, and you can always seek help on [slack](https://powershell.slack.com/messages/C03MQLV0V/), [reddit](https://www.reddit.com/r/PowerShell/), [twitter](https://twitter.com/hashtag/powershell) or anywhere else where powershell is discussed.
 
 Good luck!
 
@@ -136,7 +136,7 @@ There are two main ways you can contribute:
 If you are writing a koan file, the header of the file _must_ follow this format (comments can be placed around this area if you feel the need to as well.)
 
 ```powershell
-#Requires -Modules PSKoans
+using module PSKoans
 [Koan(Position = $Index)]
 param()
 ```
