@@ -65,7 +65,8 @@ STATUS: Testing with PowerShell $PSVersion
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     # Import the module
-    Import-Module "$ProjectRoot/PSKoans/PSKoans.psd1"
+    Install-Module "$ProjectRoot/PSKoans/PSKoans.psd1"
+    Import-Module 'PSKoans'
 
     # Gather test results. Store them in a variable and file
     $PesterParams = @{

@@ -3,11 +3,6 @@ $ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psm1")
 $ModuleName = Split-Path $ModuleRoot -Leaf
 
 Describe "General project validation: $ModuleName" {
-
-    It "'$ModuleName' can import cleanly" {
-        {Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force} | Should -Not -Throw
-    }
-
     $FileSearch = @{
         Path    = $ProjectRoot
         Include = '*.ps1', '*.psm1', '*.psd1'
@@ -27,5 +22,9 @@ Describe "General project validation: $ModuleName" {
         $Errors = $null
         [System.Management.Automation.PSParser]::Tokenize($FileContents, [ref]$Errors) > $null
         $Errors.Count | Should -Be 0
+    }
+
+    It "'$ModuleName' can import cleanly" {
+        {Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force} | Should -Not -Throw
     }
 }
