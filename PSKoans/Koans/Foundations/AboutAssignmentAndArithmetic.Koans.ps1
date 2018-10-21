@@ -1,5 +1,5 @@
-[using module PSKoans
-Koan(Position = 106)]
+using module PSKoans
+[Koan(Position = 106)]
 param()
 <#
     Assignment and Arithmetic Operators
