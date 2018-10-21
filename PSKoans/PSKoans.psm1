@@ -42,9 +42,6 @@ Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     . $_.FullName
 }
 
-Write-Verbose 'Importing class-based types'
-. "$PSScriptRoot/ExportedTypes.ps1"
-
 $env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
 Write-Verbose "Koans folder set to $env:PSKoans_Folder"
 
