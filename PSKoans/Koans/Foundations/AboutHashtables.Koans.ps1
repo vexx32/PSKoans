@@ -38,6 +38,8 @@ Describe 'Hashtables' {
             # Values in the hashtable can be retrieved by specifying their corresponding key
             $Hashtable['Color'] | Should -Be '__'
             $Hashtable['Spectrum'] | Should -Be '__'
+
+            $Hashtable | Should -BeOfType '__'
         }
 
         It 'can be built all in one line' {
@@ -105,7 +107,35 @@ Describe 'Hashtables' {
             $Hashtable = @{One = 1; Two = 2; Three = 3; Four = 4}
 
             $Hashtable.Keys | Should -Be @('__', '__', '__', '__')
-            $Hashtable.Values | Should -Be @( , , , 4)
+            $Hashtable.Values | Should -Be @( )
+        }
+
+        It 'is not ordered' {
+            # Hashtables are ordered by hashing their keys for extremely quick lookups.
+            $Hashtable = @{One = 1; Two = 2; Three = 3; Four = 4}
+
+            # You will find your key/value pairs are often not at all in the order you entered them.
+            # This _probably_ won't pass.
+            $Hashtable.Keys | Should -Be @('One', 'Two', 'Three', 'Four')
+            $Hashtable.Values | Should -Be @(1, 2, 3, 4)
+
+            # The order can and will change again, as well, if the collection is changed.
+            $Hashtable['Five'] = 5
+
+            $Hashtable.Keys | Should -Be @('One', 'Two', 'Three', 'Four', 'Five')
+            $Hashtable.Values | Should -Be @(1, 2, 3, 4, 5)
+        }
+
+        It 'can be forced to retain order' {
+            $Hashtable = [ordered]@{One = 1; Two = 2; Three = 3; Four = 4}
+
+            # The [ordered] tag is not in itself properly a type, but transforms our regular hashtable into...
+            $Hashtable | Should -BeOfType '__'
+
+            # Order comes at a price; in this case, lookup speed is significantly decreased with ordered hashtables.
+            # Does this leave our keys and values in the order you would expect?
+            @('__', 'Two', '__', '__') | Should -Be $Hashtable.Keys
+            @(1, , , 4) | Should -Be $Hashtable.Values
         }
 
         It 'allows you to remove keys' {
