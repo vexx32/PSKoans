@@ -241,6 +241,9 @@ Describe 'Switch' {
                 {$_.Length -gt 4} {
                     $_ | Should -BeOfType [string]
                 }
+                default {
+                    Assert-TestFailed -Message 'You Shall Not Pass!'
+                }
             }
         }
     }
