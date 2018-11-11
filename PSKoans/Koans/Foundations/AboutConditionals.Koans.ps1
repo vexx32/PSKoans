@@ -242,7 +242,7 @@ Describe 'Switch' {
                     $_ | Should -BeOfType [string]
                 }
                 default {
-                    Assert-TestFailed -Message 'You Shall Not Pass!'
+                    Should -Fail -Because 'the value of $TestValue was invalid.'
                 }
             }
         }
