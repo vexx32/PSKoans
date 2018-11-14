@@ -4,12 +4,10 @@ InModuleScope 'PSKoans' {
     Describe 'Measure-Karma' {
 
         Context 'Default Behaviour' {
-            BeforeAll {
-                Mock Clear-Host
-                Mock Write-MeditationPrompt
-                Mock Invoke-Pester
-                Mock Measure-Koan
-            }
+            Mock Clear-Host
+            Mock Write-MeditationPrompt
+            Mock Invoke-Pester
+            Mock Measure-Koan
 
             It 'should not produce output' {
                 Measure-Karma | Should -Be $null
