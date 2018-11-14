@@ -3,10 +3,9 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 name: Build & Test - Azure
-trigger:
-- *
+# All branches are default. ?
 pr: 
-- *
+- master
 
 pool:
   vmImage: 'Hosted VS2017'
