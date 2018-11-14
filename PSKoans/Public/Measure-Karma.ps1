@@ -81,7 +81,7 @@ function Measure-Karma {
                 Initialize-KoanDirectory
                 Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
 
-                continue # skip the rest of the function
+                return # skip the rest of the function
             }
 
             $KoansPassed = 0
@@ -89,23 +89,13 @@ function Measure-Karma {
             foreach ($KoanFile in $SortedKoanList.Path) {
                 Write-Verbose "Testing karma with file [$KoanFile]"
 
-                Mock Get-Command {
-                    Microsoft.PowerShell.Core\Get-Command @PSBoundParameters |
-                        Where-Object Name -notin @(
-                            'Initialize-KoanDirectory'
-                            'Measure-Koan'
-                            'Write-ConsoleLine'
-                            'Write-MeditationPrompt'
-                        )
-                }
-
+                $GlobalScope = [PSModuleInfo]::new($true)
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
                     Show     = 'None'
                 }
-
-                Invoke-Pester @PesterParams
+                & $GlobalScope Invoke-Pester @PesterParams
 
                 $KoansPassed += $PesterTests.PassedCount
 
