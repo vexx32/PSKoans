@@ -1,9 +1,9 @@
 param(
-    [string[]]
-    $Task = 'Default',
-
     [string]
-    $ApiKey
+    $ApiKey,
+
+    [string[]]
+    $Task = 'Default'
 )
 
 if ($ApiKey) {
