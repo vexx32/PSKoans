@@ -1,7 +1,14 @@
-param (
+param(
     [string[]]
-    $Task = 'Default'
+    $Task = 'Default',
+
+    [string]
+    $ApiKey
 )
+
+if ($ApiKey) {
+    $env:NugetApiKey = $ApiKey
+}
 
 if ($env:APPVEYOR_REPO_BRANCH -eq 'master' -and
     $env:APPVEYOR_REPO_TAG_NAME) {
