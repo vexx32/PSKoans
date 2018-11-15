@@ -3,8 +3,8 @@ using module PSKoans
 InModuleScope 'PSKoans' {
     Describe 'Write-MeditationPrompt' {
         BeforeAll {
-            Mock Write-Host
-            Mock Start-Sleep
+            Mock Write-Host {}
+            Mock Start-Sleep {}
         }
 
         Context 'Greeting Prompt' {

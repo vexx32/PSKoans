@@ -4,10 +4,7 @@ param()
 # Init some things
 Properties {
     # Find the build folder based on build system
-    $ProjectRoot = $env:BHProjectPath
-    if (-not $ProjectRoot) {
-        $ProjectRoot = Resolve-Path -Path "$PSScriptRoot\.."
-    }
+    $ProjectRoot = Resolve-Path -Path "$PSScriptRoot/.."
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
@@ -65,7 +62,7 @@ STATUS: Testing with PowerShell $PSVersion
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     # Import the module
-    Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination ($env:PSModulePath -split ';')[0]
+    Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination ($env:PSModulePath -split [System.IO.Path]::PathSeparator)[0]
     Import-Module 'PSKoans'
 
     # Gather test results. Store them in a variable and file
@@ -83,7 +80,7 @@ STATUS: Testing with PowerShell $PSVersion
     If ($ENV:BHBuildSystem -eq 'AppVeyor') {
         (New-Object 'System.Net.WebClient').UploadFile(
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
-            "$ProjectRoot\$TestFile"
+            "$ProjectRoot/$TestFile"
         )
     }
 

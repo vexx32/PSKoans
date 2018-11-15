@@ -1,13 +1,16 @@
 using module PSKoans
 
-InModuleScope 'PSKoans' {
-    Describe 'Measure-Karma' {
+Describe 'Measure-Karma' {
+
+    InModuleScope 'PSKoans' {
 
         Context 'Default Behaviour' {
-            Mock Clear-Host
-            Mock Write-MeditationPrompt
-            Mock Invoke-Pester
-            Mock Measure-Koan
+            BeforeAll {
+                Mock Clear-Host {}
+                Mock Write-MeditationPrompt -ModuleName 'PSKoans' {}
+                Mock Invoke-Koan -ModuleName 'PSKoans' {}
+                Mock Measure-Koan -ModuleName 'PSKoans' {}
+            }
 
             It 'should not produce output' {
                 Measure-Karma | Should -Be $null
@@ -30,13 +33,13 @@ InModuleScope 'PSKoans' {
                     Get-Command {$_.FullName} |
                     Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'}
 
-                Assert-MockCalled Invoke-Pester -Times ($ValidKoans.Count)
+                Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
             }
         }
 
         Context 'With -Reset Switch' {
             BeforeAll {
-                Mock Initialize-KoanDirectory
+                Mock Initialize-KoanDirectory -ModuleName 'PSKoans'
             }
 
             It 'should not produce output' {

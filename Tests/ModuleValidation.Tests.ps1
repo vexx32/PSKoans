@@ -1,5 +1,5 @@
-$ProjectRoot = Resolve-Path "$PSScriptRoot\.."
-$ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot\*\*.psm1")
+$ProjectRoot = Resolve-Path "$PSScriptRoot/.."
+$ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot/*/*.psm1")
 $ModuleName = Split-Path $ModuleRoot -Leaf
 
 Describe "General project validation: $ModuleName" {
