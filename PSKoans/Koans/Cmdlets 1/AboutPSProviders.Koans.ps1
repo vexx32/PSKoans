@@ -35,7 +35,6 @@ Describe 'Alias Provider' {
         It 'can be queried with generic provider cmdlets' {
             $Aliases = Get-ChildItem 'Alias:'
 
-            $Aliases.Count | Should -Be __
             $Aliases.Name[0] | Should -Be __
             $Aliases.Definition[0] | Should -Be __
         }
@@ -48,10 +47,13 @@ Describe 'Alias Provider' {
         }
 
         It 'can create aliases too!' {
+            $Aliases.Count | Should -Be __
+
             New-Item -Path 'Alias:\grok' -Value 'Get-Item' -ErrorAction SilentlyContinue
             $File = grok '__' -ErrorAction SilentlyContinue
 
             $File | Should -BeOfType 'System.IO.FileInfo'
+            $Aliases.Count | Should -Be __
         }
     }
 
