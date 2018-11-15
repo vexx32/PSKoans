@@ -4,10 +4,7 @@ param()
 # Init some things
 Properties {
     # Find the build folder based on build system
-    $ProjectRoot = $env:BHProjectPath
-    if (-not $ProjectRoot) {
-        $ProjectRoot = Resolve-Path -Path "$PSScriptRoot\.."
-    }
+    $ProjectRoot = Resolve-Path -Path "$PSScriptRoot\.."
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
