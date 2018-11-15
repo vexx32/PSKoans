@@ -1,17 +1,12 @@
-if (-not (Get-Module PSKoans)) {
-    Import-Module PSKoans
-}
+using module PSKoans
 
 Describe 'Measure-Karma' {
 
     Context 'Default Behaviour' {
         BeforeAll {
-            function Write-MeditationPrompt {}
-            function Measure-Koan {}
-
             Mock Clear-Host {}
             Mock Write-MeditationPrompt -ModuleName 'PSKoans' {}
-            Mock Invoke-Pester {}
+            Mock Invoke-Koan {}
             Mock Measure-Koan -ModuleName 'PSKoans' {}
         }
 
@@ -36,7 +31,7 @@ Describe 'Measure-Karma' {
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'}
 
-            Assert-MockCalled Invoke-Pester -Times ($ValidKoans.Count)
+            Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
         }
     }
 

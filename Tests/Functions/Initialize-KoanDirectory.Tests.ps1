@@ -1,6 +1,4 @@
-if (-not (Get-Module PSKoans)) {
-    Import-Module PSKoans
-}
+using module PSKoans
 
 InModuleScope 'PSKoans' {
     Describe 'Initialize-KoanDirectory' {
