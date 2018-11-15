@@ -5,8 +5,8 @@ InModuleScope 'PSKoans' {
 
         Context 'Mocked Commands' {
             BeforeAll {
-                Mock Remove-Item
-                Mock Copy-Item
+                Mock Remove-Item {}
+                Mock Copy-Item {}
             }
 
             Context 'Koan Folder Exists' {
