@@ -61,37 +61,14 @@ function Invoke-Koan {
         [Pester.OutputTypes]
         $Show
     )
-    begin {
-        try {
-            $outBuffer = $null
-            if ($PSBoundParameters.TryGetValue('OutBuffer', [ref]$outBuffer)) {
-                $PSBoundParameters['OutBuffer'] = 1
-            }
-            $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand('Invoke-Pester', [System.Management.Automation.CommandTypes]::Function)
-            $scriptCmd = {& $wrappedCmd @PSBoundParameters }
-            $steppablePipeline = $scriptCmd.GetSteppablePipeline()
-            $steppablePipeline.Begin($PSCmdlet)
-        }
-        catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-    }
-
-    process {
-        try {
-            $steppablePipeline.Process($_)
-        }
-        catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-    }
-
     end {
-        try {
-            $steppablePipeline.End()
-        }
-        catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
+        $GlobalScope = [psmoduleinfo]::new($true)
+
+        & $GlobalScope {
+            param($Params)
+
+            Invoke-Pester @Params
+        } @($PSBoundParameters)
+
     }
 }
