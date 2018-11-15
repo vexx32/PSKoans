@@ -40,7 +40,7 @@ Describe "Order of Operations" {
 
     It "otherwise follows standard mathematical rules" {
         # Although PowerShell doesn't have a native exponentiation operator,
-        # we can use [Math]::Pow($a, $b)
+        # we do have [Math]::Pow($base, $power)
         3 + 4 / [Math]::Pow(2, 3) | Should -Be __
     }
 }

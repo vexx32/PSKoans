@@ -70,7 +70,10 @@ Describe 'Functions' {
         Add-Numbers 1 7 | Should -Be __
         Add-Numbers __ 15 | Should -Be 31
 
-        # Values can be passed to specified parameters
+        <#
+            Values can be passed to specified parameters; these values will be assigned to
+            the variables of the same name defined at the head of the function.
+        #>
         Add-Numbers -Number2 8 -Number1 12 | Should -Be 20
     }
 
@@ -78,7 +81,9 @@ Describe 'Functions' {
         function Measure-String {
             <#
                 Declaring parameters in this way allows for more advanced techniques,
-                which will be covered in AboutAdvancedFunctions
+                which will be covered in AboutAdvancedFunctions. It works similarly
+                to the simpler technique, values can be passed in the same way by
+                position or name.
             #>
             param(
                 $InputString
@@ -111,7 +116,8 @@ Describe 'Script Block' {
         # Sometimes, you just want to watch things burn, and the console to stream red errors.
         $Script2 = {
             # Currently, this will just output the script block as an object
-            $Script # Try appending .Invoke() to this line to cause the original block to be executed
+            # Try appending .Invoke() to the following line to cause the original block to be executed
+            $Script
         }
         $Script | Should -Throw
         $Script2 | Should -Throw
