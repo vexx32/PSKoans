@@ -95,7 +95,8 @@ function Measure-Karma {
                     PassThru = $true
                     Show     = 'None'
                 }
-                & $GlobalScope Invoke-Koan @PesterParams
+                $Command = Get-Comment Invoke-Koan
+                & $GlobalScope $Command @PesterParams
 
                 $KoansPassed += $PesterTests.PassedCount
 
