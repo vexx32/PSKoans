@@ -6,7 +6,7 @@ Describe 'Measure-Karma' {
         BeforeAll {
             Mock Clear-Host {}
             Mock Write-MeditationPrompt -ModuleName 'PSKoans' {}
-            Mock Invoke-Koan {}
+            Mock Invoke-Koan -ModuleName 'PSKoans' {}
             Mock Measure-Koan -ModuleName 'PSKoans' {}
         }
 
