@@ -1,4 +1,4 @@
-$ProjectRoot = Resolve-Path "$PSScriptRoot\.."
+$ProjectRoot = Resolve-Path "$PSScriptRoot/.."
 $KoanFolder = $ProjectRoot | Join-Path -ChildPath 'PSKoans' | Join-Path -ChildPath 'Koans'
 
 Describe "Koan Assessment" {

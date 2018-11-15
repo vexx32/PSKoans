@@ -1,4 +1,4 @@
-using module PSKoans
+#Requires -Modules PSKoans
 
 InModuleScope 'PSKoans' {
     Describe 'Measure-Koan' {
