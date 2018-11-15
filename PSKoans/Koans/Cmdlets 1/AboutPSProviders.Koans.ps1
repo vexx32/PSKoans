@@ -123,7 +123,7 @@ Describe 'Environment Provider' {
 }
 
 Describe 'FileSystem Provider' {
-    $Path = $home | Join-Path -ChildPath 'File001.tmp'
+    $Path = 'TestDrive:' | Join-Path -ChildPath 'File001.tmp'
     if (-not (Test-Path $Path)) {
         New-Item -Path $Path > $null
 
