@@ -1,9 +1,9 @@
 param(
-    [string]
-    $ApiKey,
-
     [string[]]
-    $Task = 'Default'
+    $Task = 'Default',
+
+    [string]
+    $ApiKey
 )
 
 if ($ApiKey) {
@@ -17,6 +17,6 @@ Import-Module -Name Psake, BuildHelpers
 
 Set-BuildEnvironment
 
-Invoke-Psake -BuildFile "$PSScriptRoot\psake.ps1" -TaskList $Task -NoLogo
+Invoke-Psake -BuildFile "$PSScriptRoot\Psake.ps1" -TaskList $Task -NoLogo
 
 exit ([int](-not $Psake.Build_Success))
