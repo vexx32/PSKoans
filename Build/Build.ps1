@@ -1,11 +1,13 @@
-param (
+param(
     [string[]]
-    $Task = 'Default'
+    $Task = 'Default',
+
+    [string]
+    $ApiKey
 )
 
-if ($env:APPVEYOR_REPO_BRANCH -eq 'master' -and
-    $env:APPVEYOR_REPO_TAG_NAME) {
-    $Task = 'Deploy'
+if ($ApiKey) {
+    $env:NugetApiKey = $ApiKey
 }
 
 # Grab nuget bits, set build variables, start build.
@@ -15,6 +17,6 @@ Import-Module -Name Psake, BuildHelpers
 
 Set-BuildEnvironment
 
-Invoke-Psake -BuildFile "$PSScriptRoot\psake.ps1" -TaskList $Task -NoLogo
+Invoke-Psake -BuildFile "$PSScriptRoot\Psake.ps1" -TaskList $Task -NoLogo
 
 exit ([int](-not $Psake.Build_Success))
