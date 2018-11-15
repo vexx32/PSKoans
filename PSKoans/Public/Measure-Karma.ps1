@@ -95,8 +95,13 @@ function Measure-Karma {
                     PassThru = $true
                     Show     = 'None'
                 }
-                $Command = Get-Comment Invoke-Koan
-                & $GlobalScope $Command @PesterParams
+
+                # Execute in a fresh scope to prevent internal secrets being leaked
+                & $GlobalScope {
+                    param($Command, $Params)
+                    # Command must be passed in as a parameter to ensure it is read correctly
+                    & $Command @Params
+                } @((Get-Command Invoke-Koan), $PesterParams)
 
                 $KoansPassed += $PesterTests.PassedCount
 
