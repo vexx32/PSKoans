@@ -116,7 +116,8 @@ Describe 'Script Block' {
         # Sometimes, you just want to watch things burn, and the console to stream red errors.
         $Script2 = {
             # Currently, this will just output the script block as an object
-            $Script # Try appending .Invoke() to this line to cause the original block to be executed
+            # Try appending .Invoke() to the following line to cause the original block to be executed
+            $Script
         }
         $Script | Should -Throw
         $Script2 | Should -Throw
