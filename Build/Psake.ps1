@@ -4,7 +4,7 @@ param()
 # Init some things
 Properties {
     # Find the build folder based on build system
-    $ProjectRoot = Resolve-Path -Path "$PSScriptRoot\.."
+    $ProjectRoot = Resolve-Path -Path "$PSScriptRoot/.."
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
@@ -80,7 +80,7 @@ STATUS: Testing with PowerShell $PSVersion
     If ($ENV:BHBuildSystem -eq 'AppVeyor') {
         (New-Object 'System.Net.WebClient').UploadFile(
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
-            "$ProjectRoot\$TestFile"
+            "$ProjectRoot/$TestFile"
         )
     }
 
