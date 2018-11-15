@@ -6,6 +6,9 @@ Describe 'Measure-Karma' {
 
     Context 'Default Behaviour' {
         BeforeAll {
+            function Write-MeditationPrompt {}
+            function Measure-Koan {}
+
             Mock Clear-Host {}
             Mock Write-MeditationPrompt -ModuleName 'PSKoans' {}
             Mock Invoke-Pester {}
