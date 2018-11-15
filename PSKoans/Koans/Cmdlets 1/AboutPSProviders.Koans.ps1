@@ -54,6 +54,8 @@ Describe 'Alias Provider' {
 
             $File | Should -BeOfType 'System.IO.FileInfo'
             $Aliases.Count | Should -Be __
+
+            Remove-Item -Path 'Alias:\grok'
         }
     }
 
