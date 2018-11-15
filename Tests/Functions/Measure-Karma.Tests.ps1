@@ -1,9 +1,6 @@
 using module PSKoans
 
 Describe 'Measure-Karma' {
-    function Write-MeditationPrompt {}
-    function Invoke-Koan {}
-    function Measure-Koan {}
 
     Context 'Default Behaviour' {
         BeforeAll {
