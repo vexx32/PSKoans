@@ -14,10 +14,6 @@ function Measure-Karma {
 
         Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-        PS> rake
-
-        Assesses the results of the Pester tests, and builds the meditation prompt.
-    .EXAMPLE
         PS> meditate -Contemplate
 
         Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
