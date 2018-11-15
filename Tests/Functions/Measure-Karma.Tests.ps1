@@ -5,9 +5,9 @@ InModuleScope 'PSKoans' {
 
         Context 'Default Behaviour' {
             Mock Clear-Host
-            Mock Write-MeditationPrompt
+            Mock Write-MeditationPrompt -ModuleName 'PSKoans'
             Mock Invoke-Pester
-            Mock Measure-Koan
+            Mock Measure-Koan -ModuleName 'PSKoans'
 
             It 'should not produce output' {
                 Measure-Karma | Should -Be $null
