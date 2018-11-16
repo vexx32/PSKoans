@@ -172,7 +172,7 @@ Describe 'Hashtables' {
             $Hashtable['0'] | Should -Be '__'
         }
 
-        It 'can access keys like properties' {
+        It 'can access values by using keys like properties' {
             $Hashtable = @{0 = 'Zero'; Name = 'Jim'}
             $Key = '__'
 
