@@ -165,7 +165,7 @@ Describe 'Hashtables' {
             $Hashtable['Carrots'] | Should -Not -Be $Hashtable['Oranges']
         }
 
-        It 'will implicitly convert keys and lookup values' {
+        It 'will not implicitly convert keys and lookup values' {
             $Hashtable = @{0 = 'Zero'}
 
             $Hashtable[0] | Should -Be '__'
