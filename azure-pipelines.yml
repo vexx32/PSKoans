@@ -49,19 +49,9 @@ jobs:
     displayName: 'Deploy'
 
     inputs:
-      targetType: 'inline'
+      targetType: 'filePath'
       arguments: $(PSApiKey)
-      script: |
-        param($Key)
-
-        $ENV:NugetApiKey = $Key
-        $DeploymentParams = @{
-            Path    = Get-Location
-            Recurse = $false
-            Force   = $true
-            Verbose = $true
-        }
-        Invoke-PSDeploy @DeploymentParams
+      filePath: ./Build/Publish.ps1
 
       errorActionPreference: 'stop'
       failOnStderr: true
