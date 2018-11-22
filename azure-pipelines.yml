@@ -10,7 +10,6 @@ pr:
 pool:
   vmImage: 'Ubuntu 16.04'
 
-jobs:
 - job: BuildAndTest
 
   steps:
@@ -40,13 +39,9 @@ jobs:
       failOnStderr: true
       pwsh: true
 
-- job: Deploy # Only deploy when tests pass AND we're building from a tagged commit
-  dependsOn: BuildAndTest
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-
-  steps:
   - task: PowerShell@2
-    displayName: 'Deploy'
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    displayName: 'Deploy to Gallery'
 
     inputs:
       targetType: 'filePath'
