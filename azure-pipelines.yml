@@ -10,30 +10,59 @@ pr:
 pool:
   vmImage: 'Ubuntu 16.04'
 
-steps:
-- task: PowerShell@2
-  displayName: 'Setup Build Environment'
-  inputs:
-    targetType: 'inline' # Optional. Options: filePath, inline
-    #filePath: #Required when targetType == FilePath
-    #arguments: # Optional
-    script: |
-      Install-Module -Name Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
-      Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
-    errorActionPreference: 'stop' # Optional. Options: stop, continue, silentlyContinue
-    failOnStderr: true # Optional
-    #ignoreLASTEXITCODE: false # Optional
-    pwsh: true # Optional
-    #workingDirectory: /home/vsts/work/1/s/
-- task: PowerShell@2
-  displayName: 'Test & Deploy'
-  inputs:
-    targetType: 'filePath' # Optional. Options: filePath, inline
-    filePath: ./Build/Build.ps1 #Required when targetType == FilePath
-    arguments: -Task Build # Optional
-    #script: # Required when targetType == Inline
-    errorActionPreference: 'stop' # Optional. Options: stop, continue, silentlyContinue
-    failOnStderr: true # Optional
-    #ignoreLASTEXITCODE: false # Optional
-    pwsh: true # Optional
-    #workingDirectory: /home/vsts/work/1/s/
+jobs:
+- job: BuildAndTest
+
+  steps:
+  - task: PowerShell@2
+    displayName: 'Setup Build Environment'
+
+    inputs:
+
+      targetType: 'inline'
+      script: |
+        Install-Module -Name Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
+        Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true
+
+  - task: PowerShell@2
+    displayName: 'Run Pester Tests'
+
+    inputs:
+      targetType: 'filePath'
+      filePath: ./Build/Build.ps1
+      arguments: -Task Build
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true
+
+- job: Deploy # Only deploy when tests pass AND we're building from a tagged commit
+  dependsOn: BuildAndTest
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+
+  steps:
+  - task: PowerShell@2
+    displayName: 'Deploy'
+
+    inputs:
+      targetType: 'inline'
+      arguments: $(PSApiKey)
+      script: |
+        param($Key)
+
+        $ENV:NugetApiKey = $Key
+        $DeploymentParams = @{
+            Path    = Get-Location
+            Recurse = $false
+            Force   = $true
+            Verbose = $true
+        }
+        Invoke-PSDeploy @DeploymentParams
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true
