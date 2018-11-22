@@ -7,10 +7,11 @@ name: Build & Test - Azure
 pr:
 - master
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+jobs:
 
 - job: BuildAndTest
+  pool:
+    vmImage: 'Ubuntu 16.04'
 
   steps:
   - task: PowerShell@2
