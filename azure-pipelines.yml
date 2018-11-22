@@ -7,33 +7,48 @@ name: Build & Test - Azure
 pr:
 - master
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+jobs:
 
-steps:
-- task: PowerShell@2
-  displayName: 'Setup Build Environment'
-  inputs:
-    targetType: 'inline' # Optional. Options: filePath, inline
-    #filePath: #Required when targetType == FilePath
-    #arguments: # Optional
-    script: |
-      Install-Module -Name Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
-      Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
-    errorActionPreference: 'stop' # Optional. Options: stop, continue, silentlyContinue
-    failOnStderr: true # Optional
-    #ignoreLASTEXITCODE: false # Optional
-    pwsh: true # Optional
-    #workingDirectory: /home/vsts/work/1/s/
-- task: PowerShell@2
-  displayName: 'Test & Deploy'
-  inputs:
-    targetType: 'filePath' # Optional. Options: filePath, inline
-    filePath: ./Build/Build.ps1 #Required when targetType == FilePath
-    arguments: -Task Build # Optional
-    #script: # Required when targetType == Inline
-    errorActionPreference: 'stop' # Optional. Options: stop, continue, silentlyContinue
-    failOnStderr: true # Optional
-    #ignoreLASTEXITCODE: false # Optional
-    pwsh: true # Optional
-    #workingDirectory: /home/vsts/work/1/s/
+- job: BuildAndTest
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  steps:
+  - task: PowerShell@2
+    displayName: 'Setup Build Environment'
+
+    inputs:
+
+      targetType: 'inline'
+      script: |
+        Install-Module -Name Psake, PSDeploy, BuildHelpers -Force -Scope CurrentUser
+        Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true
+
+  - task: PowerShell@2
+    displayName: 'Run Pester Tests'
+
+    inputs:
+      targetType: 'filePath'
+      filePath: ./Build/Build.ps1
+      arguments: -Task Build
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true
+
+  - task: PowerShell@2
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    displayName: 'Deploy to Gallery'
+
+    inputs:
+      targetType: 'filePath'
+      arguments: $(PSApiKey)
+      filePath: ./Build/Publish.ps1
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true

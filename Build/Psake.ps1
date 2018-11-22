@@ -11,15 +11,6 @@ Properties {
     $TestFile = "TestResults_PS${PSVersion}_${TimeStamp}.xml"
     $Lines = '-' * 70
 
-    $DeploymentParams = @{
-        Path    = "$ProjectRoot"
-        Force   = $true
-        Recurse = $false # We keep psdeploy artifacts, avoid deploying those
-    }
-    if ($ENV:BHCommitMessage -match "!verbose") {
-        $DeploymentParams.Add('Verbose', $true)
-    }
-
     $Continue = @{
         InformationAction = if ($PSBoundParameters['InformationAction']) {
             $PSBoundParameters['InformationAction']
@@ -35,17 +26,9 @@ Task 'Default' -Depends 'Test'
 Task 'Init' {
     Set-Location -Path $ProjectRoot
 
-    $CommitTag = if ($env:APPVEYOR_REPO_TAG_NAME) {
-        $env:APPVEYOR_REPO_TAG_NAME
-    }
-    else {
-        "None"
-    }
-
     Write-Information @Continue @"
 $Lines
-Repository Branch: $env:APPVEYOR_REPO_BRANCH
-Commit Tag: $CommitTag
+Repository Branch: $env:BUILD_SOURCEBRANCHNAME ($env:BUILD_SOURCEBRANCH)
 
 Build System Details:
 "@
@@ -75,14 +58,6 @@ STATUS: Testing with PowerShell $PSVersion
     $TestResults = Invoke-Pester @PesterParams
 
     [Net.ServicePointManager]::SecurityProtocol = $SecurityProtocol
-
-    # In Appveyor?  Upload our tests!
-    If ($ENV:BHBuildSystem -eq 'AppVeyor') {
-        (New-Object 'System.Net.WebClient').UploadFile(
-            "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
-            "$ProjectRoot/$TestFile"
-        )
-    }
 
     Remove-Item -Path "$ProjectRoot/$TestFile" -Force -ErrorAction SilentlyContinue
 
@@ -115,10 +90,4 @@ Failed to update version for '$env:BHProjectName': $_.
 Continuing with existing version.
 "@
     }
-}
-
-Task Deploy -Depends Build {
-    Write-Information $Lines @Continue
-
-    Invoke-PSDeploy @DeploymentParams
 }

@@ -1,14 +1,7 @@
 param(
     [string[]]
-    $Task = 'Default',
-
-    [string]
-    $ApiKey
+    $Task = 'Default'
 )
-
-if ($ApiKey) {
-    $env:NugetApiKey = $ApiKey
-}
 
 # Grab nuget bits, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap > $null
