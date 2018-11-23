@@ -1,4 +1,4 @@
-function Measure-Karma {
+﻿function Measure-Karma {
     <#
 	.SYNOPSIS
         Reflect on your progress and check your answers.

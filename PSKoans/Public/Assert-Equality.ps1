@@ -1,4 +1,4 @@
-function Assert-Equality {
+﻿function Assert-Equality {
     param(
         [object[]]
         $ReferenceValue,
