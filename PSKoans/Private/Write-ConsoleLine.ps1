@@ -1,4 +1,4 @@
-function Write-ConsoleLine {
+﻿function Write-ConsoleLine {
     <#
     .SYNOPSIS
         Writes text to the console.

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Provides a library of editable Pester tests to assist learning PowerShell.
 .DESCRIPTION

@@ -1,4 +1,4 @@
-function Get-Blank {
+﻿function Get-Blank {
     <#
     .SYNOPSIS
         Returns $null

@@ -1,4 +1,4 @@
-function Initialize-KoanDirectory {
+﻿function Initialize-KoanDirectory {
     <#
 	.SYNOPSIS
         Provides a blank slate for Koans.

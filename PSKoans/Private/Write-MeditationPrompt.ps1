@@ -1,4 +1,4 @@
-function Write-MeditationPrompt {
+﻿function Write-MeditationPrompt {
     <#
 	.SYNOPSIS
         Provides a mechanism for Measure-Karma to write clean output.

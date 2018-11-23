@@ -1,4 +1,4 @@
-function Invoke-Koan {
+﻿function Invoke-Koan {
     <#
         .FORWARDHELPTARGETNAME Invoke-Pester
         .FORWARDHELPCATEGORY Function
