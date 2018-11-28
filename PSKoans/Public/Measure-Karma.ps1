@@ -17,7 +17,7 @@ function Measure-Karma {
 	.SYNOPSIS
         Reflect on your progress and check your answers.
     .DESCRIPTION
-        Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
+        Measure-Karma executes Pester against the koans to evaluate if you have made the necessary
         corrections for success.
     .PARAMETER Topic
         Execute koans only from the selected Topic(s).
