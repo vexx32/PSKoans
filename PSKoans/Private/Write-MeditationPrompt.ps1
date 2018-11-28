@@ -51,7 +51,11 @@
 
         [Parameter(Mandatory, ParameterSetName = 'Enlightened')]
         [switch]
-        $Complete
+        $Complete,
+
+        [Parameter()]
+        [string[]]
+        $Topic
     )
 
     $Red = @{ForegroundColor = "Red"}
@@ -93,6 +97,13 @@ $Meditation
     Your path thus far:
 
 "@
+        WisdomTopic    = @"
+
+    $($Koan -replace "`n","`n    ")
+
+    Your path thus far in topics $($Topic -join ', '):
+
+"@
         OpenFolder     = @"
 
 You may run 'Measure-Karma -Meditate' to begin your meditation.
@@ -100,6 +111,14 @@ You may run 'Measure-Karma -Meditate' to begin your meditation.
 "@
         Completed      = @"
     Congratulations! You have taken the first steps towards enlightenment.
+
+    You cast your gaze back upon the path that you have walked:
+
+"@
+        CompletedTopic = @"
+    Congratulations! You have taken the first steps towards enlightenment.
+
+    You have completed: $($Topic -join ', ')
 
     You cast your gaze back upon the path that you have walked:
 
@@ -126,7 +145,13 @@ You may run 'Measure-Karma -Meditate' to begin your meditation.
             Write-Host @Blue $Prompts['Meditate']
             Write-Host @Red $Prompts['Subject']
             Start-Sleep @SleepTime
-            Write-Host @Blue $Prompts['Wisdom']
+
+            if ($PSBoundParameters.ContainsKey('Topic')) {
+                Write-Host @Blue $Prompts['WisdomTopic']
+            }
+            else {
+                Write-Host @Blue $Prompts['Wisdom']
+            }
 
             Write-Verbose 'Calculating progress...'
             $ProgressAmount = "$KoansPassed/$TotalKoans"
@@ -143,7 +168,12 @@ You may run 'Measure-Karma -Meditate' to begin your meditation.
             break
         }
         'Enlightened' {
-            Write-Host @Blue $Prompts['Completed']
+            if ($PSBoundParameters.ContainsKey('Topic')) {
+                Write-Host @Blue $Prompts['CompletedTopic']
+            }
+            else {
+                Write-Host @Blue $Prompts['Completed']
+            }
 
             $ProgressAmount = "$KoansPassed/$TotalKoans"
             [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
@@ -155,7 +185,10 @@ You may run 'Measure-Karma -Meditate' to begin your meditation.
                 $ProgressAmount
             ) | Write-Host @Blue
 
-            Write-Host @Blue $Prompts['BookSuggestion']
+            if (-not $PSBoundParameters.ContainsKey('Topic')) {
+                Write-Host @Blue $Prompts['BookSuggestion']
+            }
+
             break
         }
     }
