@@ -1,10 +1,28 @@
-﻿function Measure-Karma {
+﻿using namespace System.Management.Automation
+
+class ValidKoanValues : IValidateSetValuesGenerator {
+    [string[]] GetValidValues() {
+        $Values = Get-ChildItem -Path $env:PSKoans_Folder -Recurse -Filter '*.Koans.ps1' |
+            Sort-Object -Property BaseName |
+            ForEach-Object {
+            $_.BaseName -replace '\.Koans$'
+        }
+
+        return $Values
+    }
+}
+
+function Measure-Karma {
     <#
 	.SYNOPSIS
         Reflect on your progress and check your answers.
     .DESCRIPTION
         Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
         corrections for success.
+    .PARAMETER Topic
+        Execute koans only from the selected Topic(s).
+    .PARAMETER ListKoans
+        Output a complete list of available koan topics.
     .PARAMETER Contemplate
         Opens your local koan folder.
 	.PARAMETER Reset
@@ -30,10 +48,20 @@
         Module: PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate','Clear-Path')]
+    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
     param(
+        [Parameter(ParameterSetName = 'Default')]
+        [Alias('Koan', 'File')]
+        [ValidateSet([ValidKoanValues])]
+        [string[]]
+        $Topic,
+
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [switch]
+        $ListKoans,
+
         [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
-        [Alias('Koans', 'Meditate')]
+        [Alias('Meditate')]
         [switch]
         $Contemplate,
 
@@ -42,11 +70,17 @@
         $Reset
     )
     switch ($PSCmdlet.ParameterSetName) {
-        "Reset" {
+        'ListKoans' {
+            Get-ChildItem -Path $env:PSKoans_Folder -Recurse -File -Filter '*.Koans.ps1' |
+                ForEach-Object {
+                    $_.BaseName -replace '\.Koans$'
+                }
+        }
+        'Reset' {
             Write-Verbose "Reinitializing koan directory"
             Initialize-KoanDirectory
         }
-        "OpenFolder" {
+        'OpenFolder' {
             Write-Verbose "Opening koans folder"
             if (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
                 Start-Process -FilePath 'code' -ArgumentList $env:PSKoans_Folder -NoNewWindow
@@ -61,12 +95,16 @@
             Write-MeditationPrompt -Greeting
 
             Write-Verbose 'Sorting koans...'
-            $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
+            $SortedKoanList = Get-ChildItem -Path $env:PSKoans_Folder -Recurse -Filter '*.Koans.ps1' |
+                Where-Object {
+                    -not $PSBoundParameters.ContainsKey('Topic') -or
+                    $_.BaseName -replace '\.Koans$' -in $Topic
+                } |
                 Get-Command {$_.FullName} |
                 Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
                 Sort-Object {
-                $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
-            }
+                    $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
+                }
 
             Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
@@ -85,7 +123,6 @@
             foreach ($KoanFile in $SortedKoanList.Path) {
                 Write-Verbose "Testing karma with file [$KoanFile]"
 
-                $GlobalScope = [PSModuleInfo]::new($true)
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
@@ -99,7 +136,7 @@
 
                 Write-Verbose "Karma: $KoansPassed"
                 if ($PesterTests.FailedCount -gt 0) {
-                    Write-Verbose "Your karma has been damaged."
+                    Write-Verbose 'Your karma has been damaged.'
                     break
                 }
             }
@@ -117,6 +154,11 @@
                     KoansPassed  = $KoansPassed
                     TotalKoans   = $TotalKoans
                 }
+
+                if ($PSBoundParameters.ContainsKey('Topic')) {
+                    $Meditation.Add('Topic', $Topic)
+                }
+
                 Write-MeditationPrompt @Meditation
             }
             else {
@@ -125,6 +167,11 @@
                     KoansPassed = $KoansPassed
                     TotalKoans  = $PesterTestCount
                 }
+
+                if ($PSBoundParameters.ContainsKey('Topic')) {
+                    $Meditation.Add('Topic', $Topic)
+                }
+
                 Write-MeditationPrompt @Meditation
             }
         }
