@@ -21,7 +21,7 @@ function Measure-Karma {
         corrections for success.
     .PARAMETER Topic
         Execute koans only from the selected Topic(s).
-    .PARAMETER ListKoans
+    .PARAMETER ListTopics
         Output a complete list of available koan topics.
     .PARAMETER Contemplate
         Opens your local koan folder.
@@ -57,8 +57,9 @@ function Measure-Karma {
         $Topic,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Alias('ListKoans')]
         [switch]
-        $ListKoans,
+        $ListTopics,
 
         [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
         [Alias('Meditate')]
