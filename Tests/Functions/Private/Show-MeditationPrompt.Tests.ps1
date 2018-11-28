@@ -1,7 +1,7 @@
 using module PSKoans
 
 InModuleScope 'PSKoans' {
-    Describe 'Write-MeditationPrompt' {
+    Describe 'Show-MeditationPrompt' {
         BeforeAll {
             Mock Write-Host {}
             Mock Start-Sleep {}
@@ -10,7 +10,7 @@ InModuleScope 'PSKoans' {
         Context 'Greeting Prompt' {
 
             It 'should only write a single string to host' {
-                Write-MeditationPrompt -Greeting | Should -BeNullOrEmpty
+                Show-MeditationPrompt -Greeting | Should -BeNullOrEmpty
 
                 Assert-MockCalled Write-Host -Times 1
             }
@@ -29,7 +29,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should only display the complete prompt' {
-                Write-MeditationPrompt @Meditation | Should -BeNullOrEmpty
+                Show-MeditationPrompt @Meditation | Should -BeNullOrEmpty
 
                 Assert-MockCalled Write-Host -Times 8
                 Assert-MockCalled Start-Sleep -Times 3
@@ -46,7 +46,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should display only the enlightened prompt' {
-                Write-MeditationPrompt @Meditation | Should -BeNullOrEmpty
+                Show-MeditationPrompt @Meditation | Should -BeNullOrEmpty
 
                 Assert-MockCalled Write-Host -Times 3
             }

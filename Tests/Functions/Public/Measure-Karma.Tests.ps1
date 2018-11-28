@@ -7,7 +7,7 @@ Describe 'Measure-Karma' {
         Context 'Default Behaviour' {
             BeforeAll {
                 Mock Clear-Host {}
-                Mock Write-MeditationPrompt -ModuleName 'PSKoans' {}
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
                 Mock Invoke-Koan -ModuleName 'PSKoans' {}
                 Mock Measure-Koan -ModuleName 'PSKoans' {}
             }
@@ -21,7 +21,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'should write the meditation prompts' {
-                Assert-MockCalled Write-MeditationPrompt -Times 2
+                Assert-MockCalled Show-MeditationPrompt -Times 2
             }
 
             It 'should count the koans' {

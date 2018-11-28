@@ -1,4 +1,4 @@
-﻿function Write-MeditationPrompt {
+﻿function Show-MeditationPrompt {
     <#
 	.SYNOPSIS
         Provides a mechanism for Measure-Karma to write clean output.
@@ -12,6 +12,7 @@
         https://github.com/vexx32/PSKoans
 	#>
     [CmdletBinding(DefaultParameterSetName = 'Meditation')]
+    [Alias('Write-MeditationPrompt')]
     param(
         [Parameter(Mandatory, ParameterSetName = "Meditation")]
         [ValidateNotNullOrEmpty()]
