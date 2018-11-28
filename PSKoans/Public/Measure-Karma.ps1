@@ -1,6 +1,6 @@
 ﻿using namespace System.Management.Automation
 
-class ValidKoanValues : IValidateSetValuesGenerator {
+class KoanTopics : IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
         $Values = Get-ChildItem -Path $env:PSKoans_Folder -Recurse -Filter '*.Koans.ps1' |
             Sort-Object -Property BaseName |
@@ -52,7 +52,7 @@ function Measure-Karma {
     param(
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
-        [ValidateSet([ValidKoanValues])]
+        [ValidateSet([KoanTopics])]
         [string[]]
         $Topic,
 
