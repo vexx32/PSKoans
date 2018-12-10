@@ -4,7 +4,8 @@
         Reflect on your progress and check your answers.
     .DESCRIPTION
         Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
-        corrections for success. If you'd like to use VS Code Insiders, set $env:PSKoans_EditorPreference equal to "code-insiders".
+        corrections for success. If you'd like to use VS Code Insiders, set $env:PSKoans_EditorPreference 
+	equal to "code-insiders".
     .PARAMETER Contemplate
         Opens your local koan folder.
 	.PARAMETER Reset
@@ -48,7 +49,7 @@
         }
         "OpenFolder" {
             Write-Verbose "Opening koans folder"
-            if ($env:PSKoans_EditorPreference -eq 'code-insiders') {
+            if ($env:PSKoans_EditorPreference -eq 'code-insiders' -and Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) {
                 Start-Process -FilePath 'code-insiders' -ArgumentList $env:PSKoans_Folder -NoNewWindow
             }
             elseif (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
