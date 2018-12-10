@@ -48,7 +48,7 @@
         }
         "OpenFolder" {
             Write-Verbose "Opening koans folder"
-            if ($env:PSKoans_EditorPreference = 'code-insiders') {
+            if ($env:PSKoans_EditorPreference -eq 'code-insiders') {
                 Start-Process -FilePath 'code-insiders' -ArgumentList $env:PSKoans_Folder -NoNewWindow
             }
             elseif (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
