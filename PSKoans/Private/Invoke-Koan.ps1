@@ -68,7 +68,7 @@
             param($Params)
 
             Invoke-Pester @Params
-        } @($PSBoundParameters)
+        } $PSBoundParameters
 
     }
 }

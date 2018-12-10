@@ -93,7 +93,7 @@
                 }
 
                 # Execute in a fresh scope to prevent internal secrets being leaked
-                Invoke-Koan @PesterParams
+                $PesterTests = Invoke-Koan @PesterParams
 
                 $KoansPassed += $PesterTests.PassedCount
 
