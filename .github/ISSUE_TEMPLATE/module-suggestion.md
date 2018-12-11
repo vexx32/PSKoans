@@ -1,6 +1,6 @@
 ---
 name: Module Suggestion
-about: Suggest Module Functionality
+about: Suggest new module functionality, or enhancements to existing functionality.
 
 ---
 
