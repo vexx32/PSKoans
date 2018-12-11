@@ -83,7 +83,6 @@
             foreach ($KoanFile in $SortedKoanList.Path) {
                 Write-Verbose "Testing karma with file [$KoanFile]"
 
-                $GlobalScope = [PSModuleInfo]::new($true)
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
