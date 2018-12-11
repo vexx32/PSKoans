@@ -4,19 +4,19 @@ about: File an issue or bug report about the module features/functions themselve
 
 ---
 
-# `Describe "Module Bug or Issue"`
+# Describe "Module Bug or Issue"
 
 <!-- A clear and concise description of the problems you're encountering. -->
 
-## `Context "The Problem"`
+## Context "The Problem"
 
 <!-- Describe the issue you're having, and what you're doing that seems to be triggering it. -->
 
-## `Context "Expected Behavior"`
+## Context "Expected Behavior"
 
 <!-- Describe or give examples of the behavior you _expected_ to see, but did not. -->
 
-## `Context "Additional Information"`
+## Context "Additional Information"
 
 <!-- Please run the below commands and include the output in the code block. -->
 
