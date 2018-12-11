@@ -62,13 +62,27 @@
         $Show
     )
     end {
-        $GlobalScope = [psmoduleinfo]::new($true)
+        try {
+            $Script = {
+                param($Params)
 
-        & $GlobalScope {
-            param($Params)
+                . ([scriptblock]::Create('using module PSKoans'))
+                Invoke-Pester @Params
+            }
 
-            Invoke-Pester @Params
-        } $PSBoundParameters
+            $Thread = [powershell]::Create()
+            $Thread.AddScript($Script) > $null
+            $Thread.AddArgument($PSBoundParameters) > $null
+            $Thread.RunspacePool = $RunspacePool
 
+            $Status = $Thread.BeginInvoke()
+
+            while (-not $Status.IsCompleted) { Start-Sleep -Milliseconds 10 }
+
+            $Thread.EndInvoke($Status)
+        }
+        finally {
+            $Thread.Dispose()
+        }
     }
 }

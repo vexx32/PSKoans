@@ -36,7 +36,7 @@ function Measure-Koan {
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]
-        [System.Management.Automation.CommandInfo[]]
+        [CommandInfo[]]
         $KoanInfo
     )
     begin {
@@ -49,7 +49,7 @@ function Measure-Koan {
         $ItCommands = $KoanInfo.ScriptBlock.Ast.FindAll(
             {
                 param($Item)
-                $Item -is [System.Management.Automation.Language.CommandAst] -and
+                $Item -is [CommandAst] -and
                 $Item.GetCommandName() -eq 'It'
             }, $true
         )

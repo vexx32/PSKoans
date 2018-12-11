@@ -61,12 +61,10 @@
             Write-MeditationPrompt -Greeting
 
             Write-Verbose 'Sorting koans...'
-            $SortedKoanList = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
-                Get-Command {$_.FullName} |
-                Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'} |
-                Sort-Object {
-                $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position
-            }
+            $SortedKoanList = Get-ChildItem -Path $env:PSKoans_Folder -Recurse -Filter '*.Koans.ps1' |
+                Get-Command { $_.FullName } |
+                Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Count -gt 0 } |
+                Sort-Object { $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position }
 
             Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
@@ -85,7 +83,6 @@
             foreach ($KoanFile in $SortedKoanList.Path) {
                 Write-Verbose "Testing karma with file [$KoanFile]"
 
-                $GlobalScope = [PSModuleInfo]::new($true)
                 $PesterParams = @{
                     Script   = $KoanFile
                     PassThru = $true
