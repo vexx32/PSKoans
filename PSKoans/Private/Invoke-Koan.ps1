@@ -77,7 +77,7 @@
 
             $Status = $Thread.BeginInvoke()
 
-            while (-not $Status.IsCompleted) { Start-Sleep -Milliseconds 500 }
+            while (-not $Status.IsCompleted) { Start-Sleep -Milliseconds 10 }
 
             $Thread.EndInvoke($Status)
         }
