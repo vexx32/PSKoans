@@ -11,10 +11,10 @@ InModuleScope 'PSKoans' {
                 Measure-Koan |
                 Should -Be $ExpectedValue
         } -TestCases @{
-            File          = "$env:BUILD_SOURCESDIRECTORY\Tests\Functions\Measure-Koan_Tests\TestFile.Tests.ps1"
+            File          = "$script:ModuleFolder\..\Tests\DummyKoans\Measure-Koan.Control_Tests.ps1"
             ExpectedValue = 3
         }, @{
-            File          = "$env:BUILD_SOURCESDIRECTORY\Tests\Functions\Get-Blank.Tests.ps1"
+            File          = "$script:ModuleFolder\..\Tests\Functions\Public\Get-Blank.Tests.ps1"
             ExpectedValue = 1
         }
     }
