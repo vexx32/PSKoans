@@ -45,7 +45,7 @@ STATUS: Testing with PowerShell $PSVersion
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     # Import the module and add temporary entry to PSModulePath for build/test purposes
-    $env:PSModulePath += ';{0}' -f $ProjectRoot
+    $env:PSModulePath = '{0}{1}{2}' -f $ProjectRoot, ([System.IO.Path]::PathSeparator), $env:PSModulePath
     Import-Module 'PSKoans'
 
     # Gather test results. Store them in a variable and file
