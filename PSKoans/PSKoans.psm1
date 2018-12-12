@@ -42,10 +42,10 @@ Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     . $_.FullName
 }
 
-$env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
-Write-Verbose "Koans folder set to $env:PSKoans_Folder"
+$script:PSKoanLocation = $Home | Join-Path -ChildPath 'PSKoans'
+Write-Verbose "Koans folder set to $script:PSKoanLocation"
 
-if (-not (Test-Path -Path $env:PSKoans_Folder)) {
+if (-not (Test-Path -Path $script:PSKoanLocation)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
     Initialize-KoanDirectory -Confirm:$false
 }

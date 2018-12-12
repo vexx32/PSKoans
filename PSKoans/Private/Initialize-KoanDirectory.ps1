@@ -13,14 +13,17 @@
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
     param()
-    if ($PSCmdlet.ShouldProcess($env:PSKoans_Folder, "Restore the koans to a blank slate")) {
-        if (Test-Path -Path $env:PSKoans_Folder) {
+
+    $KoanFolder = Get-PSKoanLocation
+    if ($PSCmdlet.ShouldProcess($KoanFolder, "Restore the koans to a blank slate")) {
+        if (Test-Path -Path $KoanFolder) {
             Write-Verbose "Removing the entire koans folder..."
-            Remove-Item -Recurse -Path $env:PSKoans_Folder -Force
+            Remove-Item -Recurse -Path $KoanFolder -Force
         }
+
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$script:ModuleFolder\Koans" -Recurse -Destination $env:PSKoans_Folder
-        Write-Verbose "Koans copied to '$env:PSKoans_Folder'"
+        Copy-Item -Path "$script:ModuleFolder/Koans" -Recurse -Destination $KoanFolder
+        Write-Verbose "Koans copied to '$KoanFolder'"
     }
     else {
         Write-Verbose "Operation cancelled; no modifications made to koans folder."

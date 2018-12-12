@@ -29,7 +29,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'should Invoke-Pester on each of the koans' {
-                $ValidKoans = Get-ChildItem "$env:PSKoans_Folder" -Recurse -Filter '*.Koans.ps1' |
+                $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
                     Get-Command {$_.FullName} |
                     Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'}
 
