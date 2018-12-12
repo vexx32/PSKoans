@@ -1,6 +1,6 @@
 ﻿using module PSKoans
 
-${global:Test File} = "$PSScriptRoot\ControlTests\Invoke-Koan.Control_Tests.ps1"
+${global:Test File} = "$PSScriptRoot/ControlTests/Invoke-Koan.Control_Tests.ps1"
 
 InModuleScope 'PSKoans' {
     Describe 'Invoke-Koan' {

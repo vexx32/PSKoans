@@ -13,10 +13,10 @@ InModuleScope 'PSKoans' {
                 Measure-Koan |
                 Should -Be $ExpectedValue
         } -TestCases @{
-            File          = "${global:Test Root}\ControlTests\Measure-Koan.Control_Tests.ps1"
+            File          = "${global:Test Root}/ControlTests/Measure-Koan.Control_Tests.ps1"
             ExpectedValue = 3
         }, @{
-            File          = "${global:Test Root}\..\Public\Get-Blank.Tests.ps1"
+            File          = "${global:Test Root}/../Public/Get-Blank.Tests.ps1"
             ExpectedValue = 1
         }
     }
