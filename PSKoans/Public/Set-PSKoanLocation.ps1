@@ -8,14 +8,15 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
                     throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
                 }
                 elseif (-not [string]::IsNullOrWhiteSpace($inputData)) {
-                    $ResolvingError = $null
-                    $FullPath = Resolve-Path -Path $InputData -ErrorAction SilentlyContinue -ErrorVariable ResolvingError
+                    try {
+                        $FullPath = Resolve-Path -Path $InputData -ErrorAction Stop
 
-                    if (-not [string]::IsNullOrWhiteSpace($FullPath)) {
-                        return $FullPath.Path
+                        if (-not [string]::IsNullOrWhiteSpace($FullPath)) {
+                            return $FullPath.Path
+                        }
                     }
-                    elseif ($ResolvedPath = $ResolvingError[0].TargetObject) {
-                        return $ResolvedPath
+                    catch [ItemNotFoundException] {
+                        return $_.TargetObject
                     }
                 }
             }
@@ -61,14 +62,14 @@ function Set-PSKoanLocation {
     param(
         [Parameter(Mandatory, Position = 0)]
         [Alias('PSPath', 'Folder')]
-        [FolderTransform()]
+        [FolderTransformAttribute()]
         [string]
         $Path
     )
     process {
         if ($PSCmdlet.ShouldProcess("Set PSKoans folder location to '$Path'")) {
-            $script:PSKoanLocation = $Path
-            Write-Verbose "Set PSKoans folder location to $script:PSKoanLocation"
+            $script:LibraryFolder = $Path
+            Write-Verbose "Set PSKoans folder location to $script:LibraryFolder"
         }
         else {
             Write-Warning "PSKoans folder location has not been changed."

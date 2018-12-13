@@ -32,24 +32,32 @@
 
 #endregion SupportingClasses
 
-$script:ModuleFolder = $PSScriptRoot
+#region ImportCommands
 
-Write-Verbose 'Importing meditation koans'
-$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
+    Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
+        Write-Verbose "Importing functions from file: [$($_.Name)]"
+        . $_.FullName
+    }
 
-Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
-    Write-Verbose "Importing functions from file: [$($_.Name)]"
-    . $_.FullName
-}
+#endregion ImportCommands
 
-$script:PSKoanLocation = $Home | Join-Path -ChildPath 'PSKoans'
-Write-Verbose "Koans folder set to $script:PSKoanLocation"
+#region ModuleConfiguration
 
-if (-not (Test-Path -Path $script:PSKoanLocation)) {
-    Write-Verbose 'Koans folder does not exist; populating the folder'
-    Initialize-KoanDirectory -Confirm:$false
-}
+    Write-Verbose 'Configuring PSKoans module'
+    $script:ModuleRoot = $PSScriptRoot
 
+    Write-Verbose 'Importing meditation koans'
+    $script:Meditations = Import-CliXml -Path "$script:ModuleRoot/Data/Meditations.clixml"
+
+    $script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
+    Write-Verbose "Koans folder set to $script:LibraryFolder"
+
+    if (-not (Test-Path -Path $script:LibraryFolder)) {
+        Write-Verbose 'Koans folder does not exist; populating the folder'
+        Initialize-KoanDirectory -Confirm:$false
+    }
+
+#endregion ModuleConfiguration
 
 try {
     Add-AssertionOperator -Name Fail -Test {

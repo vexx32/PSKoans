@@ -14,8 +14,8 @@ function Get-PSKoanLocation {
     [CmdletBinding()]
     param()
     process {
-        if ($script:PSKoanLocation) {
-            $script:PSKoanLocation
+        if ($script:LibraryFolder) {
+            $script:LibraryFolder
         }
         else {
             $ErrorDetails = @{

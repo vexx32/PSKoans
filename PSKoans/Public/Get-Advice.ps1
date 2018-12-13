@@ -19,7 +19,7 @@
         $Name = "*"
     )
     begin {
-		$AdviceFolder = Join-Path $script:ModuleFolder 'Data/Advice'
+		$AdviceFolder = Join-Path $script:ModuleRoot 'Data/Advice'
 
         Write-Host ""
 		Write-Host " Advice of the session:"

@@ -49,7 +49,7 @@ InModuleScope 'PSKoans' {
 
                 Set-PSKoanLocation -Path "TestDrive:/Koans"
 
-                $KoanFiles = Get-ChildItem -Path $script:ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
+                $KoanFiles = Get-ChildItem -Path $script:ModuleRoot -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
                     @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
                 }
             }
@@ -84,7 +84,7 @@ InModuleScope 'PSKoans' {
                         Should -BeTrue
 
                     $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
-                    $OriginalFile = $script:ModuleFolder | Join-Path -ChildPath "Koans/$File" | Get-Item
+                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans/$File" | Get-Item
 
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
@@ -110,7 +110,7 @@ InModuleScope 'PSKoans' {
                         Should -BeTrue
 
                     $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
-                    $OriginalFile = $script:ModuleFolder | Join-Path -ChildPath "Koans/$File" | Get-Item
+                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans/$File" | Get-Item
 
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName

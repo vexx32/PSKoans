@@ -23,7 +23,7 @@
         }
 
         Write-Debug "Copying koans to folder"
-        Copy-Item -Path "$script:ModuleFolder/Koans" -Recurse -Destination $KoanFolder
+        Copy-Item -Path "$script:ModuleRoot/Koans" -Recurse -Destination $KoanFolder
         Write-Verbose "Koans copied to '$KoanFolder'"
     }
     else {
