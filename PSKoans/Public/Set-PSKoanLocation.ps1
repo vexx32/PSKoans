@@ -59,18 +59,19 @@ function Set-PSKoanLocation {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, Position = 0)]
         [Alias('PSPath', 'Folder')]
         [FolderTransform()]
         [string]
         $Path
     )
-
-    if ($PSCmdlet.ShouldProcess("Set PSKoans folder location to '$Path'")) {
-        $script:PSKoanLocation = $Path
-        Write-Verbose "Set PSKoans folder location to $script:PSKoanLocation"
-    }
-    else {
-        Write-Warning "PSKoans folder location has not been changed."
+    process {
+        if ($PSCmdlet.ShouldProcess("Set PSKoans folder location to '$Path'")) {
+            $script:PSKoanLocation = $Path
+            Write-Verbose "Set PSKoans folder location to $script:PSKoanLocation"
+        }
+        else {
+            Write-Warning "PSKoans folder location has not been changed."
+        }
     }
 }

@@ -1,18 +1,4 @@
-﻿using namespace System.Management.Automation
-
-class KoanTopics : IValidateSetValuesGenerator {
-    [string[]] GetValidValues() {
-        $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-            Sort-Object -Property BaseName |
-            ForEach-Object {
-            $_.BaseName -replace '\.Koans$'
-        }
-
-        return $Values
-    }
-}
-
-function Measure-Karma {
+﻿function Measure-Karma {
     <#
 	.SYNOPSIS
         Reflect on your progress and check your answers.
@@ -20,7 +6,7 @@ function Measure-Karma {
         Measure-Karma executes Pester against the koans to evaluate if you have made the necessary
         corrections for success.
     .PARAMETER Topic
-        Execute koans only from the selected Topic(s).
+        Execute koans only from the selected Topic(s). Regex patterns are permitted.
     .PARAMETER ListTopics
         Output a complete list of available koan topics.
     .PARAMETER Contemplate
@@ -53,7 +39,19 @@ function Measure-Karma {
     param(
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
-        [ValidateSet([KoanTopics])]
+        [ArgumentCompleter(
+            {
+                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+
+                $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                    Sort-Object -Property BaseName |
+                    ForEach-Object {
+                    $_.BaseName -replace '\.Koans$'
+                }
+
+                return @($Values) -like "$WordToComplete*"
+            }
+        )]
         [string[]]
         $Topic,
 
@@ -73,10 +71,11 @@ function Measure-Karma {
     )
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
-            Get-PSKoanLocation | Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
+            Get-PSKoanLocation |
+                Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
                 ForEach-Object {
-                $_.BaseName -replace '\.Koans$'
-            }
+                    $_.BaseName -replace '\.Koans$'
+                }
         }
         'Reset' {
             Write-Verbose "Reinitializing koan directory"
@@ -100,25 +99,29 @@ function Measure-Karma {
             Show-MeditationPrompt -Greeting
 
             Write-Verbose 'Sorting koans...'
-            $SortedKoanList = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                Where-Object {
-                    -not $PSBoundParameters.ContainsKey('Topic') -or
-                    $_.BaseName -replace '\.Koans$' -in $Topic
-                } |
-                Get-Command { $_.FullName } |
-                Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Count -gt 0 } |
-                Sort-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Position }
+            $SortedKoanList = Get-Koan -Topic $Topic
 
             Write-Verbose 'Counting koans...'
             $TotalKoans = $SortedKoanList | Measure-Koan
 
             if ($TotalKoans -eq 0) {
+                if ($Topic) {
+                    $ErrorDetails = @{
+                        ExceptionType    = 'System.IO.FileNotFoundException'
+                        ExceptionMessage = 'Could not find any koans that match the specified Topic(s)'
+                        ErrorId          = 'PSKoans.NoMatchingKoansFound'
+                        ErrorCategory    = 'ObjectNotFound'
+                        TargetObject     = $Topic -join ','
+                    }
+                    $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
+                }
+
                 # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
                 Write-Warning 'No koans found in your koan directory. Initiating full reset...'
                 Initialize-KoanDirectory
                 Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
 
-                return # skip the rest of the function
+                return # Skip the rest of the function
             }
 
             $KoansPassed = 0

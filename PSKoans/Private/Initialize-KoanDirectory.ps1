@@ -15,6 +15,7 @@
     param()
 
     $KoanFolder = Get-PSKoanLocation
+
     if ($PSCmdlet.ShouldProcess($KoanFolder, "Restore the koans to a blank slate")) {
         if (Test-Path -Path $KoanFolder) {
             Write-Verbose "Removing the entire koans folder..."
