@@ -1,5 +1,7 @@
 using module PSKoans
 
+${global:Test Root} = $PSScriptRoot
+
 InModuleScope 'PSKoans' {
     Describe 'Measure-Koan' {
 
@@ -11,10 +13,10 @@ InModuleScope 'PSKoans' {
                 Measure-Koan |
                 Should -Be $ExpectedValue
         } -TestCases @{
-            File          = "$env:BUILD_SOURCESDIRECTORY\Tests\Functions\Measure-Koan_Tests\TestFile.Tests.ps1"
+            File          = "${global:Test Root}/ControlTests/Measure-Koan.Control_Tests.ps1"
             ExpectedValue = 3
         }, @{
-            File          = "$env:BUILD_SOURCESDIRECTORY\Tests\Functions\Get-Blank.Tests.ps1"
+            File          = "${global:Test Root}/../Public/Get-Blank.Tests.ps1"
             ExpectedValue = 1
         }
     }
