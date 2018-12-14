@@ -29,10 +29,10 @@ function Get-Koan {
     process {
         foreach ($Item in $Topic) {
             if ($PatternBuilder.Length -gt 0) {
-                $PatternBuilder.AppendFormat('|{0}', $Topic) > $null
+                $PatternBuilder.AppendFormat('|{0}', $Item) > $null
             }
             else {
-                $PatternBuilder.Append($Topic) > $null
+                $PatternBuilder.Append($Item) > $null
             }
         }
     }
