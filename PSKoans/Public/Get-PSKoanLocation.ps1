@@ -19,7 +19,7 @@ function Get-PSKoanLocation {
         }
         else {
             $ErrorDetails = @{
-                Exception     = [System.IO.DirectoryNotFoundException]::new('PSKoans folder location has not been defined.')
+                Exception     = [System.IO.DirectoryNotFoundException]::new('PSKoans folder location has not been defined')
                 ErrorId       = 'PSKoans.LibraryFolderNotDefined'
                 ErrorCategory = 'NotSpecified'
                 TargetObject  = $MyInvocation.MyCommand.Name

@@ -102,7 +102,7 @@
             $SortedKoanList = Get-Koan -Topic $Topic
 
             Write-Verbose 'Counting koans...'
-            $TotalKoans = $SortedKoanList | Measure-Koan
+            [int]$TotalKoans = $SortedKoanList | Measure-Koan
 
             if ($TotalKoans -eq 0) {
                 if ($Topic) {

@@ -1,4 +1,4 @@
-using module PSKoans
+#Requires -Modules PSKoans
 
 Describe 'Get-Blank' {
 

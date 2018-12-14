@@ -28,7 +28,12 @@ function Get-Koan {
     }
     process {
         foreach ($Item in $Topic) {
-            $PatternBuilder.AppendFormat('|{0}', $Topic) > $null
+            if ($PatternBuilder.Length -gt 0) {
+                $PatternBuilder.AppendFormat('|{0}', $Topic) > $null
+            }
+            else {
+                $PatternBuilder.Append($Topic) > $null
+            }
         }
     }
     end {

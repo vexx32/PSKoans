@@ -1,4 +1,4 @@
-using module PSKoans
+#Requires -Modules PSKoans
 
 Describe 'Measure-Karma' {
 
@@ -9,7 +9,11 @@ Describe 'Measure-Karma' {
                 Mock Clear-Host {}
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
                 Mock Invoke-Koan -ModuleName 'PSKoans' {}
-                Mock Measure-Koan -ModuleName 'PSKoans' {}
+
+                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
+                Set-PSKoanLocation -Path $TestLocation
+
+                Initialize-KoanDirectory -Confirm:$false
             }
 
             It 'should not produce output' {
@@ -24,16 +28,36 @@ Describe 'Measure-Karma' {
                 Assert-MockCalled Show-MeditationPrompt -Times 2
             }
 
-            It 'should count the koans' {
-                Assert-MockCalled Measure-Koan
-            }
-
             It 'should Invoke-Pester on each of the koans' {
                 $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
                     Get-Command {$_.FullName} |
                     Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'}
 
                 Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
+            }
+        }
+
+        Context 'With Nonexistent Koans Folder / No Koans Found' {
+            BeforeAll {
+                Mock Clear-Host {}
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
+                Mock Measure-Koan -ModuleName 'PSKoans' {}
+                Mock Get-Koan -ModuleName 'PSKoans' {}
+                Mock Initialize-KoanDirectory -ModuleName 'PSKoans' { throw 'Prevent recursion' }
+                Mock Write-Warning
+            }
+
+            It 'should attempt to populate koans and then recurse to reassess' {
+                { Measure-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
+            }
+
+            It 'should display only the greeting prompt' {
+                Assert-MockCalled Clear-Host
+                Assert-MockCalled Show-MeditationPrompt -Times 1
+            }
+
+            It 'should display a warning before initiating a reset' {
+                Assert-MockCalled Write-Warning
             }
         }
 

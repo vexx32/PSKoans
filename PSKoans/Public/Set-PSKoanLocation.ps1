@@ -3,7 +3,9 @@ using namespace System.Management.Automation
 class FolderTransformAttribute : ArgumentTransformationAttribute {
     [object] Transform([EngineIntrinsics]$engineIntrinsics, [object] $inputData) {
         switch ($inputData) {
+
             {$_ -is [string]} {
+
                 if (-not (Test-Path -Path $_ -PathType Container -IsValid)) {
                     throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
                 }
@@ -19,14 +21,18 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
                         return $_.TargetObject
                     }
                 }
+
             }
+
             {$_ -is [System.IO.FileSystemInfo]} {
+
                 if (-not (Test-Path -Path $_.FullName -PathType Container)) {
                     throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
                 }
                 else {
                     return $inputData.Fullname
                 }
+
             }
         }
 
