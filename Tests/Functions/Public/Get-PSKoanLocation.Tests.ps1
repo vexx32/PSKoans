@@ -1,4 +1,4 @@
-﻿##Requires -Modules SKoans
+﻿#Requires -Modules PSKoans
 
 Describe 'Get-PSKoanLocation' {
 
