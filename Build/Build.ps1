@@ -12,4 +12,4 @@ Set-BuildEnvironment
 
 Invoke-Psake -BuildFile "$PSScriptRoot/Psake.ps1" -TaskList $Task -NoLogo
 
-exit ([int](-not $Psake.Build_Success))
+exit [int](-not $Psake.Build_Success)
