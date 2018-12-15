@@ -41,6 +41,7 @@ function New-PSKoanErrorRecord {
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [OutputType([ErrorRecord])]
     param(
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Type')]

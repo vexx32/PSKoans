@@ -18,6 +18,7 @@
         https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding()]
+    [OutputType([void])]
     [Alias('__', 'FILL_ME_IN')]
     param()
 

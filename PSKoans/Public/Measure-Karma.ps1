@@ -35,6 +35,7 @@
         Module: PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
+    [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
     param(
         [Parameter(ParameterSetName = 'Default')]
@@ -74,8 +75,8 @@
             Get-PSKoanLocation |
                 Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
                 ForEach-Object {
-                    $_.BaseName -replace '\.Koans$'
-                }
+                $_.BaseName -replace '\.Koans$'
+            }
         }
         'Reset' {
             Write-Verbose "Reinitializing koan directory"

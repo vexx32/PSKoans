@@ -12,6 +12,7 @@ function Get-PSKoanLocation {
         C:\Users\Timmy\PSKoans
     #>
     [CmdletBinding()]
+    [OutputType([string])]
     param()
     process {
         if ($script:LibraryFolder) {

@@ -13,6 +13,7 @@
 		Causes powershell to write a random piece of advice on each start.
 #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0)]
         [ValidateSet('AllUsersAllHosts', 'AllUsersCurrentHost', 'CurrentUserAllHosts', 'CurrentUserCurrentHost')]
@@ -20,7 +21,7 @@
         $TargetProfile = 'CurrentUserCurrentHost'
     )
 
-	$ProfilePath = $Profile.$TargetProfile
+    $ProfilePath = $Profile.$TargetProfile
 
     if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Get-Advice')) {
         $ProfileFolder = Split-Path -Path $ProfilePath

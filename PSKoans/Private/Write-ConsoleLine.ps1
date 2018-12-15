@@ -15,6 +15,7 @@
         Nothing. All output is sent only to the host / information stream.
     #>
     [CmdletBinding()]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
@@ -44,5 +45,5 @@
             }
             Write-Host ($Prefix + $RemainingText)
         }
-}
+    }
 }

@@ -65,6 +65,7 @@ function Set-PSKoanLocation {
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    [OutputType([void])]
     param(
         [Parameter(Mandatory, Position = 0)]
         [Alias('PSPath', 'Folder')]

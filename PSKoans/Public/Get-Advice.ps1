@@ -13,24 +13,25 @@
 			Print a random piece of advice to the screen.
 	#>
     [CmdletBinding()]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0)]
         [string]
         $Name = "*"
     )
     begin {
-		$AdviceFolder = Join-Path $script:ModuleRoot 'Data/Advice'
+        $AdviceFolder = Join-Path $script:ModuleRoot 'Data/Advice'
 
         Write-Host ""
-		Write-Host " Advice of the session:"
+        Write-Host " Advice of the session:"
     }
     process {
         Get-ChildItem $AdviceFolder -Recurse -File -Filter $Name |
             Get-Random |
             Get-Content |
             Write-ConsoleLine
-	}
-	end {
+    }
+    end {
         Write-Host ""
     }
 }

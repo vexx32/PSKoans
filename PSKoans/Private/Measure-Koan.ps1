@@ -33,6 +33,7 @@ function Measure-Koan {
         https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding()]
+    [OutputType([int])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]

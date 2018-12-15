@@ -18,6 +18,7 @@ function Get-Koan {
     #>
 
     [CmdletBinding()]
+    [OutputType([System.IO.FileInfo])]
     param(
         [Parameter(Position = 0, ValueFromPipeline)]
         [string[]]

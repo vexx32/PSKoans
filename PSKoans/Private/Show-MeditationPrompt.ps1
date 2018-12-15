@@ -13,6 +13,7 @@
 	#>
     [CmdletBinding(DefaultParameterSetName = 'Meditation')]
     [Alias('Write-MeditationPrompt')]
+    [OutputType([void])]
     param(
         [Parameter(Mandatory, ParameterSetName = "Meditation")]
         [ValidateNotNullOrEmpty()]

@@ -12,6 +12,7 @@
         https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High")]
+    [OutputType([void])]
     param()
 
     $KoanFolder = Get-PSKoanLocation

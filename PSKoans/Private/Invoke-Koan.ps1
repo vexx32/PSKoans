@@ -4,6 +4,7 @@
         .FORWARDHELPCATEGORY Function
     #>
     [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [OutputType([PSCustomObject])]
     param(
         [Parameter(Position = 0)]
         [Alias('Path', 'relative_path')]
