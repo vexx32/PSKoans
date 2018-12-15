@@ -42,7 +42,7 @@ Install-Module Pester -Scope CurrentUser
 1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
-4. Run `Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination ($env:PSModulePath -split ';')[0]`
+4. Run `Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination (Join-Path -Path ([System.IO.Path]::GetDirectoryName($Profile)) -ChildPath Modules)`
 
 ### Start your Journey
 
