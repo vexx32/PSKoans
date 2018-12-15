@@ -21,11 +21,11 @@ Describe 'New-PSKoanErrorRecord' {
         }
 
         It 'creates output with properties matching the parameters supplied' {
-            $Output.Exception                  | Should -BeOfType $Parameters.Exception.GetType().FullName
-            $Output.Exception.Message          | Should -BeExactly $Parameters.Exception.Message
-            $Output.ErrorId                    | Should -BeExactly $Parameters.ErrorId
-            $Output.ErrorCategory -as [string] | Should -Be $Parameters.ErrorCategory
-            $Output.TargetObject	           | Should -BeNullOrEmpty
+            $Output.Exception             | Should -BeOfType $Parameters.Exception.GetType().FullName
+            $Output.Exception.Message     | Should -BeExactly $Parameters.Exception.Message
+            $Output.FullyQualifiedErrorId | Should -BeExactly $Parameters.ErrorId
+            $Output.CategoryInfo.Category | Should -Be $Parameters.ErrorCategory
+            $Output.TargetObject	      | Should -BeNullOrEmpty
         }
     }
 
@@ -45,15 +45,15 @@ Describe 'New-PSKoanErrorRecord' {
         }
 
         It 'creates an ErrorRecord object' {
-            $Output.GetType() | Should -BeOfType System.Management.Automation.ErrorRecord
+            $Output | Should -BeOfType System.Management.Automation.ErrorRecord
         }
 
         It 'creates output with properties matching the parameters supplied' {
-            $Output.Exception                  | Should -BeOfType $Parameters.ExceptionType
-            $Output.Exception.Message          | Should -BeExactly $Parameters.ExceptionMessage
-            $Output.ErrorId                    | Should -BeExactly $Parameters.ErrorId
-            $Output.ErrorCategory -as [string] | Should -Be $Parameters.ErrorCategory
-            $Output.TargetObject	           | Should -BeNullOrEmpty
+            $Output.Exception             | Should -BeOfType $Parameters.ExceptionType
+            $Output.Exception.Message     | Should -BeExactly $Parameters.ExceptionMessage
+            $Output.FullyQualifiedErrorId | Should -BeExactly $Parameters.ErrorId
+            $Output.CategoryInfo.Category | Should -Be $Parameters.ErrorCategory
+            $Output.TargetObject	      | Should -BeNullOrEmpty
         }
     }
 }
