@@ -1,5 +1,3 @@
-using namespace System.Management.Automation
-
 function New-PSKoanErrorRecord {
     <#
     .SYNOPSIS
@@ -48,8 +46,8 @@ function New-PSKoanErrorRecord {
         [Alias('Type')]
         [ValidateScript(
             {
-                if (-not $_ -as [Type] -is [Exception]) {
-                    throw [ArgumentException]::new( 'The entered type name is not a valid exception type' )
+                if (-not [Exception].IsAssignableFrom( ($_ -as [Type]) )) {
+                    throw 'The entered type name is not a valid exception type'
                 }
                 else {
                     $true
