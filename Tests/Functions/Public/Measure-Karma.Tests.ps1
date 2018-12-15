@@ -59,6 +59,10 @@ Describe 'Measure-Karma' {
             It 'should display a warning before initiating a reset' {
                 Assert-MockCalled Write-Warning
             }
+
+            It 'throws an error if a Topic is specified that matches nothing' {
+                { Measure-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ExpectedMessage 'Could not find any koans'
+            }
         }
 
         Context 'With -Reset Switch' {
