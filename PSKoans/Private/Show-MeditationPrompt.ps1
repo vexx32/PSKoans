@@ -92,23 +92,23 @@ Describing '$DescribeName' has damaged your karma.
 [It] $ItName
 $Meditation
 "@
-        Wisdom         = @"
+        Koan           = @"
 
     $($Koan -replace "`n","`n    ")
 
+"@
+        Path           = @"
     Your path thus far:
 
 "@
-        WisdomTopic    = @"
-
-    $($Koan -replace "`n","`n    ")
-
-    Your path thus far in topics $($Topic -join ', '):
+        Topic          = @"
+    You must meditate further on your selected $(if (@($Topic).Count -gt 1) { "topics" } else { "topic" }):
+        - $($Topic -join "`n        - ")
 
 "@
         OpenFolder     = @"
 
-You may run 'Measure-Karma -Meditate' to begin your meditation.
+Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
 
 "@
         Completed      = @"
@@ -147,13 +147,13 @@ You may run 'Measure-Karma -Meditate' to begin your meditation.
             Write-Host @Blue $Prompts['Meditate']
             Write-Host @Red $Prompts['Subject']
             Start-Sleep @SleepTime
+            Write-Host @Blue $Prompts['Koan']
 
             if ($PSBoundParameters.ContainsKey('Topic')) {
-                Write-Host @Blue $Prompts['WisdomTopic']
+                Write-Host @Blue $Prompts['Topic']
             }
-            else {
-                Write-Host @Blue $Prompts['Wisdom']
-            }
+
+            Write-Host @Blue $Prompts['Path']
 
             Write-Verbose 'Calculating progress...'
             $ProgressAmount = "$KoansPassed/$TotalKoans"
