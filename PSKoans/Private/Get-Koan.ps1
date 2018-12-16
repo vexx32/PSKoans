@@ -3,18 +3,18 @@
 function Get-Koan {
     <#
     .SYNOPSIS
-    Returns a sorted list of koans.
+        Returns a sorted list of koans.
 
     .DESCRIPTION
-    Returns a sorted list of all koans, or optionally only those that match the specified criteria.
+        Returns a sorted list of all koans, or optionally only those that match the specified criteria.
 
     .PARAMETER Topic
-    Speficy one or more topic names or patterns to filter the list. Regex matching is permitted.
+        Speficy one or more topic names or patterns to filter the list. Regex matching is permitted.
 
     .EXAMPLE
-    Get-Koan
+        Get-Koan
 
-    Returns all koans in the PSKoans library folder.
+        Returns all koans in the PSKoans library folder.
     #>
 
     [CmdletBinding()]

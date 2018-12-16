@@ -5,7 +5,7 @@
     .DESCRIPTION
         Cuts text to console-appropriate widths for viewing, where possible.
     .EXAMPLE
-        PS C:\> Write-ConsoleLine $String
+        Write-ConsoleLine $String
 
         Writes the contents of $String to the console, inserting new line characters
         where appropriate.

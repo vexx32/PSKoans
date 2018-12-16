@@ -9,7 +9,8 @@
 		.PARAMETER Name
 			The name of the specific advice to display.
 		.EXAMPLE
-			PS C:\> Get-Advice
+            Get-Advice
+
 			Print a random piece of advice to the screen.
 	#>
     [CmdletBinding()]

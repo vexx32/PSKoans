@@ -8,7 +8,7 @@
 		This is done by creating / modifying the powershell profile.
 
 	.EXAMPLE
-		PS C:\> Register-Advice
+		Register-Advice
 
 		Causes powershell to write a random piece of advice on each start.
 #>

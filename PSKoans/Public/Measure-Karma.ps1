@@ -15,16 +15,16 @@
 	.PARAMETER Reset
         Resets everything in your local koan folder to a blank slate. Use with caution.
     .EXAMPLE
-        PS> Measure-Karma
+        Measure-Karma
 
         Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-        PS> meditate -Contemplate
+        meditate -Contemplate
 
         Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
         opens in VS Code.
     .EXAMPLE
-        PS> Measure-Karma -Reset
+        Measure-Karma -Reset
 
         Prompts for confirmation, before wiping out the user's koans folder and restoring it back
         to its initial state.
