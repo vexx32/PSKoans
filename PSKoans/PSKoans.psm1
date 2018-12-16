@@ -20,8 +20,14 @@ class __ : FILL_ME_IN {}
 
 class KoanAttribute : Attribute {
     [uint32] $Position
+    [string] $Module = '_powershell'
 
     KoanAttribute([uint32] $Position) {
+        $this.Position = $Position
+    }
+
+    KoanAttribute([uint32] $Position, [string] $Module) {
+        $this.Module = $Module
         $this.Position = $Position
     }
 
