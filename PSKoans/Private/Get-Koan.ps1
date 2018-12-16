@@ -25,24 +25,27 @@ function Get-Koan {
         $Topic
     )
     begin {
-        $PatternBuilder = [StringBuilder]::new()
+        if ($PSBoundParameters.ContainsKey('Topic')) {
+            $PatternBuilder = [StringBuilder]::new()
+        }
     }
     process {
-        foreach ($Item in $Topic) {
-            if ($PatternBuilder.Length -gt 0) {
-                $PatternBuilder.AppendFormat('|{0}', $Item) > $null
-            }
-            else {
-                $PatternBuilder.Append($Item) > $null
+        if ($PSBoundParameters.ContainsKey('Topic')) {
+            foreach ($Item in $Topic) {
+                if ($PatternBuilder.Length -gt 0) {
+                    $PatternBuilder.AppendFormat('|{0}', $Item) > $null
+                }
+                else {
+                    $PatternBuilder.Append($Item) > $null
+                }
             }
         }
     }
     end {
-        Get-PSKoanLocation |
-            Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-            Where-Object { -not $Topic -or $_.BaseName -match $PatternBuilder.ToString() } |
+        Get-ChildItem -Path (Get-PSKoanLocation) -Recurse -Filter '*.Koans.ps1' |
+            Where-Object { -not $PSBoundParameters.ContainsKey('Topic') -or $_.BaseName -match $PatternBuilder.ToString() } |
             Get-Command { $_.FullName } |
-            Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Count -gt 0 } |
-            Sort-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Position }
+            Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Count -gt 0 } |
+            Sort-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Position }
     }
 }

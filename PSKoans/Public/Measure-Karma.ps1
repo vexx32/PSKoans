@@ -100,8 +100,15 @@
             Show-MeditationPrompt -Greeting
 
             Write-Verbose 'Sorting koans...'
-            $SortedKoanList = Get-Koan -Topic $Topic
+            if ($Topic) {
+                Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
+                $SortedKoanList = Get-Koan -Topic $Topic
+            }
+            else {
+                $SortedKoanList = Get-Koan
+            }
 
+            Write-Verbose "Koan files retrieved: $($SortedKoanList.Count)"
             Write-Verbose 'Counting koans...'
             [int]$TotalKoans = $SortedKoanList | Measure-Koan
 

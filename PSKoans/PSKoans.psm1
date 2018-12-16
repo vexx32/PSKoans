@@ -15,47 +15,47 @@
 
 #region SupportingClasses
 
-    class FILL_ME_IN {}
-    class __ : FILL_ME_IN {}
+class FILL_ME_IN {}
+class __ : FILL_ME_IN {}
 
-    class KoanAttribute : Attribute {
-        [uint32] $Position
+class KoanAttribute : Attribute {
+    [uint32] $Position
 
-        KoanAttribute([uint32] $Position) {
-            $this.Position = $Position
-        }
-
-        KoanAttribute() {
-            $this.Position = [uint32]::MaxValue
-        }
+    KoanAttribute([uint32] $Position) {
+        $this.Position = $Position
     }
+
+    KoanAttribute() {
+        $this.Position = [uint32]::MaxValue
+    }
+}
 
 #endregion SupportingClasses
 
 #region ImportCommands
 
-    Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
-        Write-Verbose "Importing functions from file: [$($_.Name)]"
-        . $_.FullName
-    }
+Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
+    Write-Verbose "Importing functions from file: [$($_.Name)]"
+    . $_.FullName
+}
 
 #endregion ImportCommands
 
 #region ModuleConfiguration
 
-    Write-Verbose 'Configuring PSKoans module'
-    $script:ModuleRoot = $PSScriptRoot
+Write-Verbose 'Configuring PSKoans module'
+$script:ModuleRoot = $PSScriptRoot
 
-    Write-Verbose 'Importing meditation koans'
-    $script:Meditations = Import-CliXml -Path "$script:ModuleRoot/Data/Meditations.clixml"
+Write-Verbose 'Importing meditation koans'
+$script:Meditations = Import-CliXml -Path "$script:ModuleRoot/Data/Meditations.clixml"
 
-    $script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
-    Write-Verbose "Koans folder set to $script:LibraryFolder"
+$script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
+Write-Verbose "Koans folder set to $script:LibraryFolder"
 
-    if (-not (Test-Path -Path $script:LibraryFolder)) {
-        Write-Verbose 'Koans folder does not exist; populating the folder'
-        Initialize-KoanDirectory -Confirm:$false
-    }
+if (-not (Test-Path -Path $script:LibraryFolder)) {
+    Write-Verbose 'Koans folder does not exist; populating the folder'
+    Initialize-KoanDirectory -Confirm:$false
+}
 
 #endregion ModuleConfiguration
 
