@@ -23,7 +23,7 @@
 
     $ProfilePath = $Profile.$TargetProfile
 
-    if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Get-Advice')) {
+    if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Show-Advice')) {
         $ProfileFolder = Split-Path -Path $ProfilePath
 
         if (-not (Test-Path $ProfileFolder)) {
@@ -31,10 +31,10 @@
         }
 
         if (-not (Test-Path $ProfilePath)) {
-            Set-Content -Path $ProfilePath -Value 'Get-Advice'
+            Set-Content -Path $ProfilePath -Value 'Show-Advice'
         }
-        elseif (-not ($ProfilePath | Select-String -Pattern 'Get-Advice' -Quiet)) {
-            'Get-Advice' | Add-Content $ProfilePath
+        elseif (-not ($ProfilePath | Select-String -Pattern '(Show|Get)-Advice' -Quiet)) {
+            'Show-Advice' | Add-Content $ProfilePath
         }
     }
 }
