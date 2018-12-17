@@ -15,41 +15,55 @@
 
 #region SupportingClasses
 
-    class FILL_ME_IN {}
-    class __ : FILL_ME_IN {}
+class FILL_ME_IN {}
+class __ : FILL_ME_IN {}
 
-    class KoanAttribute : Attribute {
-        [uint32] $Position
+class KoanAttribute : Attribute {
+    [uint32] $Position
+    [string] $Module = '_powershell'
 
-        KoanAttribute([uint32] $Position) {
-            $this.Position = $Position
-        }
-
-        KoanAttribute() {
-            $this.Position = [uint32]::MaxValue
-        }
+    KoanAttribute([uint32] $Position) {
+        $this.Position = $Position
     }
+
+    KoanAttribute([uint32] $Position, [string] $Module) {
+        $this.Module = $Module
+        $this.Position = $Position
+    }
+
+    KoanAttribute() {
+        $this.Position = [uint32]::MaxValue
+    }
+}
 
 #endregion SupportingClasses
 
-$script:ModuleFolder = $PSScriptRoot
+#region ImportCommands
 
-Write-Verbose 'Importing meditation koans'
-$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
-
-Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
+Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     Write-Verbose "Importing functions from file: [$($_.Name)]"
     . $_.FullName
 }
 
-$env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
-Write-Verbose "Koans folder set to $env:PSKoans_Folder"
+#endregion ImportCommands
 
-if (-not (Test-Path -Path $env:PSKoans_Folder)) {
+#region ModuleConfiguration
+
+Write-Verbose 'Configuring PSKoans module'
+$script:ModuleRoot = $PSScriptRoot
+
+Write-Verbose 'Importing meditation koans'
+$script:Meditations = Import-CliXml -Path "$script:ModuleRoot/Data/Meditations.clixml"
+
+$script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
+Write-Verbose "Koans folder set to $script:LibraryFolder"
+
+if (-not (Test-Path -Path $script:LibraryFolder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
     Initialize-KoanDirectory -Confirm:$false
 }
 
+#endregion ModuleConfiguration
 
 try {
     Add-AssertionOperator -Name Fail -Test {

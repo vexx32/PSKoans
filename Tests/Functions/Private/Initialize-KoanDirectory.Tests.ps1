@@ -1,4 +1,4 @@
-using module PSKoans
+#Requires -Modules PSKoans
 
 InModuleScope 'PSKoans' {
     Describe 'Initialize-KoanDirectory' {
@@ -43,24 +43,25 @@ InModuleScope 'PSKoans' {
 
         Context 'Practical Tests with TestDrive' {
             BeforeAll {
-                if ($env:PSKoans_Folder) {
-                    $LocalKoanFolder = $env:PSKoans_Folder
+                if (Get-PSKoanLocation) {
+                    $LocalKoanFolder = Get-PSKoanLocation
                 }
-                $env:PSKoans_Folder = "TestDrive:/Koans"
 
-                $KoanFiles = Get-ChildItem -Path $script:ModuleFolder -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
+                Set-PSKoanLocation -Path "TestDrive:/Koans"
+
+                $KoanFiles = Get-ChildItem -Path $script:ModuleRoot -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
                     @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
                 }
             }
 
             Context 'Koan Folder Exists' {
                 BeforeAll {
-                    New-Item -ItemType Directory -Path $env:PSKoans_Folder > $null
+                    Get-PSKoanLocation | New-Item -Path {$_} -ItemType Directory > $null
 
                     $DummyFiles = 1..10 | ForEach-Object {
                         $FileName = '{0:000}' -f $_
-                        1..($_ * 10) | Set-Content -Path "$env:PSKoans_Folder/$FileName"
-                        @{Path = "$env:PSKoans_Folder/$FileName"}
+                        1..($_ * 10) | Set-Content -Path "$(Get-PSKoanLocation)/$FileName"
+                        @{ Path = "$(Get-PSKoanLocation)/$FileName" }
                     }
                 }
 
@@ -77,10 +78,14 @@ InModuleScope 'PSKoans' {
                 It 'should copy <File> to the Koans folder' -TestCases $KoanFiles {
                     param($File)
 
-                    Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
+                    Get-PSKoanLocation |
+                        Join-Path -ChildPath $File |
+                        Test-Path |
+                        Should -BeTrue
 
-                    $CopiedFile = Get-Item -Path "$env:PSKoans_Folder/$File"
-                    $OriginalFile = $script:ModuleFolder | Join-Path -ChildPath "Koans/$File" | Get-Item
+                    $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
+                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans/$File" | Get-Item
+
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
@@ -99,10 +104,14 @@ InModuleScope 'PSKoans' {
                 It 'should copy <File> to the Koans folder' -TestCases $KoanFiles {
                     param($File)
 
-                    Test-Path -Path "$env:PSKoans_Folder/$File" | Should -BeTrue
+                    Get-PSKoanLocation |
+                        Join-Path -ChildPath $File |
+                        Test-Path |
+                        Should -BeTrue
 
-                    $CopiedFile = Get-Item -Path "$env:PSKoans_Folder/$File"
-                    $OriginalFile = $script:ModuleFolder | Join-Path -ChildPath "Koans/$File" | Get-Item
+                    $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
+                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans/$File" | Get-Item
+
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
@@ -114,7 +123,7 @@ InModuleScope 'PSKoans' {
 
             AfterAll {
                 if ($LocalKoanFolder) {
-                    $env:PSKoans_Folder = $LocalKoanFolder
+                    Set-PSKoanLocation -Path $LocalKoanFolder
                 }
             }
         }

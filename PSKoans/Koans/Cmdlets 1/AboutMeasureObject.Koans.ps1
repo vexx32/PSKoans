@@ -81,7 +81,7 @@ Describe 'Measure-Object' {
     }
 
     It 'can measure text lines, characters, and words of strings' {
-        $Text = Get-Content "$env:PSKoans_Folder/Foundations/AboutTheStockChallenge.Koans.ps1"
+        $Text = Get-Content "$(Get-PSKoanLocation)/Foundations/AboutTheStockChallenge.Koans.ps1"
         $Data = $Text | Measure-Object -Line -Word -Character
 
         $Data.Lines | Should -Be __

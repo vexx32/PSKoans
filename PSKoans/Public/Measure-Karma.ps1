@@ -3,24 +3,28 @@
 	.SYNOPSIS
         Reflect on your progress and check your answers.
     .DESCRIPTION
-        Get-Enlightenment executes Pester against the koans to evaluate if you have made the necessary
-        corrections for success. If you'd like to use VS Code Insiders, set $env:PSKoans_EditorPreference 
-	equal to "code-insiders".
+        Measure-Karma executes Pester against the koans to evaluate if you have made the necessary
+        corrections for success.
+    .PARAMETER Topic
+        Execute koans only from the selected Topic(s). Regex patterns are permitted.
+    .PARAMETER ListTopics
+        Output a complete list of available koan topics.
     .PARAMETER Contemplate
-        Opens your local koan folder.
+        Opens your local koan folder. If you'd like PSKoans to use VS Code Insiders, set $env:PSKoans_EditorPreference
+	    equal to "code-insiders".
 	.PARAMETER Reset
         Resets everything in your local koan folder to a blank slate. Use with caution.
     .EXAMPLE
-        PS> Measure-Karma
+        Measure-Karma
 
         Assesses the results of the Pester tests, and builds the meditation prompt.
     .EXAMPLE
-        PS> meditate -Contemplate
+        meditate -Contemplate
 
         Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
         opens in VS Code.
     .EXAMPLE
-        PS> Measure-Karma -Reset
+        Measure-Karma -Reset
 
         Prompts for confirmation, before wiping out the user's koans folder and restoring it back
         to its initial state.
@@ -31,10 +35,34 @@
         Module: PSKoans
 	#>
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
-    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate','Clear-Path')]
+    [OutputType([void])]
+    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
     param(
+        [Parameter(ParameterSetName = 'Default')]
+        [Alias('Koan', 'File')]
+        [ArgumentCompleter(
+            {
+                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+
+                $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                    Sort-Object -Property BaseName |
+                    ForEach-Object {
+                    $_.BaseName -replace '\.Koans$'
+                }
+
+                return @($Values) -like "$WordToComplete*"
+            }
+        )]
+        [string[]]
+        $Topic,
+
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Alias('ListKoans')]
+        [switch]
+        $ListTopics,
+
         [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
-        [Alias('Koans', 'Meditate')]
+        [Alias('Meditate')]
         [switch]
         $Contemplate,
 
@@ -43,43 +71,65 @@
         $Reset
     )
     switch ($PSCmdlet.ParameterSetName) {
-        "Reset" {
+        'ListKoans' {
+            Get-PSKoanLocation |
+                Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
+                ForEach-Object {
+                $_.BaseName -replace '\.Koans$'
+            }
+        }
+        'Reset' {
             Write-Verbose "Reinitializing koan directory"
             Initialize-KoanDirectory
         }
-        "OpenFolder" {
+        'OpenFolder' {
             Write-Verbose "Opening koans folder"
             if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
-                Start-Process -FilePath 'code-insiders' -ArgumentList $env:PSKoans_Folder -NoNewWindow
+                Start-Process -FilePath 'code-insiders' -ArgumentList (Get-PSKoanLocation) -NoNewWindow
             }
             elseif (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
-                Start-Process -FilePath 'code' -ArgumentList $env:PSKoans_Folder -NoNewWindow
+                Start-Process -FilePath 'code' -ArgumentList (Get-PSKoanLocation) -NoNewWindow
             }
             else {
-                Invoke-Item $env:PSKoans_Folder
+                Get-PSKoanLocation | Invoke-Item
             }
         }
         "Default" {
             Clear-Host
 
-            Write-MeditationPrompt -Greeting
+            Show-MeditationPrompt -Greeting
 
             Write-Verbose 'Sorting koans...'
-            $SortedKoanList = Get-ChildItem -Path $env:PSKoans_Folder -Recurse -Filter '*.Koans.ps1' |
-                Get-Command { $_.FullName } |
-                Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Count -gt 0 } |
-                Sort-Object { $_.ScriptBlock.Attributes.Where( {$_.TypeID -match 'KoanAttribute'}).Position }
+            if ($Topic) {
+                Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
+                $SortedKoanList = Get-Koan -Topic $Topic
+            }
+            else {
+                $SortedKoanList = Get-Koan
+            }
 
+            Write-Verbose "Koan files retrieved: $($SortedKoanList.Count)"
             Write-Verbose 'Counting koans...'
-            $TotalKoans = $SortedKoanList | Measure-Koan
+            [int]$TotalKoans = $SortedKoanList | Measure-Koan
 
             if ($TotalKoans -eq 0) {
+                if ($Topic) {
+                    $ErrorDetails = @{
+                        ExceptionType    = 'System.IO.FileNotFoundException'
+                        ExceptionMessage = 'Could not find any koans that match the specified Topic(s)'
+                        ErrorId          = 'PSKoans.NoMatchingKoansFound'
+                        ErrorCategory    = 'ObjectNotFound'
+                        TargetObject     = $Topic -join ','
+                    }
+                    $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
+                }
+
                 # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
                 Write-Warning 'No koans found in your koan directory. Initiating full reset...'
                 Initialize-KoanDirectory
                 Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
 
-                return # skip the rest of the function
+                return # Skip the rest of the function
             }
 
             $KoansPassed = 0
@@ -100,7 +150,7 @@
 
                 Write-Verbose "Karma: $KoansPassed"
                 if ($PesterTests.FailedCount -gt 0) {
-                    Write-Verbose "Your karma has been damaged."
+                    Write-Verbose 'Your karma has been damaged.'
                     break
                 }
             }
@@ -118,7 +168,10 @@
                     KoansPassed  = $KoansPassed
                     TotalKoans   = $TotalKoans
                 }
-                Write-MeditationPrompt @Meditation
+
+                if ($PSBoundParameters.ContainsKey('Topic')) {
+                    $Meditation.Add('Topic', $Topic)
+                }
             }
             else {
                 $Meditation = @{
@@ -126,8 +179,13 @@
                     KoansPassed = $KoansPassed
                     TotalKoans  = $PesterTestCount
                 }
-                Write-MeditationPrompt @Meditation
+
+                if ($PSBoundParameters.ContainsKey('Topic')) {
+                    $Meditation.Add('Topic', $Topic)
+                }
             }
+
+            Show-MeditationPrompt @Meditation
         }
     }
 }

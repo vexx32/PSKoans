@@ -1,0 +1,9 @@
+{
+  "Title": "Edit Mode",
+  "Content": [
+    "The console experience between Linux and Windows is very different. In PowerShell, if you are crossing the boundary, you can still have a lot of the behavior you are used to, using Set-PSReadlineOption.",
+    "  Set-PSReadlineOption -EditMode Emacs",
+    "  Set-PSReadlineOption -EditMode Vi",
+    "  Set-PSReadlineOption -EditMode Windows"
+  ]
+}

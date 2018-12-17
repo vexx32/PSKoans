@@ -1,4 +1,4 @@
-﻿using module PSKoans
+﻿##Requires -Modules SKoans
 
 ${global:Test File} = "$PSScriptRoot/ControlTests/Invoke-Koan.Control_Tests.ps1"
 

@@ -5,7 +5,7 @@
     .DESCRIPTION
         Cuts text to console-appropriate widths for viewing, where possible.
     .EXAMPLE
-        PS C:\> Write-ConsoleLine $String
+        Write-ConsoleLine $String
 
         Writes the contents of $String to the console, inserting new line characters
         where appropriate.
@@ -15,14 +15,32 @@
         Nothing. All output is sent only to the host / information stream.
     #>
     [CmdletBinding()]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [string[]]
-        $InputString
+        $InputString,
+
+        [Parameter()]
+        [switch]
+        $Title
     )
     begin {
-        $Prefix = " " * 3
+        Write-Host ""
+
+        if ($Title) {
+            Write-Host "Those who came before offer you a fragment of wisdom." -ForegroundColor Green
+            Write-Host ""
+
+            $Prefix = " " * 5
+            $Color = @{ ForegroundColor = [ConsoleColor]::Yellow }
+        }
+        else {
+            $Prefix = " " * 3
+            $Color = @{ ForegroundColor = [ConsoleColor]::Gray }
+        }
+
         $Width = $host.UI.RawUI.WindowSize.Width - ($Prefix.Length + 2)
     }
     process {
@@ -38,11 +56,14 @@
                 $TailFragment = ($CompleteLine -split "[- ]")[-1].Length
                 $BestFitLine = $CompleteLine.Substring(0, $CompleteLine.Length - $TailFragment).TrimEnd()
 
-                Write-Host ($Prefix + $BestFitLine)
+                Write-Host ($Prefix + $BestFitLine) @Color
 
                 $RemainingText = $RemainingText.Substring($CompleteLine.Length - $TailFragment)
             }
-            Write-Host ($Prefix + $RemainingText)
+            Write-Host ($Prefix + $RemainingText) @Color
         }
-}
+    }
+    end {
+        if (-not $Title) { Write-Host "" }
+    }
 }

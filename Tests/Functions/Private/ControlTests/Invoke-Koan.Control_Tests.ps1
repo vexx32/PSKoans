@@ -1,7 +1,4 @@
-﻿using namespace System.Management.Automation
-using module PSKoans
-
-Describe 'Deliberately failing tests' {
+﻿Describe 'Deliberately failing tests' {
     It 'simply fails' {
         Should -Fail -Because 'it is written that way'
     }
