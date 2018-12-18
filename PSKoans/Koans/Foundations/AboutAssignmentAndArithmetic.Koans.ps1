@@ -72,7 +72,7 @@ Describe 'Arithmetic Operators' {
             12.21 + 'FILL_ME_IN' -eq 23.43 | Should -BeTrue
 
             # Adding items into typed arrays will also cause the resulting value to be converted
-            [int[]]@(1, 2, 3, 4, 5) + '17' | Should -Be __
+            [int[]]( @(1, 2, 3, 4, 5) + '17' )' | Should -Be __
         }
     }
     Context 'Subtraction' {
