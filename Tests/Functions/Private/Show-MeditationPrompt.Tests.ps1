@@ -32,7 +32,6 @@ InModuleScope 'PSKoans' {
                 Show-MeditationPrompt @Meditation | Should -BeNullOrEmpty
 
                 Assert-MockCalled Write-Host -Times 8
-                Assert-MockCalled Start-Sleep -Times 3
             }
         }
 
