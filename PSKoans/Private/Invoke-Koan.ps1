@@ -74,11 +74,10 @@
             $Thread = [powershell]::Create()
             $Thread.AddScript($Script) > $null
             $Thread.AddArgument($PSBoundParameters) > $null
-            $Thread.RunspacePool = $RunspacePool
 
             $Status = $Thread.BeginInvoke()
 
-            while (-not $Status.IsCompleted) { Start-Sleep -Milliseconds 10 }
+            do { } until ($Status.IsCompleted)
 
             $Thread.EndInvoke($Status)
         }
