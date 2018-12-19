@@ -140,13 +140,13 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
         }
         'Meditation' {
             Write-Host @Red $Prompts['Describe']
-            Start-Sleep @SleepTime
+
             Write-Host @Blue $Prompts['TestFailed']
             Write-Host @Red $Prompts['Expectation']
-            Start-Sleep @SleepTime
+
             Write-Host @Blue $Prompts['Meditate']
             Write-Host @Red $Prompts['Subject']
-            Start-Sleep @SleepTime
+
             Write-Host @Blue $Prompts['Koan']
 
             if ($PSBoundParameters.ContainsKey('Topic')) {
