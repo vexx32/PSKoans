@@ -22,7 +22,7 @@ Describe 'Variable Assignment' {
         Set-Variable -Name 'Greeting' -Value 'Hello!'
 
         $Value -eq $Fifty | Should -BeTrue
-        $Greeting | Should -Be __
+        __ | Should -Be $Greeting
     }
 
     <#

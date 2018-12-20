@@ -37,7 +37,7 @@ Describe 'System.Text.StringBuilder' {
                 definitions that can be used to construct the object.
             #>
             $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType __
-            $SBFromString.Length | Should -Be __
+            __ | Should -Be $SBFromString.Length
         }
 
         It 'can be created by casting an existing string' {
@@ -88,7 +88,7 @@ __
             # The reference returned points back to the original StringBuilder object.
             $StringBuilder.Append(' Who ').Append('are ').Append('you?') | Should -Be $StringBuilder
 
-            $StringBuilder.ToString() | Should -Be '__'
+            '__' | Should -Be $StringBuilder.ToString()
         }
     }
 
@@ -100,14 +100,14 @@ __
 
         It 'is as simple as calling .ToString()' {
             $SB.ToString() | Should -BeOfType String
-            $SB.ToString() | Should -Be '__'
+            '__' | Should -Be $SB.ToString()
         }
 
         It 'can be retained and reused' {
             $SB.Append('Hello')
-            $SB.ToString() | Should -Be '__'
+            '__' | Should -Be $SB.ToString()
             $SB.Append(' DONE')
-            $SB.ToString() | Should -Be '__'
+            '__' | Should -Be $SB.ToString()
         }
     }
 

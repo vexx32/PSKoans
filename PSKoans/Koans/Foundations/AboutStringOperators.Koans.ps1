@@ -42,17 +42,17 @@ Describe 'String Comparison Operators' {
             $String = 'this is a string.'
             $OtherString = 'This is a string.'
 
-            $String -eq $OtherString | Should -Be __
+            __ | Should -Be ($String -eq $OtherString)
             # Watch out for case sensitive operators!
-            $String -ceq $OtherString | Should -Be __
+            __ | Should -Be ($String -ceq $OtherString)
         }
 
         It 'is useful for a straightforward comparison' {
             $String = 'one more string!'
             $OtherString = "ONE MORE STRING!"
 
-            $String -ne $OtherString | Should -Be __
-            $String -cne $OtherString | Should -Be __
+            __ | Should -Be ($String -ne $OtherString)
+            __ | Should -Be ($String -cne $OtherString)
         }
     }
 
@@ -62,8 +62,8 @@ Describe 'String Comparison Operators' {
             $String = 'my string'
             $OtherString = 'your string'
 
-            $String -gt $OtherString | Should -Be __
-            $String -lt $OtherString | Should -Be __
+            __ | Should -Be ($String -gt $OtherString)
+            __ | Should -Be ($String -lt $OtherString)
         }
     }
 }
