@@ -35,8 +35,8 @@ Describe 'Alias Provider' {
         It 'can be queried with generic provider cmdlets' {
             $Aliases = Get-ChildItem 'Alias:'
 
-            $Aliases.Name[0] | Should -Be __
-            $Aliases.Definition[0] | Should -Be __
+            __ | Should -Be $Aliases.Name[0]
+            __ | Should -Be $Aliases.Definition[0]
         }
 
         It 'maps aliases to the full command' {
@@ -47,13 +47,13 @@ Describe 'Alias Provider' {
         }
 
         It 'can create aliases too!' {
-            $Aliases.Count | Should -Be __
+            __ | Should -Be $Aliases.Count
 
             New-Item -Path 'Alias:\grok' -Value 'Get-Item' -ErrorAction SilentlyContinue
             $File = grok '__' -ErrorAction SilentlyContinue
 
             $File | Should -BeOfType 'System.IO.FileInfo'
-            $Aliases.Count | Should -Be __
+            __ | Should -Be $Aliases.Count
 
             Remove-Item -Path 'Alias:\grok'
         }
@@ -65,7 +65,7 @@ Describe 'Alias Provider' {
             $AliasObjects = Get-ChildItem 'Alias:'
             $AliasObjects2 = Get-Alias
 
-            $AliasObjects2.Count | Should -Be __
+            __ | Should -Be $AliasObjects2.Count
             $AliasObjects | Should -Be $AliasObjects2
         }
 
@@ -79,7 +79,7 @@ Describe 'Alias Provider' {
         It 'can be used to find the exact command' {
             $AliasData = Get-Alias -Name 'ft'
 
-            $AliasData.Definition | Should -Be '__'
+            '__' | Should -Be $AliasData.Definition
         }
 
         It 'can create aliases too!' {
@@ -93,12 +93,14 @@ Describe 'Alias Provider' {
     Context 'Variable Access' {
 
         It 'can be accessed like a variable' {
-            $Alias:gci | Should -Be __
+            __ | Should -Be $Alias:gci
         }
 
         It 'is the same as using Get-Content on the path' {
             Get-Content -Path 'Alias:\gcm' | Should -Be $Alias:gcm
-            Get-Content -Path 'Alias:\echo' | Should -Be __
+
+            $AliasTarget = Get-Content -Path 'Alias:\echo'
+            __ | Should -Be $AliasTarget
         }
     }
 }
@@ -114,13 +116,14 @@ Describe 'Environment Provider' {
 
     It 'allows access to system environment data' {
         $SelectedItem = $EnvironmentData.Where{ $_.Value -is [string] }[7]
+        $Content = $SelectedItem | Get-Content
 
-        $SelectedItem | Get-Content | Should -Be '__'
-        $SelectedItem.Name | Should -Be '__'
+        '__' | Should -Be $Content
+        '__' | Should -Be $SelectedItem.Name
     }
 
     It 'can be accessed via variables' {
-        $env:Path | Should -Be '__'
+        '__' | Should -Be $env:Path
     }
 }
 
@@ -130,25 +133,25 @@ Describe 'FileSystem Provider' {
         New-Item -Path $Path > $null
 
         -join (1..10000 | ForEach-Object {
-            Get-Random -Minimum 32 -Maximum 96 |
-                ForEach-Object {[char]$_ -as [string]}
-            if ((Get-Random) -match '[25]0$') {
-                "`n"
-            }
-        }) | Set-Content -Path $Path
+                Get-Random -Minimum 32 -Maximum 96 |
+                    ForEach-Object {[char]$_ -as [string]}
+                if ((Get-Random) -match '[25]0$') {
+                    "`n"
+                }
+            }) | Set-Content -Path $Path
     }
 
     It 'allows access to various files and their properties' {
         $File = Get-Item -Path $Path
 
-        $File.Name | Should -Be '__'
-        $File.Attributes | Should -Be '__'
-        $File.Length | Should -Be '__'
+        '__' | Should -Be $File.Name
+        '__' | Should -Be $File.Attributes
+        '__' | Should -Be $File.Length
     }
 
     It 'allows you to extract the contents of files' {
         $FirstLine = Get-Content -Path $Path | Select-Object -First 1
-        $FirstLine | Should -Be '__'
+        '__' | Should -Be $FirstLine
     }
 
     It 'allows you to copy, rename, or delete files' {
@@ -158,11 +161,11 @@ Describe 'FileSystem Provider' {
         $NewFile = Copy-Item -Path $Path -Destination $NewPath -PassThru
 
         $NewFile.Length | Should -Be $File.Length
-        $NewFile.Name | Should -Be '__'
+        '__' | Should -Be $NewFile.Name
 
         $NewFile = Rename-Item -Path $NewPath -NewName 'TESTNAME.tmp' -PassThru
-        $NewFile.Name | Should -Be '__'
-        $NewFile.Length | Should -Be '__'
+        '__' | Should -Be $NewFile.Name
+        '__' | Should -Be $NewFile.Length
 
         $FilePath = $NewFile.FullName
         Remove-Item -Path $FilePath
@@ -175,16 +178,16 @@ Describe 'Function Provider' {
 
     It 'allows access to all currently loaded functions' {
         # Most proper functions are named in the Verb-Noun convention
-        $Functions[5].Verb | Should -Be '__'
-        $Functions[5].Noun | Should -Be '__'
-        $Functions[5].Name | Should -Be '__'
+        '__' | Should -Be $Functions[5].Verb
+        '__' | Should -Be $Functions[5].Noun
+        '__' | Should -Be $Functions[5].Name
 
-        $Functions[4].Name | Should -Be '__'
+        '__' | Should -Be $Functions[4].Name
     }
 
     It 'exposes the entire script block of a function' {
         $Functions[3].ScriptBlock | Should -BeOfType ScriptBlock
-        $Functions[1].ScriptBlock.ToString().Length | Should -Be __
+        __ | Should -Be $Functions[1].ScriptBlock.ToString().Length
 
         $Functions[4] | Get-Content | Should -BeOfType __
     }
@@ -196,7 +199,7 @@ Describe 'Function Provider' {
         Test-Function | Should -Be 'Hello!'
 
         $TestItem | Rename-Item -NewName 'Get-Greeting'
-        Get-Greeting | Should -Be '__'
+        '__' | Should -Be (Get-Greeting)
     }
 
     It 'can also be accessed via variables' {
@@ -219,7 +222,7 @@ Describe 'Function Provider' {
         }
         ${function:Get-Numbers} = $Script
 
-        Get-Numbers | Should -Be __
+        __ | Should -Be (Get-Numbers)
     }
 }
 
@@ -235,25 +238,25 @@ Describe 'Variable Provider' {
             $VariableData = Get-Item 'Variable:\Test'
 
             $VariableData.Name | Should -Be 'Test'
-            $VariableData.Value | Should -Be __
-            $VariableData.Options | Should -Be __
+            __ | Should -Be $VariableData.Value
+            __ | Should -Be $VariableData.Options
         }
 
         It 'allows you to remove variables' {
             $Test = 123
 
-            $Test | Should -Be __
+            __ | Should -Be $Test
 
             Remove-Item 'Variable:\Test'
-            $Test | Should -Be __
+            __ | Should -Be $Test
             {Get-Item 'Variable:\Test'} | Should -Throw -ExceptionType __
         }
 
         It 'exposes data from default variables' {
             $Variables = Get-ChildItem 'Variable:'
 
-            $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value | Should -Be __
-            $Variables.Where{$_.Name -eq 'MaximumAliasCount'}.Value | Should -Be __
+            __ | Should -Be $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value
+            __ | Should -Be $Variables.Where{$_.Name -eq 'MaximumAliasCount'}.Value
         }
 
         It 'allows you to set variable options' {
@@ -262,7 +265,7 @@ Describe 'Variable Provider' {
             $Var = Get-Item 'Variable:\Test'
             $Var.Options = [System.Management.Automation.ScopedItemOptions]::ReadOnly
 
-            $Var | Should -Be __
+            __ | Should -Be $Var
             {Remove-Item 'Variable:\Test'} | Should -Throw -ExceptionType __
         }
     }
@@ -273,9 +276,9 @@ Describe 'Variable Provider' {
             Set-Variable 'test' -Value 7357
 
             $Info = Get-Variable -Name 'Test'
-            $Info.Options | Should -Be __
-            $Info.Name | Should -Be 'test'
-            $Info.Value | Should -Be __
+            'test' | Should -Be $Info.Name
+            __ | Should -Be $Info.Options
+            __ | Should -Be $Info.Value
         }
 
         It 'can retrieve just the value' {
@@ -283,7 +286,7 @@ Describe 'Variable Provider' {
 
             $Get = Get-Variable -Name 'GetMe' -ValueOnly
 
-            $Get | Should -Be __
+            __ | Should -Be $Get
         }
     }
 }

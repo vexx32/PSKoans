@@ -118,7 +118,7 @@ Describe 'New-Module' {
 
     It 'has many properties with $null defaults' {
         # For most modules, ModuleBase lists their primary storage location
-        $Module.ModuleBase | Should -Be __
+        __ | Should -Be $Module.ModuleBase
     }
 
     It 'supplies the module with a GUID based random path' {
@@ -164,7 +164,7 @@ Describe 'Import-Module' {
         }
 
         It 'does not produce output' {
-            Import-Module 'TestDrive:\TestModule.psm1' | Should -Be __
+            Import-Module 'TestDrive:\TestModule.psm1' | Should -Be NullOrEmpty
         }
 
         It 'imports the module into the current session' {

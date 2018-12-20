@@ -45,11 +45,11 @@ Describe 'Arithmetic Operators' {
         It 'is used to add two items together' {
             13 + 4 | Should -Be 17
             __ + 6 | Should -Be 13
-            13.7 + 4 | Should -Be __
+            __ | Should -Be (13.7 + 4)
         }
 
         It 'can be used to concatenate strings' {
-            'hello' + 'world' | Should -Be __
+            __ | Should -Be ('hello' + 'world')
             'My name is ' + 'Jim' | Should -Be 'My name is Jim'
         }
 
@@ -68,12 +68,12 @@ Describe 'Arithmetic Operators' {
         It 'behaves according to the type of the left-hand item' {
             '10.5' + 11 | Should -Be 21.5 # Or should it?
 
-            11 + '12.5' | Should -Be __
+            __ | Should -Be (11 + '12.5')
             12.21 + 'FILL_ME_IN' -eq 23.43 | Should -BeTrue
 
             # Adding items into typed arrays will also cause the resulting value to be converted
             [int[]] $Array = @(1, 2, 3, 4, 5)
-            $Array += '17' 
+            $Array += '17'
             __ | Should -Be $Array
         }
     }
@@ -81,14 +81,14 @@ Describe 'Arithmetic Operators' {
 
         It 'works similarly to addition' {
             12 - 7 | Should -Be 5
-            11 - 3.5 | Should -Be __
+            __ | Should -Be (11 - 3.5)
         }
 
         It 'cannot be used with strings' {
             {'hello' - 'h'} | Should -Throw
 
             # Except, of course, when the string contains a useable number.
-            '12' - '7.5' | Should -Be __
+            __ | Should -Be ('12' - '7.5')
 
             # In other words, subtraction only operates on numerical values.
             {@(1, 2) - 1} | Should -Throw
@@ -98,7 +98,7 @@ Describe 'Arithmetic Operators' {
     Context 'Multiplication' {
 
         It 'can be used on both integer and non-integer numerals' {
-            12 * 4 | Should -Be __
+            __ | Should -Be (12 * 4)
             12.1 * 2 | Should -Be 24.2
         }
 
@@ -158,18 +158,18 @@ Describe 'Assignment/Arithmetic Combination Operators' {
         $Value | Should -Be 19
 
         $Value -= 3
-        $Value | Should -Be __
+        __ | Should -Be $Value
 
         # We can even combine multiplication and division with assignment
         $Value /= 2
         $Value | Should -Be 8
 
         $Value *= 3
-        $Value | Should -Be __
+        __ | Should -Be $Value
 
         # Modulus hasn't been left out, either.
         $Value = 12
         $Value %= 4
-        $Value | Should -Be __
+        __ | Should -Be $Value
     }
 }

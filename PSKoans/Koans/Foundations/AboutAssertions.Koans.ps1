@@ -29,7 +29,7 @@ Describe 'Equality' {
 
     It 'expects you to fill in values' {
         # Initiative will be rewarded.
-        1 + 2 | Should -Be __
+        __ | Should -Be (1 + 2)
         __ + 5 -eq 10 | Should -BeTrue
     }
 

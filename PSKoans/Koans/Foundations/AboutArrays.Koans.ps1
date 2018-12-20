@@ -39,7 +39,7 @@ Describe 'Arrays' {
             # Having everything on its own line would be much cleaner and is a common usage of this syntax.
         )
         # Where is index 4 in the above array?
-        $Names[4] | Should -Be __
+        __ | Should -Be $Names[4]
     }
 
     It 'allows the collection to be split into multiple parts' {
