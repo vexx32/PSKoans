@@ -134,11 +134,11 @@
 
             $KoansPassed = 0
 
-            foreach ($KoanFile in $SortedKoanList.Path) {
-                Write-Verbose "Testing karma with file [$KoanFile]"
+            foreach ($KoanFile in $SortedKoanList) {
+                Write-Verbose "Testing karma with file [$($KoanFile.Path)]"
 
                 $PesterParams = @{
-                    Script   = $KoanFile
+                    Script   = $KoanFile.Path
                     PassThru = $true
                     Show     = 'None'
                 }
@@ -167,10 +167,15 @@
                     Meditation   = $NextKoanFailed.StackTrace
                     KoansPassed  = $KoansPassed
                     TotalKoans   = $TotalKoans
+                    CurrentTopic = @{
+                        Name      = $KoanFile.Name -replace '\.Koans\.ps1$'
+                        Completed = $PesterTests.PassedCount
+                        Total     = $PesterTests.TotalCount
+                    }
                 }
 
                 if ($PSBoundParameters.ContainsKey('Topic')) {
-                    $Meditation.Add('Topic', $Topic)
+                    $Meditation.Add('RequestedTopic', $Topic)
                 }
             }
             else {
@@ -181,7 +186,7 @@
                 }
 
                 if ($PSBoundParameters.ContainsKey('Topic')) {
-                    $Meditation.Add('Topic', $Topic)
+                    $Meditation.Add('RequestedTopic', $Topic)
                 }
             }
 
