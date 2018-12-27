@@ -25,6 +25,11 @@ InModuleScope 'PSKoans' {
                     Meditation   = "TestMeditation"
                     KoansPassed  = 0
                     TotalKoans   = 100
+                    CurrentTopic = @{
+                        Name      = "TestTopic"
+                        Completed = 0
+                        Total     = 10
+                    }
                 }
             }
 
