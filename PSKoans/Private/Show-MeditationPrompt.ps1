@@ -190,7 +190,7 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
                 [int] $PortionDone = ($CurrentTopic['Completed'] / $CurrentTopic['Total']) * $TopicProgressWidth
 
                 " [{3}]: [{0}{1}] {2}" -f @(
-                    "$([char]0x25a0)" * $PortionDone
+                    "$([char]0x25b0)" * $PortionDone
                     "$([char]0x2015)" * ($TopicProgressWidth - $PortionDone)
                     $TopicProgressAmount
                     $CurrentTopic['Name']
@@ -202,7 +202,7 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
             [int] $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
             " [Total]: [{0}{1}] {2}" -f @(
-                "$([char]0x25a0)" * $PortionDone
+                "$([char]0x25b0)" * $PortionDone
                 "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
                 $TotalProgressAmount
             ) | Write-Host @Blue
