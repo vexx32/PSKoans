@@ -1,4 +1,6 @@
-﻿function Show-MeditationPrompt {
+﻿using namespace System.Management.Automation
+
+function Show-MeditationPrompt {
     <#
 	.SYNOPSIS
         Provides a mechanism for Measure-Karma to write clean output.
@@ -55,15 +57,43 @@
         [switch]
         $Complete,
 
+        [Parameter(Mandatory, ParameterSetName = 'Meditation')]
+        [ValidateScript(
+            {
+                $MissingKeys = switch ($_) {
+                    { $_.Keys -notcontains 'Name' } { 'Name' }
+                    { $_.Keys -notcontains 'Completed' } { 'Completed' }
+                    { $_.Keys -notcontains 'Total' } { 'Total' }
+                }
+
+                $ErrorString = if ($MissingKeys) {
+                    "Hashtable bound to -CurrentTopic was missing required keys: {0}" -f ($MissingKeys -join ',')
+                }
+                elseif ($_.Keys.Count -gt 3) {
+                    'Hashtable bound to -CurrentTopic should only have keys: Name, Completed, Total.'
+                }
+
+                if ($ErrorString) { throw $ErrorString }
+                else { $true }
+            }
+        )]
+        [hashtable]
+        $CurrentTopic,
+
         [Parameter()]
         [string[]]
-        $Topic
+        $RequestedTopic
     )
 
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
     $Koan = $script:Meditations | Get-Random
-    $SleepTime = @{Milliseconds = 50}
+
+    $ConsoleWidth = @(
+        $host.UI.RawUI.WindowSize.Width
+        $host.UI.RawUI.BufferSize.Width
+        50
+    ).Where{ $_ -ge 50 }[0] # Get the first usable value
 
     #region Prompt Text
     $Prompts = @{
@@ -98,12 +128,12 @@ $Meditation
 
 "@
         Path           = @"
-    Your path thus far:
+    You examine the path beneath your feet...
 
 "@
         Topic          = @"
-    You must meditate further on your selected $(if (@($Topic).Count -gt 1) { "topics" } else { "topic" }):
-        - $($Topic -join "`n        - ")
+    You must meditate further on your selected $(if (@($RequestedTopic).Count -gt 1) { "topics" } else { "topic" }):
+        - $($RequestedTopic -join "`n        - ")
 
 "@
         OpenFolder     = @"
@@ -120,9 +150,9 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
         CompletedTopic = @"
     Congratulations! You have taken the first steps towards enlightenment.
 
-    You have completed: $($Topic -join ', ')
+    You have completed: $($RequestedTopic -join ', ')
 
-    You cast your gaze back upon the path that you have walked:
+    You cast your gaze back upon the path that you have walked...
 
 "@
         BookSuggestion = @"
@@ -156,17 +186,37 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
             Write-Host @Blue $Prompts['Path']
 
             Write-Verbose 'Calculating progress...'
-            $ProgressAmount = "$KoansPassed/$TotalKoans"
-            [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
-            $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
+            $TopicProgressAmount = "{0}/{1}" -f $CurrentTopic['Completed'], $CurrentTopic['Total']
+            $TotalProgressAmount = "$KoansPassed/$TotalKoans"
 
-            " [{0}{1}] {2}" -f @(
-                "$([char]0x25a0)" * $PortionDone
+            [int] $ProgressWidth = $ConsoleWidth * 0.65 - ($TotalProgressAmount.Width + 12)
+            [int] $TopicProgressWidth = $ProgressWidth / 2
+
+            #region TopicProgressBar
+            if ($RequestedTopic.Count -ne 1) {
+                [int] $PortionDone = ($CurrentTopic['Completed'] / $CurrentTopic['Total']) * $TopicProgressWidth
+
+                " [{3}]: [{0}{1}] {2}" -f @(
+                    "$([char]0x25b0)" * $PortionDone
+                    "$([char]0x2015)" * ($TopicProgressWidth - $PortionDone)
+                    $TopicProgressAmount
+                    $CurrentTopic['Name']
+                ) | Write-Host @Blue
+            }
+            #endregion TopicProgressBar
+            Write-Host
+            #region TotalProgressBar
+            [int] $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
+
+            " [Total]: [{0}{1}] {2}" -f @(
+                "$([char]0x25b0)" * $PortionDone
                 "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
-                $ProgressAmount
+                $TotalProgressAmount
             ) | Write-Host @Blue
 
             Write-Host @Blue $Prompts['OpenFolder']
+            #endregion TotalProgressBar
+
             break
         }
         'Enlightened' {
@@ -177,14 +227,14 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
                 Write-Host @Blue $Prompts['Completed']
             }
 
-            $ProgressAmount = "$KoansPassed/$TotalKoans"
-            [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($ProgressAmount.Length + 4)
+            $TotalProgressAmount = "$KoansPassed/$TotalKoans"
+            [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($TotalProgressAmount.Length + 4)
             $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
             " [{0}{1}] {2}" -f @(
                 "$([char]0x25a0)" * $PortionDone
                 "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
-                $ProgressAmount
+                $TotalProgressAmount
             ) | Write-Host @Blue
 
             if (-not $PSBoundParameters.ContainsKey('Topic')) {
