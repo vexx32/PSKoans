@@ -1,4 +1,6 @@
-﻿function Show-MeditationPrompt {
+﻿using namespace System.Management.Automation
+
+function Show-MeditationPrompt {
     <#
 	.SYNOPSIS
         Provides a mechanism for Measure-Karma to write clean output.
@@ -86,7 +88,12 @@
     $Red = @{ForegroundColor = "Red"}
     $Blue = @{ForegroundColor = "Cyan"}
     $Koan = $script:Meditations | Get-Random
-    $SleepTime = @{Milliseconds = 50}
+
+    $ConsoleWidth = @(
+        $host.UI.RawUI.WindowSize.Width
+        $host.UI.RawUI.BufferSize.Width
+        50
+    ).Where{ $_ -ge 50 }[0] # Get the first usable value
 
     #region Prompt Text
     $Prompts = @{
@@ -182,7 +189,7 @@ Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
             $TopicProgressAmount = "{0}/{1}" -f $CurrentTopic['Completed'], $CurrentTopic['Total']
             $TotalProgressAmount = "$KoansPassed/$TotalKoans"
 
-            [int] $ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.65 - ($TotalProgressAmount.Width + 12)
+            [int] $ProgressWidth = $ConsoleWidth * 0.65 - ($TotalProgressAmount.Width + 12)
             [int] $TopicProgressWidth = $ProgressWidth / 2
 
             #region TopicProgressBar
