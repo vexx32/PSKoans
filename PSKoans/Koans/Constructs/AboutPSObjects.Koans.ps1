@@ -19,7 +19,7 @@ param()
 
 Describe 'PSObject' {
     BeforeAll {
-        $Object = 'Stand for nothing; fall for everything.'
+        $Object = @('Stand for nothing; fall for everything.')
     }
 
     It 'is accessed via a hidden .PSObject property' {
@@ -27,23 +27,33 @@ Describe 'PSObject' {
             The .PSObject member contains many properties, but the .PSObject property itself does not
             actually tab-complete, though its child properties do.
         #>
-        $PSObjectProperties = ($Object.PSObject | Get-Member).Name
+        $PSObjectProperties = ($Object.PSObject | Get-Member -MemberType Properties).Name
 
         @(
-            __
-            'Copy'
-            'Equals'
-            __
-            'GetMetaObject'
-            __
-            __
-            'ToString'
-            __
-            'ImmediateBaseObject'
-            __
+            'BaseObject'
+            '__'
+            'Members'
             'Methods'
-            __
-            __
+            '__'
+            '__'
         ) | Should -Be $PSObjectProperties
+    }
+
+    It 'details the base object properties and methods' {
+        $PropertyNames = @(
+            __
+            'LongLength'
+            __
+            'SyncRoot'
+            __
+            'IsFixedSize'
+            __
+            'Count'
+        )
+        $PropertyNames | Should -Be $Object.PSObject.Properties.Name
+
+        $Methods = $Object.PSObject.Methods
+        __ | Should -Be $Methods.Count
+        $Methods['__'].Name | Should -Be 'Length'
     }
 }
