@@ -137,14 +137,12 @@
             foreach ($KoanFile in $SortedKoanList) {
                 Write-Verbose "Testing karma with file [$($KoanFile.Path)]"
 
-                $PesterParams = @{
+                # Execute in a fresh scope to prevent internal secrets being leaked
+                $PesterTests = Invoke-Koan @{
                     Script   = $KoanFile.Path
                     PassThru = $true
                     Show     = 'None'
                 }
-
-                # Execute in a fresh scope to prevent internal secrets being leaked
-                $PesterTests = Invoke-Koan -ParameterSplat $PesterParams
 
                 $KoansPassed += $PesterTests.PassedCount
 
