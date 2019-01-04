@@ -1,10 +1,10 @@
 # Only attempt to load dummy types if they're not already present in the session
 
-switch ($false) {
-    { 'FillerType' -as [type] } {
+switch ($true) {
+    { -not ('FillerType' -as [type]) } {
         class FillerType {}
     }
-    { '__' -as [type] } {
+    { -not ('__' -as [type]) } {
         class __ : FillerType {}
     }
 }
