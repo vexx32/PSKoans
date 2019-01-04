@@ -15,9 +15,6 @@
 
 #region SupportingClasses
 
-class FILL_ME_IN {}
-class __ : FILL_ME_IN {}
-
 class KoanAttribute : Attribute {
     [uint32] $Position
     [string] $Module = '_powershell'
