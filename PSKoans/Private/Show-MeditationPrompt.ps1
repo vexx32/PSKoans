@@ -124,7 +124,7 @@ $Meditation
 "@
         Koan           = @"
 
-    $($Koan -replace "`n","`n    ")
+    $($Koan -replace '\r?\n',"`n    ")
 
 "@
         Path           = @"
