@@ -1,4 +1,4 @@
 ﻿using module PSKoans
-[Koan(115)]
+[Koan(Position = 115)]
 param()
 

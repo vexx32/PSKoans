@@ -16,21 +16,13 @@
 #region SupportingClasses
 
 class KoanAttribute : Attribute {
-    [uint32] $Position
+    [uint32] $Position = [uint32]::MaxValue
     [string] $Module = '_powershell'
 
-    KoanAttribute([uint32] $Position) {
-        $this.Position = $Position
-    }
-
-    KoanAttribute([uint32] $Position, [string] $Module) {
-        $this.Module = $Module
-        $this.Position = $Position
-    }
-
-    KoanAttribute() {
-        $this.Position = [uint32]::MaxValue
-    }
+    Koan() {}
+}
+class Koan : KoanAttribute {
+    Koan() : base() {}
 }
 
 #endregion SupportingClasses
@@ -49,8 +41,11 @@ Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Ob
 Write-Verbose 'Configuring PSKoans module'
 $script:ModuleRoot = $PSScriptRoot
 
-Write-Verbose 'Importing meditation koans'
-$script:Meditations = Import-CliXml -Path "$script:ModuleRoot/Data/Meditations.clixml"
+Write-Verbose 'Importing data strings'
+$ShowMeditationPromptData = Import-PowerShellDataFile -Path "$script:ModuleRoot/Data/Show-MeditationPrompt.Data.psd1"
+$script:MeditationStrings = $ShowMeditationPromptData['Koans']
+$script:MeditationPrompts = $ShowMeditationPromptData['Prompts']
+Remove-Variable -Name 'ShowMeditationPromptData'
 
 $script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
 Write-Verbose "Koans folder set to $script:LibraryFolder"

@@ -1,5 +1,69 @@
-@{
-    Meditations = @(
+﻿@{
+    Prompts = @{
+        Welcome        = @"
+    Welcome, seeker of enlightenment.
+    Please wait a moment while we examine your karma...
+
+"@
+        Describe       = @"
+Describing '{0}' has damaged your karma.
+"@
+        TestFailed     = @"
+
+    You have not yet reached enlightenment.
+
+    The answers you seek...
+
+"@
+        Meditate       = @"
+
+    Please meditate on the following code:
+
+"@
+        Subject        = @"
+[It] {0}
+{1}
+"@
+        Koan           = @"
+
+{0}
+
+"@
+        Path           = @"
+    You examine the path beneath your feet...
+
+"@
+        Topic          = @"
+    You must meditate further on your selected topic{0}:
+        - {1}
+
+"@
+        OpenFolder     = @"
+
+Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
+
+"@
+        Completed      = @"
+    Congratulations! You have taken the first steps towards enlightenment.
+
+    You cast your gaze back upon the path that you have walked:
+
+"@
+        CompletedTopic = @"
+    Congratulations! You have taken the first steps towards enlightenment.
+
+    You have completed: {0}
+
+    You cast your gaze back upon the path that you have walked...
+
+"@
+        BookSuggestion = @"
+
+    If you would like to further your studies in this manner, consider investing in
+    'PowerShell by Mistake' by Don Jones - https://leanpub.com/powershell-by-mistake
+"@
+    }
+    Koans   = @(
         @'
 The whole moon and the entire sky
 Are reflected in one dewdrop on the grass.
@@ -24,7 +88,8 @@ Hell is not punishment; it is training.
 '@
         @'
 Do not mistake any state for
-Self-realisation, but continueTo ask yourself even more intensely,
+Self-realisation, but continue
+To ask yourself even more intensely,
 What is it that hears?
 '@
         @'
@@ -97,63 +162,4 @@ Choosing to raise a goose in a bottle,
 How will you get it out once it is grown?
 '@
     )
-    Prompts     = @{
-        Welcome        = @"
-    Welcome, seeker of enlightenment.
-    Please wait a moment while we examine your karma...
-
-"@
-        Describe       = @"
-Describing '{0}' has damaged your karma.
-"@
-        TestFailed     = @"
-
-    You have not yet reached enlightenment.
-
-    The answers you seek...
-
-"@
-        Meditate       = @"
-
-    Please meditate on the following code:
-
-"@
-        Subject        = @"
-[It] {0}
-{1}
-"@
-        Path           = @"
-    You examine the path beneath your feet...
-
-"@
-        Topic          = @"
-    You must meditate further on your selected topic{0}:
-        - {1}
-
-"@
-        OpenFolder     = @"
-
-Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
-
-"@
-        Completed      = @"
-    Congratulations! You have taken the first steps towards enlightenment.
-
-    You cast your gaze back upon the path that you have walked:
-
-"@
-        CompletedTopic = @"
-    Congratulations! You have taken the first steps towards enlightenment.
-
-    You have completed: {0}
-
-    You cast your gaze back upon the path that you have walked...
-
-"@
-        BookSuggestion = @"
-
-    If you would like to further your studies in this manner, consider investing in
-    'PowerShell by Mistake' by Don Jones - https://leanpub.com/powershell-by-mistake
-"@
-    }
 }
