@@ -13,8 +13,8 @@ Describe 'Get-Koan' {
     It 'should retrieve all the koan files' {
         $Files = Get-ChildItem -Path $TestLocation -Filter *.Koans.ps1 -Recurse -File |
             Get-Command { $_.FullName } |
-            Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Count -gt 0 } |
-            Sort-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'KoanAttribute' }.Position }
+            Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Count -gt 0 } |
+            Sort-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Position }
 
         InModuleScope 'PSKoans' { (Get-Koan).Name } | Should -Be $Files.Name
     }

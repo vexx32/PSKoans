@@ -31,7 +31,7 @@ Describe 'Measure-Karma' {
             It 'should Invoke-Pester on each of the koans' {
                 $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
                     Get-Command {$_.FullName} |
-                    Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'KoanAttribute'}
+                    Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'Koan'}
 
                 Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
             }
