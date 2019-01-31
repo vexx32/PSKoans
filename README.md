@@ -71,7 +71,7 @@ Describing 'Equality' has damaged your karma.
 
     Your path thus far:
 
- [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/238
+ [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/246
 
 You may run 'Measure-Karma -Meditate' to begin your meditation.
 ```
@@ -89,7 +89,7 @@ It 'is a simple comparison' {
 
 The `__` represents a blank for you to fill, and `| Should -Be $true` shows the expected result. To pass this koan you need to replace `__` with `$true`, like this: `$true | Should -Be $true`.
 
-3. Run `Measure-Karma` again to see how you did. Your progress updated to `1/238` and you are presented with the next challenge. You now passed your first koan!
+3. Run `Measure-Karma` again to see how you did. Your progress updated to `1/246` and you are presented with the next challenge. You now passed your first koan!
 
 ```diff
     Welcome, seeker of enlightenment.
@@ -113,7 +113,7 @@ Describing 'Equality' has damaged your karma.
 
     Your path thus far:
 
-+ [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/238
++ [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/246
 ```
 
  You are on your own from now, but don't worry the koans start very simple, and you can always seek help on [slack](https://powershell.slack.com/messages/C03MQLV0V/), [reddit](https://www.reddit.com/r/PowerShell/), [twitter](https://twitter.com/hashtag/powershell) or anywhere else where powershell is discussed.
