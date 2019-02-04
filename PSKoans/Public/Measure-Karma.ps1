@@ -85,10 +85,20 @@
         'OpenFolder' {
             Write-Verbose "Opening koans folder"
             if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
-                Start-Process -FilePath 'code-insiders' -ArgumentList "`"$(Get-PSKoanLocation)`"" -NoNewWindow
+                $VSCodeSplat = @{
+                    FilePath     = 'code-insiders'
+                    ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
+                    NoNewWindow  = $true
+                }
+                Start-Process @VSCodeSplat 
             }
             elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
-                Start-Process -FilePath 'code' -ArgumentList "`"$(Get-PSKoanLocation)`"" -NoNewWindow
+                $VSCodeSplat = @{
+                    FilePath     = 'code'
+                    ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
+                    NoNewWindow  = $true
+                }
+                Start-Process @VSCodeSplat
             }
             else {
                 Get-PSKoanLocation | Invoke-Item
