@@ -87,7 +87,7 @@
             if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
                 Start-Process -FilePath 'code-insiders' -ArgumentList "`"$(Get-PSKoanLocation)`"" -NoNewWindow
             }
-            elseif (Get-Command -Name 'Code' -ErrorAction SilentlyContinue) {
+            elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
                 Start-Process -FilePath 'code' -ArgumentList "`"$(Get-PSKoanLocation)`"" -NoNewWindow
             }
             else {
