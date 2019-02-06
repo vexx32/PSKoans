@@ -49,7 +49,7 @@ Describe 'Functions' {
             12
         }
 
-        __ __ | Should -Be (Get-Number)
+        __ | Should -Be (Get-Number)
         Get-ReturnedNumber | Should -Be 13
         __ | Should -Be (Get-DroppedNumber)
     }
