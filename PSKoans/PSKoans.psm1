@@ -21,8 +21,19 @@ class KoanAttribute : Attribute {
 
     Koan() {}
 }
+
 class Koan : KoanAttribute {
     Koan() : base() {}
+}
+
+class Blank {
+    [string] ToString() {
+        return "__"
+    }
+    
+    [bool] op_Equals([object] $other) {
+        return $false
+    }
 }
 
 #endregion SupportingClasses
