@@ -4,7 +4,7 @@ param()
 <#
     Arrays and Iterable Collections
 
-    Like many programming languages, PowerShell often arrays to keep collections
+    Like many programming languages, PowerShell often uses arrays to keep collections
     of objects together. Arrays tie in closely with PowerShell's pipeline, which
     is one way to iterate over a collection with a good deal of efficiency.
 
@@ -18,13 +18,14 @@ param()
 Describe 'Arrays' {
 
     It 'is useful for grouping related objects and values' {
-        # The comma operator is used to create an array. Spaces are ignored, for the most part.
+        # The comma operator is used to create an array. Spaces are typically ignored.
         $Ages = 12, 25, 18, 64
 
         # Individual elements of an array can be accessed with square-bracket index syntax.
         # Arrays are zero-indexed; the first element is at index 0, the second at 1, etc.
         $Ages[0] | Should -Be 12
         __ | Should -Be $Ages[3]
+
         <#
             The array subexpression operator @() is used to create an array from multiple values
             or expressions. Within the parentheses, either commas, semicolons, or even line
@@ -38,12 +39,14 @@ Describe 'Arrays' {
             'Abigail', 'Serena', 'Kali'
             # Having everything on its own line would be much cleaner and is a common usage of this syntax.
         )
+
         # Where is index 4 in the above array?
         __ | Should -Be $Names[4]
     }
 
     It 'allows the collection to be split into multiple parts' {
         $Ages = 11, 18, 25, 74, 19
+
         # An array can be split by assigning it to multiple variables at once:
         $Jim, $Ashley, $Theresa, $Bob, $Janice = $Ages
 
@@ -52,8 +55,10 @@ Describe 'Arrays' {
 
         # Arrays can be unevenly split by specifying fewer variables.
         $Jim, $Ashley, $Others = $Ages
+
         # What would be stored in $Others?
         __ | Should -Be $Others
+
         <#
             If you know the contents of the array and want to skip specific elements, you can
             assign specific elements to $null to discard them. $null is one of PowerShell's
