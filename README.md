@@ -2,7 +2,7 @@
 
 |Build Status|
 |      :---:      |
-| [![Build Status](https://dev.azure.com/PSKoans-Vexx32/PSKoans/_apis/build/status/PSKoans%20CI)](https://dev.azure.com/PSKoans-Vexx32/PSKoans/_build/latest?definitionId=1) |
+| [![Build Status](https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI)](https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1) |
 
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions. Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test. Your goal is to make those tests pass by filling out the correct answer, or writing the correct code. The koans start very simple to get you familiar with the basic concepts and progress towards more difficult. Teaching you multiple beginner, intermediate and advanced aspects of PowerShell in the process.
 
