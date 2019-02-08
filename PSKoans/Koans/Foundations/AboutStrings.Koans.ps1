@@ -47,12 +47,12 @@ Describe 'Strings' {
         }
 
         It 'can do a simple expansion' {
-            '__' | Should -Be "Your working directory is located here: $pwd"
+            '__' | Should -Be "Your home directory is located here: $HOME"
         }
 
         It 'handles other ways of doing the same thing' {
             # Strings can handle entire subexpressions being inserted as well!
-            $String = "The windows directory is located at $(Get-Item 'C:\Windows')"
+            $String = "Your default profile exists?: $(Test-Path $PROFILE)"
             '__' | Should -Be $String
         }
 
