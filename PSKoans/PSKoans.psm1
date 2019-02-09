@@ -21,8 +21,16 @@ class KoanAttribute : Attribute {
 
     Koan() {}
 }
+
 class Koan : KoanAttribute {
     Koan() : base() {}
+}
+
+# load classes
+
+Get-ChildItem -Path "$PSScriptRoot/Classes" | ForEach-Object {
+    Write-Verbose "Importing classes from file: [$($_.Name)]"
+    . $_.FullName
 }
 
 #endregion SupportingClasses

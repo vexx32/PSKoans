@@ -20,11 +20,11 @@
         https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding()]
-    [OutputType([void])]
+    [OutputType('Blank')]
     [Alias('__', 'FILL_ME_IN')]
     param()
 
     Write-Verbose "I AIN'T DOIN' NOTHIN'!!!"
 
-    $null
+    return [Blank]::New()
 }
