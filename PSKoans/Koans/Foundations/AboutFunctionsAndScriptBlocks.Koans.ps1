@@ -28,6 +28,7 @@ Describe 'Functions' {
                 within the function without causing the function to exit.
             #>
             Write-Output 20
+            Write-Output 42
         }
         function Get-ReturnedNumber {
             <#
@@ -36,6 +37,7 @@ Describe 'Functions' {
                 itself, then ends the function.
             #>
             return __
+            Write-Output "Does not return anything."
         }
         function Get-DroppedNumber {
             <#
