@@ -52,7 +52,7 @@ Describe 'Strings' {
 
         It 'handles other ways of doing the same thing' {
             # Strings can handle entire subexpressions being inserted as well!
-            $String = "Your default profile exists?: $(Test-Path $PROFILE)"
+            $String = "Your home folder is: $(Get-Item $HOME)"
             '__' | Should -Be $String
         }
 
