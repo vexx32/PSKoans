@@ -47,13 +47,12 @@ Describe 'Strings' {
         }
 
         It 'can do a simple expansion' {
-            $Windows = Get-Item 'C:\Windows' | Select-Object -ExpandProperty FullName
-            '__' | Should -Be "The windows directory is located here: $Windows"
+            '__' | Should -Be "Your home directory is located here: $HOME"
         }
 
         It 'handles other ways of doing the same thing' {
             # Strings can handle entire subexpressions being inserted as well!
-            $String = "The windows directory is located at $(Get-Item 'C:\Windows')"
+            $String = "Your home folder is: $(Get-Item $HOME)"
             '__' | Should -Be $String
         }
 
