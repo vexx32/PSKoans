@@ -1,4 +1,4 @@
-﻿function Get-Advice {
+﻿function Show-Advice {
     <#
 		.SYNOPSIS
 			Prints a piece of advice to the screen.
@@ -9,28 +9,29 @@
 		.PARAMETER Name
 			The name of the specific advice to display.
 		.EXAMPLE
-			PS C:\> Get-Advice
+            Get-Advice
+
 			Print a random piece of advice to the screen.
 	#>
     [CmdletBinding()]
+    [Alias('Get-Advice')]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0)]
         [string]
         $Name = "*"
     )
     begin {
-		$AdviceFolder = Join-Path $script:ModuleFolder 'Data/Advice'
-
-        Write-Host ""
-		Write-Host " Advice of the session:"
+        $AdviceFolder = $script:ModuleRoot | Join-Path -ChildPath 'Data/Advice'
     }
     process {
-        Get-ChildItem $AdviceFolder -Recurse -File -Filter $Name |
+        $AdviceObject = Get-ChildItem -Path $AdviceFolder -Recurse -File -Filter "$Name.json" |
             Get-Random |
             Get-Content |
-            Write-ConsoleLine
-	}
-	end {
-        Write-Host ""
+            ConvertFrom-Json
+
+        $AdviceObject.Title | Write-ConsoleLine -Title
+        $AdviceObject.Content | Write-ConsoleLine
     }
+    end {}
 }

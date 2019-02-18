@@ -59,7 +59,7 @@ Describe 'Type Operators' {
 
             $Casting | Should -Throw -ErrorId __
             $Conversion | Should -Not -Throw
-            $Conversion.Invoke() | Should -Be __
+            __ | Should -Be $Conversion.Invoke()
         }
     }
 }

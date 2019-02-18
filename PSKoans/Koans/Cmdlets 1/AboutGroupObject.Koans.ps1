@@ -22,8 +22,8 @@ Describe 'Group-Object' {
                 Name  (Property that they are grouped by)
                 Group (All the objects in the group)
         #>
-        $Extensions[3].Group.Extension | Should -Be '__'
-        $Extensions[2].Count | Should -Be __
+        '__' | Should -Be $Extensions[3].Group.Extension
+        __ | Should -Be $Extensions[2].Count
     }
 
     It 'can group on any custom expression' {
@@ -32,6 +32,6 @@ Describe 'Group-Object' {
             Sort-Object -Property {[int]$_.Name} # The 'name' here is the group name
 
         $ShortestFileNames = $NameLengths[0].Group.Name
-        $ShortestFileNames.Length | Should -Be __
+        __ | Should -Be $ShortestFileNames.Length
     }
 }

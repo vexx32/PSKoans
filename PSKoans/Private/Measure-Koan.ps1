@@ -16,7 +16,8 @@ function Measure-Koan {
         Takes an array of ExternalScriptInfo objects (as provided from Get-Command when
         passed the path to an external .ps1 script file).
     .EXAMPLE
-        PS> Get-Command .\KoanDirectory\*\*.ps1 | Measure-Koans
+        Get-Command .\KoanDirectory\*\*.ps1 | Measure-Koan
+
         422
     .NOTES
         Measure-Koan is NOT designed to handle dynamic -TestCases values. It will handle
@@ -33,10 +34,11 @@ function Measure-Koan {
         https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding()]
+    [OutputType([int])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
         [ValidateNotNull()]
-        [System.Management.Automation.CommandInfo[]]
+        [CommandInfo[]]
         $KoanInfo
     )
     begin {
@@ -49,7 +51,7 @@ function Measure-Koan {
         $ItCommands = $KoanInfo.ScriptBlock.Ast.FindAll(
             {
                 param($Item)
-                $Item -is [System.Management.Automation.Language.CommandAst] -and
+                $Item -is [CommandAst] -and
                 $Item.GetCommandName() -eq 'It'
             }, $true
         )

@@ -1,6 +1,0 @@
-  PowerShell Profile:
-When starting powershell, there is a script it will automatically execute:
-The PowerShell profile script
-By default, it does not exist. It is stored in the location the variable $profile points to. By creating and adding code to it you can ensure that all your favorite aliases, variables, functions or whatnot will automatically be available each time!
-To create or open the profile file, simply run:
-  notepad $profile

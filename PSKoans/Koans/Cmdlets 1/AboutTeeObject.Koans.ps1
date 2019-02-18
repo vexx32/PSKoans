@@ -11,19 +11,22 @@ param()
 Describe 'Tee-Object' {
 
     It 'passes the object on through the pipeline' {
-        1..10 | Tee-Object -Variable n | Should -Be __
+        # The value passed to -Variable is created as a new variable
+        1..10 | Tee-Object -Variable __ | Should -Be $n
     }
 
     It 'can store the object(s) into a variable' {
         # Note the variable name is passed as a string, without the $!
         'alpha', 'beta', 'gamma' | Tee-Object -Variable 'Numbers' | Should -Be $Numbers
-        $Numbers[1] | Should -Be '__'
+        '__' | Should -Be $Numbers[1]
     }
 
     It 'can also store the object(s) into a file' {
         $File = New-TemporaryFile
 
-        1..5 | ForEach-Object {"{0:N2}" -f (1 / $_)} | Tee-Object -FilePath $File.FullName | Should -Be __
-        $File | Get-Content | Should -Be __
+        $Output = 1..5 | ForEach-Object {"{0:N2}" -f (1 / $_)} | Tee-Object -FilePath $File.FullName
+        $Stored = $File | Get-Content
+
+        __ | Should -Be $Stored
     }
 }

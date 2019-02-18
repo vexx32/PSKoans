@@ -76,16 +76,16 @@ Describe 'Measure-Object' {
 
     It 'can operate on object properties' {
         $Data = $Files.BaseName | Measure-Object -Property Length -Sum -Average
-        $Data.Sum | Should -Be __
-        $Data.Average | Should -Be __
+        __ | Should -Be $Data.Sum
+        __ | Should -Be $Data.Average
     }
 
     It 'can measure text lines, characters, and words of strings' {
-        $Text = Get-Content "$env:PSKoans_Folder/Foundations/AboutTheStockChallenge.Koans.ps1"
+        $Text = Get-Content "$(Get-PSKoanLocation)/Foundations/AboutTheStockChallenge.Koans.ps1"
         $Data = $Text | Measure-Object -Line -Word -Character
 
-        $Data.Lines | Should -Be __
-        $Data.Words | Should -Be __
-        $Data.Characters | Should -Be __
+        __ | Should -Be $Data.Lines
+        __ | Should -Be $Data.Words
+        __ | Should -Be $Data.Characters
     }
 }

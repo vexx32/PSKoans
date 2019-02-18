@@ -66,7 +66,7 @@ Describe 'Hashtables' {
             $Hashtable.Add('Age', 52)
             $Hashtable.Add('Radiation', 'Infrared')
 
-            $Hashtable['Age'] | Should -Be __
+            __ | Should -Be $Hashtable['Age']
         }
     }
 
@@ -82,7 +82,7 @@ Describe 'Hashtables' {
             $HashtableTwo['Age'] = 21
 
             $HashtableOne['Age'] | Should -Be 12 # Right?
-            $HashtableTwo['Age'] | Should -Be __
+            __ | Should -Be $HashtableTwo['Age']
         }
 
         It 'can be cloned' {
@@ -98,7 +98,7 @@ Describe 'Hashtables' {
             $HashtableTwo['Contents'] = 'Chips'
 
             $HashtableOne['Meal Type'] | Should -Be '__'
-            $HashtableOne['Calories'] | Should -Be __
+            __ | Should -Be $HashtableOne['Calories']
 
             $HashtableTwo['Contents'] | Should -Be '__'
         }
@@ -148,7 +148,7 @@ Describe 'Hashtables' {
 
             $Hashtable.Remove('One')
 
-            $Hashtable.Count | Should -Be __
+            __ | Should -Be $Hashtable.Count
             $Hashtable.Keys | Should -Be @('__', '__', 'Four')
             $Hashtable.Values | Should -Be @( , , 4)
         }

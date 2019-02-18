@@ -15,64 +15,82 @@
 
 #region SupportingClasses
 
-    class FILL_ME_IN {}
-    class __ : FILL_ME_IN {}
+class FILL_ME_IN {}
+class __ : FILL_ME_IN {}
 
-    class KoanAttribute : System.Attribute {
-        [uint32] $Position
+class KoanAttribute : Attribute {
+    [uint32] $Position
+    [string] $Module = '_powershell'
 
-        KoanAttribute($Position) {
-            $this.Position = $Position
-        }
-
-        KoanAttribute() {
-            $this.Position = [uint32]::MaxValue
-        }
+    KoanAttribute([uint32] $Position) {
+        $this.Position = $Position
     }
+
+    KoanAttribute([uint32] $Position, [string] $Module) {
+        $this.Module = $Module
+        $this.Position = $Position
+    }
+
+    KoanAttribute() {
+        $this.Position = [uint32]::MaxValue
+    }
+}
 
 #endregion SupportingClasses
 
-$script:ModuleFolder = $PSScriptRoot
+#region ImportCommands
 
-Write-Verbose 'Importing meditation koans'
-$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
-
-Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
+Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     Write-Verbose "Importing functions from file: [$($_.Name)]"
     . $_.FullName
 }
 
-$env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
-Write-Verbose "Koans folder set to $env:PSKoans_Folder"
+#endregion ImportCommands
 
-if (-not (Test-Path -Path $env:PSKoans_Folder)) {
+#region ModuleConfiguration
+
+Write-Verbose 'Configuring PSKoans module'
+$script:ModuleRoot = $PSScriptRoot
+
+Write-Verbose 'Importing meditation koans'
+$script:Meditations = Import-CliXml -Path "$script:ModuleRoot/Data/Meditations.clixml"
+
+$script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
+Write-Verbose "Koans folder set to $script:LibraryFolder"
+
+if (-not (Test-Path -Path $script:LibraryFolder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
     Initialize-KoanDirectory -Confirm:$false
 }
 
-Add-AssertionOperator -Name Fail -Test {
-    param ($ActualValue, [switch] $Negate, [string] $Because)
+#endregion ModuleConfiguration
 
-    # look at  https://github.com/pester/Pester/blob/master/Functions/Assertions/BeTrueOrFalse.ps1
-    # for inspiration, or here https://mathieubuisson.github.io/pester-custom-assertions/
+try {
+    Add-AssertionOperator -Name Fail -Test {
+        param ($ActualValue, [switch] $Negate, [string] $Because)
 
-    if ($Negate) {
-        return [PSCustomObject]@{
+        # look at  https://github.com/pester/Pester/blob/master/Functions/Assertions/BeTrueOrFalse.ps1
+        # for inspiration, or here https://mathieubuisson.github.io/pester-custom-assertions/
+
+        if ($Negate) {
+            return [PSCustomObject]@{
+                Succeeded      = $false
+                FailureMessage = "Should -Not -Fail is not a valid assertion."
+            }
+        }
+
+        if (-not $Because) {
+            $Message = "The test failed, because the script reached the Should -Fail command call."
+        }
+        else {
+            $Reason = ($Because.Trim().TrimEnd('.') -replace '^because\s', '')
+            $Message = "The test failed, because $Reason."
+        }
+
+        [PSCustomObject]@{
             Succeeded      = $false
-            FailureMessage = "Should -Not -Fail is not a valid assertion."
+            FailureMessage = $Message
         }
     }
-
-    if (-not $Because) {
-        $Message = "The test failed, because the script reached the Should -Fail command call."
-    }
-    else {
-        $Reason = ($Because.Trim().TrimEnd('.') -replace '^because\s', '')
-        $Message = "The test failed, because $Reason."
-    }
-
-    [PSCustomObject]@{
-        Succeeded      = $false
-        FailureMessage = $Message
-    }
 }
+catch {}

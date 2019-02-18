@@ -18,18 +18,18 @@ Describe 'Select-Object' {
         $Selected = $File | Select-Object -Property Name, Length
         $Selected.PSObject.Properties.Name | Should -Be @('Name', '__')
 
-        $Selected.Length | Should -Be __
+        __ | Should -Be $Selected.Length
     }
 
     It 'can exclude specific properties from an object' {
         $File = New-TemporaryFile
 
-        $File.Attributes | Should -Be '__'
+        '__' | Should -Be $File.Attributes
 
         $Object = $File | Select-Object -Property * -ExcludeProperty Attributes, Length
 
         $Object.Attributes | Should -Be $null
-        $Object.Length | Should -Be __
+        __ | Should -Be $Object.Length
     }
 
     It 'changes the object type' {
@@ -52,20 +52,21 @@ Describe 'Select-Object' {
     It 'can pick specific numbers of objects' {
         $Array = 1..100
 
-        $FirstThreeValues = __
-        $Array | Select-Object -First 3 | Should -Be $FirstThreeValues
+        $FirstThreeValues = $Array | Select-Object -First 3
+        __ | Should -Be $FirstThreeValues
 
-        $LastFourValues = __
-        $Array | Select-Object -Last 4 | Should -Be $LastFourValues
+        $LastFourValues = $Array | Select-Object -Last 4
+        __ | Should -Be $LastFourValues
 
-        $Array | Select-Object -Skip 10 -First 5 | Should -Be __
+        $Values = $Array | Select-Object -Skip 10 -First 5
+        __ | Should -Be $Values
     }
 
     It 'can ignore duplicate objects' {
         $Array = 6, 1, 4, 8, 7, 5, 3, 9, 2, 3, 2, 1, 5, 1, 6, 2, 8, 4,
         7, 3, 1, 2, 6, 3, 7, 1, 4, 5, 2, 1, 3, 6, 2, 5, 1, 4
 
-        $UniqueItems = 5, '__', 10, 9, '__', '__', '__', 7, '__', '__'
-        $Array | Select-Object -Unique | Should -Be $UniqueItems
+        $UniqueItems = $Array | Select-Object -Unique
+        5, '__', 10, 9, '__', '__', '__', 7, '__', '__' | Should -Be $UniqueItems
     }
 }

@@ -20,11 +20,13 @@ Describe 'Sort-Object' {
     }
 
     It 'sorts a collection of objects' {
-        $Numbers | Sort-Object | Should -Be __
+        $Sorted = $Numbers | Sort-Object
+        __ | Should -Be $Sorted
     }
 
     It 'can sort in descending order' {
-        $Strings | Sort-Object -Descending | Should -Be __
+        $Sorted = $Strings | Sort-Object -Descending
+        __ | Should -Be $Sorted
     }
 
     It 'can sort based on the properties of objects' {
@@ -33,6 +35,7 @@ Describe 'Sort-Object' {
     }
 
     It 'can sort based on custom criteria' {
-        $Numbers | Sort-Object {$_ % 3} | Should -Be __
+        $Sorted = $Numbers | Sort-Object {$_ % 3}
+        __ | Should -Be $Sorted
     }
 }

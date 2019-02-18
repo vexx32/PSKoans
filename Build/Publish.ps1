@@ -9,4 +9,6 @@ $DeploymentParams = @{
     Verbose = $true
 }
 
+Get-ChildItem -Path $DeploymentParams['Path'] | Write-Host
+
 Invoke-PSDeploy @DeploymentParams

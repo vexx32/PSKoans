@@ -4,6 +4,7 @@
         .FORWARDHELPCATEGORY Function
     #>
     [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [OutputType([PSCustomObject])]
     param(
         [Parameter(Position = 0)]
         [Alias('Path', 'relative_path')]
@@ -62,13 +63,26 @@
         $Show
     )
     end {
-        $GlobalScope = [psmoduleinfo]::new($true)
+        try {
+            $Script = {
+                param($Params)
 
-        & $GlobalScope {
-            param($Params)
+                . ([scriptblock]::Create('using module PSKoans'))
+                Invoke-Pester @Params
+            }
 
-            Invoke-Pester @Params
-        } @($PSBoundParameters)
+            $Thread = [powershell]::Create()
+            $Thread.AddScript($Script) > $null
+            $Thread.AddArgument($PSBoundParameters) > $null
 
+            $Status = $Thread.BeginInvoke()
+
+            do { } until ($Status.IsCompleted)
+
+            $Thread.EndInvoke($Status)
+        }
+        finally {
+            $Thread.Dispose()
+        }
     }
 }

@@ -1,6 +1,6 @@
 Deploy Module {
     By PSGalleryModule {
-        FromSource $ENV:BHProjectName
+        FromSource PSKoans
         To PSGallery
         WithOptions @{
             ApiKey = $ENV:NugetApiKey

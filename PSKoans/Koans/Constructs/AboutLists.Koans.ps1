@@ -49,8 +49,8 @@ Describe 'Lists' {
             $IntList.Add(5.34)
 
             # Items are accessed by index just like arrays.
-            $IntList[0] | Should -Be __
-            $IntList[1] | Should -Be __
+            __ | Should -Be $IntList[0]
+            __ | Should -Be $IntList[1]
         }
 
         It 'will convert items to its data type when possible' {
@@ -58,8 +58,8 @@ Describe 'Lists' {
             $StringList.Add("FILL_ME_IN")
             $StringList.Add(12) # What happens if we add a number to a string-typed list?
 
-            $StringList[0] | Should -Be 'hello!'
-            $StringList[1] | Should -Be __
+            'hello!' | Should -Be $StringList[0]
+            __ | Should -Be $StringList[1]
         }
     }
     Context 'Loose Typing' {
@@ -73,8 +73,8 @@ Describe 'Lists' {
             $List.AddRange(@(12, 1, 2, 3))
             $List.Add(12.5)
 
-            $List[0] | Should -Be __
-            $List[6] -eq 12.5 | Should -Be $true
+            __ | Should -Be $List[0]
+            $List[6] -eq 12.5 | Should -BeTrue
         }
     }
     Context 'Removing List Entries' {
@@ -86,13 +86,13 @@ Describe 'Lists' {
 
             $List[3] | Should -Be '18'
             $List.RemoveAt(3)
-            $List[3] | Should -Be '__'
+            '__' | Should -Be $List[3]
 
             $List[1] | Should -Be '15'
             # The .Remove() method returns $true if the item was removed, and $false if it couldn't be
             # found or removed.
             $List.Remove('15') | Should -BeTrue
-            $List[1] | Should -Be __
+            __ | Should -Be $List[1]
 
             # Now see if you can reduce the list down to only two values using the
             # .RemoveRange($Index, $Count) method

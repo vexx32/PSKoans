@@ -8,11 +8,12 @@
 		This is done by creating / modifying the powershell profile.
 
 	.EXAMPLE
-		PS C:\> Register-Advice
+		Register-Advice
 
 		Causes powershell to write a random piece of advice on each start.
 #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0)]
         [ValidateSet('AllUsersAllHosts', 'AllUsersCurrentHost', 'CurrentUserAllHosts', 'CurrentUserCurrentHost')]
@@ -20,9 +21,9 @@
         $TargetProfile = 'CurrentUserCurrentHost'
     )
 
-	$ProfilePath = $Profile.$TargetProfile
+    $ProfilePath = $Profile.$TargetProfile
 
-    if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Get-Advice')) {
+    if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Show-Advice')) {
         $ProfileFolder = Split-Path -Path $ProfilePath
 
         if (-not (Test-Path $ProfileFolder)) {
@@ -30,10 +31,10 @@
         }
 
         if (-not (Test-Path $ProfilePath)) {
-            Set-Content -Path $ProfilePath -Value 'Get-Advice'
+            Set-Content -Path $ProfilePath -Value 'Show-Advice'
         }
-        elseif (-not ($ProfilePath | Select-String -Pattern 'Get-Advice' -Quiet)) {
-            'Get-Advice' | Add-Content $ProfilePath
+        elseif (-not ($ProfilePath | Select-String -Pattern '(Show|Get)-Advice' -Quiet)) {
+            'Show-Advice' | Add-Content $ProfilePath
         }
     }
 }

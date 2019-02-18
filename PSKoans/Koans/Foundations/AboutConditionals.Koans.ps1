@@ -39,7 +39,7 @@ Describe 'If/Else' {
                     $Number * 10
                 }
             }
-            Set-Number -Number 4 | Should -Be __
+            __ | Should -Be (Set-Number -Number 4)
             Set-Number -Number __ | Should -Be 70
         }
     }
@@ -59,7 +59,7 @@ Describe 'If/Else' {
                 # but depending on the outcome of the conditional, either could end up stored!
                 "$Thing is less than 5"
             }
-            $Result | Should -Be __
+            __ | Should -Be ($Result)
         }
 
         It 'can also apply a condition to an else' {
@@ -73,7 +73,7 @@ Describe 'If/Else' {
                 -1
             }
             $Value += 1
-            $Value | Should -Be __
+            __ | Should -Be ($Value)
         }
     }
 }
@@ -142,7 +142,7 @@ Describe 'Switch' {
                     2
                 }
             }
-            $Values | Should -Be __
+            __ | Should -Be ($Values)
         }
     }
 

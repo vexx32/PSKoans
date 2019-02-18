@@ -15,14 +15,14 @@ param()
 Describe 'Strings' {
 
     It 'is a simple string of text' {
-        'string' | Should -Be __
+        __ | Should -Be 'string'
     }
 
     Context 'Literal Strings' {
 
         It 'assumes everything is literal' {
             $var = 'Some things you must take literally'
-            $var | Should -Be __
+            __ | Should -Be $var
         }
 
         It 'can contain special characters' {
@@ -43,24 +43,25 @@ Describe 'Strings' {
 
         It 'can expand variables' {
             $var = 'apple'
-            "My favorite fruit is $var" | Should -Be '__'
+            '__' | Should -Be "My favorite fruit is $var"
         }
 
         It 'can do a simple expansion' {
             $Windows = Get-Item 'C:\Windows' | Select-Object -ExpandProperty FullName
-            "The windows directory is located here: $Windows" | Should -Be '__'
+            '__' | Should -Be "The windows directory is located here: $Windows"
         }
 
         It 'handles other ways of doing the same thing' {
+            # Strings can handle entire subexpressions being inserted as well!
             $String = "The windows directory is located at $(Get-Item 'C:\Windows')"
-            $String | Should -Be '__'
+            '__' | Should -Be $String
         }
 
         It 'can escape special characters with backticks' {
             $LetterA = 'Apple'
             $String = "`$LetterA contains $LetterA."
 
-            $String | Should -Be '__'
+            '__' | Should -Be $String
         }
 
         It 'can escape quotation marks' {
@@ -105,8 +106,8 @@ Describe 'Strings' {
             # Few things require the entirety of the library.
             $String = 'At the very top!'
 
-            $String.Substring(0, 6) | Should -Be '__'
-            $String.Substring(7) | Should -Be '__'
+            '__' | Should -Be $String.Substring(0, 6)
+            '__' | Should -Be $String.Substring(7)
         }
     }
 
@@ -132,18 +133,20 @@ Describe 'Strings' {
         It 'can be an evaluated string' {
             # The key is in the patterns.
             $Number = __
+
+            # These can mess with indentation rules, but have their uses nonetheless!
             $String = @"
 I am number #$Number!
-"@ # These can mess with indentation patterns, but have their uses nonetheless!
+"@
 
-            $String | Should -Be '__'
+            '__' | Should -Be $String
         }
 
         It 'allows use of quotation marks easily' {
             $AllYourQuotes = @"
 All things that are not 'evaluated' are "recognised" as characters.
 "@
-            $AllYourQuotes | Should -Be '__'
+            '__' | Should -Be $AllYourQuotes
         }
     }
 }
