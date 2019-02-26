@@ -16,6 +16,7 @@ Describe 'Get-DbaDatabase' {
         Get-Content -Path .\Mocks\DatabaseMaster.ps1 
     }
 
+    # `Get-DbaDatabase` requires one thing. A SQL Server instance name.
     # You can pass in "localhost" for the default name for a SQL Server instance.
     # The simplest usage of `Get-DbaDatabase` is to run it and passing in the name
     # of the SQL Server instance.
