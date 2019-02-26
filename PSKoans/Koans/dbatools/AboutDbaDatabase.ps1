@@ -19,7 +19,11 @@ Describe 'Get-DbaDatabase' {
     # `Get-DbaDatabase` requires one thing; A SQL Server instance name.
     # You can pass in "localhost" for the default name for a SQL Server instance.
     # The simplest usage of `Get-DbaDatabase` is to run it and passing in the name
-    # of the SQL Server instance.
+    # of the SQL Server instance. This will get information about all the databases
+    # on the instance.
+    # By passing in the SQL Server instance and the name of a specific database, by
+    # using the `-Database` parameter, we can get information on that single
+    # database instead.
     $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
     $MasterDatabase.Name | Should -Be 'testdb'
 
