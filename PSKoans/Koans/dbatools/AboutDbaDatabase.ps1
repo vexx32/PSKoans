@@ -14,13 +14,13 @@ Describe 'Get-DbaDatabase' {
 
     Mock -CommandName Get-DbaDatabase -MockWith {
         Import-Clixml -Path ".\PSKoans\Koans\dbatools\Mocks\Database_TestDb.xml" 
-    }
+    } -ParameterFilter { $_.Database -eq 'testdb' }
 
     # `Get-DbaDatabase` requires one thing; A SQL Server instance name.
     # You can pass in "localhost" for the default name for a SQL Server instance.
     # The simplest usage of `Get-DbaDatabase` is to run it and passing in the name
     # of the SQL Server instance.
     $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
-    $MasterDatabase.Name | Should -Be 'master'
+    $MasterDatabase.Name | Should -Be 'testdb'
 
 }
