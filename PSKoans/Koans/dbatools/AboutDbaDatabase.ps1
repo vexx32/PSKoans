@@ -13,7 +13,7 @@ param()
 Describe 'Get-DbaDatabase' {
 
     Mock -CommandName Get-DbaDatabase -MockWith {
-        Get-Content -Path .\Mocks\DatabaseMaster.ps1 
+        Import-Clixml -Path ".\PSKoans\Koans\dbatools\Mocks\Database_TestDb.xml" 
     }
 
     # `Get-DbaDatabase` requires one thing. A SQL Server instance name.
