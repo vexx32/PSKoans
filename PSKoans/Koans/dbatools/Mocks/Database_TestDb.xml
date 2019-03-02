@@ -6,8 +6,8 @@
     </TN>
     <MS>
       <S N="ComputerName">Server01</S>
-      <S N="InstanceName">localhost</S>
-      <S N="SqlInstance">localhost</S>
+      <S N="InstanceName">MSSQLSERVER</S>
+      <S N="SqlInstance">Server01</S>
       <S N="Name">testdb</S>
       <S N="Status">Normal</S>
       <B N="IsAccessible">true</B>
@@ -16,7 +16,7 @@
       <Db N="SizeMB">95.275</Db>
       <S N="Compatibility">Version120</S>
       <S N="Collation">Latin1_General_CI_AS</S>
-      <S N="Owner">Server01\User01</S>
+      <S N="Owner">sa</S>
       <DT N="LastFullBackup">2019-02-26T19:56:36</DT>
       <DT N="LastDiffBackup">2019-02-26T13:00:31</DT>
       <DT N="LastLogBackup">2019-02-26T20:00:02</DT>
