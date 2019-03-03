@@ -24,6 +24,10 @@ Describe 'Get-DbaDatabase' {
     Mock -CommandName Get-DbaDatabase -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_System.xml
     } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExcludeUser -eq $true }
+
+    Mock -CommandName Get-DbaDatabase -MockWith {
+        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_TestDb.xml
+    } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExludeSystem -eq $true }
     #endregion
 
     # `Get-DbaDatabase` requires one thing; A SQL Server instance name.
@@ -47,4 +51,9 @@ Describe 'Get-DbaDatabase' {
     # than writing out all the database names.
     $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
     $UserDbsExcluded | Select-Object -ExpandProperty Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
+
+    # The same can be done to exclude system databases by providing the -ExcludeSystem
+    # parameter switch.
+    $SystemDbsExluded = Get-DbaDatabase -SqlInstance -____
+    $SystemDbsExluded | Select-Object -ExpandProperty Name | Should -Be 'testdb'
 }
