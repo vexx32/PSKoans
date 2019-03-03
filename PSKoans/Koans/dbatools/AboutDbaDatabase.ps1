@@ -45,22 +45,29 @@ Describe 'Get-DbaDatabase' {
     $MasterDatabase.Name | Should -Be 'testdb'
 
     # You may want to get only the system databases on an instance. While it is
-    # possible to pass in the names using the -Database parameter e.g.
+    # possible to pass in the names using the -Database parameter:
 
-    # `Get-DbaDatabase -SqlInstance localhost -Database 'tempdb','master','model','msdb'`
+    # Get-DbaDatabase -SqlInstance localhost -Database 'tempdb','master','model','msdb'
 
-    # Or by using the parameter -ExcludeDatabase to exclude 'testdb'.
+    # Or by using the parameter -ExcludeDatabase to exclude 'testdb':
 
-    # `Get-DbaDatabase -SqlInstance localhost -ExcludeDatabase testdb
+    # Get-DbaDatabase -SqlInstance localhost -ExcludeDatabase testdb
 
-    # It is easier to use the switch -ExcludeUser that is provided by the command
-    # than writing out all the database names, especially if there are multiple
+    # Instead of writing out all the database names, it is easier to use the switch
+    # -ExcludeUser that is provided by the command, especially if there are multiple
     # different databases on the instance.
     $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
     $UserDbsExcluded | Select-Object -ExpandProperty Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
     # The same can be done to exclude system databases by providing the -ExcludeSystem
     # parameter switch.
-    $SystemDbsExluded = Get-DbaDatabase -SqlInstance -____
+    $SystemDbsExluded = Get-DbaDatabase -SqlInstance localhost -____
     $SystemDbsExluded | Select-Object -ExpandProperty Name | Should -Be 'testdb'
+
+    # Parameters have also been added to check for common questions and scenarios
+    # that people working with databases may have.
+    # These include getting databases that in the 'Full', 'Simple', or 'BulkLogged'
+    # recovery models.
+    $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
+    $FullRecoveryDbs | Select-Object -ExpandProperty RecoveryModel | Should -Be 'Full'
 }
