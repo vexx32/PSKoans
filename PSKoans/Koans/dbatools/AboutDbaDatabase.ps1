@@ -26,7 +26,7 @@ Describe 'Get-DbaDatabase' {
     # of the SQL Server instance. This will get information about all the databases
     # on the instance.
     $AllDatabases = Get-DbaDatabase -SqlInstance ____
-    $AllDatabases.Count | Should -Be 4
+    $AllDatabases.Count | Should -Be 5
 
     # By passing in the SQL Server instance and the name of a specific database, by
     # using the `-Database` parameter, we can get information on that single
@@ -34,4 +34,11 @@ Describe 'Get-DbaDatabase' {
     $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
     $MasterDatabase.Name | Should -Be 'testdb'
 
+    # You may want to get only the system databases on an instance. While it is
+    # possible to pass in the names using the -Database parameter e.g.
+    Get-DbaDatabase -SqlInstance localhost -Database 'tempdb','master','model','msdb'
+    # It is easier to use the switch -ExcludeUser that is provided by the command
+    # than writing out all the database names.
+    $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
+    $UserDbsExcluded.Name
 }

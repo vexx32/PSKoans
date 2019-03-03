@@ -19,14 +19,14 @@
           <S N="Status">Normal</S>
           <B N="IsAccessible">true</B>
           <S N="RecoveryModel">Full</S>
-          <S N="LogReuseWaitStatus">Nothing</S>
-          <Db N="SizeMB">31.17</Db>
+          <S N="LogReuseWaitStatus">LogBackup</S>
+          <Db N="SizeMB">95.275</Db>
           <S N="Compatibility">Version120</S>
           <S N="Collation">Latin1_General_CI_AS</S>
           <S N="Owner">sa</S>
-          <DT N="LastFullBackup">2019-02-26T20:01:01</DT>
-          <DT N="LastDiffBackup">2019-02-26T13:02:12</DT>
-          <DT N="LastLogBackup">2019-02-26T20:04:44</DT>
+          <DT N="LastFullBackup">2019-02-26T19:56:36</DT>
+          <DT N="LastDiffBackup">2019-02-26T13:00:31</DT>
+          <DT N="LastLogBackup">2019-02-26T20:00:02</DT>
         </MS>
       </Obj>
       <Obj RefId="2">
