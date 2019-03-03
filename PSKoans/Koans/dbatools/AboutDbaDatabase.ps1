@@ -46,9 +46,16 @@ Describe 'Get-DbaDatabase' {
 
     # You may want to get only the system databases on an instance. While it is
     # possible to pass in the names using the -Database parameter e.g.
-    Get-DbaDatabase -SqlInstance localhost -Database 'tempdb','master','model','msdb'
+
+    # `Get-DbaDatabase -SqlInstance localhost -Database 'tempdb','master','model','msdb'`
+
+    # Or by using the parameter -ExcludeDatabase to exclude 'testdb'.
+
+    # `Get-DbaDatabase -SqlInstance localhost -ExcludeDatabase testdb
+
     # It is easier to use the switch -ExcludeUser that is provided by the command
-    # than writing out all the database names.
+    # than writing out all the database names, especially if there are multiple
+    # different databases on the instance.
     $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
     $UserDbsExcluded | Select-Object -ExpandProperty Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
