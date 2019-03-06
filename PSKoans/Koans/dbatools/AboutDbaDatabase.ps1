@@ -50,8 +50,12 @@ Describe 'Get-DbaDatabase' {
     $MasterDatabase.Name | Should -Be 'testdb'
 
     <#
-        You may want to get only the system databases on an instance. While it
-        is different databases on the instance.
+        You may want to get only the system databases on an instance.
+        While you can pass in the specific names of the system databases, it
+        would be easier if there was a parameter you could add that would
+        return the system databases.
+
+        A parameter like `-ExcludeUser`
     #>
     $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
     $UserDbsExcluded | Select-Object -ExpandProperty Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
