@@ -58,14 +58,14 @@ Describe 'Get-DbaDatabase' {
         A parameter like `-ExcludeUser`
     #>
     $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
-    $UserDbsExcluded | Select-Object -ExpandProperty Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
+    ($UserDbsExcluded).Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
     <#
         The same can be done to exclude system databases by providing the
         -ExcludeSystem parameter switch.
     #>
     $SystemDbsExluded = Get-DbaDatabase -SqlInstance localhost -____
-    $SystemDbsExluded | Select-Object -ExpandProperty Name | Should -Be 'testdb'
+    ($SystemDbsExluded).Name | Should -Be 'testdb'
 
     <#
         Parameters have also been added to check for common questions and
@@ -74,6 +74,6 @@ Describe 'Get-DbaDatabase' {
         'BulkLogged' recovery models.
     #>
     $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
-    $FullRecoveryDbs | Select-Object -ExpandProperty RecoveryModel | Should -Be 'Full'
+    ($FullRecoveryDbs).RecoveryModel | Should -Be 'Full'
 }
 
