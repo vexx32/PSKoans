@@ -43,7 +43,7 @@ Describe 'Get-DbaDatabase' {
 
     <#
         By passing in the SQL Server instance and the name of a specific
-        database, by using the `-Database` parameter, we can get information on
+        database, using the `-Database` parameter, we can get information on
         that single database instead.
     #>
     $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
