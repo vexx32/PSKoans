@@ -23,11 +23,11 @@ Describe 'Get-DbaDatabase' {
 
     Mock -CommandName Get-DbaDatabase -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_System.xml
-    } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExcludeUser -eq $true }
+    } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExcludeUser }
 
     Mock -CommandName Get-DbaDatabase -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_TestDb.xml
-    } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExludeSystem -eq $true }
+    } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExludeSystem }
     #endregion
 
     # `Get-DbaDatabase` requires one thing; A SQL Server instance name.
