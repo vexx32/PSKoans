@@ -57,14 +57,22 @@ Describe 'Get-DbaDatabase' {
 
         A parameter like `-ExcludeUser`
     #>
-    $UserDbsExcluded = Get-DbaDatabase -SqlInstance localhost -____
+    $UserDbParams = @{
+        SqlInstance = 'localhost'
+        ExcludeUser = ____
+    }
+    $UserDbsExcluded = Get-DbaDatabase @UserDbParams
     ($UserDbsExcluded).Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
     <#
         The same can be done to exclude system databases by providing the
         -ExcludeSystem parameter switch.
     #>
-    $SystemDbsExluded = Get-DbaDatabase -SqlInstance localhost -____
+    $SystemDbParams = @{
+        SqlInstance = 'localhost'
+        ExludeSystem = ____
+    }
+    $SystemDbsExluded = Get-DbaDatabase @SystemDbParams
     ($SystemDbsExluded).Name | Should -Be 'testdb'
 
     <#
