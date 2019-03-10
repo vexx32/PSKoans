@@ -12,3 +12,15 @@ param()
     convenient to use in a pipeline and behave in a way that is consistent with
     the rest of the dbatools functions.
 #>
+Describe "Invoke-DbaQuery" {
+
+    #region Mocks
+    Mock -CommandName Invoke-DbaQuery -MockWith {
+        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\BasicInvokeDbaQuery.xml
+    } -ParameterFilter { $_.Query -eq "SELECT 'foo' AS bar;" }
+    #endregion
+
+    $Bar = Invoke-DbaQuery -SqlInstance ____ -Query "SELECT 'foo' AS bar;"
+    $Bar.bar | Should -Be 'foo'
+
+}
