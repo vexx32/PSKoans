@@ -17,10 +17,15 @@ Describe "Invoke-DbaQuery" {
     #region Mocks
     Mock -CommandName Invoke-DbaQuery -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\BasicInvokeDbaQuery.xml
-    } -ParameterFilter { $_.Query -eq "SELECT 'foo' AS bar;" }
+    } -ParameterFilter { $_.Query -eq "SELECT DB_NAME() AS database_name;" }
     #endregion
 
-    $Bar = Invoke-DbaQuery -SqlInstance ____ -Query "SELECT 'foo' AS bar;"
-    $Bar.bar | Should -Be 'foo'
+    <#
+        `Invoke-DbaQuery` can be used to connect to the SQL Server, in much the
+        same way that `Get-DbaDatabase` does, by using the -SqlInstance parameter.
+        Complete the below command to query "localhost" using Invoke-DbaQuery.
+    #>
+    $Bar = Invoke-DbaQuery -SqlInstance ____ -Query "SELECT DB_NAME() AS database_name;"
+    $Bar.database_name | Should -Be 'master'
 
 }
