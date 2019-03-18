@@ -28,4 +28,10 @@ Describe "Invoke-DbaQuery" {
     $Bar = Invoke-DbaQuery -SqlInstance ____ -Query "SELECT DB_NAME() AS database_name;"
     $Bar.database_name | Should -Be 'master'
 
+    <#
+        `Invoke-DbaQuery` allows you to query a single database, multiple
+        databases, or even multiple servers.
+    #>
+    $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS ____;"
+    $ManyServers.server_name | Should -BeIn 'localhost', 'localhost\SQLDEV2K14'
 }
