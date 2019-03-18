@@ -126,7 +126,7 @@ Describe 'Comparison Operators' {
 
     Context '-in and -notin' {
 
-        It 'is the inverse of -contains' {
+        It 'is equivalent to -contains' {
             $Array = 1, 2, 3, 4, 5
             $SearchValue = __
 
