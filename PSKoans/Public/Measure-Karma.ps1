@@ -68,7 +68,12 @@
 
         [Parameter(Mandatory, ParameterSetName = "Reset")]
         [switch]
-        $Reset
+        $Reset,
+
+        [Parameter()]
+        [Alias()]
+        [switch]
+        $ClearScreen
     )
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
@@ -90,7 +95,7 @@
                     ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
                     NoNewWindow  = $true
                 }
-                Start-Process @VSCodeSplat 
+                Start-Process @VSCodeSplat
             }
             elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
                 $VSCodeSplat = @{
@@ -105,7 +110,9 @@
             }
         }
         "Default" {
-            Clear-Host
+            if ($ClearScreen) {
+                Clear-Host
+            }
 
             Show-MeditationPrompt -Greeting
 
