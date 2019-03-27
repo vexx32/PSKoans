@@ -46,7 +46,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'should not produce output' {
-                Measure-Karma | Should -Be $null
+                Measure-Karma -ClearScreen | Should -Be $null
             }
 
             It 'should clear the screen' {
@@ -81,7 +81,6 @@ Describe 'Measure-Karma' {
             }
 
             It 'should display only the greeting prompt' {
-                Assert-MockCalled Clear-Host
                 Assert-MockCalled Show-MeditationPrompt -Times 1
             }
 
