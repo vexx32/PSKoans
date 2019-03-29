@@ -6,7 +6,6 @@ Describe 'Measure-Karma' {
 
         Context 'Default Behaviour' {
             BeforeAll {
-                Mock Clear-Host {}
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
                 Mock Invoke-Koan -ModuleName 'PSKoans' {}
 
@@ -68,7 +67,6 @@ Describe 'Measure-Karma' {
 
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
-                Mock Clear-Host {}
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
                 Mock Measure-Koan -ModuleName 'PSKoans' {}
                 Mock Get-Koan -ModuleName 'PSKoans' {}

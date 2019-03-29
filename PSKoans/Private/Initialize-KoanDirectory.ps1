@@ -30,7 +30,7 @@
         foreach ($Koan in $KoanList) {
             $TopicName = $Koan.Basename -replace '\.Koans$'
 
-            if ($PSCmdlet.ShouldProcess($TopicName, "Reset koan lesson")) {
+            if ($PSCmdlet.ShouldProcess($TopicName, "Reset koan topic")) {
                 $OriginalFile = Get-ChildItem -Path $script:ModuleRoot -Recurse -Filter $Koan.Name
 
                 Write-Verbose "Restoring $TopicName to a blank slate"
@@ -53,4 +53,6 @@
             Write-Verbose "Operation cancelled; no modifications made to koans folder."
         }
     }
+
+    Write-Verbose "Koan restoration completed."
 }

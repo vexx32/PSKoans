@@ -32,7 +32,7 @@
         When used with -Topic, only the specified topics are reset.
     .LINK
         https://github.com/vexx32/PSKoans
-	.NOTES
+    .NOTES
         Author: Joel Sallow
         Module: PSKoans
 	#>
