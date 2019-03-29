@@ -20,6 +20,35 @@ Describe 'Measure-Karma' {
                 Measure-Karma | Should -Be $null
             }
 
+            It 'should write the meditation prompts' {
+                Assert-MockCalled Show-MeditationPrompt -Times 2
+            }
+
+            It 'should Invoke-Pester on each of the koans' {
+                $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                    Get-Command {$_.FullName} |
+                    Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'Koan'}
+
+                Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
+            }
+        }
+
+        Context 'With -ClearScreen Switch' {
+            BeforeAll {
+                Mock Clear-Host {}
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
+                Mock Invoke-Koan -ModuleName 'PSKoans' {}
+
+                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
+                Set-PSKoanLocation -Path $TestLocation
+
+                Initialize-KoanDirectory -Confirm:$false
+            }
+
+            It 'should not produce output' {
+                Measure-Karma -ClearScreen | Should -Be $null
+            }
+
             It 'should clear the screen' {
                 Assert-MockCalled Clear-Host -Times 1
             }
@@ -52,7 +81,6 @@ Describe 'Measure-Karma' {
             }
 
             It 'should display only the greeting prompt' {
-                Assert-MockCalled Clear-Host
                 Assert-MockCalled Show-MeditationPrompt -Times 1
             }
 
