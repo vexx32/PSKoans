@@ -133,10 +133,13 @@ Describe 'Arithmetic Operators' {
 
         It 'cannot be used on non-numeric values' {
             {
+                # Some things are better seen when you try them for yourself.
                 $String = 'hello!'
                 $String % 4
+                # Only a partially matching phrase from the error message is necessary.
             }  | Should -Throw -ExpectedMessage __
             {
+                # If you have trouble, try doing something similar in the console to see what happens.
                 $Array = 1, 10, 20
                 $Array % 4
             } | Should -Throw -ExpectedMessage __

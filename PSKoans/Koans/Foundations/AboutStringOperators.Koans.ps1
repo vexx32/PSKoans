@@ -95,14 +95,14 @@ Describe 'String Array Operators' {
             $String -split '\.' | Should -Be @('__', '__')
         }
 
-        It 'can use simple matching' {
-            $String = 'hello.dear'
-            $String -split '.', 0, 'simplematch' | Should -Be @('__', '__')
-        }
-
         It 'can limit the number of substrings' {
             $Planets = 'Mercury,Venus,Earth,Mars,Jupiter,Saturn,Uranus,Neptune'
             $Planets -split ',', 4 | Should -Be @('__', '__', '__', '__')
+        }
+
+        It 'can use simple matching' {
+            $String = 'hello.dear'
+            $String -split '.', 0, 'simplematch' | Should -Be @('__', '__')
         }
 
         It 'can be case sensitive' {

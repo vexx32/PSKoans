@@ -134,8 +134,8 @@ Describe 'Hashtables' {
 
             # Order comes at a price; in this case, lookup speed is significantly decreased with ordered hashtables.
             # Does this leave our keys and values in the order you would expect?
-            @('__', 'Two', '__', '__') | Should -Be $Hashtable.Keys
-            @(1, , , 4) | Should -Be $Hashtable.Values
+            @('__', 'Two', '__', '__') | Should -Be $Hashtable.Keys.ForEach{$_}
+            @(1, , , 4) | Should -Be $Hashtable.Values.ForEach{$_}
         }
 
         It 'allows you to remove keys' {
