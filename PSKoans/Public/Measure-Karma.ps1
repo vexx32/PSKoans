@@ -28,6 +28,8 @@
 
         Prompts for confirmation, before wiping out the user's koans folder and restoring it back
         to its initial state.
+
+        When used with -Topic, only the specified topics are reset.
     .LINK
         https://github.com/vexx32/PSKoans
 	.NOTES
@@ -39,6 +41,7 @@
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
     param(
         [Parameter(ParameterSetName = 'Default')]
+        [Parameter(ParameterSetName = 'Reset')]
         [Alias('Koan', 'File')]
         [ArgumentCompleter(
             {
@@ -84,8 +87,14 @@
             }
         }
         'Reset' {
-            Write-Verbose "Reinitializing koan directory"
-            Initialize-KoanDirectory
+            if ($Topic) {
+                Write-Verbose "Resetting lessons: $($Topic -join ', ')"
+                Initialize-KoanDirectory -Topic $Topic
+            }
+            else {
+                Write-Verbose "Reinitializing koan directory"
+                Initialize-KoanDirectory
+            }
         }
         'OpenFolder' {
             Write-Verbose "Opening koans folder"
