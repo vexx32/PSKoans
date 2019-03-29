@@ -183,4 +183,5 @@ If you need a hand, don't be afraid to simply submit the pull request before it'
 You're more than welcome to submit WIP pull requests for early feedback and to ask for help if you're not sure how to proceed.
 We're more than happy to offer our own suggestions and help for your ideas!
 
-If you just want to make a general comment, some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue. I try to keep up to speed with those as best I can. :smile:
+If you just want to make a general comment, some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue.
+I try to keep up to speed with those as best I can. :smile:
