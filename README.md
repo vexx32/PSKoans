@@ -10,13 +10,18 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 
 ## Table of Contents
 
-* [Prerequisites](#prerequisites)
-* [Getting Started](#getting-started)
-  * [Install From Gallery](#install-from-gallery)
-  * [Clone the Repo](#or-clone-the-repo)
-  * [Start your Journey](#start-your-journey)
-* [Contributing](#contributing)
-  * [Writing Koans](#writing-koans)
+- [PowerShell Koans](#powershell-koans)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
+    - [Install from Gallery](#install-from-gallery)
+    - [Or clone the Repo](#or-clone-the-repo)
+    - [Start your Journey](#start-your-journey)
+      - [1. Run `Measure-Karma` to start your journey towards PowerShell enlightenment.](#1-run-measure-karma-to-start-your-journey-towards-powershell-enlightenment)
+      - [2. Run `Measure-Karma -Meditate` to open your Koans folder and navigate to `Foundations\AboutAssertions.Koans.ps1`.](#2-run-measure-karma--meditate-to-open-your-koans-folder-and-navigate-to-foundationsaboutassertionskoansps1)
+      - [3. Run `Measure-Karma` again to see how you did.](#3-run-measure-karma-again-to-see-how-you-did)
+  - [Contributing](#contributing)
+    - [Writing Koans](#writing-koans)
 
 ## Prerequisites
 
@@ -42,11 +47,14 @@ Install-Module Pester -Scope CurrentUser
 1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
 2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
-4. Run `Copy-Item -Recurse "$ProjectRoot/PSKoans" -Destination ($env:PSModulePath -split ';')[0]`
+4. Add the repository folder to `$env:PSModulePath` so that PowerShell can see it.
+   - From the repository main folder, run: `$env:PSModulePath = "$(Get-Location)$([IO.Path]::PathSeparator)${env:PSModulePath}"`
 
 ### Start your Journey
 
-1. Run `Measure-Karma` to start your journey towards PowerShell enlightenment. You will be presented with a page describing your goal:
+#### 1. Run `Measure-Karma` to start your journey towards PowerShell enlightenment.
+
+You will be presented with a page describing your goal:
 
 ```diff
     Welcome, seeker of enlightenment.
@@ -78,7 +86,9 @@ You may run 'Measure-Karma -Meditate' to begin your meditation.
 
 Inspect the red messages carefully, most importantly the last one. The error message contains path to the file that you need to edit in order to progress forward, in this case `Foundations\AboutAssertions.Koans.ps1`.
 
-2. Run `Measure-Karma -Meditate` to open your Koans folder and navigate to `Foundations\AboutAssertions.Koans.ps1`. Near the top you'll see:
+#### 2. Run `Measure-Karma -Meditate` to open your Koans folder and navigate to `Foundations\AboutAssertions.Koans.ps1`.
+
+Near the top you'll see:
 
 ```powershell
 It 'is a simple comparison' {
@@ -89,7 +99,9 @@ It 'is a simple comparison' {
 
 The `__` represents a blank for you to fill, and `| Should -Be $true` shows the expected result. To pass this koan you need to replace `__` with `$true`, like this: `$true | Should -Be $true`.
 
-3. Run `Measure-Karma` again to see how you did. Your progress updated to `1/246` and you are presented with the next challenge. You now passed your first koan!
+#### 3. Run `Measure-Karma` again to see how you did.
+
+Your progress updated to `1/246` and you are presented with the next challenge. You now passed your first koan!
 
 ```diff
     Welcome, seeker of enlightenment.
@@ -116,14 +128,20 @@ Describing 'Equality' has damaged your karma.
 + [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/246
 ```
 
- You are on your own from now, but don't worry the koans start very simple, and you can always seek help on [slack](https://powershell.slack.com/messages/C03MQLV0V/), [reddit](https://www.reddit.com/r/PowerShell/), [twitter](https://twitter.com/hashtag/powershell) or anywhere else where powershell is discussed.
+ You are on your own from now, but the progression should be fairly smooth.
+ If you need help, you can always ask around in the PowerShell communities:
+
+- [Slack](https://j.mp/psslack)
+- [Discord](https://j.mp/psdiscord)
+- [Reddit](https://www.reddit.com/r/PowerShell/)
+- [Twitter](https://twitter.com/hashtag/powershell)
+- [PowerShell.org Forums](https://powershell.org/forums/forum/windows-powershell-qa/)
 
 Good luck!
 
 ## Contributing
 
 We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
-
 Naturally, we're happy to accept any and _all_ help that comes our way!
 
 There are two main ways you can contribute:
