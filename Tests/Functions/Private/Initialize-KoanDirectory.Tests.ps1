@@ -127,8 +127,14 @@ InModuleScope 'PSKoans' {
                     Test-Path |
                     Should -BeTrue
 
-                    $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
-                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans${/}$File" | Get-Item
+                    $CopiedFile = Get-PSKoanLocation |
+                    Join-Path -ChildPath $File |
+                    Get-Item
+
+                    $OriginalFile = $script:ModuleRoot |
+                    Join-Path -ChildPath "Koans" |
+                    Join-Path -ChildPath $File |
+                    Get-Item
 
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
@@ -163,7 +169,8 @@ InModuleScope 'PSKoans' {
                     Clear-Content -Path $File
 
                     $OriginalFile = $script:ModuleRoot |
-                    Join-Path -ChildPath "Koans${/}$PathFragment" |
+                    Join-Path -ChildPath "Koans" |
+                    Join-Path -ChildPath $PathFragment |
                     Get-Item
 
                     Initialize-KoanDirectory -Confirm:$false -Topic $Topic
