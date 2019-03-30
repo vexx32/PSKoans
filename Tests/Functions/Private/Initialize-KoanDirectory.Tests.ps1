@@ -44,10 +44,12 @@ InModuleScope 'PSKoans' {
             Context 'With -Topic Parameter' {
                 BeforeAll {
                     Mock Copy-Item {}
+                    Mock Get-ChildItem { "FakeFile" }
                 }
 
                 It 'should call Copy-Item' {
                     Initialize-KoanDirectory -Confirm:$false -Topic 'AboutArrays', 'AboutAssignmentAndArithmetic'
+                    Assert-MockCalled Get-ChildItem -Times 1
                     Assert-MockCalled Copy-Item -Times 1
                 }
             }
@@ -149,7 +151,8 @@ InModuleScope 'PSKoans' {
                 It 'should copy <Topic> to the Koans folder' -TestCases $TopicTests {
                     param($Topic)
 
-                    $PathFragment = $KoanFiles.File -match $Topic
+                    $PathFragment = $KoanFiles.File -match $Topic |
+                        Select-Object -First 1
 
                     $File = Get-PSKoanLocation |
                         Join-Path -ChildPath $PathFragment |

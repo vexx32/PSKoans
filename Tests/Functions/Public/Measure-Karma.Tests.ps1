@@ -6,8 +6,8 @@ Describe 'Measure-Karma' {
 
         Context 'Default Behaviour' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
-                Mock Invoke-Koan -ModuleName 'PSKoans' {}
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Invoke-Koan -ModuleName 'PSKoans' { }
 
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
@@ -25,8 +25,8 @@ Describe 'Measure-Karma' {
 
             It 'should Invoke-Pester on each of the koans' {
                 $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                    Get-Command {$_.FullName} |
-                    Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'Koan'}
+                Get-Command { $_.FullName } |
+                Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
 
                 Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
             }
@@ -34,9 +34,9 @@ Describe 'Measure-Karma' {
 
         Context 'With -ClearScreen Switch' {
             BeforeAll {
-                Mock Clear-Host {}
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
-                Mock Invoke-Koan -ModuleName 'PSKoans' {}
+                Mock Clear-Host { }
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Invoke-Koan -ModuleName 'PSKoans' { }
 
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
@@ -58,8 +58,8 @@ Describe 'Measure-Karma' {
 
             It 'should Invoke-Pester on each of the koans' {
                 $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                    Get-Command {$_.FullName} |
-                    Where-Object {$_.ScriptBlock.Attributes.TypeID -match 'Koan'}
+                Get-Command { $_.FullName } |
+                Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
 
                 Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
             }
@@ -67,9 +67,9 @@ Describe 'Measure-Karma' {
 
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
-                Mock Measure-Koan -ModuleName 'PSKoans' {}
-                Mock Get-Koan -ModuleName 'PSKoans' {}
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Measure-Koan -ModuleName 'PSKoans' { }
+                Mock Get-Koan -ModuleName 'PSKoans' { }
                 Mock Initialize-KoanDirectory -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
             }
@@ -101,16 +101,16 @@ Describe 'Measure-Karma' {
 
             It 'should list all the koan topics' {
                 $KoanTopics = Get-PSKoanLocation |
-                    Get-ChildItem -Recurse -File -Filter *.Koans.ps1 |
-                    ForEach-Object { $_.BaseName -replace '\.Koans$' }
+                Get-ChildItem -Recurse -File -Filter *.Koans.ps1 |
+                ForEach-Object { $_.BaseName -replace '\.Koans$' }
                 @(Measure-Karma -ListTopics) | Should -Be $KoanTopics
             }
         }
 
         Context 'With -Topic Parameter' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' {}
-                Mock Invoke-Koan -ModuleName 'PSKoans' {}
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Invoke-Koan -ModuleName 'PSKoans' { }
 
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
@@ -119,7 +119,7 @@ Describe 'Measure-Karma' {
 
                 $TestCases = @(
                     @{ Topic = @( 'AboutAssertions' ) }
-                    @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' )}
+                    @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' ) }
                 )
             }
 
@@ -127,7 +127,7 @@ Describe 'Measure-Karma' {
                 param([string[]] $Topic)
 
                 Measure-Karma -Topic $Topic
-                Assert-MockCalled Invoke-Koan -Times ($Topic.Count)
+                Assert-MockCalled Invoke-Koan -Times @($Topic).Count
             }
         }
 
@@ -162,8 +162,8 @@ Describe 'Measure-Karma' {
 
             Context 'VS Code Installed' {
                 BeforeAll {
-                    Mock Get-Command {$true}
-                    Mock Start-Process {$FilePath}
+                    Mock Get-Command { $true }
+                    Mock Start-Process { $FilePath }
                 }
 
                 It 'should start VS Code with Start-Process' {
@@ -176,7 +176,7 @@ Describe 'Measure-Karma' {
 
             Context 'VS Code Not Installed' {
                 BeforeAll {
-                    Mock Get-Command {$false}
+                    Mock Get-Command { $false }
                     Mock Invoke-Item
                 }
 

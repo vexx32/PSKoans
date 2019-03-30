@@ -31,7 +31,8 @@
             $TopicName = $Koan.Basename -replace '\.Koans$'
 
             if ($PSCmdlet.ShouldProcess($TopicName, "Reset koan topic")) {
-                $OriginalFile = Get-ChildItem -Path $script:ModuleRoot -Recurse -Filter $Koan.Name
+                $OriginalFile = Join-Path $script:ModuleRoot -ChildPath 'Koans' |
+                    Get-ChildItem -Recurse -Filter $Koan.Name
 
                 Write-Verbose "Restoring $TopicName to a blank slate"
                 $OriginalFile | Copy-Item -Destination $Koan.Fullname -Force
