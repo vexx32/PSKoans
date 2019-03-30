@@ -126,11 +126,13 @@ Describe 'Comparison Operators' {
 
     Context '-in and -notin' {
 
-        It 'is the inverse of -contains' {
+        It 'returns $true if the left hand value occurs in the right hand array' {
             $Array = 1, 2, 3, 4, 5
             $SearchValue = __
 
+            # The syntax is exactly opposed to that used with -contains
             $SearchValue -in $Array | Should -BeTrue
+            $Array -contains $SearchValue | Should -BeTrue
         }
 
         It 'also has a logical opposite' {

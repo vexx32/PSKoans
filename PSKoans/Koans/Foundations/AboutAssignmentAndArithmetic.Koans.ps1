@@ -33,6 +33,20 @@ Describe 'Assignment Operator' {
         $Array[2] = 5
         $Array | Should -Be @(1, 2, 3) # What would change?
     }
+
+    It 'can assign values to many variables at once' {
+        $Var1 = $Var2 = $Var3 = $Var4 = __
+        $Var1 | Should -Be $Var2
+        $Var2 | Should -Be $Var3
+        $Var3 | Should -Be $Var4
+        $Var4 | Should -Be 27
+    }
+
+    It 'can assign multiple values to multiple variables' {
+        $Var1, $Var2 = @( "__", "__")
+        $Var1 | Should -Be "Correct"
+        $Var2 | Should -Be "Incorrect"
+    }
 }
 
 Describe 'Arithmetic Operators' {
@@ -133,10 +147,13 @@ Describe 'Arithmetic Operators' {
 
         It 'cannot be used on non-numeric values' {
             {
+                # Some things are better seen when you try them for yourself.
                 $String = 'hello!'
                 $String % 4
+                # Only a partially matching phrase from the error message is necessary.
             }  | Should -Throw -ExpectedMessage __
             {
+                # If you have trouble, try doing something similar in the console to see what happens.
                 $Array = 1, 10, 20
                 $Array % 4
             } | Should -Throw -ExpectedMessage __
