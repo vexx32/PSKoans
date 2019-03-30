@@ -5,13 +5,13 @@ InModuleScope 'PSKoans' {
 
         Context 'Mocked Commands' {
             BeforeAll {
-                Mock Remove-Item {}
-                Mock Copy-Item {}
+                Mock Remove-Item { }
+                Mock Copy-Item { }
             }
 
             Context 'Koan Folder Exists' {
                 BeforeAll {
-                    Mock Test-Path {$true}
+                    Mock Test-Path { $true }
                 }
 
                 It 'should not produce output' {
@@ -27,7 +27,7 @@ InModuleScope 'PSKoans' {
 
             Context 'Koan Folder Does Not Exist' {
                 BeforeAll {
-                    Mock Test-Path {$false}
+                    Mock Test-Path { $false }
                 }
 
                 It 'should not produce output' {
@@ -43,7 +43,7 @@ InModuleScope 'PSKoans' {
 
             Context 'With -Topic Parameter' {
                 BeforeAll {
-                    Mock Copy-Item {}
+                    Mock Copy-Item { }
                     Mock Get-ChildItem { "FakeFile" }
                 }
 
@@ -64,13 +64,13 @@ InModuleScope 'PSKoans' {
                 Set-PSKoanLocation -Path "TestDrive:/Koans"
 
                 $KoanFiles = Get-ChildItem -Path $script:ModuleRoot -Recurse -File -Filter '*.Koans.ps1' | ForEach-Object {
-                    @{File = $_.FullName -replace '.+[/\\]Koans[/\\]'}
+                    @{File = $_.FullName -replace '.+[/\\]Koans[/\\]' }
                 }
             }
 
             Context 'Koan Folder Exists' {
                 BeforeAll {
-                    Get-PSKoanLocation | New-Item -Path {$_} -ItemType Directory > $null
+                    Get-PSKoanLocation | New-Item -Path { $_ } -ItemType Directory > $null
 
                     $DummyFiles = 1..10 | ForEach-Object {
                         $FileName = '{0:000}' -f $_
@@ -95,9 +95,9 @@ InModuleScope 'PSKoans' {
                     param($File)
 
                     Get-PSKoanLocation |
-                        Join-Path -ChildPath $File |
-                        Test-Path |
-                        Should -BeTrue
+                    Join-Path -ChildPath $File |
+                    Test-Path |
+                    Should -BeTrue
 
                     $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
                     $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans${/}$File" | Get-Item
@@ -121,9 +121,9 @@ InModuleScope 'PSKoans' {
                     param($File)
 
                     Get-PSKoanLocation |
-                        Join-Path -ChildPath $File |
-                        Test-Path |
-                        Should -BeTrue
+                    Join-Path -ChildPath $File |
+                    Test-Path |
+                    Should -BeTrue
 
                     $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
                     $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans${/}$File" | Get-Item
@@ -141,8 +141,8 @@ InModuleScope 'PSKoans' {
                 BeforeAll {
                     $TopicTests = @(
                         @{ Topic = 'AboutArrays' }
-                        @{ Topic = 'AboutVariables'  }
-                        @{ Topic = 'AboutSplatting'  }
+                        @{ Topic = 'AboutVariables' }
+                        @{ Topic = 'AboutSplatting' }
                     )
 
                     Initialize-KoanDirectory -Confirm:$false
@@ -152,22 +152,26 @@ InModuleScope 'PSKoans' {
                     param($Topic)
 
                     $PathFragment = $KoanFiles.File -match $Topic |
-                        Select-Object -First 1
+                    Select-Object -First 1
 
                     $File = Get-PSKoanLocation |
-                        Join-Path -ChildPath $PathFragment |
-                        Get-Item
+                    Join-Path -ChildPath $PathFragment |
+                    Get-Item
 
                     Clear-Content -Path $File
 
                     $OriginalFile = $script:ModuleRoot |
-                        Join-Path -ChildPath "Koans${/}$PathFragment" |
-                        Get-Item
+                    Join-Path -ChildPath "Koans${/}$PathFragment" |
+                    Get-Item
 
                     Initialize-KoanDirectory -Confirm:$false -Topic $Topic
 
-                    $OriginalHash = Get-FileHash -Path $File.FullName
-                    $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
+                    $CopiedFile = Get-PSKoanLocation |
+                    Join-Path -ChildPath $PathFragment |
+                    Get-Item
+
+                    $OriginalHash = Get-FileHash -Path $OriginalFile.FullName
+                    $CopiedHash = Get-FileHash -Path $CopiedFile.FullName
 
                     # Verify the files are the same
                     $CopiedFile.Length | Should -Be $OriginalFile.Length
