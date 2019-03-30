@@ -33,9 +33,21 @@ InModuleScope 'PSKoans' {
                 It 'should not produce output' {
                     Initialize-KoanDirectory -Confirm:$false
                 }
+
                 It 'should just copy files' {
                     Assert-MockCalled Test-Path -Times 1
                     Assert-MockCalled Remove-Item -Times 0
+                    Assert-MockCalled Copy-Item -Times 1
+                }
+            }
+
+            Context 'With -Topic Parameter' {
+                BeforeAll {
+                    Mock Copy-Item {}
+                }
+
+                It 'should call Copy-Item' {
+                    Initialize-KoanDirectory -Confirm:$false -Topic 'AboutArrays', 'AboutAssignmentAndArithmetic'
                     Assert-MockCalled Copy-Item -Times 1
                 }
             }
@@ -63,6 +75,8 @@ InModuleScope 'PSKoans' {
                         1..($_ * 10) | Set-Content -Path "$(Get-PSKoanLocation)/$FileName"
                         @{ Path = "$(Get-PSKoanLocation)/$FileName" }
                     }
+
+                    ${/} = [System.IO.Path]::DirectorySeparatorChar
                 }
 
                 It 'should not produce output' {
@@ -84,7 +98,7 @@ InModuleScope 'PSKoans' {
                         Should -BeTrue
 
                     $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
-                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans/$File" | Get-Item
+                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans${/}$File" | Get-Item
 
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
@@ -110,9 +124,46 @@ InModuleScope 'PSKoans' {
                         Should -BeTrue
 
                     $CopiedFile = Get-PSKoanLocation | Join-Path -ChildPath $File | Get-Item
-                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans/$File" | Get-Item
+                    $OriginalFile = $script:ModuleRoot | Join-Path -ChildPath "Koans${/}$File" | Get-Item
 
                     $OriginalHash = Get-FileHash -Path $CopiedFile.FullName
+                    $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
+
+                    # Verify the files are the same
+                    $CopiedFile.Length | Should -Be $OriginalFile.Length
+                    $CopiedHash.Hash | Should -Be $OriginalHash.Hash
+                }
+            }
+
+            Context 'Resetting Specific Topics' {
+                BeforeAll {
+                    $TopicTests = @(
+                        @{ Topic = 'AboutArrays' }
+                        @{ Topic = 'AboutVariables'  }
+                        @{ Topic = 'AboutSplatting'  }
+                    )
+
+                    Initialize-KoanDirectory -Confirm:$false
+                }
+
+                It 'should copy <Topic> to the Koans folder' -TestCases $TopicTests {
+                    param($Topic)
+
+                    $PathFragment = $KoanFiles.File -match $Topic
+
+                    $File = Get-PSKoanLocation |
+                        Join-Path -ChildPath $PathFragment |
+                        Get-Item
+
+                    Clear-Content -Path $File
+
+                    $OriginalFile = $script:ModuleRoot |
+                        Join-Path -ChildPath "Koans${/}$PathFragment" |
+                        Get-Item
+
+                    Initialize-KoanDirectory -Confirm:$false -Topic $Topic
+
+                    $OriginalHash = Get-FileHash -Path $File.FullName
                     $CopiedHash = Get-FileHash -Path $OriginalFile.FullName
 
                     # Verify the files are the same
