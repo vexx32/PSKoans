@@ -24,11 +24,13 @@
     $KoanFolder = Get-PSKoanLocation
 
     if ($Topic) {
-        $KoanList = Get-ChildItem -Path $KoanFolder -Recurse -Filter *.Koans.ps1 |
+        $KoanList = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans' |
+            Get-ChildItem -Recurse -Filter *.Koans.ps1 |
             Where-Object { $_.BaseName -replace '\.Koans$' -in $Topic }
 
-        foreach ($Koan in $KoanList) {
-            $TopicName = $Koan.Basename -replace '\.Koans$'
+        foreach ($OriginalFile in $KoanList) {
+            $TopicName = $OriginalFile.Basename -replace '\.Koans$'
+            $PathFragment = $OriginalFile.Fullname -replace (Join-Path -Path $script:ModuleRoot -ChildPath 'Koans')
 
             if ($PSCmdlet.ShouldProcess($TopicName, "Reset koan topic")) {
                 $OriginalFile = Join-Path $script:ModuleRoot -ChildPath 'Koans' |

@@ -43,13 +43,15 @@ InModuleScope 'PSKoans' {
 
             Context 'With -Topic Parameter' {
                 BeforeAll {
+                    ${/} = [System.IO.Path]::DirectorySeparatorChar
+                    New-Item -ItemType File -Path "$TestDrive${/}AboutArrays.Koans.ps1"
                     Mock Copy-Item { }
-                    Mock Get-ChildItem { "FakeFile" }
+                    Mock Get-PSKoanLocation -ModuleName 'PSKoans' -MockWith { 'TestDrive:\' }
+                    Mock Where-Object -MockWith { $InputObject }
                 }
 
                 It 'should call Copy-Item' {
-                    Initialize-KoanDirectory -Confirm:$false -Topic 'AboutArrays', 'AboutAssignmentAndArithmetic'
-                    Assert-MockCalled Get-ChildItem -Times 1
+                    Initialize-KoanDirectory -Confirm:$false -Topic 'AboutArrays'
                     Assert-MockCalled Copy-Item -Times 1
                 }
             }
