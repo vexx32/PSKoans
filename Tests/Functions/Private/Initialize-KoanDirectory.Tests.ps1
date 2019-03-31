@@ -162,11 +162,10 @@ InModuleScope 'PSKoans' {
                     $PathFragment = $KoanFiles.File -match $Topic |
                     Select-Object -First 1
 
-                    $File = Get-PSKoanLocation |
-                    Join-Path -ChildPath $PathFragment |
-                    Get-Item
+                    $FilePath = Get-PSKoanLocation |
+                    Join-Path -ChildPath $PathFragment
 
-                    Clear-Content -Path $File
+                    Clear-Content -Path $FilePath
 
                     $OriginalFile = $script:ModuleRoot |
                     Join-Path -ChildPath "Koans" |

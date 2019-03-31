@@ -25,19 +25,19 @@
 
     if ($Topic) {
         $KoanList = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans' |
-            Get-ChildItem -Recurse -Filter *.Koans.ps1 |
-            Where-Object { $_.BaseName -replace '\.Koans$' -in $Topic }
+        Get-ChildItem -Recurse -Filter *.Koans.ps1 |
+        Where-Object { $_.BaseName -replace '\.Koans$' -in $Topic }
 
         foreach ($OriginalFile in $KoanList) {
             $TopicName = $OriginalFile.Basename -replace '\.Koans$'
-            $PathFragment = $OriginalFile.Fullname -replace (Join-Path -Path $script:ModuleRoot -ChildPath 'Koans')
+
+            $ParentPathPattern = [regex]::Escape((Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'))
+            $PathFragment = $OriginalFile.Fullname -replace $ParentPathPattern
 
             if ($PSCmdlet.ShouldProcess($TopicName, "Reset koan topic")) {
-                $OriginalFile = Join-Path $script:ModuleRoot -ChildPath 'Koans' |
-                    Get-ChildItem -Recurse -Filter $Koan.Name
-
                 Write-Verbose "Restoring $TopicName to a blank slate"
-                $OriginalFile | Copy-Item -Destination $Koan.Fullname -Force
+                $DestinationPath = Get-PSKoanLocation | Join-Path -ChildPath $PathFragment
+                $OriginalFile | Copy-Item -Destination $DestinationPath -Force
             }
         }
     }
