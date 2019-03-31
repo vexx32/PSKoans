@@ -54,6 +54,7 @@ STATUS: Testing with PowerShell $PSVersion
         PassThru     = $true
         OutputFormat = 'NUnitXml'
         OutputFile   = "$ProjectRoot/$TestFile"
+        Show         = "Header", "Failed", "Summary"
     }
     $TestResults = Invoke-Pester @PesterParams
 
