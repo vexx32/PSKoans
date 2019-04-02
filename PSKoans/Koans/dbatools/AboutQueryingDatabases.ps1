@@ -39,3 +39,4 @@ Describe "Invoke-DbaQuery" {
     $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS ____;"
     $ManyServers.server_name | Should -BeIn 'localhost', 'localhost\SQLDEV2K14'
 }
+
