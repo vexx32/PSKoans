@@ -14,11 +14,13 @@ param()
 #>
 Describe "Invoke-DbaQuery" {
 
-    #region Mocks
+    <#
+        Let's setup the environment for you. Unless you want the Koans to
+        nearly always fail, I would suggest not messing with this bit.
+    #>
     Mock -CommandName Invoke-DbaQuery -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\BasicInvokeDbaQuery.xml
     } -ParameterFilter { $_.Query -eq "SELECT DB_NAME() AS database_name;" }
-    #endregion
 
     <#
         `Invoke-DbaQuery` can be used to connect to the SQL Server, in much the
