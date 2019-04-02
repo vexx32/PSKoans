@@ -38,5 +38,11 @@ Describe "Invoke-DbaQuery" {
     #>
     $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS ____;"
     $ManyServers.server_name | Should -BeIn 'localhost', 'localhost\SQLDEV2K14'
+
+    <#
+        It is possible to save T-SQL scripts into files. Invoke-DbaQuery has
+        the ability to use the -File parameter, by passing in the location of the
+        file, to run the T-SQL scripts against the instance.
+    #>
 }
 
