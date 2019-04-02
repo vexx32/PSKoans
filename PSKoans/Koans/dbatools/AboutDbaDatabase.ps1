@@ -12,7 +12,10 @@ param()
 #>
 Describe 'Get-DbaDatabase' {
 
-    #region Mocks
+    <#
+        Let's setup the environment for you. Unless you want your Koans to 
+        nearly always fail I'd suggest not messing with this bit.
+    #>
     Mock -CommandName Get-DbaDatabase -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_All.xml
     } -ParameterFilter { $_.SqlInstance -eq 'localhost' }
@@ -28,7 +31,6 @@ Describe 'Get-DbaDatabase' {
     Mock -CommandName Get-DbaDatabase -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_TestDb.xml
     } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExludeSystem }
-    #endregion
 
     <#
         `Get-DbaDatabase` requires one thing; A SQL Server instance name.
