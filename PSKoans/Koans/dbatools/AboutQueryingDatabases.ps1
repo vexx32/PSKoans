@@ -33,6 +33,8 @@ Describe "Invoke-DbaQuery" {
     <#
         Invoke-DbaQuery allows you to query a single database, multiple
         databases, or even multiple servers.
+        The T-SQL command @@SERVERNAME returns the name of the server that the
+        database is on. We can use this to see what instance we are connected to.
     #>
     $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS ____;"
     $ManyServers.server_name | Should -BeIn 'localhost', 'localhost\SQLDEV2K14'
