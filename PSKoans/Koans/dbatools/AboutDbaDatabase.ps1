@@ -64,7 +64,7 @@ Describe 'Get-DbaDatabase' {
         ExcludeUser = ____
     }
     $UserDbsExcluded = Get-DbaDatabase @UserDbParams
-    ($UserDbsExcluded).Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
+    $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
     <#
         The same can be done to exclude system databases by providing the
@@ -75,7 +75,7 @@ Describe 'Get-DbaDatabase' {
         ExludeSystem = ____
     }
     $SystemDbsExluded = Get-DbaDatabase @SystemDbParams
-    ($SystemDbsExluded).Name | Should -Be 'testdb'
+    $SystemDbsExluded.Name | Should -Be 'testdb'
 
     <#
         Parameters have also been added to check for common questions and
@@ -84,6 +84,6 @@ Describe 'Get-DbaDatabase' {
         'BulkLogged' recovery models.
     #>
     $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
-    ($FullRecoveryDbs).RecoveryModel | Should -Be 'Full'
+    $FullRecoveryDbs.RecoveryModel | Should -Be 'Full'
 }
 
