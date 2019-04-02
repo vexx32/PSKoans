@@ -6,9 +6,9 @@ param()
     Invoke-DbaQuery
 
     The default language for querying SQL Server is T-SQL. To run explicit
-    T-SQL commands or files, the function `Invoke-DbaQuery` was created.
+    T-SQL commands or files, the function Invoke-DbaQuery was created.
 
-    Based off of `Invoke-Sqlcmd`, `Invoke-DbaQuery` was designed to be more
+    Based off of Invoke-Sqlcmd, Invoke-DbaQuery was designed to be more
     convenient to use in a pipeline and behave in a way that is consistent with
     the rest of the dbatools functions.
 #>
@@ -23,15 +23,15 @@ Describe "Invoke-DbaQuery" {
     } -ParameterFilter { $_.Query -eq "SELECT DB_NAME() AS database_name;" }
 
     <#
-        `Invoke-DbaQuery` can be used to connect to the SQL Server, in much the
-        same way that `Get-DbaDatabase` does, by using the -SqlInstance parameter.
+        Invoke-DbaQuery can be used to connect to the SQL Server, in much the
+        same way that Get-DbaDatabase does, by using the -SqlInstance parameter.
         Complete the below command to query "localhost" using Invoke-DbaQuery.
     #>
     $Bar = Invoke-DbaQuery -SqlInstance ____ -Query "SELECT DB_NAME() AS database_name;"
     $Bar.database_name | Should -Be 'master'
 
     <#
-        `Invoke-DbaQuery` allows you to query a single database, multiple
+        Invoke-DbaQuery allows you to query a single database, multiple
         databases, or even multiple servers.
     #>
     $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS ____;"

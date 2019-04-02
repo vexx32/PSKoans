@@ -33,10 +33,10 @@ Describe 'Get-DbaDatabase' {
     } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.ExludeSystem }
 
     <#
-        `Get-DbaDatabase` requires one thing; A SQL Server instance name.
+        Get-DbaDatabase requires one thing; A SQL Server instance name.
         You can pass in "localhost" for the default name for a SQL Server
         instance.
-        The simplest usage of `Get-DbaDatabase` is to run it and passing in the
+        The simplest usage of Get-DbaDatabase is to run it and passing in the
         name of the SQL Server instance. This will get information about all
         the databases on the instance.
     #>
@@ -45,7 +45,7 @@ Describe 'Get-DbaDatabase' {
 
     <#
         By passing in the SQL Server instance and the name of a specific
-        database, using the `-Database` parameter, we can get information on
+        database, using the -Database parameter, we can get information on
         that single database instead.
     #>
     $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
@@ -57,7 +57,7 @@ Describe 'Get-DbaDatabase' {
         would be easier if there was a parameter you could add that would
         return the system databases.
 
-        A parameter like `-ExcludeUser`
+        A parameter like -ExcludeUser
     #>
     $UserDbParams = @{
         SqlInstance = 'localhost'
