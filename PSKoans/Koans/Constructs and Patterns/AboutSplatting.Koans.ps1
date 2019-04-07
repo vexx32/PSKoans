@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 203)]
+[Koan(Position = 305)]
 param()
 <#
     Splatting
@@ -57,7 +57,7 @@ Describe 'Splatting' {
     Context 'Advanced Splatting Techniques' {
 
         It 'can be built up in parts' {
-            $Parameters = @{Path = $env:PSKoans:KoanFolder}
+            $Parameters = @{Path = $env:PSKoans:KoanFolder }
 
             $Value = __
             if ($Value -eq 7) {
