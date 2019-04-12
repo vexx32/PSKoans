@@ -72,10 +72,28 @@ Describe 'Strings' {
         }
 
         It 'can insert special characters with escape sequences' {
+            <#
+                All text strings in PowerShell are actually just a series of character values. Each of these values
+                has a specific number assigned in the [char] type that represents that letter, number, space, symbol,
+                etc.
+
+                .NET uses UTF16 encoding for [char] and [string] values. However, with most common letters, numbers,
+                and symbols the assigned [char] values are identical to the ASCII values.
+
+                ASCII is an older standard encoding for text, but you can still use all those values as-is with
+                [char] and get back what you'd expect thanks to the design of the UTF16 encoding. An extended ASCII
+                code table is available at: https://www.ascii-code.com/
+            #>
             $ExpectedValue = [char] 9
+
+            <#
+                If you're not sure what character you're after, consult the ASCII code table above.
+
+                Get-Help about_Special_Characters will list the escape sequence you can use to create
+                the right character with PowerShell's native string escape sequences.
+            #>
             $ActualValue = "`_"
 
-            # Look over Get-Help about_Special_Characters for the escape sequence you need.
             $ActualValue | Should -Be $ExpectedValue
         }
     }
