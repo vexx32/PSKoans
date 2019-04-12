@@ -125,6 +125,7 @@ Describe 'Types of Errors' {
         It 'is created by WriteError()' {
             $Record = Write-ErrorWithMethod 2>&1
             '__' | Should -Be $Record.FullyQualifiedErrorId
+            '__' | Should -Be $Record.TargetObject.ToString()
         }
     }
 
