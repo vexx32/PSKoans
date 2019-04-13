@@ -19,7 +19,12 @@ Describe 'ErrorRecord' {
         metadata that you can work with if you come across an error.
     #>
     BeforeAll {
-        $Record = try { throw "A challenge to the sky!" } catch { $_ }
+        $Record = try {
+            throw "A challenge to the sky!"
+        }
+        catch {
+            $_
+        }
     }
 
     It 'is an ErrorRecord' {
@@ -74,9 +79,27 @@ Describe 'ErrorRecord' {
 Describe 'Types of Errors' {
 
     Context 'Non-Terminating Errors' {
+        <#
+            Non-terminating errors can be generated in one of two ways:
+              - Using the Write-Error cmdlet.
+              - Using the $PSCmdlet.WriteError() method in an advanced function.
+
+            Non-terminating errors are an indication that a requested action could not be performed,
+            or a resource that was specifically requested is not available.
+
+            These errors will not terminate execution, allowing pipelines to carry on processing for
+            all other input they may receive. Their behaviour can be modified by the -ErrorAction
+            common parameter available on all cmdlets and advanced functions. The available values
+            for the -ErrorAction parameter are:
+              - Continue: As per normal, non-terminating errors are displayed and processing continues.
+              - Ignore: Non-terminating errors are completely suppressed and not recorded in transcripts and $Error.
+              - Inquire: Errors will pause execution and prompt the user for the desired action.
+              - SilentlyContinue: Similar to Ignore, but errors are still recorded for later handling if needed.
+              - Stop: Treat all errors as terminating errors.
+        #>
         BeforeAll {
             function Write-SimpleError {
-                Write-Error "Look ma, no try/catch!"
+                Write-Error "Something went wrong!"
             }
 
             function Write-DetailedError {
@@ -130,7 +153,21 @@ Describe 'Types of Errors' {
     }
 
     Context 'Terminating Errors' {
+        <#
+            Terminating errors are generated in a few ways:
+              - The "throw" keyword.
+              - The $PSCmdlet.ThrowTerminatingError() method.
+              - Using -ErrorAction Stop on any cmdlet or advanced function that generates a non-terminating error.
 
+            Note that -ErrorAction only affects errors which are created as non-terminating. Errors that are
+            created as terminating cannot be guided via the -ErrorAction common parameter and will always be
+            regarded as terminating.
+
+            Terminating errors will terminate all further execution at the scope they occur in, and pass control
+            back to the next scope up. The error will be propagated upwards until either it reaches the console
+            and is displayed (at which point all currently-executing scripts will stop) or it triggers a "catch"
+            block which will handle the error.
+        #>
         It 'is created with the throw keyword' {
 
         }
