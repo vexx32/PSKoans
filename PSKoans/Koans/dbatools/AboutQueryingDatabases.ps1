@@ -43,6 +43,17 @@ Describe "Invoke-DbaQuery" {
         It is possible to save T-SQL scripts into files. Invoke-DbaQuery has
         the ability to use the -File parameter, by passing in the location of the
         file, to run the T-SQL scripts against the instance.
+        We've created a file called SimpleTSQL.sql that contains a T-SQL
+        statement, which we want to run against the tempdb database on the
+        localhost instance.
     #>
+    Out-File - FilePath TestDrive:\SimpleTSQL.sql -InputObject "SELECT 'From a File' AS Origin;" 
+    $InvokeDbaQueryParams = @{
+        SqlInstance = 'localhost'
+        Database    = 'tempdb'
+        File        = ____
+    }
+    $DbResult = Invoke-DbaQuery @InvokeDbaQueryParams
+    $DbResult.Origin | Should -Be 'From a File'
 }
 
