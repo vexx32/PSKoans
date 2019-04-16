@@ -29,7 +29,6 @@ Describe 'ErrorRecord' {
 
     It 'is an ErrorRecord' {
         # At times, even tautologies can make sense of what is, and is not.
-
         $Record -is [__] | Should -BeTrue
     }
 
@@ -167,24 +166,103 @@ Describe 'Types of Errors' {
             back to the next scope up. The error will be propagated upwards until either it reaches the console
             and is displayed (at which point all currently-executing scripts will stop) or it triggers a "catch"
             block which will handle the error.
-        #>
-        It 'is created with the throw keyword' {
 
+            The typical try/catch pattern looks like this:
+
+                try {
+                    # Code that might error.
+                }
+                catch [ExceptionType] {
+                    # Code that handles error.
+                    # In this block, $_ refers to the current ErrorRecord.
+                }
+                finally {
+
+                }
+
+            Note that specifying the exception type is optional. A "generic" catch block (no exception type
+            specified) will simply catch everything. If you know the errors you're looking for, it's often
+            best to only catch the ones you're expecting. If something else happens, you might make matters
+            worse by handling that the same way as the errors you were expecting.
+
+            A try{} block can be paired with either catch{}, finally{}, or both. In order words, all of the
+            following are valid and useful code patterns, depending on the circumstances.
+                - try { ~code~ } catch { ~code~ }
+                - try { ~code~ } finally { ~code~ }
+                - try { ~code~ } catch { ~code~ } finally { ~code~ }
+
+            The finally{} block will always run whether or not the commands in the try or catch blocks generate an error of any kind, so it is often useful for disposing of objects and other cleanup when it is needed.
+        #>
+
+        It 'can be created with the throw keyword' {
+            try {
+                throw "A red ball."
+            }
+            catch {
+                # A red ball is thrown... and what is caught?
+                $_ -is [__] | Should -BeTrue
+                $_.Exception -is [__] | Should -BeTrue
+                '__' | Should -Be $_.Exception.Message
+            }
         }
 
-        It 'is created by ThrowTerminatingError()' {
+        It 'can be created by ThrowTerminatingError()' {
+            # ThrowTerminatingError() can only be called from within an advanced function.
+            function Invoke-TerminatingError {
+                [CmldetBinding()]
+                param()
 
+                $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
+                    [System.Management.Automation.WildcardPatternException]::new("The pattern breaks."),
+                    'PSKoans.TestTerminatingError',
+                    [System.Management.Automation.ErrorCategory]::DeadlockDetected,
+                    @{ Secret = 'Blue' }
+                )
+
+                $PSCmdlet.ThrowTerminatingError($ErrorRecord)
+            }
+
+            try {
+                Invoke-TerminatingError
+            }
+            catch {
+                # What can we catch here?
+                $_ -is [__] | Should -BeTrue
+                $_.Exception -is [__] | Should -BeTrue
+                '__' | Should -Be $_.Exception.Message
+                '__' | Should -Be $_.TargetObject.Secret
+            }
         }
 
         It 'can be created by the Write-Error cmdlet' {
-
+            try {
+                # Provided, of course, we apply -ErrorAction Stop.
+                $Params = @{
+                    Message      = 'The writing upon the walls...'
+                    Category     = 'InvalidData'
+                    ErrorId      = 'PSKoans.Invalid'
+                    TargetObject = @('Chalk', 'Crayon', 'Marker', 'Pen', 'Pencil')
+                    ErrorAction  = 'Stop'
+                }
+                Write-Error @Params
+            }
+            catch {
+                $_ -is [__] | Should -BeTrue
+                [__] | Should -Be $_.Exception.GetType()
+                '__' | Should -Be $_.Exception.Message
+                @('__', '__', '__') | Should -Be $_.TargetObject[3..1]
+            }
         }
     }
-}
 
-Describe 'Proper Error Handling' {
+    <#
+        Selecting Error Types
 
-    Context 'Deciding Between Terminating and Non-Terminating' {
-
-    }
+        In general terms:
+        - Use the throw keyword when you intend to catch the error in the same function or script for further
+        handling, or you're writing a script to perform a series of tasks and you need to exit immediately
+        when the error occurs.
+        - Use the $PSCmdlet.ThrowTerminatingError(), $PSCmdlet.WriteError(), or their Write-Error equivalents
+        when you intend for the error to be handled by whoever is running the command you're writing.
+    #>
 }
