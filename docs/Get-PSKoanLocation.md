@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PSKoanLocation
 
 ## SYNOPSIS
-Retrieves the set folder location where PSKoans' koan files are stored.
+Gets the folder location where the current user's copy of the PSKoans lessons are stored.
 
 ## SYNTAX
 
@@ -17,16 +17,17 @@ Get-PSKoanLocation [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns the module-scoped PSKoanLocation variable.
+Gets the current value of the PSKoans working library path.
+This value defaults to `$HOME\PSKoans` but can be changed as you prefer.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Get-PSKoanLocation
-```
 
 C:\Users\Timmy\PSKoans
+```
 
 ## PARAMETERS
 
