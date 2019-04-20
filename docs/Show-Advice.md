@@ -1,7 +1,7 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version: https://github.com/vexx32/PSKoans
+online version: https://github.com/vexx32/PSKoans/tree/master/docs/Show-Advice.md
 schema: 2.0.0
 ---
 
@@ -18,8 +18,6 @@ Show-Advice [[-Name] <String>] [<CommonParameters>]
 
 ## DESCRIPTION
 Prints a piece of advice to the screen.
-
-Use Get-Advice to have a random piece of advice shown on each console start
 
 ## EXAMPLES
 

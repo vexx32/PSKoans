@@ -1,7 +1,7 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version: https://github.com/vexx32/PSKoans
+online version: https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md
 schema: 2.0.0
 ---
 
@@ -191,4 +191,3 @@ Module: PSKoans
 ## RELATED LINKS
 
 [https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
-

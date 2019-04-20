@@ -1,7 +1,7 @@
 ---
 Module Name: PSKoans
 Module Guid: 45003073-0315-4aef-862f-4d9ff1bd8f4a
-Download Help Link: {{ Update Download Link }}
+Download Help Link: https://github.com/vexx32/PSKoans/tree/master/docs/PSKoans.md
 Help Version: 0.50.0.0
 Locale: en-US
 ---
