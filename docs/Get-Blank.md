@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-Blank
 
 ## SYNOPSIS
-Returns $null
+Gets a blank item that does not equal anything.
 
 ## SYNTAX
 
@@ -17,25 +17,24 @@ Get-Blank [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Doesn't return any output.
-This function exists to permit tokens such as __
-to be used without quotation marks where they would be situationally appropriate.
+Gets a blank object that is never equal to anything, including itself.
+This function exists to permit blank spaces such as `__` to be used without quotation marks where it is situationally appropriate.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Get-Blank
-```
 
-\<no output\>
+# no output
+```
 
 ### EXAMPLE 2
 ```
 __
-```
 
-\<no output\>
+# no output
+```
 
 ## PARAMETERS
 
@@ -48,8 +47,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### Blank
 ## NOTES
-Author: Joel Sallow
-Module: PSKoans
 
 ## RELATED LINKS
 
