@@ -5,21 +5,21 @@ param()
 <#
     Error Handling in PowerShell
 
-    PowerShell handles errors via the System.Management.Automation.ErrorRecord class. These objects form
-    the basic unit of "an error" in PowerShell.
+    PowerShell handles errors via the instances of the System.Management.Automation.ErrorRecord class.
+    Each ErrorRecord object contains all the information available about an error.
 
-    Errors can be flagged as terminating or non-terminating based on a few different criteria, largely
-    determined by the command that creates the error. Terminating errors can be paired with try/catch
-    patterns that allow more granular control over exactly how the error is handled.
+    Errors come in two main flavours: terminating and non-terminating. The type you get is determined
+    by the command that created the error. Generally speaking, if the command can continue processing
+    items it will throw a non-terminating error, and otherwise it will throw a terminating error.
+
+    Terminating errors can be paired with try/catch patterns that allow more granular control over
+    exactly how the error is handled, while non-terminating errors can be handled with the
+    $ErrorActionPreference and -ErrorAction variables.
 #>
 
 Describe 'ErrorRecord' {
-    <#
-        All error types in PowerShell are accompanied by an ErrorRecord, which contains a lot of
-        metadata that you can work with if you come across an error.
-    #>
     BeforeAll {
-        $Record = try {
+        $ErrorRecord = try {
             throw "A challenge to the sky!"
         }
         catch {
@@ -29,18 +29,18 @@ Describe 'ErrorRecord' {
 
     It 'is an ErrorRecord' {
         # At times, even tautologies can make sense of what is, and is not.
-        $Record -is [__] | Should -BeTrue
+        $ErrorRecord -is [__] | Should -BeTrue
     }
 
     It 'always contains a reference to an Exception' {
-        $Record.Exception | Should -Not -BeNullOrEmpty
-        $Record.Exception -is [__] | Should -BeTrue
-        "__" | Should -Be $Record.Exception.Message
+        $ErrorRecord.Exception | Should -Not -BeNullOrEmpty
+        $ErrorRecord.Exception -is [__] | Should -BeTrue
+        "__" | Should -Be $ErrorRecord.Exception.Message
     }
 
     It 'sometimes has a reference to the object that caused the error' {
         # But not always!
-        $Record.TargetObject | Should -BeNullOrEmpty
+        $ErrorRecord.TargetObject | Should -BeNullOrEmpty
 
         # Non-terminating error behaviour can be adjusted with the -ErrorAction parameter.
         Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
@@ -56,7 +56,7 @@ Describe 'ErrorRecord' {
     }
 
     It 'can be assigned one of the preset categories' {
-        '__' -as [System.Management.Automation.ErrorCategory] | Should -Be $Record.CategoryInfo.Category
+        '__' -as [System.Management.Automation.ErrorCategory] | Should -Be $ErrorRecord.CategoryInfo.Category
     }
 
     It 'will usually specify an ErrorID' {
@@ -64,14 +64,14 @@ Describe 'ErrorRecord' {
             These ID strings are generally used to identify the source of the error and help distinguish
             between multiple similarly-typed errors.
         #>
-        '__' | Should -Be $Record.FullyQualifiedErrorId
+        '__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
     }
 
     It 'contains an InvocationInfo reference' {
         # InvocationInfo is a quick snapshot of the surrounding environment when the error happened.
-        __ | Should -Be $Record.InvocationInfo.ScriptLineNumber
-        __ | Should -Be $Record.InvocationInfo.PipelineLength
-        '+ __' | Should -Be $Record.InvocationInfo.PositionMessage
+        __ | Should -Be $ErrorRecord.InvocationInfo.ScriptLineNumber
+        __ | Should -Be $ErrorRecord.InvocationInfo.PipelineLength
+        '+ __' | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
     }
 }
 
@@ -83,18 +83,23 @@ Describe 'Types of Errors' {
               - Using the Write-Error cmdlet.
               - Using the $PSCmdlet.WriteError() method in an advanced function.
 
-            Non-terminating errors are an indication that a requested action could not be performed,
-            or a resource that was specifically requested is not available.
+            Non-terminating errors are an indication that something went wrong, but that the issue only
+            affects a single item being processed; if there are more items to process, the command will
+            continue to do so.
 
-            These errors will not terminate execution, allowing pipelines to carry on processing for
-            all other input they may receive. Their behaviour can be modified by the -ErrorAction
-            common parameter available on all cmdlets and advanced functions. The available values
-            for the -ErrorAction parameter are:
-              - Continue: As per normal, non-terminating errors are displayed and processing continues.
-              - Ignore: Non-terminating errors are completely suppressed and not recorded in transcripts and $Error.
-              - Inquire: Errors will pause execution and prompt the user for the desired action.
-              - SilentlyContinue: Similar to Ignore, but errors are still recorded for later handling if needed.
-              - Stop: Treat all errors as terminating errors.
+            The behaviour of this type of error can be altered by the -ErrorAction common parameter
+            available on all cmdlets and advanced functions. The available values for the -ErrorAction
+            parameter are:
+              - Continue
+                    As per normal, non-terminating errors are displayed and processing continues. (Default)
+              - Ignore
+                    Non-terminating errors are completely suppressed and not recorded in transcripts and $Error.
+              - Inquire
+                    Errors will pause execution and prompt the user for the desired action.
+              - SilentlyContinue
+                    Similar to Ignore, but errors are still recorded for later handling if needed.
+              - Stop
+                    Treat all errors as terminating errors.
         #>
         BeforeAll {
             function Write-SimpleError {
@@ -130,24 +135,24 @@ Describe 'Types of Errors' {
 
         It 'is emitted with the Write-Error cmdlet' {
             # The redirection operators can be used to more easily retrieve non-standard output, like errors
-            $Error = Test-SimpleWriteError 2>&1
+            $ErrorRecord = Test-SimpleWriteError 2>&1
 
-            '__' | Should -Be $Error.GetType().Name
+            '__' | Should -Be $ErrorRecord.GetType().Name
         }
 
         It 'can be customized in detail with the Write-Error cmdlet' {
-            $Record = Write-DetailedError 2>&1
+            $ErrorRecord = Write-DetailedError 2>&1
 
-            '__' | Should -Be $Record.Exception.Message
-            '__.__' | Should -Be $Record.FullyQualifiedErrorId
-            '__' | Should -Be $Record.TargetObject.Name
-            '__' | Should -Be $Record.ErrorDetails.RecommendedAction
+            '__' | Should -Be $ErrorRecord.Exception.Message
+            '__.__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
+            '__' | Should -Be $ErrorRecord.TargetObject.Name
+            '__' | Should -Be $ErrorRecord.ErrorDetails.RecommendedAction
         }
 
         It 'is created by WriteError()' {
-            $Record = Write-ErrorWithMethod 2>&1
-            '__' | Should -Be $Record.FullyQualifiedErrorId
-            '__' | Should -Be $Record.TargetObject.ToString()
+            $ErrorRecord = Write-ErrorWithMethod 2>&1
+            '__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
+            '__' | Should -Be $ErrorRecord.TargetObject.ToString()
         }
     }
 
@@ -158,14 +163,10 @@ Describe 'Types of Errors' {
               - The $PSCmdlet.ThrowTerminatingError() method.
               - Using -ErrorAction Stop on any cmdlet or advanced function that generates a non-terminating error.
 
-            Note that -ErrorAction only affects errors which are created as non-terminating. Errors that are
-            created as terminating cannot be guided via the -ErrorAction common parameter and will always be
-            regarded as terminating.
-
-            Terminating errors will terminate all further execution at the scope they occur in, and pass control
-            back to the next scope up. The error will be propagated upwards until either it reaches the console
-            and is displayed (at which point all currently-executing scripts will stop) or it triggers a "catch"
-            block which will handle the error.
+            Terminating errors will terminate all further execution at the level they occur in, and pass control
+            to the command that called the currently executing code. They will travel up the execution stack until
+            either they are handled with a catch{} block, or all commands terminate and the error is dumped into the
+            console. -ErrorAction has no effect on terminating errors.
 
             The typical try/catch pattern looks like this:
 
@@ -180,18 +181,31 @@ Describe 'Types of Errors' {
 
                 }
 
-            Note that specifying the exception type is optional. A "generic" catch block (no exception type
-            specified) will simply catch everything. If you know the errors you're looking for, it's often
-            best to only catch the ones you're expecting. If something else happens, you might make matters
-            worse by handling that the same way as the errors you were expecting.
+            Specifying the exception type is optional, the default is to catch everything. If you know the types
+            of errors you're looking for, it's often best to only catch the ones you're expecting. For example,
+            if you handle an error like this:
 
-            A try{} block can be paired with either catch{}, finally{}, or both. In order words, all of the
-            following are valid and useful code patterns, depending on the circumstances.
-                - try { ~code~ } catch { ~code~ }
-                - try { ~code~ } finally { ~code~ }
-                - try { ~code~ } catch { ~code~ } finally { ~code~ }
+            try { Start-Action } catch { Write-Host "There was an error." }
+
+            When an error occurs, whoever called your code has absolutely no possible way to get at the
+            information in the original error. No matter how much detail you put in your string of text,
+            you'll be hard-pressed to match the level of detail available in ErrorRecords. Instead, you can
+            re-throw the ErrorRecord you receive once you've, for example, logged the error somewhere:
+
+            try { Start-Action } catch { Write-Log $_.Exception.Message; throw $_ }
+
+            Valid try/catch/finally patterns include:
+                - try { } catch { }
+                - try { } finally { }
+                - ret { } catch { } finally { }
+
+            (Multiple catch{} blocks can be used to catch various kinds of errors.)
 
             The finally{} block will always run whether or not the commands in the try or catch blocks generate an error of any kind, so it is often useful for disposing of objects and other cleanup when it is needed.
+
+            trap { } is a similar statement to catch { }, except that it treats its whole scope as though it is a try block, and catches any targeted error type indiscriminately. It sees little use in PowerShell as it tends
+            to limit the readability and ease of debugging one can do without modifying the code for debugging
+            purposes.
         #>
 
         It 'can be created with the throw keyword' {
@@ -203,6 +217,38 @@ Describe 'Types of Errors' {
                 $_ -is [__] | Should -BeTrue
                 $_.Exception -is [__] | Should -BeTrue
                 '__' | Should -Be $_.Exception.Message
+            }
+        }
+
+        It 'can catch specific types of errors based on Exception type' {
+            try {
+                throw [ExecutionEngineException]::new('Catch me if you can!')
+            }
+            catch [System.Management.Automation.RuntimeException] {
+                Should -Fail -Because "We caught the wrong error type!"
+            }
+            catch [ExecutionEngineException] {
+                '__' | Should -Be $_.Exception.Message
+                '__' | Should -Be $_.Exception.GetType().Name
+            }
+            catch {
+                Should -Fail -Because "This block shold only trigger if we don't handle the specific type separately."
+            }
+        }
+
+        It 'can execute a finally{} block regardless of the error state' {
+            try {
+                $Value = 0
+                try {
+                    throw [Exception]::new('Something is wrong; abort!')
+                }
+                finally {
+                    $Value++
+                }
+            }
+            catch {
+                # When something upstream catches the error, we can see the finally{} block still executed.
+                __ | Should -Be $Value
             }
         }
 
