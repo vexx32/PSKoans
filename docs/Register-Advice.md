@@ -18,7 +18,7 @@ Register-Advice [[-TargetProfile] <String>] [-WhatIf] [-Confirm] [<CommonParamet
 
 ## DESCRIPTION
 Causes powershell to write a random piece of advice on each start.
-This is done by creating / modifying the powershell profile.
+This is done by creating / modifying the powershell profile to call `Show-Advice` on each session start.
 
 ## EXAMPLES
 
@@ -32,7 +32,13 @@ Causes powershell to write a random piece of advice on each start.
 ## PARAMETERS
 
 ### -TargetProfile
-{{ Fill TargetProfile Description }}
+Specify a named profile to modify.
+Valid values are:
+
+- CurrentUserCurrentHost (Default)
+- CurrentUserAllHosts
+- AllUsersCurrentHost
+- AllUsersAllHosts
 
 ```yaml
 Type: String
@@ -47,7 +53,7 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
-Prompts you for confirmation before running the cmdlet.
+Prompts you for confirmation before modifying your profile.
 
 ```yaml
 Type: SwitchParameter
