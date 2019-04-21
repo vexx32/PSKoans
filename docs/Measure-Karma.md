@@ -43,31 +43,31 @@ corrections for success.
 Measure-Karma
 ```
 
-Assesses the results of the Pester tests, and builds the meditation prompt.
+Assesses the koan lessons, and displays the meditation prompt with the results.
 
 ### EXAMPLE 2
 ```
-meditate -Contemplate
+Measure-Karma -Contemplate
 ```
 
-Opens the user's koans folder, housed in '$home\PSKoans'.
-If VS Code is in $env:Path,
-opens in VS Code.
+Opens the user's koans folder, housed in `home\PSKoans`.
+If VS Code is in `$env:Path`, opens VS Code to the workspace location.
+Otherwise, the folder is opened in a file explorer.
 
 ### EXAMPLE 3
 ```
 Measure-Karma -Reset
 ```
 
-Prompts for confirmation, before wiping out the user's koans folder and restoring it back
-to its initial state.
+Prompts for confirmation before wiping out the user's koans folder and restoring it back to its initial state.
+This can be used to completely reset the koan files whenever needed, or to populate a new location with fresh koans after using `Set-PSKoanLocation`.
 
 When used with -Topic, only the specified topics are reset.
 
 ## PARAMETERS
 
 ### -ClearScreen
-{{ Fill ClearScreen Description }}
+Clears the console host before displaying the meditation prompt.
 
 ```yaml
 Type: SwitchParameter
@@ -82,9 +82,11 @@ Accept wildcard characters: False
 ```
 
 ### -Contemplate
-Opens your local koan folder.
-If you'd like PSKoans to use VS Code Insiders, set $env:PSKoans_EditorPreference
-equal to "code-insiders".
+Opens your local koans library.
+If VS Code is installed, it will start VS Code in the folder.
+Otherwise, the folder is simply opened in a file explorer.
+
+If you have VS Code Insiders installed, you can set `$env:PSKoans_EditorPreference = "code-insiders"` to indicate VS Code Insiders should be opened instead.
 
 ```yaml
 Type: SwitchParameter
@@ -114,8 +116,11 @@ Accept wildcard characters: False
 ```
 
 ### -Reset
-Resets everything in your local koan folder to a blank slate.
+Resets everything in your local koan folder to the initial state.
 Use with caution.
+This can be used after using `Set-PSKoanLocation` to a new directory to get started.
+
+If combined with `-Topic`, resets only the specified topics.
 
 ```yaml
 Type: SwitchParameter
@@ -133,6 +138,8 @@ Accept wildcard characters: False
 Execute koans only from the selected Topic(s).
 Regex patterns are permitted.
 
+If combined with `-Reset`, the specified topics are reset to their initial states.
+
 ```yaml
 Type: String[]
 Parameter Sets: Default, Reset
@@ -146,7 +153,8 @@ Accept wildcard characters: False
 ```
 
 ### -Confirm
-Prompts you for confirmation before running the cmdlet.
+Prompts for confirmation before making any changes.
+Use with -Reset to always be prompted before any changes are made.
 
 ```yaml
 Type: SwitchParameter
@@ -161,8 +169,7 @@ Accept wildcard characters: False
 ```
 
 ### -WhatIf
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
+When used with -Reset, displays what will be reset without actually resetting anything.
 
 ```yaml
 Type: SwitchParameter
@@ -185,8 +192,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.Void
 ## NOTES
-Author: Joel Sallow
-Module: PSKoans
 
 ## RELATED LINKS
 
