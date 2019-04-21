@@ -4,7 +4,7 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
     [object] Transform([EngineIntrinsics]$engineIntrinsics, [object] $inputData) {
         switch ($inputData) {
 
-            {$_ -is [string]} {
+            { $_ -is [string] } {
 
                 if (-not (Test-Path -Path $_ -PathType Container -IsValid)) {
                     throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
@@ -24,7 +24,7 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
 
             }
 
-            {$_ -is [System.IO.FileSystemInfo]} {
+            { $_ -is [System.IO.FileSystemInfo] } {
 
                 if (-not (Test-Path -Path $_.FullName -PathType Container)) {
                     throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
@@ -41,30 +41,8 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
 }
 
 function Set-PSKoanLocation {
-    <#
-    .SYNOPSIS
-        Sets the PSKoans folder location where koans files will be stored and retrieved.
-
-    .DESCRIPTION
-        Sets the module-scoped PSKoanLocation variable in order to modify where the module looks for and
-        stores its koans lesson files.
-
-    .PARAMETER Path
-        Specify the path to set the koan location to
-
-    .EXAMPLE
-        Set-PSKoanLocation -Path C:\PSKoans
-        Measure-Karma
-
-        Sets the koan folder location to 'C:\PSKoans' and then invokes Measure-Karma to examine that location
-        for koans files.
-    .NOTES
-        The PSKoans folder specified will become the location to look for koans files. If this location
-        is empty or nonexistent, it will be created and populated with a pristine copy of the koans library
-        when Measure-Karma is run next.
-    #>
-
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium',
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Set-PSKoanLocation.md')]
     [OutputType([void])]
     param(
         [Parameter(Mandatory, Position = 0)]

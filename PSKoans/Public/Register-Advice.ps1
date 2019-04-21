@@ -1,18 +1,6 @@
 ﻿function Register-Advice {
-    <#
-	.SYNOPSIS
-		Causes powershell to write a random piece of advice on each start.
-
-	.DESCRIPTION
-		Causes powershell to write a random piece of advice on each start.
-		This is done by creating / modifying the powershell profile.
-
-	.EXAMPLE
-		Register-Advice
-
-		Causes powershell to write a random piece of advice on each start.
-#>
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Register-Advice.md')]
     [OutputType([void])]
     param(
         [Parameter(Position = 0)]
