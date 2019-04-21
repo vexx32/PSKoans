@@ -603,6 +603,10 @@ C:\Users\Timmy\PSKoans</dev:code>
         <maml:linkText>Online Version:</maml:linkText>
         <maml:uri>https://github.com/vexx32/PSKoans/tree/master/docs/Register-Advice.md</maml:uri>
       </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>https://github.com/vexx32/PSKoans</maml:linkText>
+        <maml:uri>https://github.com/vexx32/PSKoans</maml:uri>
+      </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
