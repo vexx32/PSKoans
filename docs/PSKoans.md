@@ -22,7 +22,7 @@ This command returns a blank item that never equals anything.
 
 ### [Get-PSKoanLocation](Get-PSKoanLocation.md)
 Retrieves the currently set PSKoans working folder path.
-By default, this is set to `$env:HOME\PSKoans`.
+By default, this is set to `$HOME\PSKoans`.
 
 ### [Measure-Karma](Measure-Karma.md)
 The bread and butter of PSKoans.
