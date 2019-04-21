@@ -18,6 +18,7 @@ Show-Advice [[-Name] <String>] [<CommonParameters>]
 
 ## DESCRIPTION
 Prints a piece of advice to the screen.
+Advice snippets are stored in a small library file in the module folder.
 
 ## EXAMPLES
 
@@ -31,7 +32,7 @@ Print a random piece of advice to the screen.
 ## PARAMETERS
 
 ### -Name
-The name of the specific advice to display.
+The title or name of the specific advice snippet to display.
 
 ```yaml
 Type: String
@@ -56,3 +57,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
