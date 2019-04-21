@@ -33,8 +33,7 @@ Measure-Karma [-Contemplate] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParamet
 ```
 
 ## DESCRIPTION
-Measure-Karma executes Pester against the koans to evaluate if you have made the necessary
-corrections for success.
+Measure-Karma executes Pester against the koans to evaluate if you have made the necessary corrections for success.
 
 ## EXAMPLES
 

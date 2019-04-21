@@ -28,8 +28,7 @@ Set-PSKoanLocation -Path C:\PSKoans
 Measure-Karma
 ```
 
-Sets the koan folder location to 'C:\PSKoans' and then invokes Measure-Karma to examine that location
-for koan files.
+Sets the koan folder location to 'C:\PSKoans' and then invokes Measure-Karma to examine that location for koan files.
 
 ## PARAMETERS
 
