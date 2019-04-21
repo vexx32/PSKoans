@@ -1,42 +1,6 @@
 ﻿function Measure-Karma {
-    <#
-	.SYNOPSIS
-        Reflect on your progress and check your answers.
-    .DESCRIPTION
-        Measure-Karma executes Pester against the koans to evaluate if you have made the necessary
-        corrections for success.
-    .PARAMETER Topic
-        Execute koans only from the selected Topic(s). Regex patterns are permitted.
-    .PARAMETER ListTopics
-        Output a complete list of available koan topics.
-    .PARAMETER Contemplate
-        Opens your local koan folder. If you'd like PSKoans to use VS Code Insiders, set $env:PSKoans_EditorPreference
-	    equal to "code-insiders".
-	.PARAMETER Reset
-        Resets everything in your local koan folder to a blank slate. Use with caution.
-    .EXAMPLE
-        Measure-Karma
-
-        Assesses the results of the Pester tests, and builds the meditation prompt.
-    .EXAMPLE
-        meditate -Contemplate
-
-        Opens the user's koans folder, housed in '$home\PSKoans'. If VS Code is in $env:Path,
-        opens in VS Code.
-    .EXAMPLE
-        Measure-Karma -Reset
-
-        Prompts for confirmation, before wiping out the user's koans folder and restoring it back
-        to its initial state.
-
-        When used with -Topic, only the specified topics are reset.
-    .LINK
-        https://github.com/vexx32/PSKoans
-    .NOTES
-        Author: Joel Sallow
-        Module: PSKoans
-	#>
-    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default")]
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default",
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md')]
     [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
     param(
@@ -48,8 +12,8 @@
                 param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
                 $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                    Sort-Object -Property BaseName |
-                    ForEach-Object {
+                Sort-Object -Property BaseName |
+                ForEach-Object {
                     $_.BaseName -replace '\.Koans$'
                 }
 
@@ -81,8 +45,8 @@
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
             Get-PSKoanLocation |
-                Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
-                ForEach-Object {
+            Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
+            ForEach-Object {
                 $_.BaseName -replace '\.Koans$'
             }
         }
@@ -181,8 +145,8 @@
 
             if ($PesterTests.FailedCount -gt 0) {
                 $NextKoanFailed = $PesterTests.TestResult |
-                    Where-Object Result -eq 'Failed' |
-                    Select-Object -First 1
+                Where-Object Result -eq 'Failed' |
+                Select-Object -First 1
 
                 $Meditation = @{
                     DescribeName = $NextKoanFailed.Describe

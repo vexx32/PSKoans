@@ -1,25 +1,5 @@
 ﻿function Get-Blank {
-    <#
-    .SYNOPSIS
-        Returns $null
-    .DESCRIPTION
-        Doesn't return any output. This function exists to permit tokens such as __
-        to be used without quotation marks where they would be situationally appropriate.
-    .EXAMPLE
-        Get-Blank
-
-        <no output>
-    .EXAMPLE
-        __
-
-        <no output>
-    .NOTES
-        Author: Joel Sallow
-        Module: PSKoans
-    .LINK
-        https://github.com/vexx32/PSKoans
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-Blank.md')]
     [OutputType('Blank')]
     [Alias('__', 'FILL_ME_IN')]
     param()

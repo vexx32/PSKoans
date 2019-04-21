@@ -1,17 +1,5 @@
 function Get-PSKoanLocation {
-    <#
-    .SYNOPSIS
-        Retrieves the set folder location where PSKoans' koan files are stored.
-
-    .DESCRIPTION
-        Returns the module-scoped PSKoanLocation variable.
-
-    .EXAMPLE
-        Get-PSKoanLocation
-
-        C:\Users\Timmy\PSKoans
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanLocation.md')]
     [OutputType([string])]
     param()
     process {
