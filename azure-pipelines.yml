@@ -3,7 +3,15 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 name: Build & Test - Azure
-# All branches are default. ?
+
+trigger:
+  branches:
+    include:
+      - master
+  tags:
+    include:
+      - '*'
+
 pr:
 - master
 
