@@ -25,16 +25,16 @@ This function exists to permit blank spaces such as `__` to be used without quot
 ### EXAMPLE 1
 ```
 Get-Blank
-
-# no output
 ```
+
+Returns a blank object.
 
 ### EXAMPLE 2
 ```
 __
-
-# no output
 ```
+
+Returns a blank object.
 
 ## PARAMETERS
 
