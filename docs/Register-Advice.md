@@ -94,3 +94,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
