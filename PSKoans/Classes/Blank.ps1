@@ -3,6 +3,10 @@ class Blank {
         return $null
     }
 
+    [bool] Equals([object] $other) {
+        return $false
+    }
+
     static [bool] op_Equality([Blank] $self, [object] $other) {
         return $false
     }
@@ -12,10 +16,10 @@ class Blank {
     }
 
     static [bool] op_Explicit([Blank] $Instance) {
-        return $false
+        return $null
     }
 
     static [bool] op_Implicit([Blank] $Instance) {
-        return $false
+        return $null
     }
 }
