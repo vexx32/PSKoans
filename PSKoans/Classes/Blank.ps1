@@ -16,10 +16,10 @@ class Blank {
     }
 
     static [bool] op_Explicit([Blank] $Instance) {
-        return $null
+        return $false
     }
 
     static [bool] op_Implicit([Blank] $Instance) {
-        return $null
+        return $false
     }
 }
