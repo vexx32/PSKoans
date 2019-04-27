@@ -33,7 +33,7 @@ Describe "Invoke-DbaQuery" {
         does, by using the -SqlInstance parameter.
         Complete the below command to query "localhost" using Invoke-DbaQuery.
     #>
-    $Bar = Invoke-DbaQuery -SqlInstance ____ -Query "SELECT DB_NAME() AS database_name;"
+    $Bar = Invoke-DbaQuery -SqlInstance __ -Query "SELECT DB_NAME() AS database_name;"
     $Bar.database_name | Should -Be 'master'
 
     <#
@@ -42,7 +42,7 @@ Describe "Invoke-DbaQuery" {
         The T-SQL command @@SERVERNAME returns the name of the server that the database is on. We can
         use this to see what instance we are connected to.
     #>
-    $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS ____;"
+    $ManyServers = 'localhost', 'localhost\SQLDEV2K14' | Invoke-DbaQuery -Query "SELECT @@SERVERNAME AS __;"
     $ManyServers.server_name | Should -BeIn 'localhost', 'localhost\SQLDEV2K14'
 
     <#
@@ -56,7 +56,7 @@ Describe "Invoke-DbaQuery" {
     $InvokeDbaQueryParams = @{
         SqlInstance = 'localhost'
         Database    = 'tempdb'
-        File        = ____
+        File        = __
     }
     $DbResult = Invoke-DbaQuery @InvokeDbaQueryParams
     $DbResult.Origin | Should -Be 'From a File'
@@ -83,7 +83,7 @@ Describe "Invoke-DbaQuery" {
     $InvokeDbaQueryParam02 = @{
         SqlInstance = 'localhost'
         Query = 'SELECT PersonName, PhoneNumber FROM PhoneBook WHERE PersonName = @name'
-        SqlParameters = @{ name = ____ }
+        SqlParameters = @{ name = __ }
     }
     $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam01
     $SqlParamResult02.PersonName | Should -Be 'Frank'
