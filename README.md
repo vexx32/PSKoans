@@ -29,16 +29,16 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 
 ## Prerequisites
 
-The PowerShell Koans need PowerShell version 5.1 or Core 6+ to be run.
-Make sure that you have a sufficient version installed before starting the project.
-You will also need the most recent version of Pester installed.
-To do so, please run:
+- Windows PowerShell version 5.1 / PowerShell 6+
+- Pester
+
+To install the latest version of Pester, use the appropriate command for your version of PowerShell:
 
 ```PowerShell
 # PS 5.1 (upgrade to latest Pester)
 Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 
-# PS Core 6.0+ (Install Pester under current user)
+# PS 6.0+ (Install Pester under current user)
 Install-Module Pester -Scope CurrentUser
 ```
 
@@ -51,7 +51,7 @@ Install-Module Pester -Scope CurrentUser
 ### Or clone the Repo
 
 1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
-2. Then from a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
+2. From a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 4. Add the repository folder to `$env:PSModulePath` so that PowerShell can see it.
    - From the repository main folder, run: `$env:PSModulePath = "$(Get-Location)$([IO.Path]::PathSeparator)${env:PSModulePath}"`
@@ -62,32 +62,39 @@ Install-Module Pester -Scope CurrentUser
 
 You will be presented with a page describing your goal:
 
-```diff
+```code
     Welcome, seeker of enlightenment.
     Please wait a moment while we examine your karma...
 
 Describing 'Equality' has damaged your karma.
 
--    You have not yet reached enlightenment.
+    You have not yet reached enlightenment.
 
     The answers you seek...
 
-- Expected $true, but got $null.
+Expected strings to be the same, but they were different.
+Expected length: 5
+Actual length:   2
+Strings differ at index 0.
+Expected: 'True!'
+But was:  '__'
+-----------^
 
     Please meditate on the following code:
 
-- [It] is a simple comparison
-- at <ScriptBlock>, ...\Foundations\AboutAssertions.Koans.ps1: line 27
-- 27:         __ | Should -Be $true
+[It] expects you to fill in values
+at <ScriptBlock>, C:\Users\Joel\PSKoans\Foundations\AboutAssertions.Koans.ps1: line 32
+32:        '__' | Should -Be 'True!'
 
-    Even if you speak of the wonder of it all,
-    How do you deal with each thing changing?
+    ▌ Mountains are merely mountains.
 
-    Your path thus far:
+    You examine the path beneath your feet...
 
- [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/246
+ [AboutAssertions]: [――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/4
 
-You may run 'Measure-Karma -Meditate' to begin your meditation.
+ [Total]: [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/279
+
+Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
 ```
 
 Inspect the red messages carefully, most importantly the last one.
@@ -101,41 +108,45 @@ Navigate to `Foundations\AboutAssertions.Koans.ps1`. Near the top you'll see:
 ```powershell
 It 'is a simple comparison' {
     # Some truths are absolute.
-    __ | Should -Be $true
+    '__' | Should -Be 'True!'
 }
 ```
 
-The `__` represents a blank for you to fill, and `| Should -Be $true` shows the expected result.
-To pass this koan you need to replace `__` with `$true`, like this: `$true | Should -Be $true`.
+The `__` represents a blank for you to fill, and `| Should -Be 'True!'` shows the expected result.
+To pass this koan you need to replace `__` with `True!`, like this: `'True!' | Should -Be 'True!'`.
 
 #### 3. Run `Measure-Karma` again to see how you did
 
 You passed your first koan!
-You'll notice that your progress updated to `1/246` and you are presented with the next challenge.
+You'll notice that your overall progress updated to `1/279` and you are presented with the next challenge.
 
-```diff
+```code
     Welcome, seeker of enlightenment.
     Please wait a moment while we examine your karma...
 
 Describing 'Equality' has damaged your karma.
 
--    You have not yet reached enlightenment.
+    You have not yet reached enlightenment.
 
     The answers you seek...
 
-- Expected '__', but got 3.
+Expected 3, but got .
 
     Please meditate on the following code:
 
-- [It] expects you to fill in values
-- at <ScriptBlock>, ...\Foundations\AboutAssertions.Koans.ps1: line 32
-- 32:         1 + 2 | Should -Be __
+[It] expects you to fill in values
+at <ScriptBlock>, C:\Users\Joel\PSKoans\Foundations\AboutAssertions.Koans.ps1: line 32
+32:        __ | Should -Be (1 + 2)
 
-    Make the mountains dance.
+    ▌ The most important thing is to find out what is the most important thing.
 
-    Your path thus far:
+    You examine the path beneath your feet...
 
-+ [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/246
+ [AboutAssertions]: [▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰―――――――――――――――――――――――――――――――――――――――――――――] 1/4
+
+ [Total]: [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/279
+
+Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
 ```
 
  You are on your own from here, but the progression should be fairly smooth.
