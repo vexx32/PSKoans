@@ -1,8 +1,6 @@
 # PowerShell Koans
 
-|Build Status|
-|      :---:      |
-| [![Build Status](https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI)](https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1) |
+| ![PSKoans Logo](./logo-128px.png) | [![Build Status][build-badge]][build-link] |
 
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
 Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test.
@@ -185,3 +183,6 @@ We're more than happy to offer our own suggestions and help for your ideas!
 
 If you just want to make a general comment, some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue.
 I try to keep up to speed with those as best I can. :smile:
+
+[build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
+[build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
