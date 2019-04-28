@@ -1,6 +1,6 @@
 # PowerShell Koans
 
-| ![PSKoans Logo](./logo-128px.png)        |
+| ![PSKoans Logo](./logo.svg)        |
 | :--------------------------------------: |
 |[![Build Status][build-badge]][build-link]|
 
