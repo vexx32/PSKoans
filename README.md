@@ -1,8 +1,8 @@
 # PowerShell Koans
 
-| ![PSKoans Logo](./logo.svg)        |
-| :--------------------------------------: |
-|[![Build Status][build-badge]][build-link]|
+| [![PSKoans Logo](./logo-128px.png)](./logo.svg) |
+| :---------------------------------------------: |
+| [![Build Status][build-badge]][build-link]      |
 
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
 Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test.
