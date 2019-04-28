@@ -85,10 +85,10 @@ function Show-MeditationPrompt {
         $RequestedTopic
     )
     begin {
-        $Red = @{ForegroundColor = 'Red'}
-        $Blue = @{ForegroundColor = 'Cyan'}
-        $White = @{ForegroundColor = 'Yellow'}
-        $Koan = ($script:MeditationStrings | Get-Random) -replace '^|\r?(\n)', ('$1    {0} ' -f [char]0x258c)
+        $Red = @{ForegroundColor = 'Red' }
+        $Blue = @{ForegroundColor = 'Cyan' }
+        $White = @{ForegroundColor = 'Yellow' }
+        $Koan = (Get-Random -InputObject $script:MeditationStrings) -replace '^|\r?(\n)', ('$1    {0} ' -f [char]0x258c)
         $TopicList = ($RequestedTopic -join "`n        - ")
 
         # Get the first usable value for the console width
@@ -134,23 +134,25 @@ function Show-MeditationPrompt {
                 if ($RequestedTopic.Count -ne 1) {
                     [int] $PortionDone = ($CurrentTopic['Completed'] / $CurrentTopic['Total']) * $TopicProgressWidth
 
-                    " [{3}]: [{0}{1}] {2}" -f @(
+                    $ProgressBar = " [{3}]: [{0}{1}] {2}" -f @(
                         "$([char]0x25b0)" * $PortionDone
                         "$([char]0x2015)" * ($TopicProgressWidth - $PortionDone)
                         $TopicProgressAmount
                         $CurrentTopic['Name']
-                    ) | Write-Host @Blue
+                    )
+                    Write-Host $ProgressBar @Blue
                 }
                 #endregion TopicProgressBar
                 Write-Host
                 #region TotalProgressBar
                 [int] $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
-                " [Total]: [{0}{1}] {2}" -f @(
-                    "$([char]0x25b0)" * $PortionDone
+                $ProgressBar = " [Total]: [{0}{1}] {2}" -f @(
+                    "$([char]0x25a0)" * $PortionDone
                     "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
                     $TotalProgressAmount
-                ) | Write-Host @Blue
+                )
+                Write-Host $ProgressBar @Blue
 
                 Write-Host @Blue $script:MeditationPrompts['OpenFolder']
                 #endregion TotalProgressBar
@@ -169,11 +171,12 @@ function Show-MeditationPrompt {
                 [int]$ProgressWidth = $host.UI.RawUI.WindowSize.Width * 0.8 - ($TotalProgressAmount.Length + 4)
                 $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
-                " [{0}{1}] {2}" -f @(
+                $ProgressBar = " [{0}{1}] {2}" -f @(
                     "$([char]0x25a0)" * $PortionDone
                     "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
                     $TotalProgressAmount
-                ) | Write-Host @Blue
+                )
+                Write-Host $ProgressBar @Blue
 
                 if (-not $PSBoundParameters.ContainsKey('Topic')) {
                     Write-Host @Blue $script:MeditationPrompts['BookSuggestion']
