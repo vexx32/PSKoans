@@ -65,16 +65,16 @@ Describe "Invoke-DbaQuery" {
         T-SQL may seem like a strict, rigid language. We have a script that returns a value or values.
         If we want to get different values then we will have to change the full query. 
         From
-            "SELECT PersonName, PhoneNumber FROM PhoneBook WHERE PersonName = 'Bob';"
+            "SELECT PersonName FROM Student WHERE PersonName = 'Bob';"
         to
-            "SELECT PersonName, PhoneNumber FROM PhoneBook WHERE PersonName = 'Ross';"
+            "SELECT PersonName FROM Student WHERE PersonName = 'Robert';"
         In the above example, we only want to change what the name is equal to. Invoke-DbaQuery allows
         you to specify what this value is equal to by passing in a parameter.
         All we have to do is pass in a hashtable with the name of the parameter and the value we want.
     #>
     $InvokeDbaQueryParam01 = @{
         SqlInstance = 'localhost'
-        Query = 'SELECT PersonName, PhoneNumber FROM PhoneBook WHERE PersonName = @name'
+        Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
         SqlParameters = @{ name = 'Bob' }
     }
     $SqlParamResult01 = Invoke-DbaQuery @InvokeDbaQueryParam01
@@ -82,10 +82,10 @@ Describe "Invoke-DbaQuery" {
 
     $InvokeDbaQueryParam02 = @{
         SqlInstance = 'localhost'
-        Query = 'SELECT PersonName, PhoneNumber FROM PhoneBook WHERE PersonName = @name'
+        Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
         SqlParameters = @{ name = __ }
     }
     $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam01
-    $SqlParamResult02.PersonName | Should -Be 'Frank'
+    $SqlParamResult02.PersonName | Should -Be 'Robert'
 }
 
