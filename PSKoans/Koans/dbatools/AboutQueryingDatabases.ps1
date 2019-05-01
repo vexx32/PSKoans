@@ -56,7 +56,7 @@ Describe "Invoke-DbaQuery" {
     $InvokeDbaQueryParams = @{
         SqlInstance = 'localhost'
         Database    = 'tempdb'
-        File        = __
+        File        = '__'
     }
     $DbResult = Invoke-DbaQuery @InvokeDbaQueryParams
     $DbResult.Origin | Should -Be 'From a File'
