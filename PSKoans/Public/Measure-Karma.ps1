@@ -161,21 +161,17 @@
                         Total     = $PesterTests.TotalCount
                     }
                 }
-
-                if ($PSBoundParameters.ContainsKey('Topic')) {
-                    $Meditation.Add('RequestedTopic', $Topic)
-                }
             }
             else {
                 $Meditation = @{
                     Complete    = $true
                     KoansPassed = $KoansPassed
-                    TotalKoans  = $PesterTestCount
+                    TotalKoans  = $PesterTests.TotalCount
                 }
+            }
 
-                if ($PSBoundParameters.ContainsKey('Topic')) {
-                    $Meditation.Add('RequestedTopic', $Topic)
-                }
+            if ($PSBoundParameters.ContainsKey('Topic')) {
+                $Meditation.Add('RequestedTopic', $Topic)
             }
 
             Show-MeditationPrompt @Meditation
