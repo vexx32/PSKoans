@@ -15,6 +15,9 @@ param()
     'splatted' into the command by specifying the variable name with an @ symbol: @Variable
 #>
 Describe 'Splatting' {
+    BeforeAll {
+        $PSKoansFolder = Get-PSKoanLocation
+    }
 
     Context 'Hashtable Splatting' {
         <#
@@ -25,18 +28,18 @@ Describe 'Splatting' {
             # Here are a few common ways a detailed command to find files in a folder might be written:
 
             # 1. Super long lines; hard to follow along with.
-            $LongLines = Get-ChildItem -Path $env:PSKoans:KoanFolder -Include '*.ps1' -Recurse -Depth 2
+            $LongLines = Get-ChildItem -Path $PSKoansFolder -Include '*.ps1' -Recurse -Depth 2
 
             # 2. Escaping linebreaks; more readable, but very fragile and prone to errors
             $Escaping = Get-ChildItem `
-                -Path $env:PSKoans:KoanFolder `
+                -Path $PSKoansFolder `
                 -Include '*.ps1' `
                 -Recurse `
                 -Depth 2
 
             # 3. Splatting using a hashtable. Note the similarity to #2 and fill in missing values.
             $Parameters = @{
-                Path    = ${env:PSKoans:KoanFolder}
+                Path    = $PSKoansFolder
                 Include = '__'
                 Recurse = $true # Switches can be assigned a boolean value.
                 Depth   = __
@@ -57,7 +60,7 @@ Describe 'Splatting' {
     Context 'Advanced Splatting Techniques' {
 
         It 'can be built up in parts' {
-            $Parameters = @{Path = $env:PSKoans:KoanFolder }
+            $Parameters = @{Path = $PSKoansFolder }
 
             $Value = __
             if ($Value -eq 7) {
@@ -67,7 +70,9 @@ Describe 'Splatting' {
                 $Parameters.Add('Directory', $true)
             }
 
-            Get-ChildItem @Parameters | Select-Object -First 1 | Should -BeOfType System.IO.FileInfo
+            Get-ChildItem @Parameters |
+            Select-Object -First 1 |
+            Should -BeOfType 'System.IO.FileInfo'
         }
 
         It 'can be built from automatic hashtables' {
@@ -76,7 +81,7 @@ Describe 'Splatting' {
                 $Matches.Remove(0) # Remove the 'whole' match and keep only the portions we asked for
                 $Matches.Clone()
             }
-            $Parameters.Add('Path', $env:PSKoans:KoanFolder)
+            $Parameters.Add('Path', $PSKoansFolder)
             $Parameters.Add('Directory', $true)
             (Get-ChildItem @Parameters).Count | Should -Be 2
         }
