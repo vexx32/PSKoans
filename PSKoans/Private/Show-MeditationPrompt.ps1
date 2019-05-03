@@ -160,7 +160,7 @@ function Show-MeditationPrompt {
                 break
             }
             'Enlightened' {
-                if ($PSBoundParameters.ContainsKey('Topic')) {
+                if ($PSBoundParameters.ContainsKey('RequestedTopic')) {
                     Write-Host @Blue ($script:MeditationPrompts['CompletedTopic'] -f ($RequestedTopic -join ', '))
                 }
                 else {
@@ -178,7 +178,7 @@ function Show-MeditationPrompt {
                 )
                 Write-Host $ProgressBar @Blue
 
-                if (-not $PSBoundParameters.ContainsKey('Topic')) {
+                if (-not $PSBoundParameters.ContainsKey('RequestedTopic')) {
                     Write-Host @Blue $script:MeditationPrompts['BookSuggestion']
                 }
 
