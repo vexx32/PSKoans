@@ -82,12 +82,18 @@ function Show-MeditationPrompt {
 
         [Parameter()]
         [string[]]
-        $RequestedTopic
+        $RequestedTopic,
+
+        [Parameter()]
+        [PSObject[]]
+        $Results
     )
     begin {
         $Red = @{ForegroundColor = 'Red' }
         $Blue = @{ForegroundColor = 'Cyan' }
         $White = @{ForegroundColor = 'Yellow' }
+        $Green = @{ForegroundColor = 'Green' }
+
         $Koan = (Get-Random -InputObject $script:MeditationStrings) -replace '^|\r?(\n)', ('$1    {0} ' -f [char]0x258c)
         $TopicList = ($RequestedTopic -join "`n        - ")
 
@@ -108,7 +114,7 @@ function Show-MeditationPrompt {
                 Write-Host @Red $Expectation
 
                 Write-Host @Blue $script:MeditationPrompts['Meditate']
-                Write-Host @Red ($script:MeditationPrompts['Subject'] -f $ItName, $Meditation)
+                Write-Host @Red ($script:MeditationPrompts['Subject'] -f [char]0xd7, $ItName, $Meditation)
 
                 Write-Host @White ($script:MeditationPrompts['Koan'] -f $Koan)
 
@@ -135,7 +141,7 @@ function Show-MeditationPrompt {
                     [int] $PortionDone = ($CurrentTopic['Completed'] / $CurrentTopic['Total']) * $TopicProgressWidth
 
                     $ProgressBar = " [{3}]: [{0}{1}] {2}" -f @(
-                        "$([char]0x25b0)" * $PortionDone
+                        "$([char]0x25a0)" * $PortionDone
                         "$([char]0x2015)" * ($TopicProgressWidth - $PortionDone)
                         $TopicProgressAmount
                         $CurrentTopic['Name']
@@ -143,6 +149,21 @@ function Show-MeditationPrompt {
                     Write-Host $ProgressBar @Blue
                 }
                 #endregion TopicProgressBar
+                Write-Host
+
+                if ($PSBoundParameters.ContainsKey('Results')) {
+                    foreach ($KoanResult in $Results) {
+                        $Params = @{
+                            Object = $script:MeditationPrompts['DetailEntry'] -f @(
+                                if ($KoanResult.Passed) { [char]0x25b8 } else { [char]0xd7 }
+                                $KoanResult.Name
+                            )
+                        }
+                        $Params += if ($KoanResult.Passed) { $Green } else { $Red }
+                        Write-Host @Params
+                    }
+                }
+
                 Write-Host
                 #region TotalProgressBar
                 [int] $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
