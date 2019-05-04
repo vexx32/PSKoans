@@ -91,4 +91,8 @@ Failed to update version for '$env:BHProjectName': $_.
 Continuing with existing version.
 "@
     }
+
+    # Build external help files from Platyps MD files
+
+    New-ExternalHelp -Path "$ProjectRoot/docs/" -OutputPath "$ProjectRoot/PSKoans/en-us"
 }
