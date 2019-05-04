@@ -5,6 +5,9 @@
     Please wait a moment while we examine your karma...
 
 "@
+        DetailEntry    = @"
+{0} It {1}
+"@
         Describe       = @"
 Describing '{0}' has damaged your karma.
 "@
@@ -21,8 +24,8 @@ Describing '{0}' has damaged your karma.
 
 "@
         Subject        = @"
-[It] {0}
-{1}
+{0} It {1}
+{2}
 "@
         Koan           = @"
 

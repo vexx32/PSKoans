@@ -1,5 +1,5 @@
 ﻿function Measure-Karma {
-    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default",
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md')]
     [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
@@ -40,7 +40,12 @@
         [Parameter()]
         [Alias()]
         [switch]
-        $ClearScreen
+        $ClearScreen,
+
+        [Parameter(ParameterSetName = 'Default')]
+        [Alias()]
+        [switch]
+        $Detailed
     )
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
@@ -143,12 +148,12 @@
                 }
             }
 
-            if ($PesterTests.FailedCount -gt 0) {
+            $Meditation = if ($PesterTests.FailedCount -gt 0) {
                 $NextKoanFailed = $PesterTests.TestResult |
                 Where-Object Result -eq 'Failed' |
                 Select-Object -First 1
 
-                $Meditation = @{
+                @{
                     DescribeName = $NextKoanFailed.Describe
                     Expectation  = $NextKoanFailed.ErrorRecord
                     ItName       = $NextKoanFailed.Name
@@ -163,11 +168,15 @@
                 }
             }
             else {
-                $Meditation = @{
+                @{
                     Complete    = $true
                     KoansPassed = $KoansPassed
                     TotalKoans  = $PesterTests.TotalCount
                 }
+            }
+
+            if ($Detailed) {
+                $Meditation.Add('Results', $PesterTests.TestResult)
             }
 
             if ($PSBoundParameters.ContainsKey('Topic')) {
