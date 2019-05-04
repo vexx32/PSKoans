@@ -1,5 +1,5 @@
 ﻿function Measure-Karma {
-    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "Default",
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md')]
     [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
@@ -42,7 +42,7 @@
         [switch]
         $ClearScreen,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Default')]
         [Alias()]
         [switch]
         $Detailed
