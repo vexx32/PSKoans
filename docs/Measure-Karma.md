@@ -14,7 +14,7 @@ Reflect on your progress and check your answers.
 
 ### Default (Default)
 ```
-Measure-Karma [-Topic <String[]>] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Reset
@@ -95,6 +95,22 @@ Aliases: Meditate
 Required: True
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Detailed
+Adds a summarized view of the current topic file to the meditation prompt.
+The summary will contain a full list of all koans in the file, and indicate their current status.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Default
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
