@@ -31,10 +31,9 @@ Describe 'Alias Provider' {
         when a new module is imported.
     #>
     Context 'Direct Access' {
+        $Aliases = Get-ChildItem 'Alias:'
 
         It 'can be queried with generic provider cmdlets' {
-            $Aliases = Get-ChildItem 'Alias:'
-
             __ | Should -Be $Aliases.Name[0]
             __ | Should -Be $Aliases.Definition[0]
         }
