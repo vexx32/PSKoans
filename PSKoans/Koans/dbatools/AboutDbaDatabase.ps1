@@ -57,7 +57,7 @@ Describe 'Get-DbaDatabase' {
         would be easier if there was a parameter you could add that would
         return the system databases.
 
-        A parameter like -ExcludeUser
+        A switch parameter like -ExcludeUser.
     #>
     $UserDbParams = @{
         SqlInstance = 'localhost'
