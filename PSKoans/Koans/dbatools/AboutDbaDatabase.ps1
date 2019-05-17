@@ -78,9 +78,8 @@ Describe 'Get-DbaDatabase' {
     $SystemDbsExluded.Name | Should -Be 'testdb'
 
     <#
-        Parameters have also been added to check for common questions and
-        scenarios that people working with databases may have.
-        These include getting databases that in the 'Full', 'Simple', or
+        Some common questions that people who work with databases
+        may have getting databases that are in the 'Full', 'Simple', or
         'BulkLogged' recovery models.
     #>
     $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
