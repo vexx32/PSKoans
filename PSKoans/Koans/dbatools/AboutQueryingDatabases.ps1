@@ -87,5 +87,20 @@ Describe "Invoke-DbaQuery" {
     }
     $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam01
     $SqlParamResult02.PersonName | Should -Be 'Robert'
+
+    <#
+        You may ask "Why would I want to use parameters? I can just pass in a variable from PowerShell!"
+        If you are familiar with Little Bobby Tables (https://xkcd.com/327/) then you are aware of the 
+        dangers of un-sanitized inputs.
+        However, an example is nearly always better than a lecture.
+
+        Take these 3 lines of code below.
+
+        The first code sample returns data from a table called Students.
+        The second code sample inserts the name "Robert'); DROP TABLE Students;--" into the table using
+        parameters and then returns the results.
+        The third code sample inserts the name "Robert'); DROP TABLE Students;--" into the table using
+        PowerShell variables and then returns the results.
+    #>
 }
 
