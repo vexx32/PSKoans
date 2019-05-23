@@ -102,5 +102,11 @@ Describe "Invoke-DbaQuery" {
         The third code sample inserts the name "Robert'); DROP TABLE Students;--" into the table using
         PowerShell variables and then returns the results.
     #>
+    $InvokeDbaQueryParamStudents = @{
+        SqlInstance = 'localhost'
+        Query = 'SELECT PersonName FROM Student;'
+    }
+    $StudentResult01 = Invoke-DbaQuery @InvokeDbaQueryParamStudents
+    $StudentResult01 | Should -Contain 'Bob', 'Robert'
 }
 
