@@ -34,34 +34,33 @@ Describe 'Hashtables' {
                 Spectrum = 'Ultraviolet'
             }
 
-            $Hashtable | Should -BeOfType __
             # Values in the hashtable can be retrieved by specifying their corresponding key
-            $Hashtable['Color'] | Should -Be '__'
-            $Hashtable['Spectrum'] | Should -Be '__'
+            '____' | Should -Be $Hashtable['Color']
+            '____' | Should -Be $Hashtable['Spectrum']
 
-            $Hashtable | Should -BeOfType '__'
+            $____ | Should -BeOfType [hashtable]
         }
 
         It 'can be built all in one line' {
-            $Hashtable = @{Name = 'Bob'; Species = 'Tardigrade'; Weakness = 'Phys'}
+            $Hashtable = @{Name = 'Bob'; Species = 'Tardigrade'; Weakness = 'Phys' }
 
-            $Hashtable['Species'] | Should -Be '__'
+            '____' | Should -Be $Hashtable['Species']
         }
 
         It 'can be built in pieces' {
-            $Hashtable = @{}
+            $Hashtable = @{ }
             # By specifying a key, we can insert or overwrite values in the hashtable
             $Hashtable['Name'] = 'Hashtable'
             $Hashtable['Color'] = 'Red'
             $Hashtable['Spectrum'] = 'Infrared'
             $Hashtable['Spectrum'] = 'Microwave'
 
-            $Hashtable['Color'] | Should -Be '__'
-            $Hashtable['Spectrum'] | Should -Be '__'
+            '____' | Should -Be $Hashtable['Color']
+            '____' | Should -Be $Hashtable['Spectrum']
         }
 
         It 'can be built using the Hashtable object methods' {
-            $Hashtable = @{}
+            $Hashtable = @{ }
             $Hashtable.Add('Name', 'John')
             $Hashtable.Add('Age', 52)
             $Hashtable.Add('Radiation', 'Infrared')
@@ -104,7 +103,7 @@ Describe 'Hashtables' {
         }
 
         It 'allows you to retrieve a list of keys or values' {
-            $Hashtable = @{One = 1; Two = 2; Three = 3; Four = 4}
+            $Hashtable = @{One = 1; Two = 2; Three = 3; Four = 4 }
 
             $Hashtable.Keys | Should -Be @('__', '__', '__', '__')
             $Hashtable.Values | Should -Be @( )
@@ -112,7 +111,7 @@ Describe 'Hashtables' {
 
         It 'is not ordered' {
             # Hashtables are ordered by hashing their keys for extremely quick lookups.
-            $Hashtable = @{One = 1; Two = 2; Three = 3; Four = 4}
+            $Hashtable = @{One = 1; Two = 2; Three = 3; Four = 4 }
 
             # You will find your key/value pairs are often not at all in the order you entered them.
             # This _probably_ won't pass.
@@ -127,15 +126,15 @@ Describe 'Hashtables' {
         }
 
         It 'can be forced to retain order' {
-            $Hashtable = [ordered]@{One = 1; Two = 2; Three = 3; Four = 4}
+            $Hashtable = [ordered]@{One = 1; Two = 2; Three = 3; Four = 4 }
 
             # The [ordered] tag is not in itself properly a type, but transforms our regular hashtable into...
             $Hashtable | Should -BeOfType '__'
 
             # Order comes at a price; in this case, lookup speed is significantly decreased with ordered hashtables.
             # Does this leave our keys and values in the order you would expect?
-            @('__', 'Two', '__', '__') | Should -Be $Hashtable.Keys.ForEach{$_}
-            @(1, , , 4) | Should -Be $Hashtable.Values.ForEach{$_}
+            @('__', 'Two', '__', '__') | Should -Be $Hashtable.Keys.ForEach{ $_ }
+            @(1, , , 4) | Should -Be $Hashtable.Values.ForEach{ $_ }
         }
 
         It 'allows you to remove keys' {
@@ -166,14 +165,14 @@ Describe 'Hashtables' {
         }
 
         It 'will not implicitly convert keys and lookup values' {
-            $Hashtable = @{0 = 'Zero'}
+            $Hashtable = @{0 = 'Zero' }
 
             $Hashtable[0] | Should -Be '__'
             $Hashtable['0'] | Should -Be '__'
         }
 
         It 'can access values by using keys like properties' {
-            $Hashtable = @{0 = 'Zero'; Name = 'Jim'}
+            $Hashtable = @{0 = 'Zero'; Name = 'Jim' }
             $Key = '__'
 
             $Hashtable.0 | Should -Be '__'
