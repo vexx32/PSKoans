@@ -88,7 +88,7 @@ Describe "Invoke-DbaQuery" {
         Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
         SqlParameters = @{ name = __ }
     }
-    $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam01
+    $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam02
     $SqlParamResult02.PersonName | Should -Be 'Robert'
 
     <#
