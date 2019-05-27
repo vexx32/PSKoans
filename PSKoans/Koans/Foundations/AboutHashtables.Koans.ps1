@@ -126,10 +126,10 @@ Describe 'Hashtables' {
                     $Hashtable.Keys | Should -Be @('One', 'Two', 'Three', 'Four')
                     $Hashtable.Values | Should -Be @(1, 2, 3, 4)
 
-                The order can and will change again, as well, if the collection is altered:
-
-                    $Hashtable['Five'] = 5
+                The order can and will change again, as well, if the collection is altered.
             #>
+
+            $Hashtable['Five'] = 5
 
             $Hashtable.Keys | Should -Not -Be @('One', 'Two', 'Three', 'Four', 'Five')
             $Hashtable.Values | Should -Not -Be @(1, 2, 3, 4, 5)
