@@ -132,7 +132,7 @@ Describe 'Measure-Karma' {
 
             It 'should not divide by zero if all Koans are completed' {
                 $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
-                $TestFile = Join-Path -Path $TestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
+                $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
 
                 New-Item $KoansCompletedTestLocation -ItemType Directory
                 New-Item $TestFile -ItemType File
