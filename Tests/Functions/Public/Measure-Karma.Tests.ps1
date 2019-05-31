@@ -129,6 +129,32 @@ Describe 'Measure-Karma' {
                 Measure-Karma -Topic $Topic
                 Assert-MockCalled Invoke-Koan -Times @($Topic).Count
             }
+
+            It 'should not divide by zero if all Koans are completed' {
+                $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
+                $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
+
+                New-Item $KoansCompletedTestLocation -ItemType Directory
+                New-Item $TestFile -ItemType File
+
+                @'
+using module PSKoans
+[Koan(Position = 1)]
+param()
+
+Describe 'Koans Test' {
+    It 'is easy to solve' {
+        $true | should -be $true
+    }
+}
+'@ | Set-Content $TestFile
+
+                Set-PSKoanLocation $KoansCompletedTestLocation
+
+                {Measure-Karma -Topic SingleTopicTest} | Should -Not -Throw
+
+                Set-PSKoanLocation $TestLocation
+            }
         }
 
         Context 'With -Reset Switch' {

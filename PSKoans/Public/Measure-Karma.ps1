@@ -171,7 +171,7 @@
                 @{
                     Complete    = $true
                     KoansPassed = $KoansPassed
-                    TotalKoans  = $PesterTests.TotalCount
+                    TotalKoans  = $TotalKoans
                 }
             }
 
