@@ -128,17 +128,13 @@ Describe 'Environment Provider' {
 
 Describe 'FileSystem Provider' {
     $Path = 'TestDrive:' | Join-Path -ChildPath 'File001.tmp'
-    if (-not (Test-Path $Path)) {
-        New-Item -Path $Path > $null
 
-        -join (1..10000 | ForEach-Object {
-                Get-Random -Minimum 32 -Maximum 96 |
-                    ForEach-Object {[char]$_ -as [string]}
-                if ((Get-Random) -match '[25]0$') {
-                    "`n"
-                }
-            }) | Set-Content -Path $Path
-    }
+    $FileContent = @'
+PSKOANS!
+The Env: drive contains system environment data. Its contents can vary wildly from OS to OS,
+especially between Windows, Mac, and Linux, for example.
+'@
+    Set-Content -Path $Path -Value $FileContent
 
     It 'allows access to various files and their properties' {
         $File = Get-Item -Path $Path
