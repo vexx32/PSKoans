@@ -127,15 +127,16 @@ Describe 'Environment Provider' {
 }
 
 Describe 'FileSystem Provider' {
-    $Path = 'TestDrive:' | Join-Path -ChildPath 'File001.tmp'
+    BeforeAll {
+        $Path = 'TestDrive:' | Join-Path -ChildPath 'File001.tmp'
 
-    $FileContent = @'
+        $FileContent = @'
 PSKOANS!
 The Env: drive contains system environment data. Its contents can vary wildly from OS to OS,
 especially between Windows, Mac, and Linux, for example.
 '@
-    Set-Content -Path $Path -Value $FileContent
-
+        Set-Content -Path $Path -Value $FileContent
+    }
     It 'allows access to various files and their properties' {
         $File = Get-Item -Path $Path
 
