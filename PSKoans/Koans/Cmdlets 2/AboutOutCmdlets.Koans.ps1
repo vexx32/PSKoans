@@ -118,17 +118,17 @@ Context 'Out-* Cmdlets' {
     
         It 'creates string representations of data' {
             #Create a hashtable that pipes into Out-String
-            $String = '__' | Out-String
+            $String = @{ } | Out-String
     
             @"
-    
-    Name                           Value                                                                                                                                                                                         
-    ----                           -----                                                                                                                                                                                         
-    ColumnA                        Value1                                                                                                                                                                                        
-    ColumnB                        Value2                                                                                                                                                                                        
-    
-    
-    
+
+Name                           Value                                                                                                                                                                                         
+----                           -----                                                                                                                                                                                         
+Color                          Blue
+Spectrum                       Ultraviolet                                                                                                                                                                                        
+
+
+
 "@ | Should -Be $String
             # Mind the indentations; here-strings have to terminate at the very beginning of a line.
         }
