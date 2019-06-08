@@ -28,20 +28,18 @@ Describe 'Splatting' {
             # Here are a few common ways a detailed command to find files in a folder might be written:
 
             # 1. Super long lines; hard to follow along with.
-            $LongLines = Get-ChildItem -Path $PSKoansFolder -Include '*.ps1' -Recurse -Depth 2
+            $LongLines = Get-ChildItem -Path $PSKoansFolder -Include '*.ps1' -Depth 2
 
             # 2. Escaping linebreaks; more readable, but very fragile and prone to errors
             $Escaping = Get-ChildItem `
                 -Path $PSKoansFolder `
                 -Include '*.ps1' `
-                -Recurse `
                 -Depth 2
 
             # 3. Splatting using a hashtable. Note the similarity to #2 and fill in missing values.
             $Parameters = @{
                 Path    = $PSKoansFolder
                 Include = '__'
-                Recurse = $true # Switches can be assigned a boolean value.
                 Depth   = __
             }
             $Splatted = Get-ChildItem @Parameters
@@ -49,10 +47,14 @@ Describe 'Splatting' {
                 All above approaches are equal in effect, but splatting is a much tidier and more
                 maintainable approach.
             #>
-            $Splatted | Should -Be $Escaping
-            $Escaping | Should -Be $LongLines
+            $Splatted.Count | Should -Be $Escaping.Count
+            $Splatted.Name | Should -Be $Escaping.Name
 
-            $LongLines | Should -Be $Splatted
+            $Escaping.Count | Should -Be $LongLines.Count
+            $Escaping.Name | Should -Be $LongLines.Name
+
+            $LongLines.Count | Should -Be $Splatted.Count
+            $LongLines.Name | Should -Be $Splatted.Name
         }
 
     }
@@ -65,6 +67,7 @@ Describe 'Splatting' {
             $Value = __
             if ($Value -eq 7) {
                 $Parameters.Add('File', $true)
+                $Parameters.Add('Recurse', $true)
             }
             else {
                 $Parameters.Add('Directory', $true)
@@ -77,13 +80,22 @@ Describe 'Splatting' {
 
         It 'can be built from automatic hashtables' {
             $String = "Folders:__"
-            $Parameters = if ($String -match 'Folders:(?<Filter>[a-z ])$') {
+            $Parameters = if ($String -match 'Folders:(?<Filter>[_\d\w ]*)$') {
+                <#Matches is automaticed populated by the -match operater in the if statement
+                If $String = "Folders:00_TheBasics"
+                Then $Matches holds the following:
+                Name                           Value
+                ----                           -----
+                Filter                         00_TheBasics
+                0                              Folders:00_TheBasics
+                #>
                 $Matches.Remove(0) # Remove the 'whole' match and keep only the portions we asked for
-                $Matches.Clone()
+                $Matches.Clone() #Matches.Clone() allows for the remaining matches to be assigned to $Parameters
             }
             $Parameters.Add('Path', $PSKoansFolder)
             $Parameters.Add('Directory', $true)
-            (Get-ChildItem @Parameters).Count | Should -Be 2
+            #Now w
+            (Get-ChildItem @Parameters).Count | Should -Be __
         }
     }
 }
