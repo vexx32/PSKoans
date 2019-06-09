@@ -27,16 +27,13 @@ Describe 'ErrorRecord' {
             $Error.Clear()
         }
         It 'sometimes has a reference to the object that caused the error' {
-            # But not always!
-            $Error[0].TargetObject | Should -BeNullOrEmpty
     
             # Non-terminating error behaviour can be adjusted with the -ErrorAction parameter.
             Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
     
             <#
-                $Error is an automatic variable that contains a list of recent errors. $Error[0] is always the most
-                recent error. Even if an error is silenced with -ErrorAction SilentlyContinue, it is still recorded
-                in $Error.
+                $Error[0] is always the most recent error. Even if an error is silenced with
+                -ErrorAction SilentlyContinue, it is still recorded in $Error.
             #>
             '__' | Should -Be $Error[0].TargetObject
         }
