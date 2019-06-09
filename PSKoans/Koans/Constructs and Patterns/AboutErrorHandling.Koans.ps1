@@ -160,7 +160,7 @@ Describe 'Types of Errors' {
             $ErrorRecord = Write-DetailedError 2>&1
 
             '__' | Should -Be $ErrorRecord.Exception.Message
-            '__,__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
+            '____,____' | Should -Be $ErrorRecord.FullyQualifiedErrorId
             '__' | Should -Be $ErrorRecord.TargetObject.Name
             '__' | Should -Be $ErrorRecord.ErrorDetails.RecommendedAction
         }
