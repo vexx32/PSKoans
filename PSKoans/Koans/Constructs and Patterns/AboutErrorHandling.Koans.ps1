@@ -67,7 +67,7 @@ Describe 'ErrorRecord' {
         It 'always contains a reference to an Exception' {
             $ErrorRecord.Exception | Should -Not -BeNullOrEmpty
             $ErrorRecord.Exception -is [__] | Should -BeTrue
-            "__" | Should -Be $ErrorRecord.Exception.Message
+            '____' | Should -Be $ErrorRecord.Exception.Message
         }
 
         It 'can be assigned one of the preset categories' {
