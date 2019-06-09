@@ -42,7 +42,7 @@ Describe 'ErrorRecord' {
         }
         It 'does continue to add Errors until the PowerShell session is closed' {
             Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
-            '__' | Should -Be $Error.Count
+            __ | Should -Be $Error.Count
         }
         It 'is possible to surpress the error record all together' {
             Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction Ignore
