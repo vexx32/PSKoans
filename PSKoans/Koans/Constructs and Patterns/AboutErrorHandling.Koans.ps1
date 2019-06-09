@@ -79,7 +79,7 @@ Describe 'ErrorRecord' {
                 These ID strings are generally used to identify the source of the error and help distinguish
                 between multiple similarly-typed errors.
             #>
-            '__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
+            '____' | Should -Be $ErrorRecord.FullyQualifiedErrorId
         }
 
         It 'contains an InvocationInfo reference' {
