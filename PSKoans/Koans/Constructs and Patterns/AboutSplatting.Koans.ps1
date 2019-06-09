@@ -95,7 +95,7 @@ Describe 'Splatting' {
             }
             $Parameters.Add('Path', $PSKoansFolder)
             $Parameters.Add('Directory', $true)
-            #Now w
+
             (Get-ChildItem @Parameters).Count | Should -Be __
         }
     }
