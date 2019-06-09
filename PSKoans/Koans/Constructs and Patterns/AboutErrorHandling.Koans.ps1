@@ -18,60 +18,73 @@ param()
 #>
 
 Describe 'ErrorRecord' {
-    BeforeAll {
-        $ErrorRecord = try {
-            throw "A challenge to the sky!"
+    Context '$Error' {
+        BeforeAll{
+            <#
+                $Error is an automatic variable that contains a list of recent errors.
+                By calling $Error.Clear() we ensure past errors to not carry into our testing.
+            #>
+            $Error.Clear()
         }
-        catch {
-            $_
+        It 'sometimes has a reference to the object that caused the error' {
+    
+            # Non-terminating error behaviour can be adjusted with the -ErrorAction parameter.
+            Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
+    
+            <#
+                $Error[0] is always the most recent error. Even if an error is silenced with
+                -ErrorAction SilentlyContinue, it is still recorded in $Error.
+            #>
+            '__' | Should -Be $Error[0].TargetObject
+        }
+        It 'does continue to add Errors until the PowerShell session is closed' {
+            Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
+            __ | Should -Be $Error.Count
+        }
+        It 'is possible to surpress the error record all together' {
+            Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction Ignore
+            __ | Should -Be $Error.Count
         }
     }
+    Context 'Error Assignments' {
+        BeforeAll {
+            $ErrorRecord = try {
+                throw "A challenge to the sky!"
+            }
+            catch {
+                $_
+            }
+        }
 
-    It 'is an ErrorRecord' {
-        # At times, even tautologies can make sense of what is, and is not.
-        $ErrorRecord -is [__] | Should -BeTrue
-    }
+        It 'is an ErrorRecord' {
+            # At times, even tautologies can make sense of what is, and is not.
+            $ErrorRecord -is [__] | Should -BeTrue
+        }
 
-    It 'always contains a reference to an Exception' {
-        $ErrorRecord.Exception | Should -Not -BeNullOrEmpty
-        $ErrorRecord.Exception -is [__] | Should -BeTrue
-        "__" | Should -Be $ErrorRecord.Exception.Message
-    }
+        It 'always contains a reference to an Exception' {
+            $ErrorRecord.Exception | Should -Not -BeNullOrEmpty
+            $ErrorRecord.Exception -is [__] | Should -BeTrue
+            '____' | Should -Be $ErrorRecord.Exception.Message
+        }
 
-    It 'sometimes has a reference to the object that caused the error' {
-        # But not always!
-        $ErrorRecord.TargetObject | Should -BeNullOrEmpty
+        It 'can be assigned one of the preset categories' {
+            '__' -as [System.Management.Automation.ErrorCategory] | Should -Be $ErrorRecord.CategoryInfo.Category
+        }
 
-        # Non-terminating error behaviour can be adjusted with the -ErrorAction parameter.
-        Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
+        It 'will usually specify an ErrorID' {
+            <#
+                These ID strings are generally used to identify the source of the error and help distinguish
+                between multiple similarly-typed errors.
+            #>
+            '____' | Should -Be $ErrorRecord.FullyQualifiedErrorId
+        }
 
-        <#
-            $Error is an automatic variable that contains a list of recent errors. $Error[0] is always the most
-            recent error. Even if an error is silenced with -ErrorAction SilentlyContinue, it is still recorded
-            in $Error.
-
-            If you want to completely hide the error, you need to use -ErrorAction Ignore instead.
-        #>
-        '__' | Should -Be $Error[0].TargetObject
-    }
-
-    It 'can be assigned one of the preset categories' {
-        '__' -as [System.Management.Automation.ErrorCategory] | Should -Be $ErrorRecord.CategoryInfo.Category
-    }
-
-    It 'will usually specify an ErrorID' {
-        <#
-            These ID strings are generally used to identify the source of the error and help distinguish
-            between multiple similarly-typed errors.
-        #>
-        '__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
-    }
-
-    It 'contains an InvocationInfo reference' {
-        # InvocationInfo is a quick snapshot of the surrounding environment when the error happened.
-        __ | Should -Be $ErrorRecord.InvocationInfo.ScriptLineNumber
-        __ | Should -Be $ErrorRecord.InvocationInfo.PipelineLength
-        '+ __' | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
+        It 'contains an InvocationInfo reference' {
+            # InvocationInfo is a quick snapshot of the surrounding environment when the error happened.
+            __ | Should -Be $ErrorRecord.InvocationInfo.ScriptLineNumber
+            __ | Should -Be $ErrorRecord.InvocationInfo.PipelineLength
+            '+ ____' | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
+        }
     }
 }
 
@@ -135,7 +148,7 @@ Describe 'Types of Errors' {
 
         It 'is emitted with the Write-Error cmdlet' {
             # The redirection operators can be used to more easily retrieve non-standard output, like errors
-            $ErrorRecord = Test-SimpleWriteError 2>&1
+            $ErrorRecord = Write-SimpleError 2>&1
 
             '__' | Should -Be $ErrorRecord.GetType().Name
         }
@@ -144,7 +157,7 @@ Describe 'Types of Errors' {
             $ErrorRecord = Write-DetailedError 2>&1
 
             '__' | Should -Be $ErrorRecord.Exception.Message
-            '__.__' | Should -Be $ErrorRecord.FullyQualifiedErrorId
+            '____,____' | Should -Be $ErrorRecord.FullyQualifiedErrorId
             '__' | Should -Be $ErrorRecord.TargetObject.Name
             '__' | Should -Be $ErrorRecord.ErrorDetails.RecommendedAction
         }
@@ -232,7 +245,7 @@ Describe 'Types of Errors' {
                 '__' | Should -Be $_.Exception.GetType().Name
             }
             catch {
-                Should -Fail -Because "This block shold only trigger if we don't handle the specific type separately."
+                Should -Fail -Because "This block should only trigger if we don't handle the specific type separately."
             }
         }
 
@@ -255,7 +268,7 @@ Describe 'Types of Errors' {
         It 'can be created by ThrowTerminatingError()' {
             # ThrowTerminatingError() can only be called from within an advanced function.
             function Invoke-TerminatingError {
-                [CmldetBinding()]
+                [CmdletBinding()]
                 param()
 
                 $ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
