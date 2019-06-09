@@ -49,7 +49,7 @@ Describe 'ErrorRecord' {
             '__' | Should -Be $Error.Count
         }
     }
-    Context "Error Assignments"{
+    Context 'Error Assignments' {
         BeforeAll {
             $ErrorRecord = try {
                 throw "A challenge to the sky!"
