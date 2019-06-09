@@ -46,7 +46,7 @@ Describe 'ErrorRecord' {
         }
         It 'is possible to surpress the error record all together' {
             Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction Ignore
-            '__' | Should -Be $Error.Count
+            __ | Should -Be $Error.Count
         }
     }
     Context 'Error Assignments' {
