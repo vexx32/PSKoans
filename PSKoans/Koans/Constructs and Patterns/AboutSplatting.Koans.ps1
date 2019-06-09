@@ -90,7 +90,8 @@ Describe 'Splatting' {
                 0                              Folders:00_TheBasics
                 #>
                 $Matches.Remove(0) # Remove the 'whole' match and keep only the portions we asked for
-                $Matches.Clone() #Matches.Clone() allows for the remaining matches to be assigned to $Parameters
+                # Clone() copies the remaining matches, so we can store them with the $Parameters assignment above.
+                $Matches.Clone()
             }
             $Parameters.Add('Path', $PSKoansFolder)
             $Parameters.Add('Directory', $true)
