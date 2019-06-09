@@ -86,7 +86,7 @@ Describe 'ErrorRecord' {
             # InvocationInfo is a quick snapshot of the surrounding environment when the error happened.
             __ | Should -Be $ErrorRecord.InvocationInfo.ScriptLineNumber
             __ | Should -Be $ErrorRecord.InvocationInfo.PipelineLength
-            '+ __' | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
+            '+ ____' | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
         }
     }
 }
