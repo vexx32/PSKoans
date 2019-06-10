@@ -81,13 +81,14 @@ Describe 'Splatting' {
         It 'can be built from automatic hashtables' {
             $String = "Folders:__"
             $Parameters = if ($String -match 'Folders:(?<Filter>[_\d\w ]*)$') {
-                <#Matches is automaticed populated by the -match operater in the if statement
-                If $String = "Folders:00_TheBasics"
-                Then $Matches holds the following:
-                Name                           Value
-                ----                           -----
-                Filter                         00_TheBasics
-                0                              Folders:00_TheBasics
+                <#
+                    Matches is automaticed populated by the -match operater in the if statement
+                    If $String = "Folders:00_TheBasics"
+                    Then $Matches holds the following:
+                    Name                           Value
+                    ----                           -----
+                    Filter                         00_TheBasics
+                    0                              Folders:00_TheBasics
                 #>
                 $Matches.Remove(0) # Remove the 'whole' match and keep only the portions we asked for
                 # Clone() copies the remaining matches, so we can store them with the $Parameters assignment above.
