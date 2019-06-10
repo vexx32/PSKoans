@@ -115,7 +115,7 @@ Context 'Out-* Cmdlets' {
             Out-String is a fantastic and simple way to turn complex objects into strings that look just
             like PowerShell's default console formatting.
         #>
-    
+
         It 'creates string representations of data' {
             #Create a hashtable that pipes into Out-String
             $String = @{ } | Out-String
