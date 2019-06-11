@@ -22,7 +22,7 @@ Describe 'System.Text.StringBuilder' {
             # All things, ultimately, are carved from a blank slate.
             $StringBuilder = New-Object System.Text.StringBuilder
 
-            $StringBuilder | Should -BeOfType __
+            $StringBuilder | Should -BeOfType '__'
         }
 
         It 'can be created from a type accelerator' {
@@ -36,15 +36,15 @@ Describe 'System.Text.StringBuilder' {
                 without parentheses in the console to see available overload
                 definitions that can be used to construct the object.
             #>
-            $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType __
-            __ | Should -Be $SBFromString.Length
+            $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType '__'
+            '__' | Should -Be $SBFromString.Length
         }
 
         It 'can be created by casting an existing string' {
             # Two sides of a coin.
             [System.Text.StringBuilder]$StringBuilder = 'Initial String'
 
-            $StringBuilder | Should -BeOfType __
+            $StringBuilder | Should -BeOfType '__'
         }
     }
 
@@ -60,12 +60,13 @@ Describe 'System.Text.StringBuilder' {
 
         It 'can append new lines' {
             $StringBuilder = [System.Text.StringBuilder]::new()
-            $StringBuilder.AppendLine('Hello!')
-            $StringBuilder.AppendLine('Goodbye!')
+            $StringBuilder.AppendLine('__')
+            $StringBuilder.AppendLine('__')
 
             $ExpectedString = @"
-__
-__
+Hello!
+GoodBye!
+
 "@
             $ExpectedString | Should -Be $StringBuilder.ToString()
         }
@@ -75,7 +76,7 @@ __
             $StringBuilder = [System.Text.StringBuilder]::new()
 
             $FormatItems = '__', '__'
-            $StringBuilder.AppendFormat("{0} is {1}.")
+            $StringBuilder.AppendFormat("{0} is {1}.", $FormatItems)
 
             $StringBuilder.ToString() | Should -Be "Water is wet."
         }
@@ -147,8 +148,8 @@ __
         }
 
         It 'has only a few properties' {
-            $PropertyCount = __
-            $PropertyName = __
+            $PropertyCount = '__'
+            $PropertyName = '__','__','__'
 
             $Properties = $StringBuilder |
                 Get-Member |
@@ -158,25 +159,25 @@ __
                 Measure-Object |
                 Select-Object -ExpandProperty Count
 
-            $PropertyCount | Should -Be $ExpectedPropertyCount
+            $PropertyCount | Should -Be $ExpectedCount
             $PropertyName | Should -BeIn $Properties.Name
         }
 
         It 'indicates the current length of the string' {
-            $FinalStringLength = __
+            $FinalStringLength = '__'
 
             $StringBuilder.ToString().Length | Should -Be $StringBuilder.Length
             $FinalStringLength | Should -Be $StringBuilder.Length
         }
 
         It 'indicates the currently allocated capactity' {
-            $Capacity = __
+            $Capacity = '__'
 
             $Capacity | Should -Be $StringBuilder.Capacity
         }
 
         It 'indicates the maximum capacity of the StringBuilder' {
-            $MaxCapacity = __
+            $MaxCapacity = '__'
 
             $MaxCapacity | Should -Be $StringBuilder.MaxCapacity
         }
