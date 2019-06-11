@@ -33,19 +33,19 @@ Describe '[PSCustomObject]' {
     It 'can be built by trimming objects down' {
         $Object = Get-ChildItem -Path $Home | Select-Object -First 1 -Property Name, Parent
         $Object | Should -BeOfType PSCustomObject
-        __ | Should -Be $Object.Parent.Name
+        '__' | Should -Be $Object.Parent.Name
     }
 
     It 'can have arbitrary properties' {
-        $Object = [PSCustomObject]@{ '__' = 'Enter Property Name' }
+        $Object = [PSCustomObject]@{ '__' = 'PropertyValue' }
 
-        __ | Should -Be $Object.PSObject.Properties.Count
-        __.PSObject.Properties.Name | Should -Be 'PropertyName'
+        '__' | Should -Be $Object.PSObject.Properties.Count
+        '__'.PSObject.Properties.Name | Should -Be 'PropertyName'
     }
 
     It 'can be added to' {
         $Object = [PSCustomObject]@{ 'Property1' = 12 }
-        $Object | Add-Member -MemberType NoteProperty -Name 'Property2' -Value __
+        $Object | Add-Member -MemberType NoteProperty -Name 'Property2' -Value '__'
 
         $Object.Property2 | Should -Be $($Object.Property1 - 7)
     }
@@ -61,9 +61,9 @@ Describe '[PSCustomObject]' {
             $this.BaseProperty % 4
         }
 
-        __ | Should -Be $Object.DerivedProperty
+        '__' | Should -Be $Object.DerivedProperty
         # What if we call it more than once?
-        __ | Should -Be $Object.DerivedProperty
+        '__' | Should -Be $Object.DerivedProperty
     }
 
     It 'can declare ScriptProperties without Add-Member with custom getters and setters' {
@@ -86,9 +86,9 @@ Describe '[PSCustomObject]' {
             )
         )
 
-        __ | Should -Be $Object.CustomProperty
+        '__' | Should -Be $Object.CustomProperty
         $Object.CustomProperty = 12
-        __ | Should -Be $Object.CustomProperty
-        __ | Should -Be $Object.BaseProperty
+        '__' | Should -Be $Object.CustomProperty
+        '__' | Should -Be $Object.BaseProperty
     }
 }
