@@ -33,7 +33,7 @@ Describe '[PSCustomObject]' {
     It 'can be built by trimming objects down' {
         $Object = Get-ChildItem -Path $Home | Select-Object -First 1 -Property Name, Parent
         $Object | Should -BeOfType PSCustomObject
-        '__' | Should -Be $Object.Parent.Name
+        '____' | Should -Be $Object.Parent.Name
     }
 
     It 'can have arbitrary properties' {
