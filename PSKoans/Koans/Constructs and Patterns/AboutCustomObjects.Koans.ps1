@@ -37,7 +37,7 @@ Describe '[PSCustomObject]' {
     }
 
     It 'can have arbitrary properties' {
-        $Object = [PSCustomObject]@{ '__' = 'PropertyValue' }
+        $Object = [PSCustomObject]@{ '____' = 'PropertyValue' }
 
         '__' | Should -Be $Object.PSObject.Properties.Count
         '__'.PSObject.Properties.Name | Should -Be 'PropertyName'
