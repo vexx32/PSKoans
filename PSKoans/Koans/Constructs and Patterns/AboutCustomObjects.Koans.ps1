@@ -40,7 +40,7 @@ Describe '[PSCustomObject]' {
         $Object = [PSCustomObject]@{ '____' = 'PropertyValue' }
 
         '__' | Should -Be $Object.PSObject.Properties.Count
-        '__'.PSObject.Properties.Name | Should -Be 'PropertyName'
+        $____.PSObject.Properties.Name | Should -Be 'PropertyName'
     }
 
     It 'can be added to' {
