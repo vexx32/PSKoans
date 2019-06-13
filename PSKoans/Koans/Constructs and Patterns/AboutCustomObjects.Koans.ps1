@@ -61,9 +61,9 @@ Describe '[PSCustomObject]' {
             $this.BaseProperty % 4
         }
 
-        '__' | Should -Be $Object.DerivedProperty
+        __ | Should -Be $Object.DerivedProperty
         # What if we call it more than once?
-        '__' | Should -Be $Object.DerivedProperty
+        __ | Should -Be $Object.DerivedProperty
     }
 
     It 'can declare ScriptProperties without Add-Member with custom getters and setters' {
@@ -88,7 +88,7 @@ Describe '[PSCustomObject]' {
 
         '__' | Should -Be $Object.CustomProperty
         $Object.CustomProperty = 12
-        '__' | Should -Be $Object.CustomProperty
-        '__' | Should -Be $Object.BaseProperty
+        __ | Should -Be $Object.CustomProperty
+        __ | Should -Be $Object.BaseProperty
     }
 }
