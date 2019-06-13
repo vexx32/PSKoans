@@ -30,7 +30,13 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 ## Prerequisites
 
 - Windows PowerShell version 5.1 / PowerShell 6+
+- NuGet
 - Pester
+
+To install package provider NuGet type in your PowerShell:
+```PowerShell
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+```
 
 To install the latest version of Pester, use the appropriate command for your version of PowerShell:
 
