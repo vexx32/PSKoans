@@ -39,13 +39,13 @@ Describe '[PSCustomObject]' {
     It 'can have arbitrary properties' {
         $Object = [PSCustomObject]@{ '____' = 'PropertyValue' }
 
-        '__' | Should -Be $Object.PSObject.Properties.Count
+        __ | Should -Be $Object.PSObject.Properties.Count
         $____.PSObject.Properties.Name | Should -Be 'PropertyName'
     }
 
     It 'can be added to' {
         $Object = [PSCustomObject]@{ 'Property1' = 12 }
-        $Object | Add-Member -MemberType NoteProperty -Name 'Property2' -Value '__'
+        $Object | Add-Member -MemberType NoteProperty -Name 'Property2' -Value __
 
         $Object.Property2 | Should -Be $($Object.Property1 - 7)
     }
