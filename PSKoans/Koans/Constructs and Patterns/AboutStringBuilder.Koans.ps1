@@ -37,7 +37,7 @@ Describe 'System.Text.StringBuilder' {
                 definitions that can be used to construct the object.
             #>
             $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType '__'
-            '__' | Should -Be $SBFromString.Length
+            __ | Should -Be $SBFromString.Length
         }
 
         It 'can be created by casting an existing string' {
@@ -148,7 +148,7 @@ GoodBye!
         }
 
         It 'has only a few properties' {
-            $PropertyCount = '__'
+            $PropertyCount = __
             $PropertyName = '__','__','__'
 
             $Properties = $StringBuilder |
@@ -164,20 +164,20 @@ GoodBye!
         }
 
         It 'indicates the current length of the string' {
-            $FinalStringLength = '__'
+            $FinalStringLength = __
 
             $StringBuilder.ToString().Length | Should -Be $StringBuilder.Length
             $FinalStringLength | Should -Be $StringBuilder.Length
         }
 
         It 'indicates the currently allocated capactity' {
-            $Capacity = '__'
+            $Capacity = __
 
             $Capacity | Should -Be $StringBuilder.Capacity
         }
 
         It 'indicates the maximum capacity of the StringBuilder' {
-            $MaxCapacity = '__'
+            $MaxCapacity = __
 
             $MaxCapacity | Should -Be $StringBuilder.MaxCapacity
         }
