@@ -81,7 +81,7 @@ Context 'Out-* Cmdlets' {
         It 'stores data in files' {
             $Path = 'TestDrive:\File.txt'
 
-            'Stored knowledge is of little value until it is used.' | Out-File -Path $Path -NoNewline
+            'Stored knowledge is of little value until it is used.' | Out-File -FilePath $Path -NoNewline
 
             '__' | Should -Be (Get-Content -Path $Path)
         }
@@ -117,21 +117,18 @@ Context 'Out-* Cmdlets' {
         #>
 
         It 'creates string representations of data' {
-            $HomeFolder = Get-Item -Path $HOME
-
-            $HomeFolder | Should -Not -BeNullOrEmpty
-            $String = $HomeFolder | Out-String
-
-            # Fill in this here-string with the data you'd see in your console from calling Get-Item $HOME
+            #Create a hashtable that pipes into Out-String
+            $String = @{ } | Out-String
+    
             @"
 
+Name                           Value                                                                                                                                                                                         
+----                           -----                                                                                                                                                                                         
+Color                          Blue
+Spectrum                       Ultraviolet                                                                                                                                                                                        
 
-    Directory: __
 
 
-Mode                LastWriteTime         Length Name
-----                -------------         ------ ----
-______         __________________                ____
 "@ | Should -Be $String
             # Mind the indentations; here-strings have to terminate at the very beginning of a line.
         }
