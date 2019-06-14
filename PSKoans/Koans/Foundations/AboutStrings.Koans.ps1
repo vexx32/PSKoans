@@ -166,4 +166,35 @@ All things that are not 'evaluated' are "recognised" as characters.
             '__' | Should -Be $AllYourQuotes
         }
     }
+
+    Context 'Arrays and Strings' {
+        <#
+            An array can be placed inside a string in PowerShell.
+        #>
+        It 'joins using a space by default' {
+            $array = @(
+                'Hello'
+                'world'
+            )
+            "$array" | Should -Be __
+        }
+
+        It 'can be joined with a different string by setting the ofs variable' {
+            <#
+                The OFS, or output field separator variable defines the string used
+                to join an array when it is included in a string.
+
+                The OFS variable is not set by default and the default space is used.
+            #>
+
+            $ofs = '... '
+            $array = @(
+                'Hello'
+                'world'
+            )
+            "$array" | Should -Be __
+
+            Remove-Variable ofs
+        }
+    }
 }
