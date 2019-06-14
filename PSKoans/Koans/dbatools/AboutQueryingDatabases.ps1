@@ -100,9 +100,9 @@ Describe "Invoke-DbaQuery" {
         Take these 3 lines of code below.
 
         The first code sample returns data from a table called Students.
-        The second code sample inserts the name "Robert'); DROP TABLE Students;--" into the table using
+        The second code sample inserts the name "Robert'); DROP TABLE Student;--" into the table using
         parameters and then returns the results.
-        The third code sample inserts the name "Robert'); DROP TABLE Students;--" into the table using
+        The third code sample inserts the name "Robert'); DROP TABLE Student;--" into the table using
         PowerShell variables and then returns the results.
     #>
     $InvokeDbaQueryParamStudents = @{
@@ -111,5 +111,13 @@ Describe "Invoke-DbaQuery" {
     }
     $StudentResult01 = Invoke-DbaQuery @InvokeDbaQueryParamStudents
     $StudentResult01 | Should -Contain 'Bob', 'Robert'
+
+    $InvokeDbaQueryInsertParamStudents = @{
+        SqlInstance = 'localhost'
+        Query = 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;'
+        SqlParameters = @{ name = "Robert');-- DROP TABLE Student" }
+    }
+    $StudentResult02 = Invoke-DbaQuery @InvokeDbaQueryInsertParamStudents
+    $StudentResult02 | Should -Contain 'Bob', 'Robert', "Robert');-- DROP TABLE Student"
 }
 
