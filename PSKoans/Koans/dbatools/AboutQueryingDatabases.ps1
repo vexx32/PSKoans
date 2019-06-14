@@ -120,6 +120,7 @@ Describe "Invoke-DbaQuery" {
 
     $InvokeDbaQueryInsertParamStudents = @{
         SqlInstance = 'localhost'
+        Database = 'tempdb'
         Query = 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;'
         SqlParameters = @{ name = "Robert');-- DROP TABLE Student" }
     }
