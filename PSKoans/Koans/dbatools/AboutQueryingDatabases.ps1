@@ -30,6 +30,12 @@ Describe "Invoke-DbaQuery" {
     Mock -CommandName Invoke-DbaQuery -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\SqlParamInvokeDbaQueryFrank.xml
     } -ParameterFilter { $_.Query -eq 'SELECT PersonName FROM Student WHERE PersonName = @name' -and $_.SqlParameters.name -eq 'Robert' }
+    Mock -CommandName Invoke-DbaQuery -MockWith {
+        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTableBobbySafe.xml
+    } -ParameterFilter {
+        $_.Query -eq 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;' -and
+        $_.SqlParameters.name -eq "Robert');-- DROP TABLE Student"
+    }
     
     <#
         Invoke-DbaQuery can be used to connect to the SQL Server, in much the same way that Get-DbaDatabase
