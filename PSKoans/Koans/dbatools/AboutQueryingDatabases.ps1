@@ -34,7 +34,7 @@ Describe "Invoke-DbaQuery" {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTableBobbySafe.xml
     } -ParameterFilter {
         $_.Query -eq 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;' -and
-        $_.SqlParameters.name -eq "Robert');-- DROP TABLE Student"
+        $_.SqlParameters.name -eq "Robert'); DROP TABLE Student;--"
     }
     
     <#
@@ -83,6 +83,7 @@ Describe "Invoke-DbaQuery" {
     #>
     $InvokeDbaQueryParam01 = @{
         SqlInstance = 'localhost'
+        Database = 'tempdb'
         Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
         SqlParameters = @{ name = 'Bob' }
     }
@@ -91,6 +92,7 @@ Describe "Invoke-DbaQuery" {
 
     $InvokeDbaQueryParam02 = @{
         SqlInstance = 'localhost'
+        Database = 'tempdb'
         Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
         SqlParameters = @{ name = __ }
     }
@@ -113,6 +115,7 @@ Describe "Invoke-DbaQuery" {
     #>
     $InvokeDbaQueryParamStudents = @{
         SqlInstance = 'localhost'
+        Database = 'tempdb'
         Query = 'SELECT PersonName FROM Student;'
     }
     $StudentResult01 = Invoke-DbaQuery @InvokeDbaQueryParamStudents
@@ -122,9 +125,9 @@ Describe "Invoke-DbaQuery" {
         SqlInstance = 'localhost'
         Database = 'tempdb'
         Query = 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;'
-        SqlParameters = @{ name = "Robert');-- DROP TABLE Student" }
+        SqlParameters = @{ name = "Robert'); DROP TABLE Student--" }
     }
     $StudentResult02 = Invoke-DbaQuery @InvokeDbaQueryInsertParamStudents
-    $StudentResult02 | Should -Contain 'Bob', 'Robert', "Robert');-- DROP TABLE Student"
+    $StudentResult02 | Should -Contain 'Bob', 'Robert', "Robert'); DROP TABLE Student--"
 }
 
