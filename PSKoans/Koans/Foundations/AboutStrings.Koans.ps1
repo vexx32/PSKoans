@@ -192,7 +192,7 @@ All things that are not 'evaluated' are "recognised" as characters.
                 'Hello'
                 'world'
             )
-            "$array" | Should -Be __
+            '____' | Should -Be "$array"
 
             Remove-Variable ofs
         }
