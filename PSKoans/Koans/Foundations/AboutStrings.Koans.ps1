@@ -176,7 +176,7 @@ All things that are not 'evaluated' are "recognised" as characters.
                 'Hello'
                 'world'
             )
-            "$array" | Should -Be __
+            '____ ____' | Should -Be "$array"
         }
 
         It 'can be joined with a different string by setting the ofs variable' {
