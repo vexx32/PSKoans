@@ -184,7 +184,7 @@ All things that are not 'evaluated' are "recognised" as characters.
                 The $OFS variable, short for output field separator, defines the separator used
                 to join an array when it is included in a string.
 
-                The OFS variable is not set by default and the default space is used.
+                By default, the OFS variable is unset, and a single space is used as the separator.
             #>
 
             $ofs = '... '
