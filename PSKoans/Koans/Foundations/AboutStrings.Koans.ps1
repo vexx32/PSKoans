@@ -169,7 +169,7 @@ All things that are not 'evaluated' are "recognised" as characters.
 
     Context 'Arrays and Strings' {
         <#
-            An array can be placed inside a string in PowerShell.
+            An array can be inserted into a string in PowerShell.
         #>
         It 'joins using a space by default' {
             $array = @(
