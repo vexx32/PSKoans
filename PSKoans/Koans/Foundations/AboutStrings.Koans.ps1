@@ -181,7 +181,7 @@ All things that are not 'evaluated' are "recognised" as characters.
 
         It 'can be joined with a different string by setting the ofs variable' {
             <#
-                The OFS, or output field separator variable defines the string used
+                The $OFS variable, short for output field separator, defines the separator used
                 to join an array when it is included in a string.
 
                 The OFS variable is not set by default and the default space is used.
