@@ -49,7 +49,7 @@ Describe 'Redirection Operators' {
             'I see mountains once again as mountains,' > $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
         }
 
         It 'can append to files' {
@@ -57,123 +57,119 @@ Describe 'Redirection Operators' {
             'And waters once again as waters.' >> $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            @(
-                'I see mountains once again as mountains,'
-                '__'
-            ) | Should -Be $FileContent
-    }
-
-    It 'can be used to suppress output' {
-        'All things return to the void' > $null | Should -BeNullOrEmpty
-        $Data = __
-
-        $Data | Should -Not -BeNullOrEmpty
-        $Data > $null | Should -BeNullOrEmpty
-    }
-}
-
-Context 'Using Numbered Streams to Redirect' {
-    BeforeAll {
-        function Test-MergeStream {
-            Write-Warning 'The waters are upon the mountains.'
-            Write-Output 'The hills are alive with the sound of tulips.'
+            'I see mountains once again as mountains,' | Should -Be $FileContent[0]
+            '____' | Should -Be $FileContent[1]
         }
 
-        function Test-AllMerge {
-            [CmdletBinding()]
-            param()
+        It 'can be used to suppress output' {
+            'All things return to the void' > $null | Should -BeNullOrEmpty
+            $Data = __
 
-            Write-Output 'And within every dewdrop'
-            Write-Warning 'A world of dew,'
-            Write-Verbose 'A world of struggle.'
-            Write-Information 'A world within the world.'
+            $Data | Should -Not -BeNullOrEmpty
+            $Data > $null | Should -BeNullOrEmpty
         }
     }
 
-    AfterEach {
-        Clear-Content -Path $FilePath
+    Context 'Using Numbered Streams to Redirect' {
+        BeforeAll {
+            function Test-MergeStream {
+                Write-Warning 'The waters are upon the mountains.'
+                Write-Output 'The hills are alive with the sound of tulips.'
+            }
+
+            function Test-AllMerge {
+                [CmdletBinding()]
+                param()
+
+                Write-Output 'And within every dewdrop'
+                Write-Warning 'A world of dew,'
+                Write-Verbose 'A world of struggle.'
+                Write-Information 'A world within the world.'
+            }
+        }
+
+        AfterEach {
+            Clear-Content -Path $FilePath
+        }
+
+        It 'can use the default or output stream (number 1)' {
+            # The number here is optional, as stream 1 is the default.
+            Write-Output 'The stream flows forth with successes!' 1> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+            '____' | Should -Be $FileContent
+        }
+
+        It 'can use the error stream (number 2)' {
+            # Redirecting errors can generally only be done from any scope above where the error is generated.
+            & { Write-Error 'The gasoline is in the water.' } 2> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+
+            "____ : ____" | Should -Be $FileContent[0]
+            "+ CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException" |
+                Should -Be $FileContent[1]
+            "+ FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException" |
+                Should -Be $FileContent[2]
+        }
+
+        It 'can use the warning stream (number 3)' {
+            Write-Warning 'The cat swatted at the dog.' 3> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+            '____' | Should -Be $FileContent
+        }
+
+        It 'can use the verbose stream (number 4)' {
+            Write-Verbose 'The sun is round.' 4> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+            '____' | Should -Be $FileContent
+        }
+
+        It 'can use the debug stream (number 5)' {
+            Write-Debug 'Debug' 5> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+            '____' | Should -Be $FileContent
+        }
+
+        It 'can use the information stream (number 6)' {
+            Write-Information 'Hark a fly!' 6> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+            '____' | Should -Be $FileContent
+        }
+
+        It 'can be used to merge streams' {
+            Test-MergeStream 3>&1 > $FilePath
+            $FileContent = Get-Content -Path $FilePath
+
+            @( 'The waters are upon the mountains.', '____' ) | Should -Be $FileContent
+
+        }
+
+        It 'can merge multiple streams at once' {
+            # *> will merge all streams with any content into the same output pat
+            Test-AllMerge *> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+
+            '____' | Should -Be $FileContent[0]
+            '____' | Should -Be $FileContent[1]
+            '____' | Should -Be $FileContent[2]
+            '____' | Should -Be $FileContent[3]
+        }
+
+        It 'can suppress all streams at once' {
+            # *> $null will completely silence all output
+            Test-AllMerge *> $null | Should -Be __
+        }
+
+        It 'can be used to redirect streams to files' {
+            # Outputting to a file without appending will overwrite it completely
+            Write-Information 'Truth can be expressed without speaking, nor remaining silent.' 6> $FilePath
+            $FileContent = Get-Content -Path $FilePath
+
+            '____' | Should -Be $FileContent
+        }
     }
 
-    It 'can use the default or output stream (number 1)' {
-        # The number here is optional, as stream 1 is the default.
-        Write-Output 'The stream flows forth with successes!' 1> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-        '____' | Should -Be $FileContent
+    AfterAll {
+        $DebugPreference = $OriginalDebugPreference
+        $VerbosePreference = $OriginalVerbosePreference
     }
-
-    It 'can use the error stream (number 2)' {
-        # Redirecting errors can generally only be done from any scope above where the error is generated.
-        & { Write-Error 'The gasoline is in the water.' } 2> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-
-        "__ : __" | Should -Be $FileContent[0]
-        "    + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException" |
-            Should -Be $FileContent[1]
-        "    + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException" |
-            Should -Be $FileContent[2]
-    }
-
-    It 'can use the warning stream (number 3)' {
-        Write-Warning 'The cat swatted at the dog.' 3> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-        '__' | Should -Be $FileContent
-    }
-
-    It 'can use the verbose stream (number 4)' {
-        Write-Verbose 'The sun is round.' 4> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-        '__' | Should -Be $FileContent
-    }
-
-    It 'can use the debug stream (number 5)' {
-        Write-Debug 'Debug' 5> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-        '__' | Should -Be $FileContent
-    }
-
-    It 'can use the information stream (number 6)' {
-        Write-Information 'Hark a fly!' 6> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-        '__' | Should -Be $FileContent
-    }
-
-    It 'can be used to merge streams' {
-        Test-MergeStream 3>&1 > $FilePath
-        $FileContent = Get-Content -Path $FilePath
-
-        @( 'The waters are upon the mountains.', '__' ) | Should -Be $FileContent
-
-    }
-
-    It 'can merge multiple streams at once' {
-        # *> will merge all streams with any content into the same output pat
-        Test-AllMerge *> $FilePath
-        $FileContent = Get-Content -Path $FilePath
-
-        @(
-            '__'
-            '__'
-            '__'
-            '__'
-        ) | Should -Be $FileContent
-}
-
-It 'can suppress all streams at once' {
-    # *> $null will completely silence all output
-    Test-AllMerge *> $null | Should -Be __
-}
-
-It 'can be used to redirect streams to files' {
-    # Outputting to a file without appending will overwrite it completely
-    Write-Information 'Truth can be expressed without speaking, nor remaining silent.' 6> $FilePath
-    $FileContent = Get-Content -Path $FilePath
-
-    '__' | Should -Be $FileContent
-}
-}
-
-AfterAll {
-    $DebugPreference = $OriginalDebugPreference
-    $VerbosePreference = $OriginalVerbosePreference
-}
 }
