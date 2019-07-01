@@ -36,6 +36,12 @@ Describe "Invoke-DbaQuery" {
         $_.Query -eq 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;' -and
         $_.SqlParameters.name -eq "Robert'); DROP TABLE Student;--"
     }
+    Mock -CommandName Invoke-DbaQuery -MockWith {
+        $null
+    } -ParameterFilter {
+        $_.Query -eq "INSERT INTO Student (PersonName) VALUES ('$name')" -and
+        $name -eq "ROBERT'); DROP TABLE Student;--"
+    }
     
     <#
         Invoke-DbaQuery can be used to connect to the SQL Server, in much the same way that Get-DbaDatabase
