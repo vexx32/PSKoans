@@ -99,7 +99,7 @@ Some useful VSCode extensions are as follows:
     1. This can be done either through Git directly or with GitHub Desktop.
 1. Open and edit files and scripts using your preferred code Editor.
     > Tip: VSCode's PowerShell Extension is written by Microsoft so it is recommended.
-1. Save your changes
+1. Save your changes.
 1. When ready to upload, 
     - open GitHub Desktop and your repository
     - Update the **Summary** input field (lower left)
