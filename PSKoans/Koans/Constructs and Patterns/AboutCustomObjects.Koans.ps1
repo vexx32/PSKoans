@@ -86,7 +86,7 @@ Describe '[PSCustomObject]' {
             )
         )
 
-        '__' | Should -Be $Object.CustomProperty
+        '____' | Should -Be $Object.CustomProperty
         $Object.CustomProperty = 12
         __ | Should -Be $Object.CustomProperty
         __ | Should -Be $Object.BaseProperty
