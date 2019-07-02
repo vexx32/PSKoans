@@ -47,15 +47,19 @@ Your submissions and contributions will be reviewed and processed by the PSKoans
 ## Question Declaration in Koan files
 
 In PSKoans, each question requires the "Seeker of Enlightenment" to replace text which will allow the pester tests to pass successfully. 
-The Following are a list of prompts that a Seeker might encounter.
+The following are a list of prompts that a Seeker might encounter.
 
-__ = Answers that request int or double inputs (aka numeric). The standard will be **two**** underscores. 
-'____' = Answers that request strings. The standard will be a **single quote** followed by **four** underscores** followed by a **single quote**.
-"____" = Answers that request strings which **also** include Variables (aka $Variables). The standard will be a **double quote** followed by **four** underscores followed by a **double quote**. 
-$____ = Answers that request variables (aka $Variables). The standard will be a dollar sign followed by **four** underscores.
-____ = Answers that don't request anything else. The Default. The standard will be **four** underscores.
+`__`= Answers that request int or double inputs (aka numeric). The standard will be **two underscores**.
 
-There are some questions that do not include any of the above prompts. These questions implicitly request the Seeker of Enlightenment to remove data that is already in place. In some instances there are comments announcing this fact, but in other there are not. 
+`'____'` = Answers that request string inputs. The standard will be a **single quote** followed by **four underscores** followed by a **single quote**.
+
+`"____"` = Answers that request string inputs which **also** include Variables (aka $Variables). The standard will be a **double quote** followed by **four underscores** followed by a **double quote**.
+
+`$____` = Answers that request variable inputs (aka $Variables). The standard will be a **dollar sign** followed by **four underscores**.
+
+`____` = Answers that don't request any of the above options. If this were a Switch Statement, this would be the Default case. The standard will be **four underscores**.
+
+There are some questions that do not include any of the above prompts. These questions implicitly request the Seeker of Enlightenment to remove data that is already in place to pass the test. In some instances there are comments announcing this fact, but in other there are not. 
 
 
 ## Asking Questions
