@@ -22,7 +22,7 @@ Describe 'Comparison Operators' {
 
         It 'is a simple test' {
             $true -eq $false | Should -Be $false
-            __ | Should -Be (1 -eq 1)
+            $__ | Should -Be (1 -eq 1)
         }
 
         It 'will attempt to convert types' {
@@ -168,8 +168,8 @@ Describe 'Logical Operators' {
 
         It 'returns $true if either input is $true' {
             $true -or $false | Should -Be $true
-            __ | Should -Be ($false -or $true)
-            __ | Should -Be ($true -or $true)
+            $__ | Should -Be ($false -or $true)
+            $__ | Should -Be ($true -or $true)
         }
 
         It 'may coerce values to boolean' {
@@ -193,7 +193,7 @@ Describe 'Logical Operators' {
 
         It 'negates a boolean value' {
             -not $true | Should -Be $false
-            __ | Should -Be (-not $false)
+            $__ | Should -Be (-not $false)
         }
 
         It 'can be shortened to !' {
