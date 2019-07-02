@@ -33,14 +33,14 @@ Describe '[PSCustomObject]' {
     It 'can be built by trimming objects down' {
         $Object = Get-ChildItem -Path $Home | Select-Object -First 1 -Property Name, Parent
         $Object | Should -BeOfType PSCustomObject
-        __ | Should -Be $Object.Parent.Name
+        '____' | Should -Be $Object.Parent.Name
     }
 
     It 'can have arbitrary properties' {
-        $Object = [PSCustomObject]@{ '__' = 'Enter Property Name' }
+        $Object = [PSCustomObject]@{ '____' = 'PropertyValue' }
 
         __ | Should -Be $Object.PSObject.Properties.Count
-        __.PSObject.Properties.Name | Should -Be 'PropertyName'
+        $____.PSObject.Properties.Name | Should -Be 'PropertyName'
     }
 
     It 'can be added to' {
@@ -86,7 +86,7 @@ Describe '[PSCustomObject]' {
             )
         )
 
-        __ | Should -Be $Object.CustomProperty
+        '____' | Should -Be $Object.CustomProperty
         $Object.CustomProperty = 12
         __ | Should -Be $Object.CustomProperty
         __ | Should -Be $Object.BaseProperty
