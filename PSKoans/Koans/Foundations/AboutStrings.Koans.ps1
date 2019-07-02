@@ -102,7 +102,7 @@ Describe 'Strings' {
 
         It 'adds strings together' {
             # Two become one.
-            $String1 = 'This string'
+            $String1 = '_____'
             $String2 = 'is cool.'
 
             $String1 + ' ' + $String2 | Should -Be 'This string is cool.'
