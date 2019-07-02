@@ -101,7 +101,7 @@ Some useful VSCode extensions are as follows:
     > Tip: VSCode's PowerShell Extension is written by Microsoft so it is recommended.
 1. Save your changes.
 1. When ready to upload, 
-    - open GitHub Desktop and your repository
+    - Open GitHub Desktop / VS Code and your repository (or just a PowerShell prompt if using Git on the command line).
     - Update the **Summary** input field (lower left)
     - Update the **Description** input field (lower left)
     - Click on **Commit to Master** (lower left)
