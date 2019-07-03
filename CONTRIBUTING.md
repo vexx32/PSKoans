@@ -7,19 +7,19 @@ There are many ways that you can contribute, beyond writing or coding. The goal 
 ## Table of Contents
 
 - [Contributing to PSKoans](#contributing-to-powershell-koans-(pskoans))
-    -[Table of Contents](#table-of-contents)
-    -[Asking Questions](#asking-questions)
-    -[Providing Feedback](#providing-feedback)
-    -[Reporting Issues](#reporting-issues)
-    -[Check for existing issues first](#check-for-existing-issues-first)
-        -[Submitting Bug Reports and Feature Requests](#submitting-bug-reports-and-feature-requests)
-    -[Contributing](#contributing)
-        -[PSKoans Contribution Checklist](#pskoans-contribution-checklist)
-        -[PSKoans Development Tools](#pskoans-development-tools)
-        -[PSKoans Development and Contribution Steps](#pskoans-development-and-contribution-steps)
-        -[Question Declaration in Koan files](#question-declaration-in-koan-files)
-        -[Writing Koans](#writing-koans)
--[Thank You!](#thank-you!)
+  - [Table of Contents](#table-of-contents)
+  - [Asking Questions](#asking-questions)
+  - [Providing Feedback](#providing-feedback)
+  - [Reporting Issues](#reporting-issues)
+  - [Check for existing issues first](#check-for-existing-issues-first)
+    - [Submitting Bug Reports and Feature Requests](#submitting-bug-reports-and-feature-requests)
+  - [Contributing](#contributing)
+      - [PSKoans Contribution Checklist](#pskoans-contribution-checklist)
+      - [PSKoans Development Tools](#pskoans-development-tools)
+      - [PSKoans Development and Contribution Steps](#pskoans-development-and-contribution-steps)
+      - [Question Declaration in Koan files](#question-declaration-in-koan-files)
+      - [Writing Koans](#writing-koans)
+- [Thank You!](#thank-you!)
 
 
 
@@ -91,29 +91,100 @@ Some useful VSCode extensions are as follows:
 - [ ] [PowerShell Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
 - [ ] [Code Spell Checker Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
-### PSKoans Development and Contribution Steps
+### PSKoans Development Setup and Operation
 
-1. Fork a copy of the [vexx32/PSKoans](https://github.com/vexx32/PSKoans) repository using your GitHub account
-2. Clone your PSKoans fork locally to your computer
-    > Tip: You may want to clone it to your OneDrive folder so that it's available on all your shared systems.
-    1. This can be done either through Git directly or with GitHub Desktop.
-1. Open and edit files and scripts using your preferred code Editor.
-    > Tip: VSCode's PowerShell Extension is written by Microsoft so it is recommended.
-1. Save your changes.
-1. When ready to upload, 
-    - Open GitHub Desktop / VS Code and your repository (or just a PowerShell prompt if using Git on the command line).
-    - Update the **Summary** input field (lower left)
-    - Update the **Description** input field (lower left)
-    - Click on **Commit to Master** (lower left)
-        > Tip: This saves your commit to your ***Local*** fork of PSKoans
-    - Click on **Push origin** to push your changes upstream
-        > Tip: This pushes your commit from your local fork, to your fork on GitHub. 
-1. Open GitHub Desktop to your PSKoans repository
-    - Click on Repository -> View on GitHub
-1. Generate a Pull Request
-    - Click on **Create Pull Request**
-        > Tip: This can be done from the webpage or directly from GitHub Desktop.
-        >> Tip: Creating a pull request creates a request to import your version of changes to where you forked your repository from, also know as the ***Upstream*** repository. 
+These steps will be laid out using a few different approaches
+
+#### Github Desktop
+1. Fork the Repository
+    - Go to https://github.com/vexx32/PSKoans and click the Fork button at the top right hand side of the page. 
+2. Setup
+    - Download and Install [GitHub Desktop](https://desktop.github.com)
+    - Sign in to GitHub Desktop with your GitHub account information
+    - Configure Git by entering the name and email address you want to make commits with.
+3. Clone Repository
+    - Option 1
+        - On your forked repository page (it should be https://github.com/$YOURNAME/PSKoans), click the green "Clone or download" button and then click "Open in Desktop"
+    - Option 2
+        - Open Desktop and click "Clone a repository from the Internet..."
+        - You should see your repositories and should choose the fork you just created.
+        - alternatively, you can hit the URL tab and paste in your URL (https://github.com/$YOURNAME/PSKoans)
+4. Make Changes!
+    - Fix some bugs, write some code! Save your work!
+5. Commit
+    - Committing saved changes to current branch
+        - Once you've made a change and saved it, GitHub Desktop will show the diffs 
+        - Enter a Summary and Description of your commit and then hit "Commit to master"
+            - This with add the changes to a commit on your master branch of your local git copy.
+6. Push Origin 
+    - Hit the "Push origin" button in GitHub Desktop to merge your local repository copy with the copy stored on GitHub.
+7. Pull Request
+    - Option 1
+        - From GitHub Desktop, click the blue "Create Pull Request" button that appears after you hit "Push origin"
+        - This will take you to the "Open a pull request" GitHub page comparing your repo / branch against the PSKoans / master branch
+    - Option 2
+        - Go to Github and do a pull request from the PSKoans main page. the process is the same!
+8. Collaborate and have your change approved and merged into the main branch!
+
+#### PowerShell Git
+1. Fork the Repository
+    - Go to https://github.com/vexx32/PSKoans and click the Fork button at the top right hand side of the page. 
+2. Setup
+    - Download and Install [Git](https://git-scm.com/downloads)
+        - The only non-default you may want is selecting which editor you want to use as your default.
+    - Configure the username you will use for your commit messages.
+        - from powershell type: `git config --global user.name "Username"`
+    - Configure the email address you will use for your commit messages.
+        - from powershell type: `git config --global user.email emailname@email.address` 
+    - Git is now set up!
+3. Clone Repository
+    - Create a folder where you would like to put your local repository and Change your PowerShell directory to that location
+    - Find the URl of your fork and run: `git clone https://github.com/$YOURNAME/PSKoans`
+        - This will make a local copy of your fork. 
+4. Make Changes!
+    - Fix some bugs, write some code! Save your work!
+5. Commit
+    - Committing saved changes to current branch
+        - Committing changes with git directly is a little more work. 
+        - Run: `git add file.ps1 file2.ps1`
+            - This adds the files to the next commit you run, as by default no files are included.
+        - Run: `git commit -m "This is my short message for the commit"`
+            - This takes the files that you ran `git add` against and commits them to your local git repo with -m for your message. 
+6. Push Origin 
+    - Check what your origin is by Changing your directory to your repository and running: `git remote -v`
+        - This should display `origin https://github.com/$Username/PSKoans`
+    - Push 
+        - Run: `git push origin master` to push your local repo commits to your Github repo. 
+            - Running this command will pop up a dialog box to log into GitHub to authenticate your push. 
+7. Pull Request
+    - Go to Github and do a pull request from the PSKoans main page.
+8. Collaborate and have your change approved and merged into the main branch!
+
+#### VSCode
+1. Fork the Repository.
+    - Go to https://github.com/vexx32/PSKoans and click the Fork button at the top right hand side of the page.
+2. Setup.
+    - Download and Install [VSCode](https://desktop.github.com).
+    - Download and Install [Git](#powershell-git) (Follow the setup instructions from the git setup).
+3. Clone Repository.
+    - Follow the options from either [GitHub Desktop](#github-desktop) or [PowerShell Git](#powershell-git).
+4. Make Changes!
+    - Fix some bugs, write some code! Save your work!
+5. Commit.
+    - Hit the "Source Control" button on the left hand side of the VSCode window.
+    - Stage your changes.
+        - Hit the + button on the right side of the files you want to commit.
+    - Add a commit message in the "message" box.
+    - Hit the Check mark above the files to commit them to the local repo. 
+6. Push Origin 
+    - Hit the "Push origin" button in GitHub Desktop to merge your local repository copy with the copy stored on GitHub.
+7. Pull Request
+    - Option 1
+        - From GitHub Desktop, click the blue "Create Pull Request" button that appears after you hit "Push origin"
+        - This will take you to the "Open a pull request" GitHub page comparing your repo / branch against the PSKoans / master branch
+    - Option 2
+        - Go to Github and do a pull request from the PSKoans main page. the process is the same!
+8. Collaborate and have your change approved and merged into the main branch!
         
 
 Your submissions and contributions will be reviewed and processed by the PSKoans Code Owners. You will receive notifications in the GitHub tools as well as the email account used for GitHub.
