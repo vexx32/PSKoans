@@ -53,7 +53,7 @@ Please share any of the following:
 If you cannot find an existing issue similar to your bug or feature, create a **new** issue using the guidelines below.
 
 ### Submitting Bug Reports and Feature Requests
-n
+
 - Please only one issue or feature request per submission. 
 - Do **not** enumerate multiple bugs or feature requests in the same issue.
 - Do not add your issue as a comment to an existing issue unless it's for the identical input. 
@@ -91,7 +91,8 @@ Here are a list of programs that should make contributing easier:
 - [ ] [Visual Studio Code](https://code.visualstudio.com)
 
 Some useful VSCode extensions are as follows:
-- [ ] [PowerShell Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
+- [ ] [PowerShell Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
+- [ ] [PowerShell Preview Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell-Preview)
 - [ ] [Code Spell Checker Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
 
 ### PSKoans Development Setup and Operation
@@ -142,7 +143,7 @@ These steps will be laid out using a few different approaches
     - Git is now set up!
 3. Clone Repository
     - Create a folder where you would like to put your local repository and Change your PowerShell directory to that location
-    - Find the URl of your fork and run: `git clone https://github.com/$YOURNAME/PSKoans`
+    - Find the URL of your fork and run: `git clone https://github.com/$YOURNAME/PSKoans`
         - This will make a local copy of your fork. 
 4. Make Changes!
     - Fix some bugs, write some code! Save your work!
@@ -151,7 +152,7 @@ These steps will be laid out using a few different approaches
         - Committing changes with git directly is a little more work. 
         - Run: `git add file.ps1 file2.ps1`
             - This adds the files to the next commit you run, as by default no files are included.
-        - Run: `git commit -m "This is my short message for the commit"`
+        - Run: `git commit -m "commit summary" -m "commit description"`
             - This takes the files that you ran `git add` against and commits them to your local git repo with -m for your message. 
 6. Push Origin 
     - Check what your origin is by Changing your directory to your repository and running: `git remote -v`
@@ -176,11 +177,11 @@ These steps will be laid out using a few different approaches
 5. Commit.
     - Hit the "Source Control" button on the left hand side of the VSCode window.
     - Stage your changes.
-        - Hit the + button on the right side of the files you want to commit.
+        - Hit the ➕ on the right side of the files you want to commit.
     - Add a commit message in the "message" box.
-    - Hit the Check mark above the files to commit them to the local repo. 
+    - Hit the ✔️ above the files to commit them to the local repo. 
 6. Push Origin 
-    - In the lower left hand corner you should see a 0(down-arrow) 1(up-arrow)
+    - In the lower left hand corner you should see 0⬇️1⬆️ 
     - This will push your commits up to the master branch of your fork. 
 7. Pull Request
     - Go to Github and do a pull request from the PSKoans main page.
@@ -235,6 +236,7 @@ I try to keep up to speed with those as best I can. :smile:
 
 [build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
 [build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
+
 
 # Thank You!
 Your contributions and involvement will help to ensure the growth and success of PSKoans!
