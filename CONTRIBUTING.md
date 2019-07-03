@@ -16,7 +16,10 @@ There are many ways that you can contribute, beyond writing or coding. The goal 
   - [Contributing](#contributing)
       - [PSKoans Contribution Checklist](#pskoans-contribution-checklist)
       - [PSKoans Development Tools](#pskoans-development-tools)
-      - [PSKoans Development and Contribution Steps](#pskoans-development-and-contribution-steps)
+      - [PSKoans Development Setup and Operation](#pskoans-development-setup-and-operation)
+        - [GitHub Desktop](#github-desktop)
+        - [PowerShell Git](#powershell-git)
+        - [VSCode](#vscode)
       - [Question Declaration in Koan files](#question-declaration-in-koan-files)
       - [Writing Koans](#writing-koans)
 - [Thank You!](#thank-you!)
@@ -177,13 +180,10 @@ These steps will be laid out using a few different approaches
     - Add a commit message in the "message" box.
     - Hit the Check mark above the files to commit them to the local repo. 
 6. Push Origin 
-    - Hit the "Push origin" button in GitHub Desktop to merge your local repository copy with the copy stored on GitHub.
+    - In the lower left hand corner you should see a 0(down-arrow) 1(up-arrow)
+    - This will push your commits up to the master branch of your fork. 
 7. Pull Request
-    - Option 1
-        - From GitHub Desktop, click the blue "Create Pull Request" button that appears after you hit "Push origin"
-        - This will take you to the "Open a pull request" GitHub page comparing your repo / branch against the PSKoans / master branch
-    - Option 2
-        - Go to Github and do a pull request from the PSKoans main page. the process is the same!
+    - Go to Github and do a pull request from the PSKoans main page.
 8. Collaborate and have your change approved and merged into the main branch!
         
 
