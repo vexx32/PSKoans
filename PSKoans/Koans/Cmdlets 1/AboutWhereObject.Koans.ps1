@@ -28,7 +28,7 @@ Describe 'Where-Object' {
 
         # Pipelines also work across line breaks (as long as the pipe is at the end of the line)
         $Result = $ItemsWithNumbers |
-            Get-Random |
+            Select-Object -Last 1 |
             Select-Object -ExpandProperty Name
         __ | Should -Be $Result
     }
