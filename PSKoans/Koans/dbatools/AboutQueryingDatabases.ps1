@@ -20,7 +20,6 @@ Describe "Invoke-DbaQuery" {
     Mock -CommandName Invoke-DbaQuery -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\BasicInvokeDbaQuery.xml
     } -ParameterFilter { $_.Query -eq "SELECT DB_NAME() AS database_name;" }
-    
     Mock -CommandName Invoke-DbaQuery -MockWith {
         Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTable.xml
     } -ParameterFilter { $_.Query -eq "SELECT PersonName FROM Student" }
@@ -135,5 +134,11 @@ Describe "Invoke-DbaQuery" {
     }
     $StudentResult02 = Invoke-DbaQuery @InvokeDbaQueryInsertParamStudents
     $StudentResult02 | Should -Contain 'Bob', 'Robert', "Robert'); DROP TABLE Student--"
+
+    $InvokeDbaQueryInsertUnsafeParamStudents = @{
+        SqlInstance = 'localhost'
+        Database = 'tempdb'
+        Query = "INSERT INTO Student (PersonName) VALUES ('$Name'); SELECT PersonName FROM Student;"
+    }
 }
 
