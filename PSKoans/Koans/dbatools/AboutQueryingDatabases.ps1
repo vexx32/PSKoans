@@ -142,6 +142,21 @@ Describe "Invoke-DbaQuery" {
     }
     $Name = "Robert'); DROP TABLE Student--"
     { Invoke-DbaQuery @InvokeDbaQueryInsertUnsafeParamStudents -EnableException} | Should -Throw
+    <#
+        Using PowerShell variable replacement in the above query expands the statement to:
+            "INSERT INTO Student (PersonName) VALUES ('Robert'); DROP TABLE Student--'); SELECT PersonName FROM Student"
+        T-SQL uses the syntax "--" to say everything after this is a comment.
 
+        So our expected syntax
+            "INSERT INTO Student (PersonName) VALUES [...]
+             SELECT PersonName FROM Student"
+        becomes
+            "INSERT INTO Student (PersonName) VALUES ('Robert')
+             DROP TABLE Student"
+
+        dbatools by default tries to return errors as warnings so beginners to PowerShell don't
+        get overwhelmed by red error messages.
+        We use the switch -EnableException to return an error since the table "Student" no longer exists.
+    #>
 }
 
