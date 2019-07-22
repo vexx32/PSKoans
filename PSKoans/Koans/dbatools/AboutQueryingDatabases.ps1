@@ -140,5 +140,7 @@ Describe "Invoke-DbaQuery" {
         Database = 'tempdb'
         Query = "INSERT INTO Student (PersonName) VALUES ('$Name'); SELECT PersonName FROM Student;"
     }
+    $Name = "Robert'); DROP TABLE Student--"
+    { Invoke-DbaQuery @InvokeDbaQueryInsertUnsafeParamStudents } | Should -Throw
 }
 
