@@ -1,5 +1,5 @@
 ---
-name: ":warning: Koan Issue or Bug"
+name: "⚠️ Koan Issue or Bug"
 about: Report an issue or bug, or request help with a koan file.
 ---
 
