@@ -1,5 +1,5 @@
 ---
-name: ":bulb: Koan Suggestion"
+name: "💡 Koan Suggestion"
 about: Suggest a koan, or a list of koans that you feel would add value to the project.
 ---
 
