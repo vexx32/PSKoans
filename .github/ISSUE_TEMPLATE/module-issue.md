@@ -1,5 +1,5 @@
 ---
-name: Module Issue or Bug
+name: ":boom: Module Issue or Bug"
 about: File an issue or bug report about the module features/functions themselves.
 
 ---
