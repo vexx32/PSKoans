@@ -11,6 +11,8 @@
 - [Twitter](https://twitter.com/vexx32)
 - Currently looking for work? [Yes](https://hirejoel.dev)
 
+## Synopsis
+
 Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
 Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test.
 Your goal is to make those tests pass by filling out the correct answer, or writing the correct code.
