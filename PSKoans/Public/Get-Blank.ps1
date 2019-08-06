@@ -35,12 +35,12 @@
         # Used to capture the input in a pipeline context, to avoid erroring out in those contexts.
         [Parameter(ValueFromPipeline, DontShow)]
         [object]
-        $PipeInput,
+        ${|PipeInput},
         
         # Used to capture parameter names and arguments when used as a substitute for any other cmdlet.
         [Parameter(ValueFromRemainingArguments, DontShow)]
         [object[]]
-        $ParameterInput
+        ${|ParameterInput}
     )
 
     Write-Verbose "I AIN'T DOIN' NOTHIN'!!!"
