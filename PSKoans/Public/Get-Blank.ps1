@@ -33,12 +33,12 @@
     [Alias('__', '____', 'FILL_ME_IN')]
     param(
         # Used to capture the input in a pipeline context, to avoid erroring out in those contexts.
-        [Parameter(ValueFromPipeline)]
+        [Parameter(ValueFromPipeline, DontShow)]
         [object]
         $PipeInput,
         
         # Used to capture parameter names and arguments when used as a substitute for any other cmdlet.
-        [Parameter(ValueFromRemainingArguments)]
+        [Parameter(ValueFromRemainingArguments, DontShow)]
         [object[]]
         $ParameterInput
     )
