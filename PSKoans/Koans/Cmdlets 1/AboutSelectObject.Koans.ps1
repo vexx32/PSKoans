@@ -67,6 +67,6 @@ Describe 'Select-Object' {
         7, 3, 1, 2, 6, 3, 7, 1, 4, 5, 2, 1, 3, 6, 2, 5, 1, 4
 
         $UniqueItems = $Array | Select-Object -Unique
-        5, '__', 10, 9, '__', '__', '__', 7, '__', '__' | Should -Be $UniqueItems
+        6, '__', 4, 8, '__', '__', 3, '__', 2 | Should -Be $UniqueItems
     }
 }
