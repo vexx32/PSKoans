@@ -20,7 +20,7 @@ InModuleScope 'PSKoans' {
                     [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koans', 'Update.Koans.ps1')
                 }
 
-                Mock Get-ChildItem -ParameterFilter { $LiteralPath -match 'TestDrive'} -MockWith {
+                Mock Get-ChildItem -ParameterFilter { $LiteralPath -notmatch 'PSKoans' } -MockWith {
                     [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Wrong', 'Path.Koans.ps1')
                     [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Update.Koans.ps1')
                     [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Remove.Koans.ps1')
