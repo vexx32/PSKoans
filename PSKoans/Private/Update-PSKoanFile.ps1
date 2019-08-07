@@ -25,7 +25,11 @@ function Update-PSKoanFile {
         $Topic
     )
 
-    Get-PSKoanFilePath @PSBoundParameters | ForEach-Object {
+    $params = @{}
+    if ($Topic) {
+        $params.Topic = $Topic
+    }
+    Get-PSKoanFilePath @params | ForEach-Object {
         $moduleKoans = Get-PSKoanIt -Path $_.ModuleFilePath | ForEach-Object -Begin {
             $position =  0
         } -Process {

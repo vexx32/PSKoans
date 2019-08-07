@@ -8,17 +8,24 @@ function Reset-PSKoan {
 
         [Parameter(Mandatory)]
         [String]
-        $Name
+        $Name,
+
+        [Parameter()]
+        [String]
+        $Context
     )
 
     $koanFilePath = Get-PSKoanFilePath -Topic $Topic
     $moduleKoan = Get-PSKoanIt -Path $koanFilePath.ModuleFilePath |
-        Where-Object Name -like $Name
+        Where-Object {
+            $_.Name -like $Name -and
+            (-not $Context -or $_.ID -like ('{0}\{1}' -f $Context, $Name))
+        }
 
     if ($moduleKoan) {
         foreach ($koan in $moduleKoan) {
             $userKoan = Get-PSKoanIt -Path $koanFilePath.UserFilePath |
-                Where-Object Name -eq $moduleKoan.Name
+                Where-Object ID -eq $koan.ID
 
             if ($userKoan) {
                 $content = Get-Content $koanFilePath.UserFilePath -Raw
@@ -28,14 +35,14 @@ function Reset-PSKoan {
                     ($userKoan.Ast.Extent.EndOffset - $userKoan.Ast.Extent.StartOffset)
                 ).Insert(
                     $userKoan.Ast.Extent.StartOffset,
-                    $moduleKoan.Ast.Extent.Text
+                    $koan.Ast.Extent.Text
                 )
 
-                if ($pscmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $moduleKoan.Name, $Topic))) {
+                if ($pscmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $Topic))) {
                     Set-Content -Path $koanFilePath.UserFilePath -Value $content
                 }
             } else {
-                Write-Error ('The koan "{0}" does not exist in the user path.' -f $moduleKoan.Name)
+                Write-Error ('The koan "{0}" does not exist in the user path.' -f $koan.Name)
             }
         }
     } else {

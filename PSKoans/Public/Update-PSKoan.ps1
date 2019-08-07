@@ -10,8 +10,8 @@ function Update-PSKoan {
 
     $KoanFolder = Get-PSKoanLocation
 
-    $KoanPath = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'
-    $KoanList = Get-ChildItem -LiteralPath $KoanPath -Recurse -Filter *.Koans.ps1 |
+    $ModuleKoanFolder = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'
+    $ModuleKoanList = Get-ChildItem -LiteralPath $ModuleKoanFolder -Recurse -Filter *.Koans.ps1 |
         Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -in $Topic } |
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
 
@@ -20,7 +20,7 @@ function Update-PSKoan {
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
 
     $TopicList = [System.Collections.Generic.HashSet[String]]::new([System.StringComparer]::InvariantCultureIgnoreCase)
-    foreach ($TopicName in [String[]]$KoanList.Keys + [String[]]$UserKoanList.Keys) {
+    foreach ($TopicName in [String[]]$ModuleKoanList.Keys + [String[]]$UserKoanList.Keys) {
         $null = $TopicList.Add($TopicName)
     }
 
@@ -28,16 +28,16 @@ function Update-PSKoan {
         $ParentPathPattern = [regex]::Escape((Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'))
 
         switch ($TopicName) {
-            { $KoanList.ContainsKey($TopicName) } {
-                $PathFragment = $KoanList[$TopicName].Fullname -replace $ParentPathPattern
+            { $ModuleKoanList.ContainsKey($TopicName) } {
+                $PathFragment = $ModuleKoanList[$TopicName].Fullname -replace $ParentPathPattern
                 $DestinationPath = Join-Path -Path $KoanFolder -ChildPath $PathFragment
 
-                $ParentPath = Split-Path $DestinationPath -Parent
-                if (-not (Test-Path $ParentPath)) {
+                $ParentPath = Split-Path -Path $DestinationPath -Parent
+                if (-not (Test-Path -Path $ParentPath)) {
                     $null = New-Item -Path $ParentPath -ItemType Directory
                 }
             }
-            { $KoanList.ContainsKey($TopicName) -and $UserKoanList.ContainsKey($TopicName) } {
+            { $ModuleKoanList.ContainsKey($TopicName) -and $UserKoanList.ContainsKey($TopicName) } {
                 if ($UserKoanList[$TopicName].FullName -ne $DestinationPath) {
                     if ($PSCmdlet.ShouldProcess($TopicName, "Moving $TopicName")) {
                         Write-Verbose "Moving $TopicName"
@@ -50,11 +50,11 @@ function Update-PSKoan {
 
                 break
             }
-            { $KoanList.ContainsKey($TopicName) } {
+            { $ModuleKoanList.ContainsKey($TopicName) } {
                 if ($PSCmdlet.ShouldProcess($TopicName, "Adding $TopicName")) {
                     Write-Verbose "Adding $TopicName"
 
-                    $KoanList[$TopicName] | Copy-Item -Destination $DestinationPath -Force
+                    $ModuleKoanList[$TopicName] | Copy-Item -Destination $DestinationPath -Force
                 }
 
                 break
@@ -63,16 +63,11 @@ function Update-PSKoan {
                 if ($PSCmdlet.ShouldProcess($TopicName, "Removing $TopicName")) {
                     Write-Verbose "Removing $TopicName"
 
-                    Remove-Item -LiteralPath $UserKoanList[$TopicName].PSPath
+                    $UserKoanList[$TopicName] | Remove-Item
                 }
 
                 break
             }
         }
     }
-
-    # Remove empty directories
-    Get-ChildItem $KoanFolder -Directory -Recurse |
-        Where-Object { -not (Get-ChildItem $_.FullName) } |
-        Remove-Item
 }
