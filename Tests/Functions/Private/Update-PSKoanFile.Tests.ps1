@@ -35,10 +35,12 @@ InModuleScope 'PSKoans' {
                 "    }"
                 "}"
             )
+
+            $userFilePath = (Get-PSKoanFilePath).UserFilePath
         }
 
         BeforeEach {
-            Set-Content -Path (Get-PSKoanFilePath).UserFilePath -Value @(
+            Set-Content -Path $userFilePath -Value @(
                 "Describe 'AboutSomething' {"
                 "    It 'koan 1' {"
                 "        1 | Should -Be 1"
@@ -60,15 +62,15 @@ InModuleScope 'PSKoans' {
         It 'should replay completed koans' {
             Update-PSKoanFile -Topic AboutSomething -Confirm:$false
 
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '1 | Should -Be 1'
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 2'
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '4 | Should -Be 4'
+            $userFilePath | Should -FileContentMatch '1 | Should -Be 1'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
+            $userFilePath | Should -FileContentMatch '4 | Should -Be 4'
         }
 
         It 'should should allow new koans to be inserted' {
             Update-PSKoanFile -Topic AboutSomething -Confirm:$false
 
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch 'koan 3'
+            $userFilePath | Should -FileContentMatch 'koan 3'
         }
     }
 }

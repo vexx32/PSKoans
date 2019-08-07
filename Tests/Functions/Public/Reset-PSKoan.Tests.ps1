@@ -35,6 +35,8 @@ InModuleScope 'PSKoans' {
                 "    }"
                 "}"
             )
+
+            $userFilePath = (Get-PSKoanFilePath).UserFilePath
         }
 
         BeforeEach {
@@ -66,29 +68,29 @@ InModuleScope 'PSKoans' {
         It 'should reset the state of a single koan without affecting others' {
             Reset-PSKoan -Topic AboutSomething -Name 'reset content' -Confirm:$false
 
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '1 | Should -Be 1'
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 2'
+            $userFilePath | Should -FileContentMatch '1 | Should -Be 1'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
         }
 
         It 'supports wildcard matching for name' {
             Reset-PSKoan -Topic AboutSomething -Name "*content" -Confirm:$false
 
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 1'
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 2'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 1'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
         }
 
         It 'supports context based searching' {
             Reset-PSKoan -Topic AboutSomething -Name "nested reset content" -Context 'first' -Confirm:$false
 
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 3'
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '4 | Should -Be 4'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 3'
+            $userFilePath | Should -FileContentMatch '4 | Should -Be 4'
         }
 
         It 'allows koans of a given name to be reset across all contexts' {
             Reset-PSKoan -Topic AboutSomething -Name "nested reset content" -Confirm:$false
 
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 3'
-            (Get-PSKoanFilePath).UserFilePath | Should -FileContentMatch '__ | Should -Be 4'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 3'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 4'
         }
     }
 }
