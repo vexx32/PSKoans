@@ -1,3 +1,5 @@
+using namespace System.Collections.Generic
+
 function Update-PSKoan {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High",
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Update-PSKoan.md')]
@@ -21,7 +23,7 @@ function Update-PSKoan {
 
     $TopicList = [HashSet[String]]::new(
         [System.StringComparer]::InvariantCultureIgnoreCase)
-    foreach ($TopicName in [String[]]$ModuleKoanList.Keys + [String[]]$UserKoanList.Keys) {
+    foreach ($TopicName in [string[]]$ModuleKoanList.Keys + [string[]]$UserKoanList.Keys) {
         $null = $TopicList.Add($TopicName)
     }
 
