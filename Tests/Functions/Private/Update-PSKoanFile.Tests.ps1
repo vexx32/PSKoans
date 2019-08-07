@@ -9,8 +9,8 @@ InModuleScope 'PSKoans' {
                     ModuleFilePath = Join-Path $TestDrive 'Module\AboutSomething.ps1'
                 }
             }
-            New-Item 'TestDrive:\Koans' -ItemType Directory
-            New-Item 'TestDrive:\Module' -ItemType Directory
+            New-Item (Join-Path $TestDrive 'Koans') -ItemType Directory
+            New-Item (Join-Path $TestDrive 'Module') -ItemType Directory
 
             Set-Content -Path (Get-PSKoanFilePath).ModuleFilePath -Value @(
                 "Describe 'AboutSomething' {"

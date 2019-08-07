@@ -11,19 +11,19 @@ InModuleScope 'PSKoans' {
                 Mock Update-PSKoanFile { }
 
                 Mock Get-PSKoanLocation {
-                    'TestDrive:\Koans'
+                    Join-Path $TestDrive 'Koans'
                 }
 
                 Mock Get-ChildItem -ParameterFilter { $LiteralPath -match 'PSKoans' } -MockWith {
-                    [System.IO.FileInfo]'Module\Koans\Missing.Koans.ps1'
-                    [System.IO.FileInfo]'Module\Koans\Right\Path.Koans.ps1'
-                    [System.IO.FileInfo]'Module\Koans\Update.Koans.ps1'
+                    [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koans', 'Missing.Koans.ps1')
+                    [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koan', 'Right', 'Path.Koans.ps1')
+                    [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koans', 'Update.Koans.ps1')
                 }
 
                 Mock Get-ChildItem -ParameterFilter { $LiteralPath -match 'TestDrive'} -MockWith {
-                    [System.IO.FileInfo]"${TestDrive}\Koans\Wrong\Path.Koans.ps1"
-                    [System.IO.FileInfo]"${TestDrive}\Koans\Update.Koans.ps1"
-                    [System.IO.FileInfo]"${TestDrive}\Koans\Remove.Koans.ps1"
+                    [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Wrong', 'Path.Koans.ps1')
+                    [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Update.Koans.ps1')
+                    [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Remove.Koans.ps1')
                 }
             }
 
@@ -54,7 +54,7 @@ InModuleScope 'PSKoans' {
                     $LocalKoanFolder = Get-PSKoanLocation
                 }
 
-                Set-PSKoanLocation -Path "TestDrive:/Koans"
+                Set-PSKoanLocation -Path (Join-Path $TestDrive 'Koans')
 
                 Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
 
