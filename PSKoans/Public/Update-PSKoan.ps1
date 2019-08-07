@@ -19,7 +19,8 @@ function Update-PSKoan {
         Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -in $Topic } |
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
 
-    $TopicList = [System.Collections.Generic.HashSet[String]]::new([System.StringComparer]::InvariantCultureIgnoreCase)
+    $TopicList = [HashSet[String]]::new(
+        [System.StringComparer]::InvariantCultureIgnoreCase)
     foreach ($TopicName in [String[]]$ModuleKoanList.Keys + [String[]]$UserKoanList.Keys) {
         $null = $TopicList.Add($TopicName)
     }
