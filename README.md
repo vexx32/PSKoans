@@ -4,6 +4,8 @@
 | :---------------------------------------------: |
 | [![Build Status][build-badge]][build-link]      |
 
+[Become a Patron](https://www.patreon.com/bePatron?u=23168283) of the PSKoans project!
+
 ## About the Author
 
 ### Joel Sallow
