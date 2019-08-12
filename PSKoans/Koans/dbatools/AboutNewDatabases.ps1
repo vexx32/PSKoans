@@ -18,9 +18,9 @@ Describe 'New-DbaDatabase' {
     #>
     Mock -CommandName New-DbaDatabase -MockWith {
         [PSCustomObject]@{
-            ComputerName = $ENV:COMPUTERNAME
+            ComputerName = 'localhost'
             InstanceName = 'MSSQLSERVER'
-            SqlInstance = $ENV:COMPUTERNAME
+            SqlInstance = 'localhost'
             Name = 'random-123456789'
             Status = 'Normal'
             IsAccessible = $true
@@ -38,7 +38,11 @@ Describe 'New-DbaDatabase' {
 
     <#
         New-DbaDatabase, while having a few different parameters, requires only that you have an instance
-        of SQL Server that you can connect to.
+        of SQL Server that you can connect to and it can create a database on.
+
+        Complete the below to create a new database on localhost.
     #>
+    $NewDatabase = New-DbaDatabase -SqlInstance '__'
+    $NewDatabase.ComputerName | Should -Be 'localhost'
 
 }
