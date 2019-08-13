@@ -1,5 +1,5 @@
 ---
-name: Module Suggestion
+name: "✨ Module Suggestion"
 about: Suggest new module functionality, or enhancements to existing functionality.
 
 ---

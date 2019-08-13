@@ -49,7 +49,7 @@ Describe 'Redirection Operators' {
             'I see mountains once again as mountains,' > $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
         }
 
         It 'can append to files' {
@@ -57,10 +57,8 @@ Describe 'Redirection Operators' {
             'And waters once again as waters.' >> $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            @(
-                'I see mountains once again as mountains,'
-                '__'
-            ) | Should -Be $FileContent
+            'I see mountains once again as mountains,' | Should -Be $FileContent[0]
+            '____' | Should -Be $FileContent[1]
         }
 
         It 'can be used to suppress output' {
@@ -72,7 +70,7 @@ Describe 'Redirection Operators' {
         }
     }
 
-    Context 'Redirect with Numbers' {
+    Context 'Using Numbered Streams to Redirect' {
         BeforeAll {
             function Test-MergeStream {
                 Write-Warning 'The waters are upon the mountains.'
@@ -89,41 +87,59 @@ Describe 'Redirection Operators' {
                 Write-Information 'A world within the world.'
             }
         }
-        It 'can use numbered streams' {
+
+        AfterEach {
+            Clear-Content -Path $FilePath
+        }
+
+        It 'can use the default or output stream (number 1)' {
+            # The number here is optional, as stream 1 is the default.
             Write-Output 'The stream flows forth with successes!' 1> $FilePath
             $FileContent = Get-Content -Path $FilePath
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
+        }
 
+        It 'can use the error stream (number 2)' {
             # Redirecting errors can generally only be done from any scope above where the error is generated.
             & { Write-Error 'The gasoline is in the water.' } 2> $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            "__ : __" | Should -Be $FileContent[0]
-            "+ CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException" | Should -Be $FileContent[1]
-            "+ FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException" | Should -Be $FileContent[2]
+            "____ : ____" | Should -Be $FileContent[0]
+            "+ CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException" |
+                Should -Be $FileContent[1]
+            "+ FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException" |
+                Should -Be $FileContent[2]
+        }
 
+        It 'can use the warning stream (number 3)' {
             Write-Warning 'The cat swatted at the dog.' 3> $FilePath
             $FileContent = Get-Content -Path $FilePath
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
+        }
 
+        It 'can use the verbose stream (number 4)' {
             Write-Verbose 'The sun is round.' 4> $FilePath
             $FileContent = Get-Content -Path $FilePath
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
+        }
 
+        It 'can use the debug stream (number 5)' {
             Write-Debug 'Debug' 5> $FilePath
             $FileContent = Get-Content -Path $FilePath
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
+        }
 
+        It 'can use the information stream (number 6)' {
             Write-Information 'Hark a fly!' 6> $FilePath
             $FileContent = Get-Content -Path $FilePath
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
         }
 
         It 'can be used to merge streams' {
             Test-MergeStream 3>&1 > $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            @( 'The waters are upon the mountains.', '__' ) | Should -Be $FileContent
+            @( 'The waters are upon the mountains.', '____' ) | Should -Be $FileContent
 
         }
 
@@ -132,12 +148,10 @@ Describe 'Redirection Operators' {
             Test-AllMerge *> $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            @(
-                '__'
-                '__'
-                '__'
-                '__'
-            ) | Should -Be $FileContent
+            '____' | Should -Be $FileContent[0]
+            '____' | Should -Be $FileContent[1]
+            '____' | Should -Be $FileContent[2]
+            '____' | Should -Be $FileContent[3]
         }
 
         It 'can suppress all streams at once' {
@@ -150,7 +164,7 @@ Describe 'Redirection Operators' {
             Write-Information 'Truth can be expressed without speaking, nor remaining silent.' 6> $FilePath
             $FileContent = Get-Content -Path $FilePath
 
-            '__' | Should -Be $FileContent
+            '____' | Should -Be $FileContent
         }
     }
 
