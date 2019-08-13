@@ -36,7 +36,7 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
       - [2. Run `Measure-Karma -Meditate` to open your Koans folder](#2-run-measure-karma--meditate-to-open-your-koans-folder)
       - [3. Run `Measure-Karma` again to see how you did](#3-run-measure-karma-again-to-see-how-you-did)
   - [Contributing](#contributing)
-    - [Writing Koans](#writing-koans)
+
 
 ## Prerequisites
 
@@ -173,40 +173,7 @@ Good luck!
 
 ## Contributing
 
-We have a great many topics to cover, including the near-infinite slew of PowerShell cmdlets that _all_ deserve koan coverage.
-Naturally, we're happy to accept any and _all_ help that comes our way!
-
-There are two main ways you can contribute:
-
-1. Feel more than free to clone the repository, make some changes, and submit a pull request!
-2. Submit any small changes you'd like make to any of the koans as an issue on the repository, and either myself or one of the helpers here will be happy to talk it over and get it sorted out.
-
-### Writing Koans
-
-If you are writing a koan file, the header of the file _must_ follow this format.
-
-```powershell
-using module PSKoans
-[Koan(Position = $Index)]
-param()
-```
-
-Comments can be placed around this area if you feel the need to as well.
-
-`$Index` should be an unsigned integer.
-The index indicates the order in which the koans should be sorted.
-Try to pick an index that is unused and makes sense in the progression of lessons.
-If you think it should be placed between two existing koan files, make sure to modify other indexes as necessary so that we can properly review the pull request.
-
-The goal of the koans is to help those who have very limited knowledge learn PowerShell.
-In order to do that, simplicity and accessibility are key.
-There are some advanced topics out there that deserve coverage, and in order to cover them effectively we need to deal with them as clearly and simply as possible.
-If you need a hand, don't be afraid to simply submit the pull request before it's ready.
-You're more than welcome to submit WIP pull requests for early feedback and to ask for help if you're not sure how to proceed.
-We're more than happy to offer our own suggestions and help for your ideas!
-
-If you just want to make a general comment, some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue.
-I try to keep up to speed with those as best I can. :smile:
+If you would like to contribute to PSKoans, please check out the [Contributing](https://github.com/vexx32/PSKoans/blob/master/CONTRIBUTING.md) document. 
 
 [build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
 [build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
