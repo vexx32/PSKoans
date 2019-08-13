@@ -203,7 +203,7 @@ The following are a list of prompts that a Seeker might encounter.
 
 `$____` = Answers that request variable inputs (aka $Variables). The standard will be a **dollar sign** followed by **four underscores**.
 
-`____` = Answers that don't request any of the above options. If this were a Switch Statement, this would be the Default case. The standard will be **four underscores**.
+`____` = General-purpose usage. This could be a command name, a hashtable key name, or a parameter argument that expects a string. Any place a bare string is a valid answer, this should be used. Use **four underscores** for bare string blanks.
 
 There are some questions that do not include any of the above prompts. These questions implicitly request the Seeker of Enlightenment to remove data that is already in place to pass the test. In some instances there are comments announcing this fact, but in other there are not. 
 
