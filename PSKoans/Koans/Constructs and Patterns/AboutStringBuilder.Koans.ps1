@@ -63,10 +63,11 @@ Describe 'System.Text.StringBuilder' {
             $StringBuilder.AppendLine('Hello!')
             $StringBuilder.AppendLine('Goodbye!')
 
-            $ExpectedString = @"
-____
-____
-"@
+            $ExpectedString = @(
+                '____'
+                '____'
+            ) -join [Environment]::NewLine
+
             $ExpectedString | Should -Be $StringBuilder.ToString()
         }
 
@@ -151,12 +152,12 @@ ____
             $PropertyName = '____'
 
             $Properties = $StringBuilder |
-                Get-Member |
-                Where-Object MemberType -eq 'Property'
+            Get-Member |
+            Where-Object MemberType -eq 'Property'
 
             $ExpectedCount = $Properties |
-                Measure-Object |
-                Select-Object -ExpandProperty Count
+            Measure-Object |
+            Select-Object -ExpandProperty Count
 
             $PropertyCount | Should -Be $ExpectedPropertyCount
             $PropertyName | Should -BeIn $Properties.Name
