@@ -63,10 +63,12 @@ Describe 'System.Text.StringBuilder' {
             $StringBuilder.AppendLine('Hello!')
             $StringBuilder.AppendLine('Goodbye!')
 
-            $ExpectedString = @(
+            $ExpectedString = -join @(
                 '____'
+                [Environment]::NewLine
                 '____'
-            ) -join [Environment]::NewLine
+                [Environment]::NewLine
+            )
 
             $ExpectedString | Should -Be $StringBuilder.ToString()
         }
