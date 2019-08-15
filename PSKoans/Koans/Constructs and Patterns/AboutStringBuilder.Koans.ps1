@@ -22,7 +22,7 @@ Describe 'System.Text.StringBuilder' {
             # All things, ultimately, are carved from a blank slate.
             $StringBuilder = New-Object System.Text.StringBuilder
 
-            $StringBuilder | Should -BeOfType __
+            $StringBuilder | Should -BeOfType ____
         }
 
         It 'can be created from a type accelerator' {
@@ -36,7 +36,7 @@ Describe 'System.Text.StringBuilder' {
                 without parentheses in the console to see available overload
                 definitions that can be used to construct the object.
             #>
-            $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType __
+            $StringBuilder, $SBFromString, $SBWithSetCapacity | Should -BeOfType ____
             __ | Should -Be $SBFromString.Length
         }
 
@@ -44,7 +44,7 @@ Describe 'System.Text.StringBuilder' {
             # Two sides of a coin.
             [System.Text.StringBuilder]$StringBuilder = 'Initial String'
 
-            $StringBuilder | Should -BeOfType __
+            $StringBuilder | Should -BeOfType ____
         }
     }
 
@@ -54,7 +54,7 @@ Describe 'System.Text.StringBuilder' {
             $StringBuilder = [System.Text.StringBuilder]::new()
 
             # Quantity comes first. Quality soon follows.
-            $StringBuilder.Append('__')
+            $StringBuilder.Append('____')
             $StringBuilder.Length | Should -Be 10
         }
 
@@ -63,10 +63,13 @@ Describe 'System.Text.StringBuilder' {
             $StringBuilder.AppendLine('Hello!')
             $StringBuilder.AppendLine('Goodbye!')
 
-            $ExpectedString = @"
-__
-__
-"@
+            $ExpectedString = -join @(
+                '____'
+                [Environment]::NewLine
+                '____'
+                [Environment]::NewLine
+            )
+
             $ExpectedString | Should -Be $StringBuilder.ToString()
         }
 
@@ -74,13 +77,13 @@ __
             # Using the same underlying framework as the -f formatting operator.
             $StringBuilder = [System.Text.StringBuilder]::new()
 
-            $FormatItems = '__', '__'
-            $StringBuilder.AppendFormat("{0} is {1}.")
+            $FormatItems = '____', '____'
+            $StringBuilder.AppendFormat("{0} is {1}.", $FormatItems)
 
             $StringBuilder.ToString() | Should -Be "Water is wet."
         }
 
-        It 'returns a reference to the object' {
+        It 'returns a reference to the object when adding strings' {
             # So you can either hide that output, or use it to chain the method!
             $StringBuilder = [System.Text.StringBuilder]::new()
             $StringBuilder.Append('Hello!') > $null # Hide output from console
@@ -88,7 +91,7 @@ __
             # The reference returned points back to the original StringBuilder object.
             $StringBuilder.Append(' Who ').Append('are ').Append('you?') | Should -Be $StringBuilder
 
-            '__' | Should -Be $StringBuilder.ToString()
+            '____' | Should -Be $StringBuilder.ToString()
         }
     }
 
@@ -100,14 +103,14 @@ __
 
         It 'is as simple as calling .ToString()' {
             $SB.ToString() | Should -BeOfType String
-            '__' | Should -Be $SB.ToString()
+            '____' | Should -Be $SB.ToString()
         }
 
         It 'can be retained and reused' {
             $SB.Append('Hello')
-            '__' | Should -Be $SB.ToString()
+            '____' | Should -Be $SB.ToString()
             $SB.Append(' DONE')
-            '__' | Should -Be $SB.ToString()
+            '____' | Should -Be $SB.ToString()
         }
     }
 
@@ -124,18 +127,18 @@ __
             $StringBuilder.Append('is my dog.')
             $StringBuilder.Insert(0, 'Ben ')
 
-            '__' | Should -Be $StringBuilder.ToString()
+            '____' | Should -Be $StringBuilder.ToString()
         }
 
         It 'can remove sequences' {
-            '__' | Should -Be $StringBuilder.Remove(0, 4).ToString()
+            '____' | Should -Be $StringBuilder.Remove(0, 4).ToString()
         }
 
         It 'can replace existing sequences' {
             $StringBuilder.Insert(0, 'Steve ')
             $StringBuilder.Replace('dog', 'draconian leech')
 
-            '__' | Should -Be $StringBuilder.ToString()
+            '____' | Should -Be $StringBuilder.ToString()
         }
     }
 
@@ -148,15 +151,15 @@ __
 
         It 'has only a few properties' {
             $PropertyCount = __
-            $PropertyName = __
+            $PropertyName = '____'
 
             $Properties = $StringBuilder |
-                Get-Member |
-                Where-Object MemberType -eq 'Property'
+            Get-Member |
+            Where-Object MemberType -eq 'Property'
 
             $ExpectedCount = $Properties |
-                Measure-Object |
-                Select-Object -ExpandProperty Count
+            Measure-Object |
+            Select-Object -ExpandProperty Count
 
             $PropertyCount | Should -Be $ExpectedPropertyCount
             $PropertyName | Should -BeIn $Properties.Name
@@ -169,7 +172,7 @@ __
             $FinalStringLength | Should -Be $StringBuilder.Length
         }
 
-        It 'indicates the currently allocated capactity' {
+        It 'indicates the currently allocated capacity' {
             $Capacity = __
 
             $Capacity | Should -Be $StringBuilder.Capacity
