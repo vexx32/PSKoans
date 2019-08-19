@@ -4,20 +4,38 @@ See below for a table of all koans and their corresponding positions. When worki
 | Folder                    |  Koan                           |  Int Position  |  Status      |
 |---------------------------|---------------------------------|----------------|--------------|
 |  Foundations              |  AboutAssertions                | 101            |  Complete    |
-|  Foundations              |  AboutVariables                 | 102            |  Complete    |
-|  Foundations              |  AboutFunctionsAndScriptBlocks  | 103            |  Complete    |
-|  Foundations              |  AboutOrderOfOperations         | 104            |  Complete    |
-|  Foundations              |  AboutArrays                    | 105            |  Complete    |
-|  Foundations              |  AboutAssignmentAndArithmetic   | 106            |  Complete    |
-|  Foundations              |  AboutComparison                | 107            |  Complete    |
-|  Foundations              |  AboutStrings                   | 108            |  Complete    |
-|  Foundations              |  AboutStringOperators           | 109            |  Complete    |
-|  Foundations              |  AboutConditions                | 110            |  Complete    |
-|  Foundations              |  AboutTypeOperators             | 111            |  Complete    |
-|  Foundations              |  AboutHashTables                | 112            |  Complete    |
-|  Foundations              |  AboutLoopsAndPipelines         | 113            |  Complete    |
-|  Foundations              |  AboutTheStockChallenge         | 114            |  Complete    |
-|  Testing Grounds          |  TestingHashtables              | 115            |  Incomplete  |
+|  IntroTraining            |  FunExamples                    | 102            |  Creating    |
+|  IntroTraining            |  WhatIsDotNet                   | 103            |  ToDo        |
+|  IntroTraining            |  BasicOOP                       | 104            |  ToDo        |
+|  IntroTraining            |  UsefulISEs                     | 105            |  ToDo        |
+|  IntroTraining            |  ExecutionPolicy                | 106            |  ToDo        |
+|  IntroTraining            |  Cmdlets                        | 107            |  ToDo        |
+|  IntroTraining            |  CmdletVerbs                    | 108            |  ToDo        |
+|  IntroTraining            |  CmdletNouns                    | 109            |  ToDo        |
+|  IntroTraining            |  PrimitiveDatatypes             | 110            |  ToDo        |
+|  IntroTraining            |  PrimitiveDatatypes Test        | 111            |  ToDo        |
+|  IntroTraining            |  Typecasting                    | 112            |  ToDo        |
+|  IntroTraining            |  Class properties/methods       | 113            |  ToDo        |
+|  Foundations              |  AboutVariables                 | 114            |  Complete    |
+|  IntroTraining            |  VariablesActivitiy             | 115            |  ToDo        |
+|  Foundations              |  AboutArrays                    | 116            |  ToEdit      |
+|  IntroTraining            |  Array Activity                 | 117            |  ToEdit      |
+|  Foundations              |  AboutComparison                | 118            |  ToEdit      |
+|  Foundations              |  AboutConditions                | 119            |  ToEdit      |
+|  Foundations              |  AboutFunctionsAndScriptBlocks  | 120            |  ToEdit      |
+
+
+
+
+|  Foundations              |  AboutOrderOfOperations         | 122            |  Complete    |
+|  Foundations              |  AboutAssignmentAndArithmetic   | 124            |  Complete    |
+|  Foundations              |  AboutStrings                   | 126            |  Complete    |
+|  Foundations              |  AboutStringOperators           | 127            |  Complete    |
+|  Foundations              |  AboutTypeOperators             | 129            |  Complete    |
+|  Foundations              |  AboutHashTables                | 130            |  Complete    |
+|  Foundations              |  AboutLoopsAndPipelines         | 131            |  Complete    |
+|  Foundations              |  AboutTheStockChallenge         | 132            |  Complete    |
+|  Testing Grounds          |  TestingHashtables              | 133            |  Incomplete  |
 |  Cmdlets 1                |  AboutDiscovery                 | 201            |  Complete    |
 |  Cmdlets 1                |  AboutPSProviders               | 202            |  Complete    |
 |  Cmdlets 1                |  AboutNewObject                 | 204            |  Complete    |
