@@ -3,7 +3,7 @@ using module PSKoans
 param()
 <#
 
-    FunExamples
+    Some fun examples!
 
     PowerShell is a super fun, and versitile, scripting language based off of .NET.
     To get you excited about the language we've given you some sample code to run.

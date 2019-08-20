@@ -57,7 +57,10 @@ you'll have to guess which is which!
 
 #>
 
-Describe "JIT or Compiled?" {
+$RelativePath = ".\AnswerFunctions\IntroTraining\AboutDotNetAnswers\AboutDotNetAnswers.psd1"
+Import-Module $RelativePath
+
+Describe "JIT or Compiled" {
 
     It 'arrival-part_1' {
         <#
@@ -72,10 +75,10 @@ Describe "JIT or Compiled?" {
         Would this be an example of language being JIT or Compiled?
         #>
 
-        $RelativePath = ".\AnswerFunctions\IntroTraining\WhatIsDotNet\WhatIsDotNet.psd1"
-        Import-Module $RelativePath
         # Replace __ with either 'jit' or 'compiled'
-        '__'.ToLower() | Should -be (JitVsCompiled -Test arrivalOne).tolower()
+        $Answer = '__'
+        $Answer -eq (DotNetTestAnswers -Test arrivalOne) | Should -BeTrue `
+        -Because "arrival-part_1 answer is either jit or compiled"
     }
 
     It 'arrival-part_2' {
@@ -87,10 +90,10 @@ Describe "JIT or Compiled?" {
             Would this be an example of language being JIT or Compiled?
         #>
 
-        $RelativePath = "AnswerFunctions\IntroTraining\WhatIsDotNet\WhatIsDotNet.psd1"
-        Import-Module $RelativePath
         # Replace __ with either 'jit' or 'compiled'
-        '__'.ToLower() | Should -be (JitVsCompiled -Test arrivalTwo).tolower()
+        $Answer = '__'
+        $Answer -eq (DotNetTestAnswers -Test arrivalTwo) | Should -BeTrue `
+        -Because "arrival-part_2 answer is either jit or compiled"
     }
 
     It 'babelFish' {
@@ -104,10 +107,10 @@ Describe "JIT or Compiled?" {
             Would this be an example of language being JIT or Compiled?
         #>
 
-        $RelativePath = "AnswerFunctions\IntroTraining\WhatIsDotNet\WhatIsDotNet.psd1"
-        Import-Module $RelativePath
         # Replace __ with either 'jit' or 'compiled'
-        '__'.ToLower() | Should -be (JitVsCompiled -Test babelFish).tolower()
+        $Answer = '__'
+        $Answer -eq (DotNetTestAnswers -Test babelFish) | Should -BeTrue `
+        -Because "babelFish answer is either jit or compiled"
     }
 
     It 'bookPublishers' {
@@ -121,11 +124,11 @@ Describe "JIT or Compiled?" {
 
             Would this be an example of language being JIT or Compiled?
         #>
-        
-        $RelativePath = "AnswerFunctions\IntroTraining\WhatIsDotNet\WhatIsDotNet.psd1"
-        Import-Module $RelativePath
+
         # Replace __ with either 'jit' or 'compiled'
-        '__'.ToLower() | Should -be (JitVsCompiled -Test bookPublishers).tolower()
+        $Answer = '__'
+        $Answer -eq (DotNetTestAnswers -Test bookPublishers) | Should -BeTrue `
+        -Because "bookPublishers answer is either jit or compiled"
     }
 
     It 'UN' {
@@ -138,9 +141,12 @@ Describe "JIT or Compiled?" {
             Would this be an example of language being JIT or Compiled?
         #>
 
-        $RelativePath = "AnswerFunctions\IntroTraining\WhatIsDotNet\WhatIsDotNet.psd1"
-        Import-Module $RelativePath
         # Replace __ with either 'jit' or 'compiled'
-        '__'.ToLower() | Should -be (JitVsCompiled -Test UN).tolower()
+        $Answer = '__'
+        $Answer -eq (DotNetTestAnswers -Test arrivalOne) | Should -BeTrue `
+        -Because "UN answer is either jit or compiled"
     }
+
 }
+
+Remove-Module $RelativePath

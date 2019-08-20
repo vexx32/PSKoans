@@ -4,9 +4,9 @@ See below for a table of all koans and their corresponding positions. When worki
 | Folder                    |  Koan                           |  Int Position  |  Status      |
 |---------------------------|---------------------------------|----------------|--------------|
 |  Foundations              |  AboutAssertions                | 101            |  Complete    |
-|  IntroTraining            |  FunExamples                    | 102            |  Complete    |
-|  IntroTraining            |  WhatIsDotNet                   | 103            |  Creating    |
-|  IntroTraining            |  BasicOOP                       | 104            |  ToDo        |
+|  IntroTraining            |  AboutExamples                  | 102            |  Drafted     |
+|  IntroTraining            |  AboutDotNet                    | 103            |  Drafted     |
+|  IntroTraining            |  AboutOOP                       | 104            |  Drafted     |
 |  IntroTraining            |  UsefulISEs                     | 105            |  ToDo        |
 |  IntroTraining            |  ExecutionPolicy                | 106            |  ToDo        |
 |  IntroTraining            |  Cmdlets                        | 107            |  ToDo        |
