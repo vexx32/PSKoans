@@ -7,10 +7,7 @@ See below for a table of all koans and their corresponding positions. When worki
 |  IntroTraining            |  AboutExamples                  | 102            |  Drafted     |
 |  IntroTraining            |  AboutDotNet                    | 103            |  Drafted     |
 |  IntroTraining            |  AboutOOP                       | 104            |  Drafted     |
-|  IntroTraining            |  UsefulISEs                     | 105            |  ToDo        |
-|  IntroTraining            |  ExecutionPolicy                | 106            |  ToDo        |
-|  IntroTraining            |  Cmdlets                        | 107            |  ToDo        |
-|  IntroTraining            |  CmdletVerbs                    | 108            |  ToDo        |
+|  IntroTraining            |  AboutCmdletVerbs               | 105            |  ToDo        |
 |  IntroTraining            |  CmdletNouns                    | 109            |  ToDo        |
 |  IntroTraining            |  PrimitiveDatatypes             | 110            |  ToDo        |
 |  IntroTraining            |  PrimitiveDatatypes Test        | 111            |  ToDo        |
