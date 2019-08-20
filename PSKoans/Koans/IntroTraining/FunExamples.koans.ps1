@@ -1,7 +1,9 @@
 using module PSKoans
-[Koan(Position = 101)]
+[Koan(Position = 102)]
 param()
 <#
+
+    FunExamples
 
     PowerShell is a super fun, and versitile, scripting language based off of .NET.
     To get you excited about the language we've given you some sample code to run.
@@ -14,17 +16,26 @@ Describe 'Examples' {
 
     It 'rickroll' {
         <# The code provided will download a PowerShell script from the interwebs.
+
          This script plays the entire music video to the 1987 Rick Astley Song 
          "Never Gonna Give You Up"... but in ASCII!
-         Turn down your sound for this one though, it can be quite loud
+
+         Turn down your sound for this one though, it can be quite loud!
+
          Run the following code by removing the "#" then running it in your PowerShell Window
+
          iex (New-Object Net.WebClient).DownloadString("http://bit.ly/e0Mw9w")
-        #> Once run change __ to 'True!'
+
+        #> 
+        
+        #Once run change __ to 'True!'
         '__' | Should -Be 'True!'
     }
     It 'catFacts' {
         # This example queries a database of cat facts then reads them out using
+
         # a speech synthesizer. Copy the entire comment block in <##> and run
+        
         <#
         function CatFactsGalore{
 
