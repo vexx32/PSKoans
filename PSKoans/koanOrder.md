@@ -23,6 +23,7 @@ See below for a table of all koans and their corresponding positions. When worki
 |  Foundations              |  AboutComparison                | 118            |  ToEdit      |
 |  Foundations              |  AboutConditions                | 119            |  ToEdit      |
 |  Foundations              |  AboutFunctionsAndScriptBlocks  | 120            |  ToEdit      |
+|  BELOW                    |  IS STILL A WORK IN PROGRESS    | SO PLEASE      | IGNORE       |
 |  Foundations              |  AboutOrderOfOperations         | 122            |  Complete    |
 |  Foundations              |  AboutAssignmentAndArithmetic   | 124            |  Complete    |
 |  Foundations              |  AboutStrings                   | 126            |  Complete    |
