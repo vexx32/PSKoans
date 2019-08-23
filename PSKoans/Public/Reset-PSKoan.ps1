@@ -15,7 +15,7 @@ function Reset-PSKoan {
         $Context
     )
 
-    $koanFilePath = Get-PSKoanFilePath -Topic $Topic
+    $koanFilePath = Get-PSKoanFile -Topic $Topic
     $moduleKoan = Get-PSKoanIt -Path $koanFilePath.ModuleFilePath |
         Where-Object {
             $_.Name -like $Name -and

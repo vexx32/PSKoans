@@ -71,7 +71,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should move incorrectly placed topics' {
-                $directory = New-Item (Join-Path $TestDrive 'Koans\Wrong') -ItemType Directory
+                $directory = New-Item -Path (Join-Path $TestDrive 'Koans\Wrong') -ItemType Directory
                 $file | Move-Item -Destination $directory.FullName
                 $file.FullName | Should -Not -Exist
 

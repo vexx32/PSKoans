@@ -30,7 +30,7 @@ function Get-PSKoanIt {
         [Ref]$errors
     )
 
-    $ast.FindAll(
+    $astNodes = $ast.FindAll(
         {
             param ( $node )
 
@@ -38,9 +38,11 @@ function Get-PSKoanIt {
             $node.GetCommandName() -eq 'It'
         },
         $true
-    ) | ForEach-Object {
-        $contextName = ''
-        $parentAst = $_
+    )
+
+    foreach ($astNode in $astNodes) {
+        $contextName = $null
+        $parentAst = $astNode
         do {
            $parentAst = $parentAst.Parent
            if ($parentAst -is [System.Management.Automation.Language.CommandAst] -and $parentAst.GetCommandName() -eq 'Context') {
@@ -49,10 +51,10 @@ function Get-PSKoanIt {
         } until (-not $parentAst -or $contextName)
 
         [PSCustomObject]@{
-            ID      = '{0}\{1}' -f $contextName, $_.CommandElements[1].Value
-            Name    = $_.CommandElements[1].Value
+            ID      = '{0}\{1}' -f $contextName, $astNode.CommandElements[1].Value
+            Name    = $astNode.CommandElements[1].Value
             Context = $contextName
-            Ast     = $_
+            Ast     = $astNode
         }
     }
 }

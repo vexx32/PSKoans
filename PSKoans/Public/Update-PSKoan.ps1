@@ -37,7 +37,7 @@ function Update-PSKoan {
 
                 $ParentPath = Split-Path -Path $DestinationPath -Parent
                 if (-not (Test-Path -Path $ParentPath)) {
-                    $null = New-Item -Path $ParentPath -ItemType Directory
+                    New-Item -Path $ParentPath -ItemType Directory > $null
                 }
             }
             { $ModuleKoanList.ContainsKey($TopicName) -and $UserKoanList.ContainsKey($TopicName) } {

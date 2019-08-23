@@ -29,7 +29,7 @@ function Update-PSKoanFile {
     if ($Topic) {
         $params.Topic = $Topic
     }
-    Get-PSKoanFilePath @params | ForEach-Object {
+    Get-PSKoanFile @params | ForEach-Object {
         $moduleKoans = Get-PSKoanIt -Path $_.ModuleFilePath | ForEach-Object -Begin {
             $position =  0
         } -Process {
