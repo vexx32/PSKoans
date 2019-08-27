@@ -1,5 +1,6 @@
 # This is required due to having to parse the KoanAttribute to verify the correct files are returned
-using module PSKoans
+# Using a relative path to the module being tested removes duplicate loading of the module.
+using module ..\..\..\PSKoans\PSKoans.psd1
 
 Describe 'Get-Koan' {
     BeforeAll {
@@ -7,7 +8,7 @@ Describe 'Get-Koan' {
         $TestLocation = "TestDrive:${/}PSKoans"
 
         Set-PSKoanLocation -Path $TestLocation
-        InModuleScope 'PSKoans' { Initialize-KoanDirectory -Confirm:$false }
+        Update-PSKoan -Confirm:$false
     }
 
     It 'should retrieve all the koan files' {

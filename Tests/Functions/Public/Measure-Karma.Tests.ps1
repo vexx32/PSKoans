@@ -12,7 +12,7 @@ Describe 'Measure-Karma' {
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
 
-                Initialize-KoanDirectory -Confirm:$false
+                Update-PSKoan -Confirm:$false
             }
 
             It 'should not produce output' {
@@ -41,7 +41,7 @@ Describe 'Measure-Karma' {
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
 
-                Initialize-KoanDirectory -Confirm:$false
+                Update-PSKoan -Confirm:$false
             }
 
             It 'should not produce output' {
@@ -70,7 +70,7 @@ Describe 'Measure-Karma' {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
                 Mock Get-Koan -ModuleName 'PSKoans' { }
-                Mock Initialize-KoanDirectory -ModuleName 'PSKoans' { throw 'Prevent recursion' }
+                Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
             }
 
@@ -96,7 +96,7 @@ Describe 'Measure-Karma' {
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
 
-                Initialize-KoanDirectory -Confirm:$false
+                Update-PSKoan -Confirm:$false
             }
 
             It 'should list all the koan topics' {
@@ -115,7 +115,7 @@ Describe 'Measure-Karma' {
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
 
-                Initialize-KoanDirectory -Confirm:$false
+                Update-PSKoan -Confirm:$false
 
                 $TestCases = @(
                     @{ Topic = @( 'AboutAssertions' ) }
@@ -123,7 +123,7 @@ Describe 'Measure-Karma' {
                 )
             }
 
-            It 'should Invoke-Pester on only the topics selected: <Topic>' {
+            It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases $TestCases {
                 param([string[]] $Topic)
 
                 Measure-Karma -Topic $Topic
@@ -155,33 +155,6 @@ Describe 'Koans Test' {
 
                 Set-PSKoanLocation $TestLocation
             }
-        }
-
-        Context 'With -Reset Switch' {
-            BeforeAll {
-                Mock Initialize-KoanDirectory -ModuleName 'PSKoans' -ParameterFilter { -not $Topic } -MockWith { }
-                Mock Initialize-KoanDirectory -ModuleName 'PSKoans' -ParameterFilter { $Topic } -MockWith { $Topic }
-
-                $TopicTestCases = @(
-                    @{ Topic = @( 'AboutArrays' ) }
-                    @{ Topic = @( 'AboutTypeOperators', 'AboutHashtables' ) }
-                )
-            }
-
-            It 'should not produce output' {
-                Measure-Karma -Reset | Should -BeNullOrEmpty
-            }
-
-            It 'should call Initialize-KoanDirectory' {
-                Assert-MockCalled Initialize-KoanDirectory -Times 1 -ParameterFilter { -not $Topic }
-            }
-
-            It 'should only target the specified topic "<Topic>" when -Topic is used' {
-                param([string[]] $Topic)
-
-                Measure-Karma -Reset -Topic $Topic | Should -Be $Topic
-                Assert-MockCalled Initialize-KoanDirectory -Times 1 -ParameterFilter { $Topic }
-            } -TestCases $TopicTestCases
         }
 
         Context 'With -Contemplate Switch' {

@@ -60,7 +60,7 @@ Write-Verbose "Koans folder set to $script:LibraryFolder"
 
 if (-not (Test-Path -Path $script:LibraryFolder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
-    Initialize-KoanDirectory -Confirm:$false
+    Update-PSKoan -Confirm:$false
 }
 
 #endregion ModuleConfiguration

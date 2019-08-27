@@ -17,42 +17,47 @@ function Get-PSKoanIt {
 
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('FullName')]
         [string]
         $Path
     )
 
-    $tokens = $errors = @()
+    process {
+        $Path = $pscmdlet.GetUnresolvedProviderPathFromPSPath($Path)
 
-    $ast = [System.Management.Automation.Language.Parser]::ParseFile(
-        $Path,
-        [Ref]$tokens,
-        [Ref]$errors
-    )
+        $tokens = $errors = @()
 
-    $ast.FindAll(
-        {
-            param ( $node )
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+            $Path,
+            [Ref]$tokens,
+            [Ref]$errors
+        )
 
-            $node -is [System.Management.Automation.Language.CommandAst] -and
-            $node.GetCommandName() -eq 'It'
-        },
-        $true
-    ) | ForEach-Object {
-        $contextName = ''
-        $parentAst = $_
-        do {
-           $parentAst = $parentAst.Parent
-           if ($parentAst -is [System.Management.Automation.Language.CommandAst] -and $parentAst.GetCommandName() -eq 'Context') {
-               $contextName = $parentAst.CommandElements[1].Value
-           }
-        } until (-not $parentAst -or $contextName)
+        $ast.FindAll(
+            {
+                param ( $node )
 
-        [PSCustomObject]@{
-            ID      = '{0}\{1}' -f $contextName, $_.CommandElements[1].Value
-            Name    = $_.CommandElements[1].Value
-            Context = $contextName
-            Ast     = $_
+                $node -is [System.Management.Automation.Language.CommandAst] -and
+                $node.GetCommandName() -eq 'It'
+            },
+            $true
+        ) | ForEach-Object {
+            $contextName = ''
+            $parentAst = $_
+            do {
+            $parentAst = $parentAst.Parent
+            if ($parentAst -is [System.Management.Automation.Language.CommandAst] -and $parentAst.GetCommandName() -eq 'Context') {
+                $contextName = $parentAst.CommandElements[1].Value
+            }
+            } until (-not $parentAst -or $contextName)
+
+            [PSCustomObject]@{
+                ID      = '{0}\{1}' -f $contextName, $_.CommandElements[1].Value
+                Name    = $_.CommandElements[1].Value
+                Context = $contextName
+                Ast     = $_
+            }
         }
     }
 }

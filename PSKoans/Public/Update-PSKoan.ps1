@@ -11,6 +11,9 @@ function Update-PSKoan {
     )
 
     $KoanFolder = Get-PSKoanLocation
+    if (-not (Test-Path $KoanFolder)) {
+        New-Item -Path $KoanFolder -ItemType Directory > $null
+    }
 
     $ModuleKoanFolder = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'
     $ModuleKoanList = Get-ChildItem -LiteralPath $ModuleKoanFolder -Recurse -Filter *.Koans.ps1 |
@@ -20,6 +23,9 @@ function Update-PSKoan {
     $UserKoanList = Get-ChildItem -LiteralPath $KoanFolder -Recurse -Filter *.Koans.ps1 |
         Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -in $Topic } |
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
+    if (-not $UserKoanList) {
+        $UserKoanList = @{}
+    }
 
     $TopicList = [HashSet[String]]::new(
         [System.StringComparer]::InvariantCultureIgnoreCase)

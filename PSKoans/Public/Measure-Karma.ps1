@@ -1,11 +1,10 @@
 ﻿function Measure-Karma {
-    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'Default',
+    [CmdletBinding(DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md')]
     [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
     param(
         [Parameter(ParameterSetName = 'Default')]
-        [Parameter(ParameterSetName = 'Reset')]
         [Alias('Koan', 'File')]
         [ArgumentCompleter(
             {
@@ -33,10 +32,6 @@
         [switch]
         $Contemplate,
 
-        [Parameter(Mandatory, ParameterSetName = "Reset")]
-        [switch]
-        $Reset,
-
         [Parameter()]
         [Alias()]
         [switch]
@@ -53,16 +48,6 @@
             Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
             ForEach-Object {
                 $_.BaseName -replace '\.Koans$'
-            }
-        }
-        'Reset' {
-            if ($Topic) {
-                Write-Verbose "Resetting lessons: $($Topic -join ', ')"
-                Initialize-KoanDirectory -Topic $Topic
-            }
-            else {
-                Write-Verbose "Reinitializing koan directory"
-                Initialize-KoanDirectory
             }
         }
         'OpenFolder' {
@@ -121,7 +106,7 @@
 
                 # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
                 Write-Warning 'No koans found in your koan directory. Initiating full reset...'
-                Initialize-KoanDirectory
+                Update-PSKoan -Confirm:$false
                 Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
 
                 return # Skip the rest of the function

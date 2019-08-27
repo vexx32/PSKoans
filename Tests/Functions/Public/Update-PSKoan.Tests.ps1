@@ -56,7 +56,7 @@ InModuleScope 'PSKoans' {
 
                 Set-PSKoanLocation -Path (Join-Path $TestDrive 'Koans')
 
-                Initialize-KoanDirectory -Confirm:$false | Should -BeNullOrEmpty
+                Update-PSKoan -Confirm:$false
 
                 $file = Get-ChildItem -Path (Get-PSKoanLocation) -Filter *.koans.ps1 -File -Recurse | Select-Object -First 1
             }
