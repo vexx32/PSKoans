@@ -42,13 +42,13 @@ Describe 'PSObject' {
     It "details the base object's properties and methods" {
         $PropertyNames = @(
             'Count'
+            'IsFixedSize'
+            '__'
+            '__'
             '__'
             'LongLength'
             '__'
             'SyncRoot'
-            '__'
-            'IsFixedSize'
-            '__'
         )
         $PropertyNames | Should -Be $Object.PSObject.Properties.Name | Sort-Object # alphabetically
 
@@ -64,7 +64,7 @@ Describe 'PSObject' {
         # Native .NET objects have their standard properties mapped to PSObject properties for easy access
         $PropertyNames = $Empty.PSObject.Properties.Name | Sort-Object # alphabetically
         $PropertyNames | Should -Not -BeNullOrEmpty
-        @('__', '__', '__', '__', 'IsReadOnly', '__', '__', 'IsSynchronized') | Should -Be $PropertyNames
+        @('__', '__', 'IsReadOnly', 'IsSynchronized', '__', '__', '__', '__') | Should -Be $PropertyNames
         __ | Should -Be $Empty.IsReadOnly
     }
 
