@@ -58,7 +58,8 @@ InModuleScope 'PSKoans' {
 
                 Update-PSKoan -Confirm:$false
 
-                $file = Get-ChildItem -Path (Get-PSKoanLocation) -Filter *.koans.ps1 -File -Recurse | Select-Object -First 1
+                $file = Get-ChildItem -Path (Get-PSKoanLocation) -Filter *.koans.ps1 -File -Recurse |
+                    Select-Object -First 1
             }
 
             It 'should copy missing topic files' {

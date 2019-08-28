@@ -17,7 +17,7 @@ Reset-PSKoan [-Topic] <String[]> [-Name] <String> [[-Context] <string>] [-WhatIf
 ```
 
 ## DESCRIPTION
-Replaces the koan in the user file set with the koan from the module.
+Replaces the koan in the user file set with the original copy of the koan from the module.
 
 ## EXAMPLES
 

@@ -30,44 +30,40 @@ function Update-PSKoanFile {
         $params.Topic = $Topic
     }
     Get-PSKoanFile @params | ForEach-Object {
-        $moduleKoans = Get-PSKoanIt -Path $_.ModuleFilePath | ForEach-Object -Begin {
-            $position =  0
-        } -Process {
+        $position = 0
+        $moduleKoans = Get-PSKoanIt -Path $_.ModuleFilePath | ForEach-Object {
             [PSCustomObject]@{
                 ID       = $_.ID
                 Position = $position++
                 Name     = $_.Name
                 Ast      = $_.Ast
             }
-        } | Group-Object ID -AsHashTable -AsString
+        } | Group-Object -Property ID -AsHashTable -AsString
 
         if (-not $moduleKoans) {
-            # Not all files have content right now
+            # Handles topics which do not have It blocks.
             return
         }
 
-        if (Test-Path $_.UserFilePath) {
+        if (Test-Path -Path $_.UserFilePath) {
             $userKoans = Get-PSKoanIt -Path $_.UserFilePath
             $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
 
-            if ($moduleKoans.Keys | Where-Object { -not $userKoansHash -or -not $userKoansHash.Contains($_) }) {
-                $content = Get-Content $_.ModuleFilePath -Raw
+            if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
+                $content = Get-Content -Path $_.ModuleFilePath -Raw
 
                 $userKoans |
-                    Where-Object {
-                        $moduleKoans.Contains($_.ID)
-                    } |
-                    ForEach-Object {
-                        [PSCustomObject]@{
-                            ID        = $_.ID
-                            Position  = $moduleKoans[$_.ID].Position
-                            Name      = $_.Name
-                            Ast       = $_.Ast
-                            SourceAst = $moduleKoans[$_.ID].Ast
-                        }
-                    } |
+                    Where-Object { $moduleKoans.Contains($_.ID) } |
+                    Select-Object -Property @(
+                        'ID'
+                        @{ Name = 'Position';  Expression = { $moduleKoans[$_.ID].Position }}
+                        'Name'
+                        'Ast'
+                        @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast }}
+                    ) |
                     Sort-Object { $_.SourceAst.Extent.StartLineNumber } -Descending |
                     ForEach-Object {
+                        # Replace the content of the koan with the users content.
                         $content = $content.Remove(
                             $_.SourceAst.Extent.StartOffset,
                             ($_.SourceAst.Extent.EndOffset - $_.SourceAst.Extent.StartOffset)
@@ -77,11 +73,12 @@ function Update-PSKoanFile {
                         )
                     }
 
-                if ($pscmdlet.ShouldProcess(('Updating "{0}"' -f $_.UserFilePath))) {
+                if ($pscmdlet.ShouldProcess($_.UserFilePath, 'Updating Koan File')) {
                     Set-Content -Path $_.UserFilePath -Value $content
                 }
             }
-        } else {
+        }
+        else {
             Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.UserFilePath)
         }
     }

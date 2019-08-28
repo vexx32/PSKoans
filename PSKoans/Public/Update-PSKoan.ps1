@@ -25,7 +25,7 @@ function Update-PSKoan {
     )
 
     $KoanFolder = Get-PSKoanLocation
-    if (-not (Test-Path $KoanFolder)) {
+    if (-not (Test-Path -Path $KoanFolder)) {
         New-Item -Path $KoanFolder -ItemType Directory > $null
     }
 
@@ -47,50 +47,48 @@ function Update-PSKoan {
         $null = $TopicList.Add($TopicName)
     }
 
-    foreach ($TopicName in $TopicList) {
-        $ParentPathPattern = [regex]::Escape((Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'))
+    $ParentPathPattern = [regex]::Escape((Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'))
 
-        switch ($TopicName) {
-            { $ModuleKoanList.ContainsKey($TopicName) } {
-                $PathFragment = $ModuleKoanList[$TopicName].Fullname -replace $ParentPathPattern
-                $DestinationPath = Join-Path -Path $KoanFolder -ChildPath $PathFragment
+    switch ($TopicList) {
+        { $ModuleKoanList.ContainsKey($_) } {
+            $PathFragment = $ModuleKoanList[$_].Fullname -replace $ParentPathPattern
+            $DestinationPath = Join-Path -Path $KoanFolder -ChildPath $PathFragment
 
-                $ParentPath = Split-Path -Path $DestinationPath -Parent
-                if (-not (Test-Path -Path $ParentPath)) {
-                    New-Item -Path $ParentPath -ItemType Directory > $null
+            $ParentPath = Split-Path -Path $DestinationPath -Parent
+            if (-not (Test-Path -Path $ParentPath)) {
+                New-Item -Path $ParentPath -ItemType Directory > $null
+            }
+        }
+        { $ModuleKoanList.ContainsKey($_) -and $UserKoanList.ContainsKey($_) } {
+            if ($UserKoanList[$_].FullName -ne $DestinationPath) {
+                if ($PSCmdlet.ShouldProcess($_, 'Moving Topic')) {
+                    Write-Verbose "Moving $_"
+
+                    $UserKoanList[$_] | Move-Item -Destination $DestinationPath
                 }
             }
-            { $ModuleKoanList.ContainsKey($TopicName) -and $UserKoanList.ContainsKey($TopicName) } {
-                if ($UserKoanList[$TopicName].FullName -ne $DestinationPath) {
-                    if ($PSCmdlet.ShouldProcess($TopicName, "Moving $TopicName")) {
-                        Write-Verbose "Moving $TopicName"
 
-                        $UserKoanList[$TopicName] | Move-Item -Destination $DestinationPath
-                    }
-                }
+            Update-PSKoanFile -Topic $_
 
-                Update-PSKoanFile -Topic $TopicName
+            continue
+        }
+        { $ModuleKoanList.ContainsKey($_) } {
+            if ($PSCmdlet.ShouldProcess($_, 'Adding Topic')) {
+                Write-Verbose "Adding $_"
 
-                break
+                $ModuleKoanList[$_] | Copy-Item -Destination $DestinationPath -Force
             }
-            { $ModuleKoanList.ContainsKey($TopicName) } {
-                if ($PSCmdlet.ShouldProcess($TopicName, "Adding $TopicName")) {
-                    Write-Verbose "Adding $TopicName"
 
-                    $ModuleKoanList[$TopicName] | Copy-Item -Destination $DestinationPath -Force
-                }
+            continue
+        }
+        { $UserKoanList.ContainsKey($_) } {
+            if ($PSCmdlet.ShouldProcess($_, 'Removing Topic')) {
+                Write-Verbose "Removing $_"
 
-                break
+                $UserKoanList[$_] | Remove-Item
             }
-            { $UserKoanList.ContainsKey($TopicName) } {
-                if ($PSCmdlet.ShouldProcess($TopicName, "Removing $TopicName")) {
-                    Write-Verbose "Removing $TopicName"
 
-                    $UserKoanList[$TopicName] | Remove-Item
-                }
-
-                break
-            }
+            continue
         }
     }
 }
