@@ -27,7 +27,7 @@ Describe 'PSObject' {
             The .PSObject member contains many properties, but the .PSObject property itself does not
             actually register for tab-completion, though its child properties do.
         #>
-        $PSObjectProperties = ($Object.PSObject | Get-Member -MemberType Properties).Name
+        $PSObjectProperties = ($Object.PSObject | Get-Member -MemberType Properties).Name | Sort-Object # alphabetically
 
         @(
             'BaseObject'
@@ -41,20 +41,20 @@ Describe 'PSObject' {
 
     It "details the base object's properties and methods" {
         $PropertyNames = @(
-            __
-            'LongLength'
-            __
-            'SyncRoot'
-            __
-            'IsFixedSize'
-            __
             'Count'
+            '__'
+            'LongLength'
+            '__'
+            'SyncRoot'
+            '__'
+            'IsFixedSize'
+            '__'
         )
-        $PropertyNames | Should -Be $Object.PSObject.Properties.Name
+        $PropertyNames | Should -Be $Object.PSObject.Properties.Name | Sort-Object # alphabetically
 
-        $Methods = $Object.PSObject.Methods
+        $Methods = $Object.PSObject.Methods.Name
         __ | Should -Be $Methods.Count
-        $Methods['__'].Name | Should -Be 'Length'
+        $Methods['__'].Name | Should -Be 'get_Length'
     }
 
     It "can be found on any object in PowerShell" {
@@ -62,8 +62,9 @@ Describe 'PSObject' {
         $Empty = @()
 
         # Native .NET objects have their standard properties mapped to PSObject properties for easy access
-        $Empty.PSObject.Properties.Name | Should -Not -BeNullOrEmpty
-        @('__', '__', '__', '__', 'IsReadOnly', '__', '__', 'IsSynchronised', '__') | Should -Be $Empty.PSObject.Properties.Name
+        $PropertyNames = $Empty.PSObject.Properties.Name | Sort-Object # alphabetically
+        $PropertyNames | Should -Not -BeNullOrEmpty
+        @('__', '__', '__', '__', 'IsReadOnly', '__', '__', 'IsSynchronized') | Should -Be $PropertyNames
         __ | Should -Be $Empty.IsReadOnly
     }
 
@@ -95,9 +96,10 @@ Describe 'PSObject' {
 
         $PropertyTypes = $Object.PSObject.Properties |
             Group-Object -Property MemberType |
-            Select-Object -ExpandProperty Name
+            Select-Object -ExpandProperty Name |
+            Sort-Object # alphabetically
 
-        @( '__', '__' ) | Should -Be $PropertyTypes
+        @( '__', '__', '__' ) | Should -Be $PropertyTypes
     }
 
     It "can find derivative properties" {
@@ -112,8 +114,9 @@ Describe 'PSObject' {
 
         $PropertyTypes = $Name.PSObject.Properties |
             Group-Object -Property MemberType |
-            ForEach-Object -MemberName Name
+            ForEach-Object -MemberName Name |
+            Sort-Object # alphabetically
 
-        @( '__', '__', '__') | Should -Be $PropertyTypes
+        @( '__', '__', '__', '__') | Should -Be $PropertyTypes
     }
 }
