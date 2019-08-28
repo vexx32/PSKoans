@@ -65,10 +65,10 @@ Resets all koans in the "-and" context of the AboutComparison topic.
 
 ### Example 6
 ```powershell
-PS C:\> Reset-PSKoan -Topic AboutC -Name ^returns
+PS C:\> Reset-PSKoan -Topic AboutC* -Name returns*
 ```
 
-Reset koans with names starting "returns" in topics matching the regular expression "AboutC".
+Reset koans with names starting "returns" in topics matching the wildcard pattern "AboutC*".
 
 ## PARAMETERS
 
@@ -99,7 +99,7 @@ Required: False
 Position: 2
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -Name
@@ -114,11 +114,11 @@ Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -Topic
-Reset the specified topic from the module.
+Reset the specified topic or topics. Wildcards are supported.
 
 ```yaml
 Type: String
@@ -129,7 +129,7 @@ Required: True
 Position: 0
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -WhatIf

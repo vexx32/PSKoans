@@ -23,7 +23,7 @@ function Reset-PSKoan {
 
         [Parameter()]
         [string]
-        $Name = '.*',
+        $Name = '*',
 
         [Parameter()]
         [string]
@@ -37,8 +37,8 @@ function Reset-PSKoan {
     Get-PSKoanFile @params | ForEach-Object {
         $moduleKoan = Get-PSKoanIt -Path $_.ModuleFilePath |
             Where-Object {
-                $_.Name -match $Name -and
-                (-not $Context -or $_.ID -match ('{0}/{1}' -f $Context, $Name))
+                $_.Name -like $Name -and
+                (-not $Context -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
             }
 
         if ($moduleKoan) {

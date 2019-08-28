@@ -34,11 +34,11 @@ function Get-PSKoanFile {
     }
 
     process {
-        $topicRegex = $Topic -join '|'
+        $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topic
 
         Join-Path -Path $script:ModuleRoot -ChildPath 'Koans' |
             Get-ChildItem -Recurse -Filter *.Koans.ps1 |
-            Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $topicRegex } |
+            Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
             ForEach-Object {
                 $PathFragment = $_.Fullname -replace $ParentPathPattern
 

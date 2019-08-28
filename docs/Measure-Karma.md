@@ -117,7 +117,7 @@ Accept wildcard characters: False
 
 ### -Topic
 Execute koans only from the selected Topic(s).
-Regex patterns are permitted.
+Wildcard patterns are permitted.
 
 ```yaml
 Type: String[]
@@ -128,7 +128,7 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### CommonParameters

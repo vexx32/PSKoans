@@ -93,8 +93,8 @@ InModuleScope 'PSKoans' {
             $userFilePath | Should -FileContentMatch '__ | Should -Be 4'
         }
 
-        It 'supports regular expression matching for name' {
-            Reset-PSKoan -Topic AboutSomething -Name ".*content" -Confirm:$false
+        It 'supports wildcard patterns when matching name' {
+            Reset-PSKoan -Topic AboutSomething -Name "*content" -Confirm:$false
 
             $userFilePath | Should -FileContentMatch '__ | Should -Be 1'
             $userFilePath | Should -FileContentMatch '__ | Should -Be 2'

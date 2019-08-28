@@ -24,6 +24,8 @@ function Update-PSKoan {
         $Topic
     )
 
+    $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topic
+
     $KoanFolder = Get-PSKoanLocation
     if (-not (Test-Path -Path $KoanFolder)) {
         New-Item -Path $KoanFolder -ItemType Directory > $null
@@ -31,11 +33,11 @@ function Update-PSKoan {
 
     $ModuleKoanFolder = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'
     $ModuleKoanList = Get-ChildItem -LiteralPath $ModuleKoanFolder -Recurse -Filter *.Koans.ps1 |
-        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -in $Topic } |
+        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
 
     $UserKoanList = Get-ChildItem -LiteralPath $KoanFolder -Recurse -Filter *.Koans.ps1 |
-        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -in $Topic } |
+        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
 
     if (-not $UserKoanList) {
