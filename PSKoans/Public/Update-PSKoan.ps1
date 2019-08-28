@@ -6,6 +6,20 @@ function Update-PSKoan {
     [OutputType([void])]
     param(
         [Parameter()]
+        [Alias('Koan', 'File')]
+        [ArgumentCompleter(
+            {
+                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+
+                $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                Sort-Object -Property BaseName |
+                ForEach-Object {
+                    $_.BaseName -replace '\.Koans$'
+                }
+
+                return @($Values) -like "$WordToComplete*"
+            }
+        )]
         [string[]]
         $Topic
     )
@@ -23,12 +37,12 @@ function Update-PSKoan {
     $UserKoanList = Get-ChildItem -LiteralPath $KoanFolder -Recurse -Filter *.Koans.ps1 |
         Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -in $Topic } |
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
+
     if (-not $UserKoanList) {
         $UserKoanList = @{}
     }
 
-    $TopicList = [HashSet[String]]::new(
-        [System.StringComparer]::InvariantCultureIgnoreCase)
+    $TopicList = [HashSet[String]]::new([System.StringComparer]::OrdinalIgnoreCase)
     foreach ($TopicName in [string[]]$ModuleKoanList.Keys + [string[]]$UserKoanList.Keys) {
         $null = $TopicList.Add($TopicName)
     }

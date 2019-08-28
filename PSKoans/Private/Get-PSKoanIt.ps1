@@ -1,3 +1,5 @@
+using namespace System.Management.Automation.Language
+
 function Get-PSKoanIt {
     <#
     .SYNOPSIS
@@ -28,35 +30,37 @@ function Get-PSKoanIt {
 
         $tokens = $errors = @()
 
-        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+        $ast = [Parser]::ParseFile(
             $Path,
             [Ref]$tokens,
             [Ref]$errors
         )
 
-        $ast.FindAll(
+        $koans = $ast.FindAll(
             {
                 param ( $node )
 
-                $node -is [System.Management.Automation.Language.CommandAst] -and
+                $node -is [CommandAst] -and
                 $node.GetCommandName() -eq 'It'
             },
             $true
-        ) | ForEach-Object {
+        )
+
+        foreach ($koan in $koans) {
             $contextName = ''
-            $parentAst = $_
+            $parentAst = $koan
             do {
-            $parentAst = $parentAst.Parent
-            if ($parentAst -is [System.Management.Automation.Language.CommandAst] -and $parentAst.GetCommandName() -eq 'Context') {
-                $contextName = $parentAst.CommandElements[1].Value
-            }
-            } until (-not $parentAst -or $contextName)
+                $parentAst = $parentAst.Parent
+                if ($parentAst -is [CommandAst] -and $parentAst.GetCommandName() -eq 'Context') {
+                    $contextName = $parentAst.CommandElements[1].Value
+                }
+            } while ($parentAst -and -not $contextName)
 
             [PSCustomObject]@{
-                ID      = '{0}\{1}' -f $contextName, $_.CommandElements[1].Value
-                Name    = $_.CommandElements[1].Value
+                ID      = '{0}/{1}' -f $contextName, $koan.CommandElements[1].Value
+                Name    = $koan.CommandElements[1].Value
                 Context = $contextName
-                Ast     = $_
+                Ast     = $koan
             }
         }
     }

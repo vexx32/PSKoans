@@ -14,17 +14,17 @@ Reflect on your progress and check your answers.
 
 ### Default (Default)
 ```
-Measure-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
 ### ListKoans
 ```
-Measure-Karma [-ListTopics] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-ListTopics] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### OpenFolder
 ```
-Measure-Karma [-Contemplate] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

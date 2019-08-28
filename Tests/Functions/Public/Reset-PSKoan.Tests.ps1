@@ -65,17 +65,17 @@ InModuleScope 'PSKoans' {
 '@
         }
 
-        It 'should reset the state of a single koan without affecting others' {
+        It 'should reset all koans in a file when Name is not specified' {
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 1'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 3'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 4'
+        }
+
+        It 'should reset the state of a single koan without affecting others when Name is specified' {
             Reset-PSKoan -Topic AboutSomething -Name 'reset content' -Confirm:$false
 
             $userFilePath | Should -FileContentMatch '1 | Should -Be 1'
-            $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
-        }
-
-        It 'supports wildcard matching for name' {
-            Reset-PSKoan -Topic AboutSomething -Name "*content" -Confirm:$false
-
-            $userFilePath | Should -FileContentMatch '__ | Should -Be 1'
             $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
         }
 
@@ -91,6 +91,13 @@ InModuleScope 'PSKoans' {
 
             $userFilePath | Should -FileContentMatch '__ | Should -Be 3'
             $userFilePath | Should -FileContentMatch '__ | Should -Be 4'
+        }
+
+        It 'supports regular expression matching for name' {
+            Reset-PSKoan -Topic AboutSomething -Name ".*content" -Confirm:$false
+
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 1'
+            $userFilePath | Should -FileContentMatch '__ | Should -Be 2'
         }
     }
 }

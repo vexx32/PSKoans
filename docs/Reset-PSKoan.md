@@ -8,12 +8,12 @@ schema: 2.0.0
 # Reset-PSKoan
 
 ## SYNOPSIS
-Reset a Koan to the default.
+Reset a Koan or a number of koans to the default.
 
 ## SYNTAX
 
 ```
-Reset-PSKoan [-Topic] <String> [-Name] <String> [<CommonParameters>]
+Reset-PSKoan [-Topic] <String[]> [-Name] <String> [[-Context] <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,15 +23,87 @@ Replaces the koan in the user file set with the koan from the module.
 
 ### Example 1
 ```powershell
+PS C:\> Reset-PSKoan
+```
+
+Reset all koans.
+
+### Example 1
+```powershell
+PS C:\> Reset-PSKoan -Topic AboutArrays
+```
+
+Resets all koans in the AboutArrays topic.
+
+### Example 2
+```powershell
+PS C:\> Reset-PSKoan -Topic AboutArrays, AboutComparison
+```
+
+Reset all koans in the AboutArrays and AboutComparison topics.
+
+### Example 3
+```powershell
 PS C:\> Reset-PSKoan -Topic AboutArrays -Name 'allows the collection to be split into multiple parts'
 ```
 
-Resets the "allows the collection to be split into multiple parts" koan in AboutArrays.
+Resets the "allows the collection to be split into multiple parts" koan in the AboutArrays topic.
+
+### Example 4
+```powershell
+PS C:\> Reset-PSKoan -Topic AboutComparison -Name 'may coerce values to boolean' -Context '-and'
+```
+
+Resets the "may coerce values to boolean" koan in the "-and" context of the AboutComparison topic.
+
+### Example 5
+```powershell
+PS C:\> Reset-PSKoan -Topic AboutComparison -Context '-and'
+```
+
+Resets all koans in the "-and" context of the AboutComparison topic.
+
+### Example 6
+```powershell
+PS C:\> Reset-PSKoan -Topic AboutC -Name ^returns
+```
+
+Reset koans with names starting "returns" in topics matching the regular expression "AboutC".
 
 ## PARAMETERS
 
+### -Confirm
+Prompts for confirmation before making any changes. Use to always be prompted before any changes are made.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Context
+Reset koans in the specified context.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Name
-The name of the koan to update. Wildcards are supported.
+The name of the koan to reset. Wildcards are supported.
 
 ```yaml
 Type: String
@@ -46,15 +118,30 @@ Accept wildcard characters: False
 ```
 
 ### -Topic
-Updates the specified topic from the module.
+Reset the specified topic from the module.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases:
+Aliases: Koan, File
 
 Required: True
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Displays what will be reset without actually resetting anything.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -69,7 +156,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### System.Void
 ## NOTES
 
 ## RELATED LINKS
+
+[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
