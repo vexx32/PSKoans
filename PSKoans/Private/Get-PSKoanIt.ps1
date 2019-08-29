@@ -46,7 +46,7 @@ function Get-PSKoanIt {
             $true
         )
 
-        foreach ($koan in $koans) {
+        foreach ($koan in $koanList) {
             $contextName = ''
             $parentAst = $koan
             do {
