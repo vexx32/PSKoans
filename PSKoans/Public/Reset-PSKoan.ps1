@@ -58,7 +58,7 @@ function Reset-PSKoan {
                             $koan.Ast.Extent.Text
                         )
 
-                        if ($pscmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $Topic))) {
+                        if ($PSCmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $Topic))) {
                             Set-Content -Path $_.UserFilePath -Value $content
                         }
                     } else {
