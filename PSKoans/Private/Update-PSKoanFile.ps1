@@ -73,7 +73,7 @@ function Update-PSKoanFile {
                         )
                     }
 
-                if ($pscmdlet.ShouldProcess($_.UserFilePath, 'Updating Koan File')) {
+                if ($PSCmdlet.ShouldProcess($_.UserFilePath, 'Updating Koan File')) {
                     Set-Content -Path $_.UserFilePath -Value $content
                 }
             }
