@@ -13,7 +13,11 @@ Reset a Koan or a number of koans to the default.
 ## SYNTAX
 
 ```
-Reset-PSKoan [-Topic] <String[]> [-Name] <String> [[-Context] <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan [[-Topic] <string[]>] [[-Name] <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+```
+Reset-PSKoan [[-Topic] <string[]>] [[-Name] <string>] [-Context] <string> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -92,7 +96,7 @@ Reset koans in the specified context.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: NameAndContext
 Aliases:
 
 Required: False

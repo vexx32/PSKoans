@@ -1,9 +1,10 @@
 function Reset-PSKoan {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Reset-PSKoan.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Reset-PSKoan.md',
+        DefaultParameterSetName = 'NameOnly')]
     [OutputType([void])]
     param(
-        [Parameter()]
+        [Parameter(Position = 1)]
         [Alias('Koan', 'File')]
         [ArgumentCompleter(
             {
@@ -21,11 +22,11 @@ function Reset-PSKoan {
         [string[]]
         $Topic,
 
-        [Parameter()]
+        [Parameter(Position = 2)]
         [string]
         $Name = '*',
 
-        [Parameter()]
+        [Parameter(Mandatory, Position = 3, ParameterSetName = 'NameAndContext')]
         [string]
         $Context
     )
@@ -38,7 +39,7 @@ function Reset-PSKoan {
         $moduleKoan = Get-PSKoanIt -Path $_.ModuleFilePath |
             Where-Object {
                 $_.Name -like $Name -and
-                (-not $Context -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
+                ($pscmdlet.ParameterSetName -eq 'NameOnly' -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
             }
 
         if ($moduleKoan) {
