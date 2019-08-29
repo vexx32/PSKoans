@@ -26,7 +26,7 @@ function Get-PSKoanIt {
     )
 
     process {
-        $Path = $pscmdlet.GetUnresolvedProviderPathFromPSPath($Path)
+        $Path = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($Path)
 
         $tokens = $errors = @()
 
