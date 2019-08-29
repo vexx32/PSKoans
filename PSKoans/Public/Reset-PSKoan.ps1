@@ -61,16 +61,19 @@ function Reset-PSKoan {
                         if ($PSCmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $Topic))) {
                             Set-Content -Path $_.UserFilePath -Value $content
                         }
-                    } else {
+                    }
+                    else {
                         Write-Error ('The koan "{0}" does not exist in the user path.' -f $koan.Name)
                     }
-                } else {
+                }
+                else {
                     if ($PSCmdlet.ShouldProcess($TopicName, "Resetting all koans in $TopicName")) {
                         Copy-Item -Path $_.ModuleFilePath -Destination $_.UserFilePath -Force
                     }
                 }
             }
-        } else {
+        }
+        else {
             Write-Error ('The koan "{0}" does not exist.' -f $Name)
         }
     }
