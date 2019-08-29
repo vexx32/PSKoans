@@ -48,7 +48,7 @@ function Reset-PSKoan {
                         Where-Object ID -eq $koan.ID
 
                     if ($userKoan) {
-                        $content = Get-Content $_.UserFilePath -Raw
+                        $content = Get-Content -Path $_.UserFilePath -Raw
 
                         $content = $content.Remove(
                             $userKoan.Ast.Extent.StartOffset,
