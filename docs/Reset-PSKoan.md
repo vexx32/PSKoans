@@ -13,11 +13,11 @@ Reset a Koan or a number of koans to the default.
 ## SYNTAX
 
 ```
-Reset-PSKoan [[-Topic] <string[]>] [[-Name] <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan [-Topic <string[]>] [-Name <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ```
-Reset-PSKoan [[-Topic] <string[]>] [[-Name] <string>] [-Context] <string> [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan -Context <string> [-Topic <string[]>] [-Name <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

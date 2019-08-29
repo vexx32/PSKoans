@@ -1,10 +1,11 @@
 function Reset-PSKoan {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Reset-PSKoan.md',
+        PositionalBinding = $false,
         DefaultParameterSetName = 'NameOnly')]
     [OutputType([void])]
     param(
-        [Parameter(Position = 1)]
+        [Parameter()]
         [Alias('Koan', 'File')]
         [ArgumentCompleter(
             {
@@ -22,11 +23,11 @@ function Reset-PSKoan {
         [string[]]
         $Topic,
 
-        [Parameter(Position = 2)]
+        [Parameter()]
         [string]
         $Name = '*',
 
-        [Parameter(Mandatory, Position = 3, ParameterSetName = 'NameAndContext')]
+        [Parameter(Mandatory, ParameterSetName = 'NameAndContext')]
         [string]
         $Context
     )
