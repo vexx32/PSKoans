@@ -36,7 +36,7 @@ function Get-PSKoanIt {
             [Ref]$errors
         )
 
-        $koans = $ast.FindAll(
+        $koanList = $ast.FindAll(
             {
                 param ( $node )
 
