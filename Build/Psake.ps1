@@ -63,8 +63,6 @@ STATUS: Testing with PowerShell $PSVersion
 
     [Net.ServicePointManager]::SecurityProtocol = $SecurityProtocol
 
-    Remove-Item -Path "$ProjectRoot/$TestFile" -Force -ErrorAction SilentlyContinue
-
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
     if ($TestResults.FailedCount -gt 0) {
