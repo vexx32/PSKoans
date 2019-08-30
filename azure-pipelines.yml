@@ -65,6 +65,6 @@ jobs:
     displayName: 'Publish Test Results'
     inputs:
       testResultsFormat: NUnit
-      testResultsFiles: '$(Package)*.xml'
+      testResultsFiles: '*PSKoans.TestResults.xml'
       searchFolder: '$(Build.ArtifactStagingDirectory)'
       mergeTestResults: true

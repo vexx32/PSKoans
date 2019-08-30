@@ -8,7 +8,7 @@ Properties {
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
-    $TestFile = "TestResults_PS${PSVersion}_${TimeStamp}.xml"
+    $TestFile = "PS${PSVersion}_${TimeStamp}_PSKoans.TestResults.xml"
     $Lines = '-' * 70
 
     $Continue = @{
@@ -53,7 +53,7 @@ STATUS: Testing with PowerShell $PSVersion
         Path         = "$ProjectRoot/Tests"
         PassThru     = $true
         OutputFormat = 'NUnitXml'
-        OutputFile   = "$ProjectRoot/$TestFile"
+        OutputFile   = "${env:Build_ArtifactStagingDirectory}/$TestFile"
         Show         = "Header", "Failed", "Summary"
     }
     $TestResults = Invoke-Pester @PesterParams
@@ -93,6 +93,5 @@ Continuing with existing version.
     }
 
     # Build external help files from Platyps MD files
-
     New-ExternalHelp -Path "$ProjectRoot/docs/" -OutputPath "$ProjectRoot/PSKoans/en-us"
 }
