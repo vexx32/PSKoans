@@ -22,12 +22,12 @@ Describe 'Measure-Object' {
 
     It 'can count objects' {
         $Numbers |
-            Measure-Object -Count |
+            Measure-Object |
             Select-Object -ExpandProperty Count |
             Should -Be __
 
         $Files |
-            Measure-Object -Count |
+            Measure-Object |
             Select-Object -ExpandProperty Count |
             Should -Be __
     }
