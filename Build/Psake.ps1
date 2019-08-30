@@ -48,6 +48,9 @@ STATUS: Testing with PowerShell $PSVersion
     $env:PSModulePath = '{0}{1}{2}' -f $ProjectRoot, ([System.IO.Path]::PathSeparator), $env:PSModulePath
     Import-Module 'PSKoans'
 
+    # Tell Azure where the test results file will be
+    Write-Host "##vso[task.setvariable variable=TestResults]$TestFile"
+
     # Gather test results. Store them in a variable and file
     $PesterParams = @{
         Path         = "$ProjectRoot/Tests"
