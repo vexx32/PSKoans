@@ -48,6 +48,14 @@ jobs:
       failOnStderr: true
       pwsh: true
 
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: NUnit
+      testResultsFiles: '*TestResults*.xml'
+      searchFolder: '$(Build.ArtifactStagingDirectory)'
+      mergeTestResults: true
+
   - task: PowerShell@2
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     displayName: 'Deploy to Gallery'
@@ -60,11 +68,3 @@ jobs:
       errorActionPreference: 'stop'
       failOnStderr: true
       pwsh: true
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
-    inputs:
-      testResultsFormat: NUnit
-      testResultsFiles: '*.TestResults.xml'
-      searchFolder: '$(Build.ArtifactStagingDirectory)'
-      mergeTestResults: true
