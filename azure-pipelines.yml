@@ -52,7 +52,7 @@ jobs:
     displayName: 'Publish Test Results'
     inputs:
       testResultsFormat: NUnit
-      testResultsFiles: '$(TestResults);*TestResults*.xml'
+      testResultsFiles: '$(TestResults)'
       searchFolder: '$(Build.ArtifactStagingDirectory)'
       mergeTestResults: true
 
