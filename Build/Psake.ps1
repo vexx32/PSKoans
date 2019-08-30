@@ -56,7 +56,7 @@ STATUS: Testing with PowerShell $PSVersion
         Path         = "$ProjectRoot/Tests"
         PassThru     = $true
         OutputFormat = 'NUnitXml'
-        OutputFile   = "$env:Build_ArtifactStagingDirectory/$TestFile"
+        OutputFile   = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
         Show         = "Header", "Failed", "Summary"
     }
     $TestResults = Invoke-Pester @PesterParams
