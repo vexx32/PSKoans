@@ -60,3 +60,11 @@ jobs:
       errorActionPreference: 'stop'
       failOnStderr: true
       pwsh: true
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: NUnit
+      testResultsFiles: '$(Package)*.xml'
+      searchFolder: '$(Build.ArtifactStagingDirectory)'
+      mergeTestResults: true
