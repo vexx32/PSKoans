@@ -52,10 +52,9 @@ Describe 'PSObject' {
         )
         $PropertyNames | Should -Be $Object.PSObject.Properties.Name | Sort-Object
 
-        $Methods = $Object.PSObject.Methods.Name
-        __ | Should -Be $Methods.Count
-        $Index = __
-        $Methods[$Index] | Should -Be 'get_Length'
+        $Methods = $Object.PSObject.Methods
+        __ | Should -Be $Methods.ForEach{$_}.Count
+        $Methods['____'].Name | Should -Be 'get_Length'
     }
 
     It "can be found on any object in PowerShell" {
