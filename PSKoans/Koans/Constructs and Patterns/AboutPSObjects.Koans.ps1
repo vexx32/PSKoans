@@ -27,34 +27,34 @@ Describe 'PSObject' {
             The .PSObject member contains many properties, but the .PSObject property itself does not
             actually register for tab-completion, though its child properties do.
         #>
-        $PSObjectProperties = ($Object.PSObject | Get-Member -MemberType Properties).Name
+        $PSObjectProperties = ($Object.PSObject | Get-Member -MemberType Properties).Name | Sort-Object
 
         @(
             'BaseObject'
-            '__'
+            '____'
             'Members'
             'Methods'
-            '__'
-            '__'
+            '____'
+            '____'
         ) | Should -Be $PSObjectProperties
     }
 
     It "details the base object's properties and methods" {
         $PropertyNames = @(
-            __
-            'LongLength'
-            __
-            'SyncRoot'
-            __
-            'IsFixedSize'
-            __
             'Count'
+            'IsFixedSize'
+            '____'
+            '____'
+            '____'
+            'LongLength'
+            '____'
+            'SyncRoot'
         )
-        $PropertyNames | Should -Be $Object.PSObject.Properties.Name
+        $PropertyNames | Should -Be $Object.PSObject.Properties.Name | Sort-Object
 
         $Methods = $Object.PSObject.Methods
-        __ | Should -Be $Methods.Count
-        $Methods['__'].Name | Should -Be 'Length'
+        __ | Should -Be $Methods.ForEach{$_}.Count
+        $Methods['____'].Name | Should -Be 'get_Length'
     }
 
     It "can be found on any object in PowerShell" {
@@ -62,8 +62,18 @@ Describe 'PSObject' {
         $Empty = @()
 
         # Native .NET objects have their standard properties mapped to PSObject properties for easy access
-        $Empty.PSObject.Properties.Name | Should -Not -BeNullOrEmpty
-        @('__', '__', '__', '__', 'IsReadOnly', '__', '__', 'IsSynchronised', '__') | Should -Be $Empty.PSObject.Properties.Name
+        $PropertyNames = $Empty.PSObject.Properties.Name | Sort-Object
+        $PropertyNames | Should -Not -BeNullOrEmpty
+        @(
+            '____',
+            '____',
+            'IsReadOnly',
+            'IsSynchronized',
+            '____',
+            '____',
+            '____',
+            '____'
+        ) | Should -Be $PropertyNames
         __ | Should -Be $Empty.IsReadOnly
     }
 
@@ -79,10 +89,10 @@ Describe 'PSObject' {
             Thorns = $true
         }
 
-        @('__', '__', '__') | Should -Be $Object.PSObject.Properties.Name
+        @('____', '____', '____') | Should -Be $Object.PSObject.Properties.Name
         # Collections come in many shapes and sizes - what type is this one?
-        '__' | Should -Be $Object.PSObject.Properties.GetType().Name
-        '__' | Should -Be $Object.PSObject.Properties['Flower'].MemberType
+        '____' | Should -Be $Object.PSObject.Properties.GetType().Name
+        '____' | Should -Be $Object.PSObject.Properties['Flower'].MemberType
     }
 
     It "details where the properties originate from" {
@@ -91,13 +101,15 @@ Describe 'PSObject' {
         Add-Member -InputObject $Object -MemberType NoteProperty -Name 'TestProperty' -Value __
 
         $Object.TestProperty | Should -Be 12
-        '__' | Should -Be $Object.PSObject.Properties['TestProperty'].MemberType
+        '____' | Should -Be $Object.PSObject.Properties['TestProperty'].MemberType
 
         $PropertyTypes = $Object.PSObject.Properties |
             Group-Object -Property MemberType |
-            Select-Object -ExpandProperty Name
+            Select-Object -ExpandProperty Name |
+            Sort-Object
 
-        @( '__', '__' ) | Should -Be $PropertyTypes
+        # There may be varying property types depending on your PowerShell version
+        @( '____', '____', '____' ) | Should -Be $PropertyTypes
     }
 
     It "can find derivative properties" {
@@ -108,12 +120,13 @@ Describe 'PSObject' {
         }
         Add-Member -InputObject $Name -MemberType NoteProperty -Name 'Surname' -Value 'Sylph'
 
-        '__' | Should -Be $Name.Letters[3]
+        '____' | Should -Be $Name.Letters[3]
 
         $PropertyTypes = $Name.PSObject.Properties |
             Group-Object -Property MemberType |
-            ForEach-Object -MemberName Name
+            ForEach-Object -MemberName Name |
+            Sort-Object
 
-        @( '__', '__', '__') | Should -Be $PropertyTypes
+        @( '____', '____', '____', '____') | Should -Be $PropertyTypes
     }
 }
