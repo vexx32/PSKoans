@@ -8,7 +8,7 @@ Properties {
 
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
-    $TestFile = "TestResults_PS${PSVersion}_${TimeStamp}.xml"
+    $TestFile = "PS${PSVersion}_${TimeStamp}_PSKoans.TestResults.xml"
     $Lines = '-' * 70
 
     $Continue = @{
@@ -48,19 +48,20 @@ STATUS: Testing with PowerShell $PSVersion
     $env:PSModulePath = '{0}{1}{2}' -f $ProjectRoot, ([System.IO.Path]::PathSeparator), $env:PSModulePath
     Import-Module 'PSKoans'
 
+    # Tell Azure where the test results file will be
+    Write-Host "##vso[task.setvariable variable=TestResults]$TestFile"
+
     # Gather test results. Store them in a variable and file
     $PesterParams = @{
         Path         = "$ProjectRoot/Tests"
         PassThru     = $true
         OutputFormat = 'NUnitXml'
-        OutputFile   = "$ProjectRoot/$TestFile"
+        OutputFile   = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
         Show         = "Header", "Failed", "Summary"
     }
     $TestResults = Invoke-Pester @PesterParams
 
     [Net.ServicePointManager]::SecurityProtocol = $SecurityProtocol
-
-    Remove-Item -Path "$ProjectRoot/$TestFile" -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
@@ -93,6 +94,5 @@ Continuing with existing version.
     }
 
     # Build external help files from Platyps MD files
-
     New-ExternalHelp -Path "$ProjectRoot/docs/" -OutputPath "$ProjectRoot/PSKoans/en-us"
 }
