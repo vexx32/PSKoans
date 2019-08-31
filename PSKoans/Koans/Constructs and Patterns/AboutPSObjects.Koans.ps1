@@ -108,7 +108,7 @@ Describe 'PSObject' {
             Select-Object -ExpandProperty Name |
             Sort-Object
 
-        @( '____', '____', '____' ) | Should -Be $PropertyTypes
+        @( '____', '____', '____' ) | Should -Be $PropertyTypes # There may be varying property types depending on your PowerShell version
     }
 
     It "can find derivative properties" {
