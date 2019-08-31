@@ -286,4 +286,3 @@ Describe 'Variable Provider' {
         }
     }
 }
-
