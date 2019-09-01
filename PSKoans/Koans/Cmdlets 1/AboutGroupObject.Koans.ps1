@@ -22,7 +22,7 @@ Describe 'Group-Object' {
                 Name  (Property that they are grouped by)
                 Group (All the objects in the group)
         #>
-        '__' | Should -Be $Extensions[3].Group.Extension
+        '____' | Should -Be $Extensions[3].Name
         __ | Should -Be $Extensions[2].Count
     }
 
