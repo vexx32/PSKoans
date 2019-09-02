@@ -3,7 +3,7 @@ using module PSKoans
 param()
 <#
 
-    DataTypes
+    AboutGetMember
  
     Following on from our last Koan about cmdlet verbs, lets cover the nouns.
 
@@ -24,7 +24,8 @@ param()
     you dive into .NET development.
 
     In these Koans we'll go over the Get-Member cmdlet,
-    expanding upon our knowledge of object-orientated program.
+    expanding upon our knowledge of object-orientated program, in order to find properties
+    and methods of an object. The next kew Koans will relate to what these "TypeName" items are.
 
 #>
 
@@ -162,56 +163,5 @@ Describe 'Get-Member' {
         -Because "$MethodName method doesn't exist in given cmdlet $cmdlet"
 
     }
-
-}
-
-Describe 'Dot Notation' {
-<#
-    If you remember back in "AboutDoNet" we discovered that PowerShell is object-orientated.
-    Everything is an object with properties (things the object has) and methods (things
-    the object can do).
-
-    And above we discovered can get properties and methods via Get-Member, 
-    and access them via dot notation:
-
-    Object.property
-    Object.method()
-
-    For example, 
-#>
-
-
-
-
-}
-
-Describe 'Booleans' {
-<#
-    A boolean value is either true or false:
-    
-    $True
-    $False
-
-    They are logical ways to represent yes/no, on/off, 1/0 etc in your code. Normally, they 
-    are either returned by comparing something. For example "Is one greater than 0?" would be
-    represented by:
-
-    1 -gt 0
-
-    And would return $True as one is greater than zero.
-
-    Or they are used when we want absolute yes/no values for something. When we covered
-    object-orientated-programming earlier, we mentioned that the blueprint for a kettle
-    might have a property to determine if it has a lid.
-
-    This is an example where we might want a boolean. "Does this kettle have a lid" may
-    be answered with either a "yes" or a "no". So we'd store this as a Boolean property.
-
-
-
-    
-
-#>
-It 'teamName'
 
 }

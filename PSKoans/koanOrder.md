@@ -9,8 +9,8 @@ See below for a table of all koans and their corresponding positions. When worki
 |  IntroTraining            |  AboutOOP                       | 104            |  Drafted     |
 |  IntroTraining            |  AboutCmdletVerbs               | 105            |  Drafted     |
 |  IntroTraining            |  AboutGetMember                 | 106            |  Drafted     |
-|  IntroTraining            |  AboutStrings                   | 107            |  ToDo        |
-|  IntroTraining            |  AboutBooleans                  | 108            |  ToDo        |
+|  Foundations              |  AboutStrings                   | 107            |  ToEdit      |
+|  IntroTraining            |  AboutBooleans                  | 108            |  Drafted     |
 |  IntroTraining            |  AboutInts                      | 109            |  ToDo        |
 |  IntroTraining            |  AboutDotNotation               | 110            |  ToDo        |
 |  IntroTraining            |  PrimitiveDatatypes Test        | 111            |  ToDo        |
@@ -26,7 +26,6 @@ See below for a table of all koans and their corresponding positions. When worki
 |  BELOW                    |  IS STILL A WORK IN PROGRESS    | SO PLEASE      | IGNORE       |
 |  Foundations              |  AboutOrderOfOperations         | 122            |  Complete    |
 |  Foundations              |  AboutAssignmentAndArithmetic   | 124            |  Complete    |
-|  Foundations              |  AboutStrings                   | 126            |  Complete    |
 |  Foundations              |  AboutStringOperators           | 127            |  Complete    |
 |  Foundations              |  AboutTypeOperators             | 129            |  Complete    |
 |  Foundations              |  AboutHashTables                | 130            |  Complete    |

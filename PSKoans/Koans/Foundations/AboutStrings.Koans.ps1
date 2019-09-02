@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 126)]
+[Koan(Position = 107)]
 param()
 <#
     Strings
