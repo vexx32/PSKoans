@@ -7,9 +7,12 @@ See below for a table of all koans and their corresponding positions. When worki
 |  IntroTraining            |  AboutExamples                  | 102            |  Drafted     |
 |  IntroTraining            |  AboutDotNet                    | 103            |  Drafted     |
 |  IntroTraining            |  AboutOOP                       | 104            |  Drafted     |
-|  IntroTraining            |  AboutCmdletVerbs               | 105            |  Drafted      |
-|  IntroTraining            |  CmdletNouns                    | 109            |  ToDo        |
-|  IntroTraining            |  PrimitiveDatatypes             | 110            |  ToDo        |
+|  IntroTraining            |  AboutCmdletVerbs               | 105            |  Drafted     |
+|  IntroTraining            |  AboutGetMember                 | 106            |  Drafted     |
+|  IntroTraining            |  AboutStrings                   | 107            |  ToDo        |
+|  IntroTraining            |  AboutBooleans                  | 108            |  ToDo        |
+|  IntroTraining            |  AboutInts                      | 109            |  ToDo        |
+|  IntroTraining            |  AboutDotNotation               | 110            |  ToDo        |
 |  IntroTraining            |  PrimitiveDatatypes Test        | 111            |  ToDo        |
 |  IntroTraining            |  Typecasting                    | 112            |  ToDo        |
 |  IntroTraining            |  Class properties/methods       | 113            |  ToDo        |
