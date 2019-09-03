@@ -106,9 +106,9 @@ Describe 'Redirection Operators' {
 
             "____ : ____" | Should -Be $FileContent[0]
             "+ CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException" |
-                Should -Be $FileContent[1]
+                Should -Be $FileContent[4]
             "+ FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException" |
-                Should -Be $FileContent[2]
+                Should -Be $FileContent[5]
         }
 
         It 'can use the warning stream (number 3)' {
