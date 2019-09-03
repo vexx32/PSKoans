@@ -19,7 +19,7 @@ param()
 
 Describe 'ErrorRecord' {
     Context '$Error' {
-        BeforeAll{
+        BeforeAll {
             <#
                 $Error is an automatic variable that contains a list of recent errors.
                 By calling $Error.Clear() we ensure past errors to not carry into our testing.
@@ -27,15 +27,15 @@ Describe 'ErrorRecord' {
             $Error.Clear()
         }
         It 'sometimes has a reference to the object that caused the error' {
-    
+
             # Non-terminating error behaviour can be adjusted with the -ErrorAction parameter.
             Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
-    
+
             <#
                 $Error[0] is always the most recent error. Even if an error is silenced with
                 -ErrorAction SilentlyContinue, it is still recorded in $Error.
             #>
-            '__' | Should -Be $Error[0].TargetObject
+            '____' | Should -Be $Error[0].TargetObject
         }
         It 'does continue to add Errors until the PowerShell session is closed' {
             Get-Item -Path "TestDrive:\This_Shouldn't_Exist" -ErrorAction SilentlyContinue
@@ -68,7 +68,8 @@ Describe 'ErrorRecord' {
         }
 
         It 'can be assigned one of the preset categories' {
-            '__' -as [System.Management.Automation.ErrorCategory] | Should -Be $ErrorRecord.CategoryInfo.Category
+            '____' -as [System.Management.Automation.ErrorCategory] |
+                Should -Be $ErrorRecord.CategoryInfo.Category
         }
 
         It 'will usually specify an ErrorID' {
@@ -83,7 +84,13 @@ Describe 'ErrorRecord' {
             # InvocationInfo is a quick snapshot of the surrounding environment when the error happened.
             __ | Should -Be $ErrorRecord.InvocationInfo.ScriptLineNumber
             __ | Should -Be $ErrorRecord.InvocationInfo.PipelineLength
-            '+ ____' | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
+            $ErrorString = @(
+                'At ____'
+                '+                 ____ "____"'
+                '+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+            ) -join [Environment]::NewLine
+
+            $ErrorString | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
         }
     }
 }
@@ -93,8 +100,8 @@ Describe 'Types of Errors' {
     Context 'Non-Terminating Errors' {
         <#
             Non-terminating errors can be generated in one of two ways:
-              - Using the Write-Error cmdlet.
-              - Using the $PSCmdlet.WriteError() method in an advanced function.
+                - Using the Write-Error cmdlet.
+                - Using the $PSCmdlet.WriteError() method in an advanced function.
 
             Non-terminating errors are an indication that something went wrong, but that the issue only
             affects a single item being processed; if there are more items to process, the command will
@@ -103,15 +110,15 @@ Describe 'Types of Errors' {
             The behaviour of this type of error can be altered by the -ErrorAction common parameter
             available on all cmdlets and advanced functions. The available values for the -ErrorAction
             parameter are:
-              - Continue
+                - Continue
                     As per normal, non-terminating errors are displayed and processing continues. (Default)
-              - Ignore
+                - Ignore
                     Non-terminating errors are completely suppressed and not recorded in transcripts and $Error.
-              - Inquire
+                - Inquire
                     Errors will pause execution and prompt the user for the desired action.
-              - SilentlyContinue
+                - SilentlyContinue
                     Similar to Ignore, but errors are still recorded for later handling if needed.
-              - Stop
+                - Stop
                     Treat all errors as terminating errors.
         #>
         BeforeAll {
@@ -172,9 +179,9 @@ Describe 'Types of Errors' {
     Context 'Terminating Errors' {
         <#
             Terminating errors are generated in a few ways:
-              - The "throw" keyword.
-              - The $PSCmdlet.ThrowTerminatingError() method.
-              - Using -ErrorAction Stop on any cmdlet or advanced function that generates a non-terminating error.
+                - The "throw" keyword.
+                - The $PSCmdlet.ThrowTerminatingError() method.
+                - Using -ErrorAction Stop on any cmdlet or advanced function that generates a non-terminating error.
 
             Terminating errors will terminate all further execution at the level they occur in, and pass control
             to the command that called the currently executing code. They will travel up the execution stack until
@@ -229,7 +236,7 @@ Describe 'Types of Errors' {
                 # A red ball is thrown... and what is caught?
                 $_ -is [__] | Should -BeTrue
                 $_.Exception -is [__] | Should -BeTrue
-                '__' | Should -Be $_.Exception.Message
+                '____' | Should -Be $_.Exception.Message
             }
         }
 
@@ -241,11 +248,11 @@ Describe 'Types of Errors' {
                 Should -Fail -Because "We caught the wrong error type!"
             }
             catch [ExecutionEngineException] {
-                '__' | Should -Be $_.Exception.Message
-                '__' | Should -Be $_.Exception.GetType().Name
+                '____' | Should -Be $_.Exception.Message
+                '____' | Should -Be $_.Exception.GetType().Name
             }
             catch {
-                Should -Fail -Because "This block should only trigger if we don't handle the specific type separately."
+                Should -Fail -Because "This block will only trigger if we don't handle the specific type separately."
             }
         }
 
@@ -288,8 +295,8 @@ Describe 'Types of Errors' {
                 # What can we catch here?
                 $_ -is [__] | Should -BeTrue
                 $_.Exception -is [__] | Should -BeTrue
-                '__' | Should -Be $_.Exception.Message
-                '__' | Should -Be $_.TargetObject.Secret
+                '____' | Should -Be $_.Exception.Message
+                '____' | Should -Be $_.TargetObject.Secret
             }
         }
 
@@ -308,8 +315,8 @@ Describe 'Types of Errors' {
             catch {
                 $_ -is [__] | Should -BeTrue
                 [__] | Should -Be $_.Exception.GetType()
-                '__' | Should -Be $_.Exception.Message
-                @('__', '__', '__') | Should -Be $_.TargetObject[3..1]
+                '____' | Should -Be $_.Exception.Message
+                @('____', '____', '____') | Should -Be $_.TargetObject[3..1]
             }
         }
     }

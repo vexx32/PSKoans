@@ -27,10 +27,10 @@ Describe 'Get-Help' {
 
         It 'gives exhaustive information for cmdlets and functions' {
             $HelpInfo = Get-Help 'Get-Help'
-            $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
+            $GetHelpParams = $HelpInfo.Parameters.Parameter.Name | Sort-Object
 
             # Using the information from Get-Help, fill in the missing parameters in alphabetical order.
-            $GetHelpParams | Should -Be @(
+            $ParamNames = @(
                 'Category'
                 'Component'
                 '__'
@@ -44,13 +44,14 @@ Describe 'Get-Help' {
                 'Role'
                 '__'
             )
+            $ParamNames | Should -Be $GetHelpParams
         }
 
         It 'can give detailed information on specific parameters' {
             # You can also query specific parameters for more detailed information on what they can do.
             # For instance, does the Path parameter for Get-Help support pipeline input?
             $ParameterInfo = Get-Help 'Get-Help' -Parameter Path
-            __ | Should -Be $ParameterInfo.PipelineInput
+            $____ | Should -Be $ParameterInfo.PipelineInput
         }
         <#
             Remember: if 'Get-Help Cmdlet-Name' doesn't show you all you need, try -Full.
@@ -88,7 +89,7 @@ Describe 'Get-Member' {
 
                 Which property of the above string has the expected value?
             #>
-            $PropertyName = '__'
+            $PropertyName = '____'
             $String.$PropertyName | Should -Be 6
         }
 
@@ -96,7 +97,7 @@ Describe 'Get-Member' {
             $String = "Methods are handy!"
 
             # Methods can be accessed just like properties, but have parentheses and often parameters!
-            $String.EndsWith('__') | Should -BeTrue
+            $String.EndsWith('____') | Should -BeTrue
             <#
                 If you have trouble figuring out which parameters a method requires, you can check the
                 OverloadDefinitions by calling the method name without the parentheses. For the above
@@ -115,8 +116,8 @@ Describe 'Get-Member' {
                 be used at a time, and usually the number of arguments and type of the arguments
                 determine the overload that PowerShell will apply when calling the method.
             #>
-            $MethodName = '__'
-            $MethodArguments = @('__', '__')
+            $MethodName = '____'
+            $MethodArguments = @('____', '____')
             # The ForEach-Object cmdlet can be used to call methods as well.
             '7', '8', '9', '10' |
                 ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
@@ -137,7 +138,7 @@ Describe 'Get-Member' {
             }
 
             # Which method can be used to remove these files?
-            $MethodName = '__'
+            $MethodName = '____'
             $TempFiles | ForEach-Object $MethodName
 
             $TempFiles | Test-Path | Should -BeFalse
@@ -146,7 +147,7 @@ Describe 'Get-Member' {
         It 'actually returns objects itself' {
             $MemberData = 'string' | Get-Member
             # We can all betray our own selves.
-            $MemberData | Should -BeOfType __
+            $MemberData | Should -BeOfType ____
         }
     }
 }
@@ -171,21 +172,22 @@ Describe 'Get-Command' {
         # Try calling Get-Command in a PowerShell console to see the typical output!
         $CommandCount = Get-Command | Measure-Object | Select-Object -ExpandProperty Count
         __ | Should -Be $CommandCount
-        Get-Command | Select-Object -First 1 -ExpandProperty Name | Should -Be '__'
+        Get-Command | Select-Object -First 1 -ExpandProperty Name | Should -Be '____'
     }
 
     It 'indicates the type of command' {
         $CommandType = Get-Command | Select-Object -Skip 3 -First 1 -ExpandProperty CommandType
 
-        '__' | Should -Be $CommandType
+        '____' | Should -Be $CommandType
     }
 
     It 'can filter the output by keywords' {
         $Command = Get-Command -Name "*-Child*"
-        $CimCommand = Get-Command -Name '__'
 
         $Command.CommandType | Should -Be 'Cmdlet'
-        '__' | Should -Be $Command.Name
+        '____' | Should -Be $Command.Name
+
+        $CimCommand = Get-Command -Name '____'
         $CimCommand.Name | Should -Be 'Get-CimClass'
     }
 
@@ -193,20 +195,22 @@ Describe 'Get-Command' {
         $GetCommands = Get-Command -Verb 'Get'
         __ | Should -Be $GetCommands.Count
 
-        '__' | Should -Be $GetCommands[4].Name
+        '____' | Should -Be $GetCommands[4].Name
     }
 
     It 'can look for commands by noun' {
         $DateCommands = Get-Command -Noun 'Date'
 
         __ | Should -Be $DateCommands.Count
-        '__' | Should -Be $DateCommands[0].Name
+        '____' | Should -Be $DateCommands[0].Name
     }
 
     It 'can look for commands by module' {
-        $KoanCommands = Get-Command -Module 'PSKoans'
+        $KoanCommands = Get-Command -Module 'PSKoans' |
+            Sort-Object -Property Name
+        $First4Commands = $KoanCommands | Select-Object -First 4
 
         __ | Should -Be $KoanCommands.Count
-        $KoanCommands.Name | Should -Be @('__', '__', '__', '__')
+        @('____', '____', '____', '____') | Should -Be $KoanCommands.Name
     }
 }
