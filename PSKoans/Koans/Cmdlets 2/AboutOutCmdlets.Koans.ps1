@@ -83,7 +83,7 @@ Context 'Out-* Cmdlets' {
 
             'Stored knowledge is of little value until it is used.' | Out-File -FilePath $Path -NoNewline
 
-            '__' | Should -Be (Get-Content -Path $Path)
+            '____' | Should -Be (Get-Content -Path $Path)
         }
     }
 
@@ -103,7 +103,7 @@ Context 'Out-* Cmdlets' {
         # Out-Null discards any input sent to it, making it very useful for suppressing output.
 
         It 'does absolutely nothing with output sent to it' {
-            $String = '__'
+            $String = '____'
             $String | Should -Be 'What can you learn to do today that you have never ben able to do before?'
 
             $String | Out-Null | Should -BeNullOrEmpty
@@ -119,18 +119,18 @@ Context 'Out-* Cmdlets' {
         It 'creates string representations of data' {
             #Create a hashtable that pipes into Out-String
             $String = @{ } | Out-String
-    
+
             @"
 
-Name                           Value                                                                                                                                                                                         
-----                           -----                                                                                                                                                                                         
+Name                           Value
+----                           -----
 Color                          Blue
-Spectrum                       Ultraviolet                                                                                                                                                                                        
+Spectrum                       Ultraviolet
 
 
 
 "@ | Should -Be $String
-            # Mind the indentations; here-strings have to terminate at the very beginning of a line.
-        }
+        # Mind the indentations; here-strings have to terminate at the very beginning of a line.
     }
+}
 }
