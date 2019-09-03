@@ -80,12 +80,17 @@
             Show-MeditationPrompt -Greeting
 
             Write-Verbose 'Sorting koans...'
-            if ($Topic) {
-                Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
-                $SortedKoanList = Get-Koan -Topic $Topic
-            }
-            else {
-                $SortedKoanList = Get-Koan
+            try {
+                if ($Topic) {
+                    Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
+                    $SortedKoanList = Get-Koan -Topic $Topic
+                }
+                else {
+                    $SortedKoanList = Get-Koan
+                }
+            } catch
+            {
+                $PSCmdlet.ThrowTerminatingError($_)
             }
 
             Write-Verbose "Koan files retrieved: $($SortedKoanList.Count)"

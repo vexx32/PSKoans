@@ -60,8 +60,8 @@ function Reset-PSKoan {
                             $koan.Ast.Extent.Text
                         )
 
-                        if ($PSCmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $Topic))) {
-                            Set-Content -Path $_.UserFilePath -Value $content
+                        if ($PSCmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $_.Topic))) {
+                            Set-Content -Path $_.UserFilePath -Value $content -NoNewline
                         }
                     }
                     else {
@@ -69,14 +69,27 @@ function Reset-PSKoan {
                     }
                 }
                 else {
-                    if ($PSCmdlet.ShouldProcess($TopicName, "Resetting all koans in $TopicName")) {
+                    if ($PSCmdlet.ShouldProcess($_.Topic, "Resetting all koans")) {
                         Copy-Item -Path $_.ModuleFilePath -Destination $_.UserFilePath -Force
                     }
                 }
             }
         }
         else {
-            Write-Error ('The koan "{0}" does not exist.' -f $Name)
+            $message = 'The koan "{0}" does not exist in the topic {1}.' -f $Name, $_.Topic
+            if ($Topic) {
+                $ErrorDetails = @{
+                    ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
+                    ExceptionMessage = $message
+                    ErrorId          = 'PSKoans.NoMatchingKoanFound'
+                    ErrorCategory    = 'ObjectNotFound'
+                    TargetObject     = $Topic -join ','
+                }
+                Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
+            }
+            else {
+                Write-Verbose -Message $message
+            }
         }
     }
 }
