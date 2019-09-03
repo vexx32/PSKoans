@@ -30,18 +30,20 @@ Describe 'Get-Koan' {
         }
     }
 
-    It 'should throw a terminating error if the file is blocked' {
-        $testFile = Get-ChildItem -Path $TestLocation -Filter AboutArrays.Koans.ps1 -Recurse -File |
-            Select-Object -First 1
+    if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Win32NT') {
+        It 'should throw a terminating error if the file is blocked' {
+            $testFile = Get-ChildItem -Path $TestLocation -Filter AboutArrays.Koans.ps1 -Recurse -File |
+                Select-Object -First 1
 
-        Set-Content -Path $testFile.FullName -Stream Zone.Identifier -Value @'
+            Set-Content -Path $testFile.FullName -Stream Zone.Identifier -Value @'
 [ZoneTransfer]
 ZoneId=3
 ReferrerUrl=C:\Downloads\File.zip
 '@
 
-        InModuleScope 'PSKoans' {
-            { Get-Koan -Topic AboutArrays } | Should -Throw -ErrorId PSKoans.KoanFileIsBlocked
+            InModuleScope 'PSKoans' {
+                { Get-Koan -Topic AboutArrays } | Should -Throw -ErrorId PSKoans.KoanFileIsBlocked
+            }
         }
     }
 }
