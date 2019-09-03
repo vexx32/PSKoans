@@ -36,6 +36,46 @@ Describe 'New-DbaDatabase' {
         }
     } -ParameterFilter {$_.SqlInstance -eq 'localhost'}
 
+    Mock -CommandName New-DbaDatabase -MockWith {
+        [PSCustomObject]@{
+            ComputerName = 'localhost'
+            InstanceName = 'MSSQLSERVER'
+            SqlInstance = 'localhost'
+            Name = 'RandomIsGood'
+            Status = 'Normal'
+            IsAccessible = $true
+            RecoveryModel = 'Simple'
+            LogReuseWaitStatus = 'Nothing'
+            SizeMB = 16
+            Compatibility = 'Version140'
+            Collation = 'SQL_Latin1_General_CP1_CI_AS'
+            Owner = $ENV:USERNAME
+            LastFullBackup = (Get-Date '0001-01-01')
+            LastDiffBackup = (Get-Date '0001-01-01')
+            LastLogBackup = (Get-Date '0001-01-01')
+        },
+        [PSCustomObject]@{
+            ComputerName = 'localhost'
+            InstanceName = 'MSSQLSERVER'
+            SqlInstance = 'localhost'
+            Name = 'SpecificIsBetter'
+            Status = 'Normal'
+            IsAccessible = $true
+            RecoveryModel = 'Simple'
+            LogReuseWaitStatus = 'Nothing'
+            SizeMB = 16
+            Compatibility = 'Version140'
+            Collation = 'SQL_Latin1_General_CP1_CI_AS'
+            Owner = $ENV:USERNAME
+            LastFullBackup = (Get-Date '0001-01-01')
+            LastDiffBackup = (Get-Date '0001-01-01')
+            LastLogBackup = (Get-Date '0001-01-01')
+        }
+    } -ParameterFilter {
+        $_.SqlInstance -eq 'localhost' -and
+        @('RandomIsGood', 'SpecificIsBetter') -in $_.Name
+    }
+
     <#
         New-DbaDatabase, while having a few different parameters, requires only that you have an instance
         of SQL Server that you can connect to and it can create a database on.
