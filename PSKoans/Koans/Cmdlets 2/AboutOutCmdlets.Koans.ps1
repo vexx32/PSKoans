@@ -118,9 +118,9 @@ Context 'Out-* Cmdlets' {
 
         It 'creates string representations of data' {
             #Create a hashtable that pipes into Out-String
-            $String = @{ } | Out-String
+            $ExpectedString = @{ ____ = '____'; Spectrum = '____' } | Out-String
 
-            @"
+            $ActualString = @"
 
 Name                           Value
 ----                           -----
@@ -129,8 +129,8 @@ Spectrum                       Ultraviolet
 
 
 
-"@ | Should -Be $String
-        # Mind the indentations; here-strings have to terminate at the very beginning of a line.
+"@ # Mind the indentations; here-strings have to terminate at the very beginning of a line.
+            $ActualString | Should -Be $ExpectedString
+        }
     }
-}
 }

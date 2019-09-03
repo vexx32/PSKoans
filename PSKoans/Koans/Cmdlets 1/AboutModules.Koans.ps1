@@ -117,9 +117,6 @@ Describe 'New-Module' {
         a module in-memory without needing a file on disk.
     #>
     BeforeAll {
-        $ModuleParameters = @{
-
-        }
         $Module = New-Module -Name 'PSKoans_TestModule' -ScriptBlock {} -ArgumentList
     }
 
@@ -153,55 +150,55 @@ Describe 'Import-Module' {
         Import-Module is an auxiliary cmdlet that imports the requested module
         into the current session. It is capable of both importing
     #>
-        Context 'Importing Installed Modules' {
-            BeforeAll {
-                $Module = New-Module -Name 'PSKoans_ImportModuleTest' { }
-            }
-
-            It 'does not produce output' {
-                Import-Module $Module | Should -BeNull
-            }
-
-            It 'imports the module into the current session' {
-                $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest'
-
-                $ImportedModule.ExportedCommands.Keys | Should -BeNull
-                '____' | Should -Be $ImportedModule.Name
-            }
+    Context 'Importing Installed Modules' {
+        BeforeAll {
+            $Module = New-Module -Name 'PSKoans_ImportModuleTest' { }
         }
 
-        Context 'Importing Module From File' {
-            BeforeAll {
-                $ModuleScript = {
-                    function Test-ModuleFunction {
-                        '____' # Fill in the correct value here
-                    }
-                    Export-ModuleMember 'Test-ModuleFunction'
-                }
-                $ModuleScript.ToString() | Set-Content -Path 'TestDrive:\TestModule.psm1'
-            }
-
-            It 'does not produce output' {
-                Import-Module 'TestDrive:\TestModule.psm1' | Should -Be NullOrEmpty
-            }
-
-            It 'imports the module into the current session' {
-                $ImportedModule = Get-Module -Name '____'
-                $ImportedModule | Should -Not -BeNullOrEmpty
-            }
-
-            It 'makes the exported commands from the module available for use' {
-                $ImportedModule = Get-Module -Name '____'
-                @('____') | Should -Be $ImportedModule.ExportedCommands.Values.Name
-
-                Test-ModuleFunction | Should -BeExactly 'A successful test.'
-            }
+        It 'does not produce output' {
+            Import-Module $Module | Should -BeNull
         }
 
-        AfterAll {
-            Remove-Module -Name 'TestModule', 'PSKoans_ImportModuleTest'
+        It 'imports the module into the current session' {
+            $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest'
+
+            $ImportedModule.ExportedCommands.Keys | Should -BeNull
+            '____' | Should -Be $ImportedModule.Name
         }
     }
+
+    Context 'Importing Module From File' {
+        BeforeAll {
+            $ModuleScript = {
+                function Test-ModuleFunction {
+                    '____' # Fill in the correct value here
+                }
+                Export-ModuleMember 'Test-ModuleFunction'
+            }
+            $ModuleScript.ToString() | Set-Content -Path 'TestDrive:\TestModule.psm1'
+        }
+
+        It 'does not produce output' {
+            Import-Module 'TestDrive:\TestModule.psm1' | Should -Be NullOrEmpty
+        }
+
+        It 'imports the module into the current session' {
+            $ImportedModule = Get-Module -Name '____'
+            $ImportedModule | Should -Not -BeNullOrEmpty
+        }
+
+        It 'makes the exported commands from the module available for use' {
+            $ImportedModule = Get-Module -Name '____'
+            @('____') | Should -Be $ImportedModule.ExportedCommands.Values.Name
+
+            Test-ModuleFunction | Should -BeExactly 'A successful test.'
+        }
+    }
+
+    AfterAll {
+        Remove-Module -Name 'TestModule', 'PSKoans_ImportModuleTest'
+    }
+}
 <#
     Other *-Module Cmdlets
 

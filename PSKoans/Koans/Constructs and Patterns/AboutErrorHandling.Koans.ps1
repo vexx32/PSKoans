@@ -84,13 +84,15 @@ Describe 'ErrorRecord' {
             # InvocationInfo is a quick snapshot of the surrounding environment when the error happened.
             __ | Should -Be $ErrorRecord.InvocationInfo.ScriptLineNumber
             __ | Should -Be $ErrorRecord.InvocationInfo.PipelineLength
-            @(
+            $ErrorString = @(
                 'At ____'
                 '+                 ____ "____"'
                 '+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-            ) -join [Environment]::NewLine | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
+            ) -join [Environment]::NewLine
+
+            $ErrorString | Should -Be $ErrorRecord.InvocationInfo.PositionMessage
+        }
     }
-}
 }
 
 Describe 'Types of Errors' {
