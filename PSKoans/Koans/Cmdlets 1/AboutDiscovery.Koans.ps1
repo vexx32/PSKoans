@@ -137,19 +137,19 @@ Describe 'Get-Member' {
                 New-TemporaryFile
             }
 
-        # Which method can be used to remove these files?
-        $MethodName = '____'
-        $TempFiles | ForEach-Object $MethodName
+            # Which method can be used to remove these files?
+            $MethodName = '____'
+            $TempFiles | ForEach-Object $MethodName
 
-        $TempFiles | Test-Path | Should -BeFalse
-    }
+            $TempFiles | Test-Path | Should -BeFalse
+        }
 
-    It 'actually returns objects itself' {
-        $MemberData = 'string' | Get-Member
-        # We can all betray our own selves.
-        $MemberData | Should -BeOfType ____
+        It 'actually returns objects itself' {
+            $MemberData = 'string' | Get-Member
+            # We can all betray our own selves.
+            $MemberData | Should -BeOfType ____
+        }
     }
-}
 }
 
 Describe 'Get-Command' {
