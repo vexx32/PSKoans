@@ -7,7 +7,7 @@
         Returns a sorted list of all koans, or optionally only those that match the specified criteria.
 
     .PARAMETER Topic
-        Specify one or more topic names or patterns to filter the list. Regex matching is permitted.
+        Specify one or more topic names or patterns to filter the list. Wildcards are permitted.
 
     .EXAMPLE
         Get-Koan
