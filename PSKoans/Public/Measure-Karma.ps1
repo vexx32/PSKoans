@@ -88,8 +88,8 @@
                 else {
                     $SortedKoanList = Get-Koan
                 }
-            } catch
-            {
+            }
+            catch {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
 

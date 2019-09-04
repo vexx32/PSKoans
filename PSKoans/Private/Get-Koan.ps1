@@ -36,17 +36,19 @@
         Get-ChildItem -Path (Get-PSKoanLocation) -Recurse -Filter '*.Koans.ps1' |
             Where-Object { -not $PSBoundParameters.ContainsKey('Topic') -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
             ForEach-Object {
-                if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Win32NT') {
-                    if (Get-Content -LiteralPath $_.PSPath -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
-                        $ErrorDetails = @{
-                            ExceptionType    = 'System.IO.FileLoadException'
-                            ExceptionMessage = 'Could not read the koan file. The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.'
-                            ErrorId          = 'PSKoans.KoanFileIsBlocked'
-                            ErrorCategory	 = 'ReadError'
-                            TargetObject	 = $_.FullName
-                        }
-                        $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
+                if ($PSVersionTable.PSEdition -ne 'Desktop' -and $PSVersionTable.Platform -ne 'Win32NT') {
+                    return $_
+                }
+
+                if (Get-Content -LiteralPath $_.PSPath -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
+                    $ErrorDetails = @{
+                        ExceptionType    = 'System.IO.FileLoadException'
+                        ExceptionMessage = 'Could not read the koan file. The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.'
+                        ErrorId          = 'PSKoans.KoanFileIsBlocked'
+                        ErrorCategory	 = 'ReadError'
+                        TargetObject	 = $_.FullName
                     }
+                    $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
                 }
 
                 $_
