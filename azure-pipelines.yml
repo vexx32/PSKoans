@@ -42,7 +42,7 @@ jobs:
   steps:
   - template: templates/build-steps.yml
 
-- job: PSKoans_Publish
+- job: PublishModule
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
   dependsOn:
     - CI_Linux
