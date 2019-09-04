@@ -14,22 +14,17 @@ Reflect on your progress and check your answers.
 
 ### Default (Default)
 ```
-Measure-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### Reset
-```
-Measure-Karma [-Topic <String[]>] [-Reset] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
 ### ListKoans
 ```
-Measure-Karma [-ListTopics] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-ListTopics] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### OpenFolder
 ```
-Measure-Karma [-Contemplate] [-ClearScreen] [-WhatIf] [-Confirm] [<CommonParameters>]
+Measure-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -52,16 +47,6 @@ Measure-Karma -Contemplate
 Opens the user's koans folder, housed in `home\PSKoans`.
 If VS Code is in `$env:Path`, opens VS Code to the workspace location.
 Otherwise, the folder is opened in a file explorer.
-
-### EXAMPLE 3
-```
-Measure-Karma -Reset
-```
-
-Prompts for confirmation before wiping out the user's koans folder and restoring it back to its initial state.
-This can be used to completely reset the koan files whenever needed, or to populate a new location with fresh koans after using `Set-PSKoanLocation`.
-
-When used with -Topic, only the specified topics are reset.
 
 ## PARAMETERS
 
@@ -130,72 +115,20 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Reset
-Resets everything in your local koan folder to the initial state.
-Use with caution.
-This can be used after using `Set-PSKoanLocation` to a new directory to get started.
-
-If combined with `-Topic`, resets only the specified topics.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: Reset
-Aliases:
-
-Required: True
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Topic
 Execute koans only from the selected Topic(s).
-Regex patterns are permitted.
-
-If combined with `-Reset`, the specified topics are reset to their initial states.
+Wildcard patterns are permitted.
 
 ```yaml
 Type: String[]
-Parameter Sets: Default, Reset
+Parameter Sets: Default
 Aliases: Koan, File
 
 Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts for confirmation before making any changes.
-Use with -Reset to always be prompted before any changes are made.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WhatIf
-When used with -Reset, displays what will be reset without actually resetting anything.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### CommonParameters

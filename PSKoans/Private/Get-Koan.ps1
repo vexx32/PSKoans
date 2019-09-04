@@ -1,6 +1,4 @@
-﻿using namespace System.Text
-
-function Get-Koan {
+﻿function Get-Koan {
     <#
     .SYNOPSIS
         Returns a sorted list of koans.
@@ -9,7 +7,7 @@ function Get-Koan {
         Returns a sorted list of all koans, or optionally only those that match the specified criteria.
 
     .PARAMETER Topic
-        Speficy one or more topic names or patterns to filter the list. Regex matching is permitted.
+        Specify one or more topic names or patterns to filter the list. Wildcards are permitted.
 
     .EXAMPLE
         Get-Koan
@@ -21,29 +19,41 @@ function Get-Koan {
     [OutputType([System.IO.FileInfo])]
     param(
         [Parameter(Position = 0, ValueFromPipeline)]
+        [SupportsWildcards()]
         [string[]]
         $Topic
     )
     begin {
-        if ($PSBoundParameters.ContainsKey('Topic')) {
-            $PatternBuilder = [StringBuilder]::new()
-        }
+        $Topics = [System.Collections.Generic.List[string]]::new()
     }
     process {
         if ($PSBoundParameters.ContainsKey('Topic')) {
-            foreach ($Item in $Topic) {
-                if ($PatternBuilder.Length -gt 0) {
-                    $PatternBuilder.AppendFormat('|{0}', $Item) > $null
-                }
-                else {
-                    $PatternBuilder.Append($Item) > $null
-                }
-            }
+            $Topics.AddRange($Topic)
         }
     }
     end {
+        $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topics
+
         Get-ChildItem -Path (Get-PSKoanLocation) -Recurse -Filter '*.Koans.ps1' |
-            Where-Object { -not $PSBoundParameters.ContainsKey('Topic') -or $_.BaseName -match $PatternBuilder.ToString() } |
+            Where-Object { -not $PSBoundParameters.ContainsKey('Topic') -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
+            ForEach-Object {
+                if ($PSVersionTable.PSEdition -ne 'Desktop' -and $PSVersionTable.Platform -ne 'Win32NT') {
+                    return $_
+                }
+
+                if (Get-Content -LiteralPath $_.PSPath -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
+                    $ErrorDetails = @{
+                        ExceptionType    = 'System.IO.FileLoadException'
+                        ExceptionMessage = 'Could not read the koan file. The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.'
+                        ErrorId          = 'PSKoans.KoanFileIsBlocked'
+                        ErrorCategory	 = 'ReadError'
+                        TargetObject	 = $_.FullName
+                    }
+                    $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
+                }
+
+                $_
+            } |
             Get-Command { $_.FullName } |
             Where-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Count -gt 0 } |
             Sort-Object { $_.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Position }
