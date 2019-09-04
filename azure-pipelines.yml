@@ -16,26 +16,26 @@ pr:
 
 jobs:
 
-- job: CI_Linux
+- job: Linux
   pool:
     vmImage: ubuntu-latest
 
   steps:
   - template: templates/build-steps.yml
   - task: PublishPipelineArtifact@1
-    displayName: 'Publish Help Artifacts'
+    displayName: 'Publish External Help Artifacts'
     inputs:
       path: '$(System.DefaultWorkingDirectory)/PSKoans/en-us'
       artifact: ExternalHelp
 
-- job: CI_Windows
+- job: Windows
   pool:
     vmImage: windows-latest
 
   steps:
   - template: templates/build-steps.yml
 
-- job: CI_MacOS
+- job: MacOS
   pool:
     vmImage: macOS-latest
 
@@ -53,6 +53,7 @@ jobs:
 
   steps:
   - task: DownloadPipelineArtifact@2
+    displayName: 'Download External Help Artifact'
     inputs:
       artifact: ExternalHelp
       path: '$(System.DefaultWorkingDirectory)/PSKoans/'
