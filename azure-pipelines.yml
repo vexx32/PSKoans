@@ -16,21 +16,21 @@ pr:
 
 jobs:
 
-- job: PSKoans_CI_Linux
+- job: CI_Linux
   pool:
     vmImage: ubuntu-latest
 
   steps:
   - template: templates/build-steps.yml
 
-- job: PSKoans_CI_Windows
+- job: CI_Windows
   pool:
     vmImage: windows-latest
 
   steps:
   - template: templates/build-steps.yml
 
-- job: PSKoans_CI_MacOS
+- job: CI_MacOS
   pool:
     vmImage: macOS-latest
 
@@ -40,9 +40,9 @@ jobs:
 - job: PSKoans_Publish
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
   dependsOn:
-    - PSKoans_CI_Linux
-    - PSKoans_CI_Windows
-    - PSKoans_CI_MacOS
+    - CI_Linux
+    - CI_Windows
+    - CI_MacOS
   pool:
     vmImage: ubuntu-latest
 
