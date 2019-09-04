@@ -20,14 +20,17 @@ function Reset-PSKoan {
                 return @($Values) -like "$WordToComplete*"
             }
         )]
+        [SupportsWildcards()]
         [string[]]
         $Topic,
 
         [Parameter()]
+        [SupportsWildcards()]
         [string]
         $Name = '*',
 
         [Parameter(Mandatory, ParameterSetName = 'NameAndContext')]
+        [SupportsWildcards()]
         [string]
         $Context
     )

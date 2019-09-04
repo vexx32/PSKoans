@@ -21,6 +21,7 @@ function Update-PSKoanFile {
     [OutputType([void])]
     param(
         [Parameter()]
+        [SupportsWildcards()]
         [string[]]
         $Topic
     )

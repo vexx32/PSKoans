@@ -19,6 +19,7 @@
                 return @($Values) -like "$WordToComplete*"
             }
         )]
+        [SupportsWildcards()]
         [string[]]
         $Topic,
 

@@ -24,6 +24,7 @@ function Get-PSKoanFile {
     [OutputType([PSObject[]])]
     param(
         [Parameter()]
+        [SupportsWildcards()]
         [string[]]
         $Topic
     )

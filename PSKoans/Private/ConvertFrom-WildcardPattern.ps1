@@ -22,6 +22,7 @@ function ConvertFrom-WildcardPattern {
     [OutputType([string])]
     param(
         [Parameter()]
+        [SupportsWildcards()]
         [string[]]
         $Pattern
     )

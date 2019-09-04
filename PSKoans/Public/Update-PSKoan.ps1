@@ -20,6 +20,7 @@ function Update-PSKoan {
                 return @($Values) -like "$WordToComplete*"
             }
         )]
+        [SupportsWildcards()]
         [string[]]
         $Topic
     )
