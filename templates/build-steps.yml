@@ -1,0 +1,33 @@
+steps:
+- task: PowerShell@2
+  displayName: 'Setup Build Environment'
+
+  inputs:
+    targetType: 'inline'
+    script: |
+      Install-Module -Name Psake, PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
+      Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+
+    errorActionPreference: 'stop'
+    failOnStderr: true
+    pwsh: true
+
+- task: PowerShell@2
+  displayName: 'Run Pester Tests'
+
+  inputs:
+    targetType: 'filePath'
+    filePath: ./Build/Build.ps1
+    arguments: -Task Build
+
+    errorActionPreference: 'stop'
+    failOnStderr: true
+    pwsh: true
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  inputs:
+    testResultsFormat: NUnit
+    testResultsFiles: '$(TestResults)'
+    searchFolder: '$(Build.ArtifactStagingDirectory)'
+    mergeTestResults: true
