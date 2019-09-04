@@ -1,7 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
+# YAML spec:
 # https://aka.ms/yaml
+
 name: Build & Test - Azure
 
 trigger:
@@ -17,47 +16,43 @@ pr:
 
 jobs:
 
-- job: BuildAndTest
+- job: PSKoans_CI_Linux
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: ubuntu-latest
 
   steps:
-  - task: PowerShell@2
-    displayName: 'Setup Build Environment'
+  - template: templates/build-steps.yml
 
+- job: PSKoans_CI_Windows
+  pool:
+    vmImage: windows-latest
+
+  steps:
+  - template: templates/build-steps.yml
+
+- job: PSKoans_CI_MacOS
+  pool:
+    vmImage: macOS-latest
+
+  steps:
+  - template: templates/build-steps.yml
+
+- job: PSKoans_Publish
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  dependsOn:
+    - PSKoans_CI_Linux
+    - PSKoans_CI_Windows
+    - PSKoans_CI_MacOS
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - task: DownloadPipelineArtifact@2
     inputs:
-
-      targetType: 'inline'
-      script: |
-        Install-Module -Name Psake, PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
-        Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
-
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
-
-  - task: PowerShell@2
-    displayName: 'Run Pester Tests'
-
-    inputs:
-      targetType: 'filePath'
-      filePath: ./Build/Build.ps1
-      arguments: -Task Build
-
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
-    inputs:
-      testResultsFormat: NUnit
-      testResultsFiles: '$(TestResults)'
-      searchFolder: '$(Build.ArtifactStagingDirectory)'
-      mergeTestResults: true
+      artifact: ExternalHelp
+      path: '$(System.DefaultWorkingDirectory)/PSKoans/'
 
   - task: PowerShell@2
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     displayName: 'Deploy to Gallery'
 
     inputs:

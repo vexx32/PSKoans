@@ -31,3 +31,9 @@ steps:
     testResultsFiles: '$(TestResults)'
     searchFolder: '$(Build.ArtifactStagingDirectory)'
     mergeTestResults: true
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Help Artifacts'
+  inputs:
+    path: '$(System.DefaultWorkingDirectory)/PSKoans/en-us'
+    artifact: ExternalHelp
