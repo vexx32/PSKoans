@@ -45,9 +45,9 @@ jobs:
 - job: PublishModule
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
   dependsOn:
-    - CI_Linux
-    - CI_Windows
-    - CI_MacOS
+    - Linux
+    - Windows
+    - MacOS
   pool:
     vmImage: ubuntu-latest
 
