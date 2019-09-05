@@ -56,21 +56,25 @@ Describe "The Stock Challenge" {
             $Function = Get-Item -Path 'Function:Get-GreatestVarianceDate'
             $Function.ScriptBlock.CheckRestrictedLanguage($AllowedCommands, $AllowedVariables, $false)
         }
-    }
-    <#
-        Feel free to add extra It/Should tests here to write tests for yourself and
-        experiment along the way!
-    #>
 
-    It 'should determine the correct answer' {
         function Get-GreatestVarianceDate {
             param([string[]]$Data)
 
             # Add the solution code here!
 
         }
+    }
 
+    <#
+        Feel free to add extra It/Should tests here to write tests for yourself and
+        experiment along the way!
+    #>
+
+    It 'should not use any cmdlets or external commands' {
         $Verification | Should -Not -Throw -Because "You must not rely on the power of others here."
+    }
+
+    It 'should determine the correct answer' {
         Get-GreatestVarianceDate -Data $StockData | Should -Be "2012-03-13"
     }
 }
