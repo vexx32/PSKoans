@@ -45,5 +45,10 @@ Describe 'Kata - Sorting Characters' {
         Get-SortedString $String | Should -BeExactly $Result
     } -TestCases @(
         @{ String = 'Mountains are merely mountains.'; Result = 'aaaeeeiilMmmnnnnoorrssttuuy' }
+        @{ String = 'What do you call the world?'; Result = 'aacddehhlllooorttuwWy' }
+        @{ String = 'Out of nowhere, the mind comes forth.'; Result = 'cdeeeeffhhhimmnnooOoorrstttuw' }
+        @{ String = 'Because it is so very clear, it takes longer to come to the realization.'; Result = 'aaaaaBccceeeeeeeeeghiiiiiklllmnnoooooorrrrsssstttttttuvyz' }
+        @{ String = 'The hands of the world are open.'; Result = 'aaddeeeefhhhlnnoooprrstTw' }
+        @{ String = 'You are those huge waves sweeping everything before them, swallowing all in their path.'; Result = 'aaaaabeeeeeeeeeeeefgggghhhhhhiiiiillllmnnnnoooopprrrrsssstttttuuvvwwwwyY' }
     )
 }
