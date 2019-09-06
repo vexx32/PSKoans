@@ -7,29 +7,27 @@ Describe 'Show-Karma' {
         Context 'Default Behaviour' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
-                Mock Invoke-Koan -ModuleName 'PSKoans' { }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    @{
+                        Meditation   = "TestMeditation"
+                        KoansPassed  = 0
+                        TotalKoans   = 10
+                        DescribeName = "TestDescribe"
+                        Expectation  = "ExpectedTest"
+                    }
+                }
             }
 
             It 'should not produce output' {
-                Show-Karma | Should -BeNnullOrEmpty
+                Show-Karma | Should -BeNullOrEmpty
             }
 
             It 'should write the meditation prompts' {
                 Assert-MockCalled Show-MeditationPrompt -Times 2
             }
 
-            It 'should Invoke-Pester on each of the koans' {
-                $ValidKoans = Get-PSKoanLocation |
-                    Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                    Get-Command { $_.FullName } |
-                    Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
-
-                Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
+            It 'should call Get-Karma to examine the koans' {
+                Assert-MockCalled Get-Karma
             }
         }
 
@@ -37,12 +35,15 @@ Describe 'Show-Karma' {
             BeforeAll {
                 Mock Clear-Host { }
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
-                Mock Invoke-Koan -ModuleName 'PSKoans' { }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    @{
+                        Meditation   = "TestMeditation"
+                        KoansPassed  = 0
+                        TotalKoans   = 10
+                        DescribeName = "TestDescribe"
+                        Expectation  = "ExpectedTest"
+                    }
+                }
             }
 
             It 'should not produce output' {
@@ -58,12 +59,7 @@ Describe 'Show-Karma' {
             }
 
             It 'should Invoke-Pester on each of the koans' {
-                $ValidKoans = Get-PSKoanLocation |
-                    Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                    Get-Command { $_.FullName } |
-                    Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
-
-                Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
+                Assert-MockCalled Get-Karma
             }
         }
 
@@ -95,68 +91,24 @@ Describe 'Show-Karma' {
 
         Context 'With -ListTopics Parameter' {
             BeforeAll {
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
+                Mock Get-PSKoanFile { }
             }
 
             It 'should list all the koan topics' {
-                $KoanTopics = Get-PSKoanLocation |
-                    Get-ChildItem -Recurse -File -Filter *.Koans.ps1 |
-                    ForEach-Object { $_.BaseName -replace '\.Koans$' }
-
-                (Show-Karma -ListTopics).Topic | Should -Be $KoanTopics
+                Show-Karma -ListTopics
+                Assert-MockCalled Get-PSKoanFile
             }
         }
 
         Context 'With -Topic Parameter' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
-                Mock Invoke-Koan -ModuleName 'PSKoans' { }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
-
-                $TestCases = @(
-                    @{ Topic = @( 'AboutAssertions' ) }
-                    @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' ) }
-                )
+                Mock Get-Karma -MockWith { } -ParameterFilter { $Topic }
             }
 
-            It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases $TestCases {
-                param([string[]] $Topic)
-
-                Show-Karma -Topic $Topic
-                Assert-MockCalled Invoke-Koan -Times @($Topic).Count
-            }
-
-            It 'should not divide by zero if all Koans are completed' {
-                $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
-                $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
-
-                New-Item $KoansCompletedTestLocation -ItemType Directory
-                New-Item $TestFile -ItemType File
-
-                @'
-using module PSKoans
-[Koan(Position = 1)]
-param()
-
-Describe 'Koans Test' {
-    It 'is easy to solve' {
-        $true | should -be $true
-    }
-}
-'@ | Set-Content $TestFile
-
-                Set-PSKoanLocation $KoansCompletedTestLocation
-
-                { Show-Karma -Topic SingleTopicTest } | Should -Not -Throw
-
-                Set-PSKoanLocation $TestLocation
+            It 'should call Get-Karma on the selected topic' {
+                Show-Karma -Topic TestTopic
+                Assert-MockCalled Get-Karma -ParameterFilter { $Topic -eq "TestTopic" }
             }
         }
 
