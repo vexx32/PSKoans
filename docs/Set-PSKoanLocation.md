@@ -32,21 +32,6 @@ Sets the koan folder location to 'C:\PSKoans' and then invokes Measure-Karma to 
 
 ## PARAMETERS
 
-### -Path
-Specify the path to set the koan location to.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: PSPath, Folder
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Confirm
 Prompts for confirmation before changing the koan location.
 
@@ -57,6 +42,21 @@ Aliases: cf
 
 Required: False
 Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+Specify the path to set the koan location to.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: PSPath, Folder
+
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
