@@ -1,8 +1,8 @@
-﻿function Measure-Karma {
+﻿function Show-Karma {
     [CmdletBinding(DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md')]
     [OutputType([void])]
-    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path')]
+    [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path', 'Measure-Karma')]
     param(
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
@@ -10,11 +10,12 @@
             {
                 param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-                $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                Sort-Object -Property BaseName |
-                ForEach-Object {
-                    $_.BaseName -replace '\.Koans$'
-                }
+                $Values = Get-PSKoanLocation |
+                    Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                    Sort-Object -Property BaseName |
+                    ForEach-Object {
+                        $_.BaseName -replace '\.Koans$'
+                    }
 
                 return @($Values) -like "$WordToComplete*"
             }
@@ -46,10 +47,10 @@
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
             Get-PSKoanLocation |
-            Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
-            ForEach-Object {
-                $_.BaseName -replace '\.Koans$'
-            }
+                Get-ChildItem -Recurse -File -Filter '*.Koans.ps1' |
+                ForEach-Object {
+                    $_.BaseName -replace '\.Koans$'
+                }
         }
         'OpenFolder' {
             Write-Verbose "Opening koans folder"
@@ -141,8 +142,8 @@
 
             $Meditation = if ($PesterTests.FailedCount -gt 0) {
                 $NextKoanFailed = $PesterTests.TestResult |
-                Where-Object Result -eq 'Failed' |
-                Select-Object -First 1
+                    Where-Object Result -eq 'Failed' |
+                    Select-Object -First 1
 
                 @{
                     DescribeName = $NextKoanFailed.Describe
