@@ -12,12 +12,14 @@ Reset a Koan or a number of koans to the default.
 
 ## SYNTAX
 
+### NameOnly (Default)
 ```
-Reset-PSKoan [-Topic <string[]>] [-Name <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan [-Topic <String[]>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### NameAndContext
 ```
-Reset-PSKoan -Context <string> [-Topic <string[]>] [-Name <string>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan [-Topic <String[]>] [-Name <String>] -Context <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -99,11 +101,11 @@ Type: String
 Parameter Sets: NameAndContext
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: True
+Accept wildcard characters: False
 ```
 
 ### -Name
@@ -114,26 +116,26 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: 1
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: True
+Accept wildcard characters: False
 ```
 
 ### -Topic
 Reset the specified topic or topics. Wildcards are supported.
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases: Koan, File
 
-Required: True
-Position: 0
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: True
+Accept wildcard characters: False
 ```
 
 ### -WhatIf
