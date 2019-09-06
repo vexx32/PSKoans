@@ -1,6 +1,6 @@
 #Requires -Modules PSKoans
 
-Describe 'Measure-Karma' {
+Describe 'Show-Karma' {
 
     InModuleScope 'PSKoans' {
 
@@ -16,7 +16,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'should not produce output' {
-                Measure-Karma | Should -Be $null
+                Show-Karma | Should -BeNnullOrEmpty
             }
 
             It 'should write the meditation prompts' {
@@ -24,9 +24,10 @@ Describe 'Measure-Karma' {
             }
 
             It 'should Invoke-Pester on each of the koans' {
-                $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                Get-Command { $_.FullName } |
-                Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
+                $ValidKoans = Get-PSKoanLocation |
+                    Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                    Get-Command { $_.FullName } |
+                    Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
 
                 Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
             }
@@ -45,7 +46,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'should not produce output' {
-                Measure-Karma -ClearScreen | Should -Be $null
+                Show-Karma -ClearScreen | Should -Be $null
             }
 
             It 'should clear the screen' {
@@ -57,9 +58,10 @@ Describe 'Measure-Karma' {
             }
 
             It 'should Invoke-Pester on each of the koans' {
-                $ValidKoans = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                Get-Command { $_.FullName } |
-                Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
+                $ValidKoans = Get-PSKoanLocation |
+                    Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
+                    Get-Command { $_.FullName } |
+                    Where-Object { $_.ScriptBlock.Attributes.TypeID -match 'Koan' }
 
                 Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
             }
@@ -75,7 +77,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'should attempt to populate koans and then recurse to reassess' {
-                { Measure-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
+                { Show-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
             }
 
             It 'should display only the greeting prompt' {
@@ -87,7 +89,7 @@ Describe 'Measure-Karma' {
             }
 
             It 'throws an error if a Topic is specified that matches nothing' {
-                { Measure-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ExpectedMessage 'Could not find any koans'
+                { Show-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ExpectedMessage 'Could not find any koans'
             }
         }
 
@@ -101,9 +103,10 @@ Describe 'Measure-Karma' {
 
             It 'should list all the koan topics' {
                 $KoanTopics = Get-PSKoanLocation |
-                Get-ChildItem -Recurse -File -Filter *.Koans.ps1 |
-                ForEach-Object { $_.BaseName -replace '\.Koans$' }
-                @(Measure-Karma -ListTopics) | Should -Be $KoanTopics
+                    Get-ChildItem -Recurse -File -Filter *.Koans.ps1 |
+                    ForEach-Object { $_.BaseName -replace '\.Koans$' }
+
+                (Show-Karma -ListTopics).Topic | Should -Be $KoanTopics
             }
         }
 
@@ -126,7 +129,7 @@ Describe 'Measure-Karma' {
             It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases $TestCases {
                 param([string[]] $Topic)
 
-                Measure-Karma -Topic $Topic
+                Show-Karma -Topic $Topic
                 Assert-MockCalled Invoke-Koan -Times @($Topic).Count
             }
 
@@ -151,7 +154,7 @@ Describe 'Koans Test' {
 
                 Set-PSKoanLocation $KoansCompletedTestLocation
 
-                {Measure-Karma -Topic SingleTopicTest} | Should -Not -Throw
+                { Show-Karma -Topic SingleTopicTest } | Should -Not -Throw
 
                 Set-PSKoanLocation $TestLocation
             }
@@ -166,7 +169,7 @@ Describe 'Koans Test' {
                 }
 
                 It 'should start VS Code with Start-Process' {
-                    Measure-Karma -Contemplate | Should -Be 'code'
+                    Show-Karma -Contemplate | Should -Be 'code'
 
                     Assert-MockCalled Get-Command -Times 1
                     Assert-MockCalled Start-Process -Times 1
@@ -180,7 +183,7 @@ Describe 'Koans Test' {
                 }
 
                 It 'should not produce output' {
-                    Measure-Karma -Meditate | Should -BeNullOrEmpty
+                    Show-Karma -Meditate | Should -BeNullOrEmpty
                 }
                 It 'should open the koans directory with Invoke-Item' {
                     Assert-MockCalled Get-Command -Times 1
