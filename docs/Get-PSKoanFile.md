@@ -1,7 +1,7 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version:
+online version: https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanFile.md
 schema: 2.0.0
 ---
 
