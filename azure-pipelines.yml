@@ -24,6 +24,7 @@ jobs:
   - template: templates/build-steps.yml
   - task: PublishPipelineArtifact@1
     displayName: 'Publish External Help Artifacts'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     inputs:
       path: '$(System.DefaultWorkingDirectory)/PSKoans/en-us'
       artifact: ExternalHelp
@@ -43,7 +44,7 @@ jobs:
   - template: templates/build-steps.yml
 
 - job: PublishModule
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   dependsOn:
     - Linux
     - Windows
