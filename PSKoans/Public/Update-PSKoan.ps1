@@ -11,12 +11,7 @@ function Update-PSKoan {
             {
                 param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-                $Values = Get-PSKoanLocation | Get-ChildItem -Recurse -Filter '*.Koans.ps1' |
-                Sort-Object -Property BaseName |
-                ForEach-Object {
-                    $_.BaseName -replace '\.Koans$'
-                }
-
+                $Values = (Get-PSKoanFile).Topic
                 return @($Values) -like "$WordToComplete*"
             }
         )]
@@ -42,7 +37,7 @@ function Update-PSKoan {
         Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
 
     if (-not $UserKoanList) {
-        $UserKoanList = @{}
+        $UserKoanList = @{ }
     }
 
     $TopicList = [HashSet[String]]::new([System.StringComparer]::OrdinalIgnoreCase)
