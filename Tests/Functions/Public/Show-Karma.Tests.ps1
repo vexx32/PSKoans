@@ -11,9 +11,15 @@ Describe 'Show-Karma' {
                     @{
                         Meditation   = "TestMeditation"
                         KoansPassed  = 0
-                        TotalKoans   = 10
+                        TotalKoans   = 400
                         DescribeName = "TestDescribe"
                         Expectation  = "ExpectedTest"
+                        ItName       = "TestIt"
+                        CurrentTopic = @{
+                            Name      = "TestTopic"
+                            Completed = 0
+                            Total     = 4
+                        }
                     }
                 }
             }
@@ -42,6 +48,12 @@ Describe 'Show-Karma' {
                         TotalKoans   = 10
                         DescribeName = "TestDescribe"
                         Expectation  = "ExpectedTest"
+                        ItName       = "TestIt"
+                        CurrentTopic = @{
+                            Name      = "TestTopic"
+                            Completed = 0
+                            Total     = 4
+                        }
                     }
                 }
             }
@@ -103,7 +115,21 @@ Describe 'Show-Karma' {
         Context 'With -Topic Parameter' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
-                Mock Get-Karma -MockWith { } -ParameterFilter { $Topic }
+                Mock Get-Karma -MockWith {
+                    @{
+                        Meditation   = "TestMeditation"
+                        KoansPassed  = 0
+                        TotalKoans   = 10
+                        DescribeName = "TestDescribe"
+                        Expectation  = "ExpectedTest"
+                        ItName       = "TestIt"
+                        CurrentTopic = @{
+                            Name      = "TestTopic"
+                            Completed = 0
+                            Total     = 4
+                        }
+                    }
+                } -ParameterFilter { $Topic }
             }
 
             It 'should call Get-Karma on the selected topic' {
