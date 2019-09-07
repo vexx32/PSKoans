@@ -6,7 +6,12 @@ Describe 'Get-Karma' {
 
         Context 'Default Behaviour' {
             BeforeAll {
-                Mock Invoke-Koan -ModuleName 'PSKoans' { }
+                Mock Invoke-Koan -ModuleName 'PSKoans' {
+                    [PSCustomObject]@{
+                        PassedCount = 0
+                        FailedCount = 4
+                    }
+                }
 
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
                 Set-PSKoanLocation -Path $TestLocation
@@ -32,10 +37,10 @@ Describe 'Get-Karma' {
                 $Result.Keys | Sort-Object | Should -Be $ExpectedKeys
             }
 
-            It 'should Invoke-Pester on each of the koans' {
+            It 'should Invoke-Pester on koans until it fails a test' {
                 $ValidKoans = Get-PSKoanFile
 
-                Assert-MockCalled Invoke-Koan -Times ($ValidKoans.Count)
+                Assert-MockCalled Invoke-Koan -Times 1
             }
         }
 
@@ -50,10 +55,6 @@ Describe 'Get-Karma' {
 
             It 'should attempt to populate koans and then recurse to reassess' {
                 { Get-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
-            }
-
-            It 'should display only the greeting prompt' {
-                Assert-MockCalled Show-MeditationPrompt -Times 1
             }
 
             It 'should display a warning before initiating a reset' {
@@ -118,44 +119,12 @@ Describe 'Koans Test' {
 }
 '@ | Set-Content $TestFile
 
-                Set-PSKoanLocation $KoansCompletedTestLocation
+            Set-PSKoanLocation $KoansCompletedTestLocation
 
-                { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
+            { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
 
-                Set-PSKoanLocation $TestLocation
-            }
-        }
-
-        Context 'With -Contemplate Switch' {
-
-            Context 'VS Code Installed' {
-                BeforeAll {
-                    Mock Get-Command { $true }
-                    Mock Start-Process { $FilePath }
-                }
-
-                It 'should start VS Code with Start-Process' {
-                    Get-Karma -Contemplate | Should -Be 'code'
-
-                    Assert-MockCalled Get-Command -Times 1
-                    Assert-MockCalled Start-Process -Times 1
-                }
-            }
-
-            Context 'VS Code Not Installed' {
-                BeforeAll {
-                    Mock Get-Command { $false }
-                    Mock Invoke-Item
-                }
-
-                It 'should not produce output' {
-                    Get-Karma -Meditate | Should -BeNullOrEmpty
-                }
-                It 'should open the koans directory with Invoke-Item' {
-                    Assert-MockCalled Get-Command -Times 1
-                    Assert-MockCalled Invoke-Item -Times 1
-                }
-            }
+            Set-PSKoanLocation $TestLocation
         }
     }
+}
 }
