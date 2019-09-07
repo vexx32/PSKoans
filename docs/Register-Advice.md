@@ -23,28 +23,13 @@ This is done by creating / modifying the powershell profile to call `Show-Advice
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Register-Advice
 ```
 
 Causes powershell to write a random piece of advice on each start.
 
 ## PARAMETERS
-
-### -Confirm
-Prompts you for confirmation before modifying your profile.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -TargetProfile
 Specify a named profile to modify.
@@ -58,6 +43,21 @@ Accepted values: AllUsersAllHosts, AllUsersCurrentHost, CurrentUserAllHosts, Cur
 Required: False
 Position: 0
 Default value: CurrentUserCurrentHost
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before modifying your profile.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -28,17 +28,19 @@ Show-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Measure-Karma executes Pester against the koans to evaluate if you have made the necessary corrections for success.
+Show-Karma executes Pester against the koans to evaluate if you have made the necessary corrections for success.
+
+## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Show-Karma
 ```
 
 Assesses the koan lessons, and displays the meditation prompt with the results.
 
 ### EXAMPLE 2
-```
+```powershell
 Show-Karma -Contemplate
 ```
 
@@ -126,7 +128,7 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: True
+Accept wildcard characters: False
 ```
 
 ### CommonParameters

@@ -12,7 +12,7 @@ Get the paths for module and user koan topics.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PSKoanFile [[-Topic] <String[]>] [<CommonParameters>]
 ```
 
@@ -22,14 +22,14 @@ Returns objects describing the file paths for each topic.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-PSKoanFile
 ```
 
 Returns all paths for all topics available in the module's Koan directory.
 
 ### EXAMPLE 2
-```
+```powershell
 Get-PSKoanFile -Topic AboutArrays
 ```
 
@@ -46,10 +46,10 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: 0
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: True
+Accept wildcard characters: False
 ```
 
 ### CommonParameters
@@ -63,3 +63,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanFile.md](https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanFile.md)

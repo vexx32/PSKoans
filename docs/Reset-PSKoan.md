@@ -78,21 +78,6 @@ Reset koans with names starting "returns" in topics matching the wildcard patter
 
 ## PARAMETERS
 
-### -Confirm
-Prompts for confirmation before making any changes. Use to always be prompted before any changes are made.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Context
 Reset koans in the specified context.
 
@@ -130,6 +115,21 @@ Reset the specified topic or topics. Wildcards are supported.
 Type: String[]
 Parameter Sets: (All)
 Aliases: Koan, File
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts for confirmation before making any changes. Use to always be prompted before any changes are made.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named

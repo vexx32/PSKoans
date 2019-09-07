@@ -22,7 +22,7 @@ Sets the module-scoped PSKoanLocation variable in order to modify where the modu
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Set-PSKoanLocation -Path C:\PSKoans
 
 Measure-Karma
@@ -31,21 +31,6 @@ Measure-Karma
 Sets the koan folder location to 'C:\PSKoans' and then invokes Measure-Karma to examine that location for koan files.
 
 ## PARAMETERS
-
-### -Confirm
-Prompts for confirmation before changing the koan location.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -Path
 Specify the path to set the koan location to.
@@ -57,6 +42,21 @@ Aliases: PSPath, Folder
 
 Required: True
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts for confirmation before changing the koan location.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -23,7 +23,7 @@ This value defaults to `$HOME\PSKoans` but can be changed as you prefer.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-PSKoanLocation
 
 C:\Users\Timmy\PSKoans

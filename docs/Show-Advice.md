@@ -23,7 +23,7 @@ Advice snippets are stored in a small library file in the module folder.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-Advice
 ```
 

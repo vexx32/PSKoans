@@ -39,6 +39,21 @@ All missing topics will be copied from the module.
 
 ## PARAMETERS
 
+### -Topic
+Updates the specified topic from the module.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases: Koan, File
+
+Required: False
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
 
@@ -52,21 +67,6 @@ Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
-```
-
-### -Topic
-Updates the specified topic from the module.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases: Koan, File
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: True
 ```
 
 ### -WhatIf

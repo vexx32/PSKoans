@@ -23,14 +23,14 @@ This function exists to permit blank spaces such as `__` to be used without quot
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-Blank
 ```
 
 Returns a blank object.
 
 ### EXAMPLE 2
-```
+```powershell
 __
 ```
 
@@ -38,23 +38,9 @@ Returns a blank object.
 
 ## PARAMETERS
 
-### -|PipeInput
-Used to capture the input in a pipeline context, to avoid erroring out in those contexts.
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
 ### -|ParameterInput
 Used to capture parameter names and arguments when used as a substitute for any other cmdlet.
+This parameter is not intended to be used directly, and collects all argument names and values.
 
 ```yaml
 Type: Object[]
@@ -65,6 +51,22 @@ Required: False
 Position: 2
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -|PipeInput
+Used to capture the input in a pipeline context, to avoid erroring out in those contexts.
+This parameter is not intended to be used directly, and captures all pipeline input.
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
