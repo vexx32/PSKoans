@@ -61,7 +61,7 @@
                 # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
                 Write-Warning 'No koans found in your koan directory. Initiating full reset...'
                 Update-PSKoan -Confirm:$false
-                Measure-Karma @PSBoundParameters # Re-call ourselves with the same parameters
+                Get-Karma @PSBoundParameters # Re-call ourselves with the same parameters
 
                 return # Skip the rest of the function
             }
