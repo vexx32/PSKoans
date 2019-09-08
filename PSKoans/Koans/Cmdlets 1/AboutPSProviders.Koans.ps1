@@ -22,7 +22,7 @@ param()
     registry.
 
     All providers that have a defined function with the Get-Content cmdlet can also be accessed
-    similarly to variable scopes, e.g., { $env:Path } instead of { Get-Content 'Env:Path' }
+    similarly to variable scopes, e.g., { $env:PATH } instead of { Get-Content 'env:PATH' }
 #>
 Describe 'Alias Provider' {
     <#
@@ -53,7 +53,7 @@ Describe 'Alias Provider' {
             New-Item -Path 'Alias:\grok' -Value 'Get-Item' -ErrorAction SilentlyContinue
 
             $File = grok '____' -ErrorAction SilentlyContinue
-            $File | Should -BeOfType 'System.IO.FileInfo'
+            $File | Should -BeOfType [System.IO.FileInfo]
 
             $Aliases2 = Get-ChildItem -Path 'Alias:'
             __ | Should -Be $Aliases2.Count
@@ -128,7 +128,7 @@ Describe 'Environment Provider' {
     }
 
     It 'can be accessed via variables' {
-        '____' | Should -Be $env:Path
+        '____' | Should -Be $env:PATH
     }
 }
 

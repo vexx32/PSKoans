@@ -45,7 +45,7 @@ Show-Karma -Contemplate
 ```
 
 Opens the user's koans folder, housed in `$home\PSKoans`.
-If VS Code is in `$env:Path`, opens VS Code to the workspace location.
+If VS Code is in `$env:PATH`, opens VS Code to the workspace location.
 Otherwise, the folder is opened in a file explorer.
 
 ## PARAMETERS
