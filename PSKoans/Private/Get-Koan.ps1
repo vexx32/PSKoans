@@ -46,8 +46,8 @@
                         ExceptionType    = 'System.IO.FileLoadException'
                         ExceptionMessage = 'Could not read the koan file. The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.'
                         ErrorId          = 'PSKoans.KoanFileIsBlocked'
-                        ErrorCategory	 = 'ReadError'
-                        TargetObject	 = $_.FullName
+                        ErrorCategory    = 'ReadError'
+                        TargetObject     = $_.FullName
                     }
                     $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
                 }

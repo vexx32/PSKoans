@@ -22,7 +22,7 @@ Sets the module-scoped PSKoanLocation variable in order to modify where the modu
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Set-PSKoanLocation -Path C:\PSKoans
 
 Measure-Karma
@@ -41,7 +41,7 @@ Parameter Sets: (All)
 Aliases: PSPath, Folder
 
 Required: True
-Position: 1
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

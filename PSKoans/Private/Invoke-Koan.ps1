@@ -40,7 +40,7 @@
 
             $Status = $Thread.BeginInvoke()
 
-            do { } until ($Status.IsCompleted)
+            do { Start-Sleep -Milliseconds 1 } until ($Status.IsCompleted)
 
             $Thread.EndInvoke($Status)
         }

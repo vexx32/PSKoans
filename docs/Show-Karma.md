@@ -1,11 +1,11 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version: https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md
+online version: https://github.com/vexx32/PSKoans/tree/master/docs/Show-Karma.md
 schema: 2.0.0
 ---
 
-# Measure-Karma
+# Show-Karma
 
 ## SYNOPSIS
 Reflect on your progress and check your answers.
@@ -14,37 +14,37 @@ Reflect on your progress and check your answers.
 
 ### Default (Default)
 ```
-Measure-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
+Show-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
 ### ListKoans
 ```
-Measure-Karma [-ListTopics] [-ClearScreen] [<CommonParameters>]
+Show-Karma [-ListTopics] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### OpenFolder
 ```
-Measure-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
+Show-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Measure-Karma executes Pester against the koans to evaluate if you have made the necessary corrections for success.
+Show-Karma executes Pester against the koans to evaluate if you have made the necessary corrections for success.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
-Measure-Karma
+```powershell
+Show-Karma
 ```
 
 Assesses the koan lessons, and displays the meditation prompt with the results.
 
 ### EXAMPLE 2
-```
-Measure-Karma -Contemplate
+```powershell
+Show-Karma -Contemplate
 ```
 
-Opens the user's koans folder, housed in `home\PSKoans`.
+Opens the user's koans folder, housed in `$home\PSKoans`.
 If VS Code is in `$env:Path`, opens VS Code to the workspace location.
 Otherwise, the folder is opened in a file explorer.
 
@@ -60,7 +60,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -79,7 +79,7 @@ Aliases: Meditate
 
 Required: True
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -110,7 +110,7 @@ Aliases: ListKoans
 
 Required: True
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -128,7 +128,7 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: True
+Accept wildcard characters: False
 ```
 
 ### CommonParameters
@@ -136,11 +136,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
+### None
+
 ## OUTPUTS
 
 ### System.Void
+
 ## NOTES
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[https://github.com/vexx32/PSKoans/tree/master/docs/Show-Karma.md](https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md)
