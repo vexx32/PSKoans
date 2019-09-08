@@ -71,13 +71,24 @@
 
             Show-MeditationPrompt -Greeting
 
-            $Meditation = if ($Topic) { Get-Karma -Topic $Topic } else { Get-Karma }
+            $Results = if ($Topic) { Get-Karma -Topic $Topic } else { Get-Karma }
 
+            $Params = @{
+                DescribeName   = $Results.Describe
+                ItName         = $Results.It
+                Expectation    = $Results.Expectation
+                Meditation     = $Results.Meditation
+                KoansPassed    = $Results.KoansPassed
+                TotalKoans     = $Results.TotalKoans
+                CurrentTopic   = $Results.CurrentTopic
+                Results        = $PesterTests.TestResult
+                RequestedTopic = $Topic
+            }
             if (-not $Detailed) {
-                $Meditation.Remove('Results')
+                $Params.Remove('Results')
             }
 
-            Show-MeditationPrompt @Meditation
+            Show-MeditationPrompt @Params
         }
     }
 }

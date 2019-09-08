@@ -92,31 +92,31 @@
                     Where-Object Result -eq 'Failed' |
                     Select-Object -First 1
 
-                @{
-                    DescribeName = $NextKoanFailed.Describe
-                    Expectation  = $NextKoanFailed.ErrorRecord
-                    ItName       = $NextKoanFailed.Name
-                    Meditation   = $NextKoanFailed.StackTrace
-                    KoansPassed  = $KoansPassed
-                    TotalKoans   = $TotalKoans
-                    CurrentTopic = @{
+                [PSCustomObject]@{
+                    PSTypeName     = 'PSKoans.Result'
+                    Describe       = $NextKoanFailed.Describe
+                    It             = $NextKoanFailed.Name
+                    Expectation    = $NextKoanFailed.ErrorRecord
+                    Meditation     = $NextKoanFailed.StackTrace
+                    KoansPassed    = $KoansPassed
+                    TotalKoans     = $TotalKoans
+                    CurrentTopic   = [PSCustomObject]@{
                         Name      = $KoanFile.Name -replace '\.Koans\.ps1$'
                         Completed = $PesterTests.PassedCount
                         Total     = $PesterTests.TotalCount
                     }
-                    Results      = $PesterTests.TestResult
+                    Results        = $PesterTests.TestResult
+                    RequestedTopic = $Topic
                 }
             }
             else {
-                @{
-                    Complete    = $true
-                    KoansPassed = $KoansPassed
-                    TotalKoans  = $TotalKoans
+                [PSCustomObject]@{
+                    PSTypeName     = 'PSKoans.CompleteResult'
+                    KoansPassed    = $KoansPassed
+                    TotalKoans     = $TotalKoans
+                    RequestedTopic = $Topic
+                    Complete       = $true
                 }
-            }
-
-            if ($PSBoundParameters.ContainsKey('Topic')) {
-                $Meditation.Add('RequestedTopic', $Topic)
             }
 
             $Meditation

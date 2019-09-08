@@ -21,20 +21,8 @@ Describe 'Get-Karma' {
 
             It 'should produce a hashtable with data' {
                 $Result = Get-Karma
-                $Result | Should -BeOfType [hashtable]
+                $Result.PSTypeNames[0] | Should -Be 'PSKoans.Result'
                 $Result.KoansPassed | Should -Be 0
-                $Result.Values | Should -Not -BeNullOrEmpty
-                $ExpectedKeys = @(
-                    'CurrentTopic'
-                    'DescribeName'
-                    'Expectation'
-                    'ItName'
-                    'KoansPassed'
-                    'Meditation'
-                    'Results'
-                    'TotalKoans'
-                )
-                $Result.Keys | Sort-Object | Should -Be $ExpectedKeys
             }
 
             It 'should Invoke-Pester on koans until it fails a test' {
@@ -107,7 +95,7 @@ Describe 'Get-Karma' {
                 New-Item $KoansCompletedTestLocation -ItemType Directory
                 New-Item $TestFile -ItemType File
 
-                @'
+                Set-Content $TestFile -Value @'
 using module PSKoans
 [Koan(Position = 1)]
 param()
@@ -117,14 +105,14 @@ Describe 'Koans Test' {
         $true | should -be $true
     }
 }
-'@ | Set-Content $TestFile
+'@
 
-            Set-PSKoanLocation $KoansCompletedTestLocation
+                Set-PSKoanLocation $KoansCompletedTestLocation
 
-            { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
+                { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
 
-            Set-PSKoanLocation $TestLocation
+                Set-PSKoanLocation $TestLocation
+            }
         }
     }
-}
 }

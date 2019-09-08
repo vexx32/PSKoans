@@ -58,26 +58,7 @@ function Show-MeditationPrompt {
         $Complete,
 
         [Parameter(Mandatory, ParameterSetName = 'Meditation')]
-        [ValidateScript(
-            {
-                $MissingKeys = switch ($_) {
-                    { $_.Keys -notcontains 'Name' } { 'Name' }
-                    { $_.Keys -notcontains 'Completed' } { 'Completed' }
-                    { $_.Keys -notcontains 'Total' } { 'Total' }
-                }
-
-                $ErrorString = if ($MissingKeys) {
-                    "Hashtable bound to -CurrentTopic was missing required keys: {0}" -f ($MissingKeys -join ',')
-                }
-                elseif ($_.Keys.Count -gt 3) {
-                    'Hashtable bound to -CurrentTopic should only have keys: Name, Completed, Total.'
-                }
-
-                if ($ErrorString) { throw $ErrorString }
-                else { $true }
-            }
-        )]
-        [hashtable]
+        [PSObject]
         $CurrentTopic,
 
         [Parameter()]
