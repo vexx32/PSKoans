@@ -104,6 +104,7 @@ $TypeData = @{
         'Meditation'
         'KoansPassed'
         'TotalKoans'
+        'CurrentTopic'
     )
 }
 Update-TypeData @TypeData -Force
