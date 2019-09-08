@@ -111,7 +111,7 @@ function Show-MeditationPrompt {
                 Write-Host @Blue $script:MeditationPrompts['Path']
 
                 Write-Verbose 'Calculating progress...'
-                $TopicProgressAmount = "{0}/{1}" -f $CurrentTopic['Completed'], $CurrentTopic['Total']
+                $TopicProgressAmount = "{0}/{1}" -f $CurrentTopic.Completed, $CurrentTopic.Total
                 $TotalProgressAmount = "$KoansPassed/$TotalKoans"
 
                 [int] $ProgressWidth = $ConsoleWidth * 0.65 - ($TotalProgressAmount.Width + 12)
@@ -119,13 +119,13 @@ function Show-MeditationPrompt {
 
                 #region TopicProgressBar
                 if ($RequestedTopic.Count -ne 1) {
-                    [int] $PortionDone = ($CurrentTopic['Completed'] / $CurrentTopic['Total']) * $TopicProgressWidth
+                    [int] $PortionDone = ($CurrentTopic.Completed / $CurrentTopic.Total) * $TopicProgressWidth
 
                     $ProgressBar = " [{3}]: [{0}{1}] {2}" -f @(
                         "$([char]0x25a0)" * $PortionDone
                         "$([char]0x2015)" * ($TopicProgressWidth - $PortionDone)
                         $TopicProgressAmount
-                        $CurrentTopic['Name']
+                        $CurrentTopic.Name
                     )
                     Write-Host $ProgressBar @Blue
                 }
