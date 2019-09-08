@@ -8,15 +8,16 @@ Describe 'Show-Karma' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Get-Karma -ModuleName 'PSKoans' {
-                    @{
-                        Meditation   = "TestMeditation"
+                    [PSCustomObject]@{
+                        PSTypeName   = 'PSKoans.Result'
+                        Meditation   = 'TestMeditation'
                         KoansPassed  = 0
                         TotalKoans   = 400
-                        DescribeName = "TestDescribe"
-                        Expectation  = "ExpectedTest"
-                        ItName       = "TestIt"
-                        CurrentTopic = @{
-                            Name      = "TestTopic"
+                        Describe     = 'TestDescribe'
+                        Expectation  = 'ExpectedTest'
+                        It           = 'TestIt'
+                        CurrentTopic = [PSCustomObject]@{
+                            Name      = 'TestTopic"'
                             Completed = 0
                             Total     = 4
                         }
@@ -42,15 +43,16 @@ Describe 'Show-Karma' {
                 Mock Clear-Host { }
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Get-Karma -ModuleName 'PSKoans' {
-                    @{
-                        Meditation   = "TestMeditation"
+                    [PSCustomObject]@{
+                        PSTypeName   = 'PSKoans.Result'
+                        Meditation   = 'TestMeditation'
                         KoansPassed  = 0
-                        TotalKoans   = 10
-                        DescribeName = "TestDescribe"
-                        Expectation  = "ExpectedTest"
-                        ItName       = "TestIt"
-                        CurrentTopic = @{
-                            Name      = "TestTopic"
+                        TotalKoans   = 400
+                        Describe     = 'TestDescribe'
+                        Expectation  = 'ExpectedTest'
+                        It           = 'TestIt'
+                        CurrentTopic = [PSCustomObject]@{
+                            Name      = 'TestTopic"'
                             Completed = 0
                             Total     = 4
                         }
@@ -116,18 +118,20 @@ Describe 'Show-Karma' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Get-Karma -MockWith {
-                    @{
-                        Meditation   = "TestMeditation"
-                        KoansPassed  = 0
-                        TotalKoans   = 10
-                        DescribeName = "TestDescribe"
-                        Expectation  = "ExpectedTest"
-                        ItName       = "TestIt"
-                        CurrentTopic = @{
-                            Name      = "TestTopic"
+                    [PSCustomObject]@{
+                        PSTypeName     = 'PSKoans.Result'
+                        Meditation     = 'TestMeditation'
+                        KoansPassed    = 0
+                        TotalKoans     = 400
+                        Describe       = 'TestDescribe'
+                        Expectation    = 'ExpectedTest'
+                        It             = 'TestIt'
+                        CurrentTopic   = [PSCustomObject]@{
+                            Name      = 'TestTopic"'
                             Completed = 0
                             Total     = 4
                         }
+                        RequestedTopic = $Topic
                     }
                 } -ParameterFilter { $Topic }
             }
