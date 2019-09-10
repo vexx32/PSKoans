@@ -3,57 +3,50 @@ See below for a table of all koans and their corresponding positions. When worki
 
 | Folder                    |  Koan                           |  Int Position  |  Status      |
 |---------------------------|---------------------------------|----------------|--------------|
-|  Foundations              |  AboutAssertions                | 101            |  Complete    |
+|  Foundations              |  AboutAssertions                | 101            |  Untouched   |
 |  IntroTraining            |  AboutExamples                  | 102            |  Drafted     |
 |  IntroTraining            |  AboutDotNet                    | 103            |  Drafted     |
 |  IntroTraining            |  AboutOOP                       | 104            |  Drafted     |
 |  IntroTraining            |  AboutCmdletVerbs               | 105            |  Drafted     |
 |  IntroTraining            |  AboutGetMember                 | 106            |  Drafted     |
-|  Foundations              |  AboutStrings                   | 107            |  ToEdit      |
+|  Foundations              |  AboutStrings                   | 107            |  Untouched   |
 |  IntroTraining            |  AboutBooleans                  | 108            |  Drafted     |
 |  IntroTraining            |  AboutBinary                    | 109            |  Drafted     |
 |  IntroTraining            |  AboutInts                      | 110            |  Drafted     |
-|  IntroTraining            |  AboutDotNotation               | 111            |  ToDo        |
-|  IntroTraining            |  PrimitiveDatatypes Test        | 112            |  ToDo        |
-|  IntroTraining            |  Typecasting                    | 113            |  ToDo        |
-|  IntroTraining            |  Class properties/methods       | 114            |  ToDo        |
-|  Foundations              |  AboutVariables                 | 115            |  Complete    |
-|  IntroTraining            |  VariablesActivitiy             | 116            |  ToDo        |
-|  Foundations              |  AboutArrays                    | 117            |  ToEdit      |
-|  IntroTraining            |  Array Activity                 | 118            |  ToEdit      |
-|  Foundations              |  AboutComparison                | 119            |  ToEdit      |
-|  Foundations              |  AboutConditions                | 120            |  ToEdit      |
-|  Foundations              |  AboutFunctionsAndScriptBlocks  | 121            |  ToEdit      |
-|  BELOW                    |  IS STILL A WORK IN PROGRESS    | SO PLEASE      | IGNORE       |
-|  Foundations              |  AboutOrderOfOperations         | 122            |  Complete    |
-|  Foundations              |  AboutAssignmentAndArithmetic   | 124            |  Complete    |
-|  Foundations              |  AboutStringOperators           | 127            |  Complete    |
-|  Foundations              |  AboutTypeOperators             | 129            |  Complete    |
-|  Foundations              |  AboutHashTables                | 130            |  Complete    |
-|  Foundations              |  AboutLoopsAndPipelines         | 131            |  Complete    |
-|  Foundations              |  AboutTheStockChallenge         | 132            |  Complete    |
+|  Foundations              |  AboutVariables                 | 111            |  Untouched   |
+|  Foundations              |  AboutAssignmentAndArithmetic   | 112            |  Untouched   |
+|  Foundations              |  AboutArrays                    | 113            |  Untouched   |
+|  Foundations              |  AboutComparison                | 114            |  Untouched   |
+|  Foundations              |  AboutStringOperators           | 115            |  Untouched   |
+|  Foundations              |  AboutTheStockChallenge         | 116            |  Untouched   |
+|  Foundations              |  AboutConditions                | 120            |  Untouched   |
+|  Foundations              |  AboutFunctionsAndScriptBlocks  | 121            |  Untouched   |
+|  Foundations              |  AboutOrderOfOperations         | 122            |  Untouched   |
+|  Foundations              |  AboutTypeOperators             | 129            |  Untouched   |
+|  Foundations              |  AboutHashTables                | 130            |  Untouched   |
+|  Foundations              |  AboutLoopsAndPipelines         | 131            |  Untouched   |
 |  Testing Grounds          |  TestingHashtables              | 133            |  Incomplete  |
-|  Cmdlets 1                |  AboutDiscovery                 | 201            |  Complete    |
-|  Cmdlets 1                |  AboutPSProviders               | 202            |  Complete    |
-|  Cmdlets 1                |  AboutNewObject                 | 204            |  Complete    |
-|  Cmdlets 1                |  AboutCompareObject             | 205            |  Complete    |
-|  Cmdlets 1                |  AboutMeasureObject             | 206            |  Complete    |
-|  Cmdlets 1                |  AboutSelectObject              | 206            |  Complete    |
-|  Cmdlets 1                |  AboutWhereObject               | 207            |  Complete    |
-|  Cmdlets 1                |  AboutForEachObject             | 208            |  Complete    |
-|  Cmdlets 1                |  AboutTeeObject                 | 209            |  Complete    |
-|  Cmdlets 1                |  AboutGroupObject               | 210            |  Complete    |
-|  Cmdlets 1                |  AboutSortObject                | 211            |  Complete    |
-|  Cmdlets 1                |  AboutModules                   | 212            |  Complete    |
-|  Constructs and Patterns  |  AboutLists                     | 301            |  Complete    |
-|  Constructs and Patterns  |  AboutStringBuilder             | 302            |  Complete    |
-|  Constructs and Patterns  |  AboutCustomObjects             | 303            |  Complete    |
-|  Constructs and Patterns  |  AboutPSObjects                 | 304            |  Complete    |
-|  Constructs and Patterns  |  AboutSplatting                 | 305            |  Complete    |
+|  Cmdlets 1                |  AboutDiscovery                 | 201            |  Untouched   |
+|  Cmdlets 1                |  AboutPSProviders               | 202            |  Untouched   |
+|  Cmdlets 1                |  AboutNewObject                 | 204            |  Untouched   |
+|  Cmdlets 1                |  AboutCompareObject             | 205            |  Untouched   |
+|  Cmdlets 1                |  AboutMeasureObject             | 206            |  Untouched   |
+|  Cmdlets 1                |  AboutSelectObject              | 206            |  Untouched   |
+|  Cmdlets 1                |  AboutWhereObject               | 207            |  Untouched   |
+|  Cmdlets 1                |  AboutForEachObject             | 208            |  Untouched   |
+|  Cmdlets 1                |  AboutTeeObject                 | 209            |  Untouched   |
+|  Cmdlets 1                |  AboutGroupObject               | 210            |  Untouched   |
+|  Cmdlets 1                |  AboutSortObject                | 211            |  Untouched   |
+|  Cmdlets 1                |  AboutModules                   | 212            |  Untouched   |
+|  Constructs and Patterns  |  AboutLists                     | 301            |  Untouched   |
+|  Constructs and Patterns  |  AboutStringBuilder             | 302            |  Untouched   |
+|  Constructs and Patterns  |  AboutCustomObjects             | 303            |  Untouched   |
+|  Constructs and Patterns  |  AboutPSObjects                 | 304            |  Untouched   |
+|  Constructs and Patterns  |  AboutSplatting                 | 305            |  Untouched   |
 |  Constructs and Patterns  |  AboutAdvancedFunctions         | 306            |  Incomplete  |
-|  Constructs and Patterns  |  AboutRedirection               | 307            |  Complete    |
-|  Constructs and Patterns  |  AboutErrorHandling             | 308            |  Complete    |
-|  Cmdlets 2                |  AboutOutCmdlets                | 401            |  Complete    |
+|  Constructs and Patterns  |  AboutRedirection               | 307            |  Untouched   |
+|  Constructs and Patterns  |  AboutErrorHandling             | 308            |  Untouched   |
+|  Cmdlets 2                |  AboutOutCmdlets                | 401            |  Untouched   |
 |  Testing Grounds          |  TestingArrays                  |  ???           |  ???         |
 
 
