@@ -43,27 +43,27 @@ Describe "Booleans" {
 
         # Is one greater than two? 
         # Replace "__" with $True or $False
-        "__" | should -be (1 -gt 2) -Because "1 is greater than two"
+        "__" -eq (1 -gt 2) | should -be $true -Because "1 is greater than two"
 
         # Is one less than two
         # Replace "__" with $True or $False
-        "__" | should -be (1 -lt 2) -Because "1 is greater than two"
+        "__" -eq (1 -lt 2) | should -be $true -Because "1 is greater than two"
 
         # Is ten less than twenty?
         # Replace "__" with $True or $False
-        "__" | should -be (10 -lt 20) -Because "10 is less than 20"
+        "__" -eq (10 -lt 20) | should -be $true -Because "10 is less than 20"
 
         # Is ten greater than twenty?
         # Replace "__" with $True or $False
-        "__" | should -be (10 -gt 20) -Because "10 is less than 20"
+        "__" -eq (10 -gt 20) | should -be $true -Because "10 is less than 20"
 
         # Is three the same as three?
         # Replace "__" with $True or $False
-        "__" | should -be (3 -eq 3) -Because "3 is equal to 3"
+        "__" -eq (3 -eq 3) | should -be $true -Because "3 is equal to 3"
 
         # Is 100 less than 1?
         # Replace "__" with $True or $False
-        "__" | should -be (100 -lt 1) -Because "100 is less than one"
+        "__" -eq (100 -lt 1) | should -be $true -Because "100 is less than one"
 
     }
 

@@ -11,18 +11,19 @@ See below for a table of all koans and their corresponding positions. When worki
 |  IntroTraining            |  AboutGetMember                 | 106            |  Drafted     |
 |  Foundations              |  AboutStrings                   | 107            |  ToEdit      |
 |  IntroTraining            |  AboutBooleans                  | 108            |  Drafted     |
-|  IntroTraining            |  AboutInts                      | 109            |  ToDo        |
-|  IntroTraining            |  AboutDotNotation               | 110            |  ToDo        |
-|  IntroTraining            |  PrimitiveDatatypes Test        | 111            |  ToDo        |
-|  IntroTraining            |  Typecasting                    | 112            |  ToDo        |
-|  IntroTraining            |  Class properties/methods       | 113            |  ToDo        |
-|  Foundations              |  AboutVariables                 | 114            |  Complete    |
-|  IntroTraining            |  VariablesActivitiy             | 115            |  ToDo        |
-|  Foundations              |  AboutArrays                    | 116            |  ToEdit      |
-|  IntroTraining            |  Array Activity                 | 117            |  ToEdit      |
-|  Foundations              |  AboutComparison                | 118            |  ToEdit      |
-|  Foundations              |  AboutConditions                | 119            |  ToEdit      |
-|  Foundations              |  AboutFunctionsAndScriptBlocks  | 120            |  ToEdit      |
+|  IntroTraining            |  AboutBinary                    | 109            |  ToDo        |
+|  IntroTraining            |  AboutInts                      | 110            |  Drafted     |
+|  IntroTraining            |  AboutDotNotation               | 111            |  ToDo        |
+|  IntroTraining            |  PrimitiveDatatypes Test        | 112            |  ToDo        |
+|  IntroTraining            |  Typecasting                    | 113            |  ToDo        |
+|  IntroTraining            |  Class properties/methods       | 114            |  ToDo        |
+|  Foundations              |  AboutVariables                 | 115            |  Complete    |
+|  IntroTraining            |  VariablesActivitiy             | 116            |  ToDo        |
+|  Foundations              |  AboutArrays                    | 117            |  ToEdit      |
+|  IntroTraining            |  Array Activity                 | 118            |  ToEdit      |
+|  Foundations              |  AboutComparison                | 119            |  ToEdit      |
+|  Foundations              |  AboutConditions                | 120            |  ToEdit      |
+|  Foundations              |  AboutFunctionsAndScriptBlocks  | 121            |  ToEdit      |
 |  BELOW                    |  IS STILL A WORK IN PROGRESS    | SO PLEASE      | IGNORE       |
 |  Foundations              |  AboutOrderOfOperations         | 122            |  Complete    |
 |  Foundations              |  AboutAssignmentAndArithmetic   | 124            |  Complete    |
