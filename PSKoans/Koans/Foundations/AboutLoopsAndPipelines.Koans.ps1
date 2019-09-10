@@ -105,17 +105,18 @@ Describe 'Pipelines and Loops' {
         __ | Should -Be $Values
 
         <#
-            There are some other types of loops available, but these are the main ones.
-            The reverse of a while loop is an until loop, e.g.:
-                until ($condition -eq $true) { Do-Things }
+            Do..While loops are just like their standard counterparts, but will always
+            execute the loop at least once:
+                do { Do-Things } while ($condition -eq $true)
 
-            Similarly, Do..While and Do..Until loops are just like their standard counterparts,
-            but will always execute the loop at least once:
+            There is also a Do..Until loop, which will run the loop while the condition
+            evaluates to $false (i.e., until the condition becomes $true):
                 do { Do-Things } until ($condition -eq $true)
         #>
         $Values = do {
             'eat me!'
-        } while ($false) # had we put our while at the head of the loop, there would be zero iterations
+            # Exactly one iteration occurs despite the condition being $false.
+        } while ($false)
         __ | Should -Be $Values
     }
 }

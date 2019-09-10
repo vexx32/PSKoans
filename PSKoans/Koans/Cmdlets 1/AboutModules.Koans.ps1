@@ -25,40 +25,46 @@ Describe 'Get-Module' {
         the session, or to search available modules on the computer.
     #>
     It 'returns a list of modules in the current session' {
-        # To list all installed modules, use the -ListAvailable switch.
+        <#
+            By default, Get-Module returns modules currently in use.
+            To get a list of all modules on the system, you can use the -ListAvailable switch.
+        #>
+        $Modules = Get-Module | Sort-Object -Property Name -Unique
 
-        $Modules = Get-Module
-        $FirstThreeModules = @('__', '__', '__')
-        $VersionOfThirdModule = '__'
-        $TypeOf6thModule = '__'
+        $FirstThreeModules = $Modules | Select-Object -First 3
+        $VersionOfThirdModule = $FirstThreeModules[2].Version
+        $TypeOf6thModule = $Modules[5].ModuleType
 
-        $FirstThreeModules | Should -Be $Modules[0..2].Name
-        $VersionOfThirdModule | Should -Be $Module[2].Version
-        $TypeOf6thModule | Should -Be $Modules[5].ModuleType
+        @('____', '____', '____') | Should -Be $FirstThreeModules.Name
+        '____' | Should -Be $VersionOfThirdModule
+        '____' | Should -Be $TypeOf6thModule
     }
 
     It 'can filter by module name' {
         $Pester = Get-Module -Name 'Pester'
+        $PesterCommands = $Pester.ExportedCommands.Values.Name
 
-        $ThreeExportedCommands = @('__', '__', '__')
-
-        $ThreeExportedCommands | Should -BeIn $Pester.ExportedCommands.Values.Name
+        @('____', '____', '____') | Should -BeIn $PesterCommands
     }
 
     It 'can list nested modules' {
         $AllModules = Get-Module -All
 
         $Axioms = $AllModules | Where-Object Name -eq 'Axiom'
+        $AxiomsCommands = $Axioms.ExportedCommands.Values.Name
 
-        $Commands = @('__', '__', '__')
-        $Commands | Should -BeIn $Axioms.ExportedCommands.Values.Name
+        $Commands = @('____', '____', '____')
+        $Commands | Should -BeIn $AxiomsCommands
         <#
-            Despite us being able to 'see' this module, we cannot use its commands as it
-            is only available in Pester's module scope.
+            Despite us being able to 'see' this module, we cannot use its commands;
+            it is only available within the scope of the Pester module itself,
+            since it's a nested module within Pester.
         #>
-        {if ($Commands[1] -in $Axioms.ExportedCommands.Values.Name) {
+        {
+            if ($Commands[1] -in $Axioms.ExportedCommands.Values.Name) {
                 & $Commands[1]
-            }} | Should -Throw
+            }
+        } | Should -Throw
     }
 }
 
@@ -77,20 +83,20 @@ Describe 'Find-Module' {
         Mock Find-Module {
             Get-Module -ListAvailable -Name $Name |
                 Select-Object -Property Version, Name, @{
-                Name       = 'Repository'
-                Expression = {'PSGallery'}
-            }, Description
+                    Name       = 'Repository'
+                    Expression = {'PSGallery'}
+                }, Description
         }
 
         $Module = Find-Module -Name 'Pester' | Select-Object -First 1
     }
 
     It 'finds modules that can be installed' {
-        '__' | Should -Be $Module.Name
+        '____' | Should -Be $Module.Name
     }
 
     It 'lists the latest version of the module' {
-        '__' | Should -Be $Module.Version
+        '____' | Should -Be $Module.Version
     }
 
     It 'indicates which repository stores the module' {
@@ -98,10 +104,10 @@ Describe 'Find-Module' {
             Unless an additional repository has been configured, all modules
             from Find-Module will come from the PowerShell Gallery.
         #>
-        '__' | Should -Be $Module.Repository
+        '____' | Should -Be $Module.Repository
     }
     It 'gives a brief description of the module' {
-        '__' | Should -Match  $Module.Description
+        '____' | Should -Match  $Module.Description
     }
 }
 
@@ -110,19 +116,28 @@ Describe 'New-Module' {
         New-Module is rarely used in practice, but is capable of dynamically generating
         a module in-memory without needing a file on disk.
     #>
+    BeforeAll {
+        $Module = New-Module -Name 'PSKoans_TestModule' -ScriptBlock {} -ArgumentList
+    }
 
     It 'creates a dynamic module object' {
-        $Module = New-Module -Name 'PSKoans_TestModule' -ScriptBlock {}
         $Module | Should -Not -BeNullOrEmpty
     }
 
     It 'has many properties with $null defaults' {
-        # For most modules, ModuleBase lists their primary storage location
-        __ | Should -Be $Module.ModuleBase
+        <#
+            RootModule is usually the script file or .dll that contains the main portion of the module's code.
+            For a module like this, that property is meaningless -- there is no such file.
+        #>
+        $____ | Should -Be $Module.RootModule
     }
 
-    It 'supplies the module with a GUID based random path' {
-        '__' | Should -Be $Module.Path
+    It 'uses an existing filesystem location as the ModuleBase' {
+        <#
+            In most cases, the ModuleBase for a dynamically generated module will be the current location.
+            This may not be accurate in all cases, depending on scoping.
+        #>
+        '____' | Should -Be $Module.ModuleBase
     }
 
     AfterAll {
@@ -137,7 +152,7 @@ Describe 'Import-Module' {
     #>
     Context 'Importing Installed Modules' {
         BeforeAll {
-            $Module = New-Module -Name 'PSKoans_ImportModuleTest' {}
+            $Module = New-Module -Name 'PSKoans_ImportModuleTest' { }
         }
 
         It 'does not produce output' {
@@ -148,7 +163,7 @@ Describe 'Import-Module' {
             $ImportedModule = Get-Module -Name 'PSKoans_ImportModuleTest'
 
             $ImportedModule.ExportedCommands.Keys | Should -BeNull
-            '__' | Should -Be $ImportedModule.Name
+            '____' | Should -Be $ImportedModule.Name
         }
     }
 
@@ -156,7 +171,7 @@ Describe 'Import-Module' {
         BeforeAll {
             $ModuleScript = {
                 function Test-ModuleFunction {
-                    __ # Fill in the correct value here
+                    '____' # Fill in the correct value here
                 }
                 Export-ModuleMember 'Test-ModuleFunction'
             }
@@ -168,12 +183,15 @@ Describe 'Import-Module' {
         }
 
         It 'imports the module into the current session' {
-            $ImportedModule = Get-Module -Name '__'
+            $ImportedModule = Get-Module -Name '____'
             $ImportedModule | Should -Not -BeNullOrEmpty
         }
 
-        It 'makes the module''s exported commands available for use' {
-            @('__') | Should -Be $ImportedModule.ExportedCommands.Keys
+        It 'makes the exported commands from the module available for use' {
+            $ImportedModule = Get-Module -Name '____'
+            @('____') | Should -Be $ImportedModule.ExportedCommands.Values.Name
+
+            Test-ModuleFunction | Should -BeExactly 'A successful test.'
         }
     }
 

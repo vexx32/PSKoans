@@ -23,7 +23,7 @@ Advice snippets are stored in a small library file in the module folder.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-Advice
 ```
 
@@ -40,7 +40,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: 0
 Default value: *
 Accept pipeline input: False
 Accept wildcard characters: False

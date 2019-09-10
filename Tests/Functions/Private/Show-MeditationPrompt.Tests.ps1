@@ -3,8 +3,8 @@
 InModuleScope 'PSKoans' {
     Describe 'Show-MeditationPrompt' {
         BeforeAll {
-            Mock Write-Host {}
-            Mock Start-Sleep {}
+            Mock Write-Host { }
+            Mock Start-Sleep { }
         }
 
         Context 'Greeting Prompt' {
@@ -25,7 +25,7 @@ InModuleScope 'PSKoans' {
                     Meditation   = "TestMeditation"
                     KoansPassed  = 0
                     TotalKoans   = 100
-                    CurrentTopic = @{
+                    CurrentTopic = [PSCustomObject]@{
                         Name      = "TestTopic"
                         Completed = 0
                         Total     = 10

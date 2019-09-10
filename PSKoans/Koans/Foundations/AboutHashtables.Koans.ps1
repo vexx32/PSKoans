@@ -138,10 +138,11 @@ Describe 'Hashtables' {
         }
 
         It 'can be forced to retain order' {
+            <#
+                The [ordered] tag is only valid when paired with a hashtable literal declaration;
+                it's not a valid type on its own.
+            #>
             $Hashtable = [ordered]@{ One = 1; Two = 2; Three = 3; Four = 4 }
-
-            # The [ordered] tag is not in itself properly a type, but transforms our regular hashtable into...
-            $Hashtable | Should -BeOfType '__'
 
             <#
                 Order comes at a price; in this case, lookup speed is significantly decreased with
@@ -151,7 +152,7 @@ Describe 'Hashtables' {
             @( '__', 'Two', '__', '__' ) | Should -Be $Hashtable.Keys.ForEach{ $_ }
             @( 1, , , 4 ) | Should -Be $Hashtable.Values.ForEach{ $_ }
 
-            # The [ordered] tag changes the type of the object completely.
+            # The [ordered] tag is not in itself properly a type, but changes the type of the object completely.
             'System.____.____.____' | Should -Be $Hashtable.GetType().FullName
         }
 

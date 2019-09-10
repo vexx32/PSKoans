@@ -55,21 +55,27 @@ Describe 'Lists' {
 
         It 'will convert items to its data type when possible' {
             $StringList = [System.Collections.Generic.List[string]]::new()
-            $StringList.Add("FILL_ME_IN")
+            $StringList.Add('____')
             $StringList.Add(12) # What happens if we add a number to a string-typed list?
 
             'hello!' | Should -Be $StringList[0]
-            __ | Should -Be $StringList[1]
+            '____' | Should -Be $StringList[1]
         }
     }
+
     Context 'Loose Typing' {
 
         It 'can accept loose typing' {
-            # We can convert from an array. [object] or [PSObject] typed lists hold any type(s) of items.
+            <#
+                We can convert from an array by casting.
+                [object] or [PSObject] typed lists hold any type(s) of items.
+            #>
             $List = [System.Collections.Generic.List[Object]]@(1, 2)
 
-            # Items must be added to Lists using their .Add() or .AddRange() method.
-            # .AddRange() takes an array or other collection object.
+            <#
+                Items must be added to Lists using their .Add() or .AddRange() method.
+                .AddRange() takes an array or other collection object.
+            #>
             $List.AddRange(@(12, 1, 2, 3))
             $List.Add(12.5)
 
@@ -77,27 +83,33 @@ Describe 'Lists' {
             $List[6] -eq 12.5 | Should -BeTrue
         }
     }
+
     Context 'Removing List Entries' {
 
         It 'allows you to remove entries' {
-            # Lists have a few methods for removing entries:
-            # .Remove($value), .RemoveAt($Index) and .RemoveRange($Index,$Count) (among others)
+            <#
+                Lists have a few methods for removing entries:
+                .Remove($value), .RemoveAt($Index) and .RemoveRange($Index,$Count) (among others)
+            #>
             $List = [System.Collections.Generic.List[string]]@(12, 15, 15, 18, 'hello', 19, 4, 12, 5, 10)
 
             $List[3] | Should -Be '18'
             $List.RemoveAt(3)
-            '__' | Should -Be $List[3]
+            '____' | Should -Be $List[3]
 
             $List[1] | Should -Be '15'
-            # The .Remove() method returns $true if the item was removed, and $false if it couldn't be
-            # found or removed.
+            <#
+                The .Remove() method returns $true if the item was removed, and $false if it couldn't be
+                found or removed.
+            #>
             $List.Remove('15') | Should -BeTrue
             __ | Should -Be $List[1]
 
-            # Now see if you can reduce the list down to only two values using the
-            # .RemoveRange($Index, $Count) method
-            # Feel free to add an additional ' | Should -Be ' test if you need it to guide your way!
-
+            <#
+                Now see if you can reduce the list down to only two values using the .RemoveRange($Index, $Count)
+                method. Feel free to add additional `$value | Should -Be $expectedValue` tests if you need them
+                to guide the way!
+            #>
             $List | Should -Be @('12', '10')
         }
 
@@ -105,25 +117,31 @@ Describe 'Lists' {
             $List = [System.Collections.Generic.List[string]]@(1..11)
             <#
                 This method takes a lambda expression in C#, which translates to a script block for
-                PowerShell. It also outputs a $true or $false depending on whether elements were removed,
-                so we'll check that
-            #>
-            $List.RemoveAll({
-                    # The input variable representing each entry must be named, or use $args[0]
-                    param($_)
-                    # Remove everything that contains the number 9, essentially
-                    $_ -match '9'
-                    # The output must boil down to a $true/$false, or will be coerced to it
-                }) | Should -BeTrue
+                PowerShell. Each item is fed into the script one at a time, and all items for which the
+                script gives a $true or truthy value are deleted from the list.
 
-            $RemainingEntries = @('1', '2', '__', '__', '5', '__', '7', '__', '__', '__', '11')
+                It also outputs a $true or $false depending on whether elements were removed, which we
+                can use to check if any items were actually removed.
+            #>
+            $Filter = {
+                # The input variable representing each entry must be named, or use $args[0].
+                param($_)
+
+                # Remove everything that contains the number 9, essentially.
+                $_ -match '9'
+                # The output must boil down to a $true/$false, or will be coerced to it.
+            }
+            $List.RemoveAll($Filter) | Should -BeTrue
+
+            $RemainingEntries = @('1', '2', '__', '__', '5', '__', '7', '__', '__', '11')
             $List | Should -Be $RemainingEntries
 
-            $List.RemoveAll( {
-                    param($_)
-                    # Change this expression to make the assertions below true
+            $Filter = {
+                param($_)
+                # Fill in this script block to make the below assertions true!
 
-                }) | Should -BeTrue
+            }
+            $List.RemoveAll($Filter) | Should -BeTrue
 
             $List | Should -Be @(1, 3, 5, 7, 11)
         }

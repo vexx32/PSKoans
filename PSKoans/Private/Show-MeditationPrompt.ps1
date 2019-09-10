@@ -58,26 +58,7 @@ function Show-MeditationPrompt {
         $Complete,
 
         [Parameter(Mandatory, ParameterSetName = 'Meditation')]
-        [ValidateScript(
-            {
-                $MissingKeys = switch ($_) {
-                    { $_.Keys -notcontains 'Name' } { 'Name' }
-                    { $_.Keys -notcontains 'Completed' } { 'Completed' }
-                    { $_.Keys -notcontains 'Total' } { 'Total' }
-                }
-
-                $ErrorString = if ($MissingKeys) {
-                    "Hashtable bound to -CurrentTopic was missing required keys: {0}" -f ($MissingKeys -join ',')
-                }
-                elseif ($_.Keys.Count -gt 3) {
-                    'Hashtable bound to -CurrentTopic should only have keys: Name, Completed, Total.'
-                }
-
-                if ($ErrorString) { throw $ErrorString }
-                else { $true }
-            }
-        )]
-        [hashtable]
+        [PSObject]
         $CurrentTopic,
 
         [Parameter()]
@@ -130,7 +111,7 @@ function Show-MeditationPrompt {
                 Write-Host @Blue $script:MeditationPrompts['Path']
 
                 Write-Verbose 'Calculating progress...'
-                $TopicProgressAmount = "{0}/{1}" -f $CurrentTopic['Completed'], $CurrentTopic['Total']
+                $TopicProgressAmount = "{0}/{1}" -f $CurrentTopic.Completed, $CurrentTopic.Total
                 $TotalProgressAmount = "$KoansPassed/$TotalKoans"
 
                 [int] $ProgressWidth = $ConsoleWidth * 0.65 - ($TotalProgressAmount.Width + 12)
@@ -138,13 +119,13 @@ function Show-MeditationPrompt {
 
                 #region TopicProgressBar
                 if ($RequestedTopic.Count -ne 1) {
-                    [int] $PortionDone = ($CurrentTopic['Completed'] / $CurrentTopic['Total']) * $TopicProgressWidth
+                    [int] $PortionDone = ($CurrentTopic.Completed / $CurrentTopic.Total) * $TopicProgressWidth
 
                     $ProgressBar = " [{3}]: [{0}{1}] {2}" -f @(
                         "$([char]0x25a0)" * $PortionDone
                         "$([char]0x2015)" * ($TopicProgressWidth - $PortionDone)
                         $TopicProgressAmount
-                        $CurrentTopic['Name']
+                        $CurrentTopic.Name
                     )
                     Write-Host $ProgressBar @Blue
                 }

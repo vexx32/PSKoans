@@ -1,5 +1,6 @@
 # This is required due to having to parse the KoanAttribute to verify the correct files are returned
-using module PSKoans
+# Using a relative path to the module being tested removes duplicate loading of the module.
+using module ..\..\..\PSKoans\PSKoans.psd1
 
 Describe 'Get-Koan' {
     BeforeAll {
@@ -7,7 +8,7 @@ Describe 'Get-Koan' {
         $TestLocation = "TestDrive:${/}PSKoans"
 
         Set-PSKoanLocation -Path $TestLocation
-        InModuleScope 'PSKoans' { Initialize-KoanDirectory -Confirm:$false }
+        Update-PSKoan -Confirm:$false
     }
 
     It 'should retrieve all the koan files' {
@@ -26,6 +27,23 @@ Describe 'Get-Koan' {
             (Get-Koan -Topic 'AboutTypeOperators').Name | Should -Be 'AboutTypeOperators.Koans.ps1'
             (Get-Koan -Topic 'AboutLists').Name | Should -Be 'AboutLists.Koans.ps1'
             (Get-Koan -Topic 'AboutLists', 'AboutVariables').Name | Should -Be 'AboutVariables.Koans.ps1', 'AboutLists.Koans.ps1'
+        }
+    }
+
+    if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Win32NT') {
+        It 'should throw a terminating error if the file is blocked' {
+            $testFile = Get-ChildItem -Path $TestLocation -Filter AboutArrays.Koans.ps1 -Recurse -File |
+                Select-Object -First 1
+
+            Set-Content -Path $testFile.FullName -Stream Zone.Identifier -Value @'
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=C:\Downloads\File.zip
+'@
+
+            InModuleScope 'PSKoans' {
+                { Get-Koan -Topic AboutArrays } | Should -Throw -ErrorId PSKoans.KoanFileIsBlocked
+            }
         }
     }
 }

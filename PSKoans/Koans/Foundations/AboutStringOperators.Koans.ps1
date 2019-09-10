@@ -190,14 +190,22 @@ Describe 'Regex Operators' {
         }
 
         It 'supports named matches' {
-            # Regex uses the (?<NAME>$pattern) syntax to name a portion of a matched string
-            $String = '__'
-            $Pattern = '^(?<FirstWord>[a-z]+) (?<SecondWord>[a-z]+)$'
+            $String = 'PowerShell is useful'
+            $Pattern = '^(?<FirstWord>[a-z]+) [a-z]+ (?<LastWord>[a-z]+)$'
 
             $String -match $Pattern | Should -BeTrue
 
-            $Matches.FirstWord | Should -Be '__'
-            $Matches.SecondWord | Should -Be '__'
+            $Matches.FirstWord | Should -BeExactly '____'
+            $Matches.LastWord | Should -BeExactly '____'
+
+            # Reflect on the above and below... can you find what that will match the pattern?
+            $String = '____'
+            $Pattern = '^(?<FirstWord>[a-z]+) (?<SecondWord>[a-z]+)$'
+
+            $String -match $Pattern | Should -BeTrue -Because 'The string must match the given pattern.'
+
+            $Matches.FirstWord | Should -BeExactly 'Cool'
+            $Matches.SecondWord | Should -BeExactly 'Koans'
         }
 
         It 'supports indexed match groups' {

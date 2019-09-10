@@ -19,11 +19,11 @@ class KoanAttribute : Attribute {
     [uint32] $Position = [uint32]::MaxValue
     [string] $Module = '_powershell'
 
-    Koan() {}
+    Koan() { }
 }
 
 class Koan : KoanAttribute {
-    Koan() : base() {}
+    Koan() : base() { }
 }
 
 # load classes
@@ -60,7 +60,7 @@ Write-Verbose "Koans folder set to $script:LibraryFolder"
 
 if (-not (Test-Path -Path $script:LibraryFolder)) {
     Write-Verbose 'Koans folder does not exist; populating the folder'
-    Initialize-KoanDirectory -Confirm:$false
+    Update-PSKoan -Confirm:$false
 }
 
 #endregion ModuleConfiguration
@@ -93,4 +93,18 @@ try {
         }
     }
 }
-catch {}
+catch { }
+
+$TypeData = @{
+    TypeName                  = 'PSKoans.Result'
+    DefaultDisplayPropertySet = @(
+        'Describe'
+        'It'
+        'Expectation'
+        'Meditation'
+        'KoansPassed'
+        'TotalKoans'
+        'CurrentTopic'
+    )
+}
+Update-TypeData @TypeData -Force

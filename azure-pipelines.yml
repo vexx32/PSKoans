@@ -1,7 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
+# YAML spec:
 # https://aka.ms/yaml
+
 name: Build & Test - Azure
 
 trigger:
@@ -17,39 +16,50 @@ pr:
 
 jobs:
 
-- job: BuildAndTest
+- job: Linux
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: ubuntu-latest
 
   steps:
-  - task: PowerShell@2
-    displayName: 'Setup Build Environment'
-
+  - template: templates/build-steps.yml
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish External Help Artifacts'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     inputs:
+      path: '$(System.DefaultWorkingDirectory)/PSKoans/en-us'
+      artifact: ExternalHelp
 
-      targetType: 'inline'
-      script: |
-        Install-Module -Name Psake, PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
-        Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+- job: Windows
+  pool:
+    vmImage: windows-latest
 
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
+  steps:
+  - template: templates/build-steps.yml
 
-  - task: PowerShell@2
-    displayName: 'Run Pester Tests'
+- job: MacOS
+  pool:
+    vmImage: macOS-latest
 
+  steps:
+  - template: templates/build-steps.yml
+
+- job: PublishModule
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  dependsOn:
+    - Linux
+    - Windows
+    - MacOS
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - task: DownloadPipelineArtifact@2
+    displayName: 'Download External Help Artifact'
     inputs:
-      targetType: 'filePath'
-      filePath: ./Build/Build.ps1
-      arguments: -Task Build
-
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
+      artifact: ExternalHelp
+      path: '$(System.DefaultWorkingDirectory)/PSKoans/'
 
   - task: PowerShell@2
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
     displayName: 'Deploy to Gallery'
 
     inputs:

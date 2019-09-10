@@ -24,6 +24,12 @@ Describe "General project validation: $ModuleName" {
         $Errors.Count | Should -Be 0
     }
 
+    It "<File> should include one (and only one) line feed at end of file" -TestCases $TestCases {
+        param($File)
+        $crlf = [Regex]::Match(($File | Get-Content -Raw), '(\r?(?<lf>\n))+\Z')
+        $crlf.Groups['lf'].Captures.Count | Should -Be 1
+    }
+
     It "'$ModuleName' can import cleanly" {
         {Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force} | Should -Not -Throw
     }
