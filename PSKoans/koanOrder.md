@@ -11,7 +11,7 @@ See below for a table of all koans and their corresponding positions. When worki
 |  IntroTraining            |  AboutGetMember                 | 106            |  Drafted     |
 |  Foundations              |  AboutStrings                   | 107            |  ToEdit      |
 |  IntroTraining            |  AboutBooleans                  | 108            |  Drafted     |
-|  IntroTraining            |  AboutBinary                    | 109            |  ToDo        |
+|  IntroTraining            |  AboutBinary                    | 109            |  Drafted     |
 |  IntroTraining            |  AboutInts                      | 110            |  Drafted     |
 |  IntroTraining            |  AboutDotNotation               | 111            |  ToDo        |
 |  IntroTraining            |  PrimitiveDatatypes Test        | 112            |  ToDo        |

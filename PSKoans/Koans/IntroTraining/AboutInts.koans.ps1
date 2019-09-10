@@ -45,19 +45,19 @@ It "Bits"{
 
     # Would 16 be represented by 32 or 64 bits? Replace __ with 32 or 64.
     # E.G. "*__*" becomes "*32*"
-    (63000 | Get-Member).TypeName[0].ToString() -contains "__" | should -be $true
+    (63000 | Get-Member).TypeName[0].ToString() -like "*__*"  | should -be $true
 
     # Would 16 be represented by 32 or 64 bits? Replace __ with 32 or 64.
     # E.G. "*__*" becomes "*32*"
-    (65537 | Get-Member).TypeName[0].ToString() -contains "__" | should -be $true
+    (65537 | Get-Member).TypeName[0].ToString() -like "*__*"  | should -be $true
 
     # Would 16 be represented by 32 or 64 bits? Replace __ with 32 or 64.
     # E.G. "*__*" becomes "*32*"
-    (68000 | Get-Member).TypeName[0].ToString() -contains "__" | should -be $true
+    (68000 | Get-Member).TypeName[0].ToString() -like "*__*"  | should -be $true
 
     # Would 16 be represented by 32 or 64 bits? Replace __ with 32 or 64.
     # E.G. "*__*" becomes "*32*"
-    (1 | Get-Member).TypeName[0].ToString() -contains "__" | should -be $true
+    (1 | Get-Member).TypeName[0].ToString() -like "*__*"  | should -be $true
 
 }
 
