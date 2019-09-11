@@ -81,7 +81,7 @@ Describe 'Binary Operators' {
         It 'A byte is made up of 8 bits' {
             <#
                 Each bit can be set to either 0 or and bit has a value based
-                on it's position.
+                on its position.
 
                 The most significant bit, the largest value, is first. The least
                 significant bit, the smallest value, is last.
