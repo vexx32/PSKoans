@@ -4,26 +4,33 @@ param()
 <#
     Binary
 
-    PowerShell includes a number of operators which can be used to perform binary operations.
+    PowerShell includes a number of operators which can be used to perform binary or bitwise operations.
+
+     * band
+     * bor
+     * bxor
+     * bnot
+     * shl
+     * shr
 #>
 Describe 'Binary Operators' {
     BeforeAll {
         <#
-            PowerShell can use the [Convert] class to change a binary string into a numeric
+            PowerShell can use the .NET [Convert] type to change a binary string into a numeric
             value.
 
-            The [Convert]::ToByte method is used to change the value into a byte. This method
-            has two arguments:
+            The [Convert]::ToByte method is used to change the value into a byte. The method
+            used here has two arguments:
 
                 1. The value to convert, a string.
                 2. The base of the number, 2 for binary.
 
-            The [Convert] class contains a number of other methods for converting to different
+            The [Convert] type contains other methods for converting to different
             numeric types. These can be explored using Get-Member.
 
                 [Convert] | Get-Member -Static
 
-            This function is used in the Koans tasks that follow.
+            The function below is used in the Koans tasks that follow.
         #>
         function ConvertFrom-Binary {
             [CmdletBinding()]
@@ -37,12 +44,21 @@ Describe 'Binary Operators' {
             )
 
             process {
+                if ($To -ne 'String') {
+                    $BinaryString = $BinaryString -replace ' '
+                }
+
                 switch ($To) {
                     'Byte'   { [Convert]::ToByte($BinaryString, 2) }
                     'SByte'  { [Convert]::ToSByte($BinaryString, 2) }
                     'Int16'  { [Convert]::Int16($BinaryString, 2) }
-                    'UInt16' { [Convert]::ToUInt16($BinaryString, 2) }
                     'Int32'  { [Convert]::ToInt32($BinaryString, 2) }
+                    'String' {
+                        [Char[]]$characters = foreach ($value in $BinaryString -split ' ') {
+                            [Convert]::ToByte($value, 2)
+                        }
+                        [String]::new($characters)
+                    }
                 }
             }
         }
@@ -144,28 +160,28 @@ Describe 'Binary Operators' {
 
     Context 'Int16, Int32, and Int64' {
         <#
-            Larger integer types, such as Int32, are made up of multiple bytes.
+            Larger integer types, such as Int32, are made up of several bytes.
         #>
 
         It 'uses 2 bytes to describe a 16-bit integer' {
-            '00000000 00000001' | ConvertFrom-Binary -To Int16 | Should -BeOfType [Int16]
-            '00000000 00000000 00000000 00000001' | ConvertFrom-Binary -To Int32 | Should -BeOfType [Int32]
+            '00010100 00000001' | ConvertFrom-Binary -To Int16 | Should -BeOfType [Int16]
+            '01000000 00000100 00000010 00110001' | ConvertFrom-Binary -To Int32 | Should -BeOfType [Int32]
         }
     }
 
-    Context 'About binary AND (-band)' {
+    Context 'About bitwise AND (-band)' {
         <#
-            A Binary AND comparison returns the bits from two values where both are one.
+            A bitwise AND comparison returns the bits from two values where both are one.
 
-            Value 1  | 0 | 1 | 0 | 1 |
-            Value 2  | 1 | 1 | 0 | 0 |
-            ---------+---+---+---+---+
-            Result   | 0 | 1 | 0 | 0 |
+                Value 1  | 0 | 1 | 0 | 1 | # 5
+                Value 2  | 1 | 1 | 0 | 0 | # 12
+                ---------+---+---+---+---+
+                Result   | 0 | 1 | 0 | 0 | # 4
         #>
 
         It 'is easy to read when the value is written in binary' {
-            $Value1 = '00000010' | ConvertFrom-Binary # 2
-            $Value2 = '00000110' | ConvertFrom-Binary # 6
+            $Value1 = '00000010' | ConvertFrom-Binary
+            $Value2 = '00000110' | ConvertFrom-Binary
 
             '________' | ConvertFrom-Binary | Should -Be ($Value1 -band $Value2)
         }
@@ -175,19 +191,19 @@ Describe 'Binary Operators' {
         }
     }
 
-    Context 'About binary OR (-bor)' {
+    Context 'About bitwise OR (-bor)' {
         <#
-            A Binary OR comparison returns the bits from two values where either is one.
+            A bitwise OR comparison returns the bits from two values where either is one.
 
-            Value 1  | 0 | 1 | 0 | 1 |
-            Value 2  | 1 | 1 | 0 | 0 |
-            ---------+---+---+---+---+
-            Result   | 1 | 1 | 0 | 1 |
+                Value 1  | 0 | 1 | 0 | 1 | # 5
+                Value 2  | 1 | 1 | 0 | 0 | # 12
+                ---------+---+---+---+---+
+                Result   | 1 | 1 | 0 | 1 | # 13
         #>
 
         It 'is easy read when the value is written in binary' {
-            $Value1 = '00000011' | ConvertFrom-Binary
-            $Value2 = '00001110' | ConvertFrom-Binary
+            $Value1 = '00000011' | ConvertFrom-Binary # 3
+            $Value2 = '00001110' | ConvertFrom-Binary # 14
 
             '________' | ConvertFrom-Binary | Should -Be ($Value1 -bor $Value2)
         }
@@ -197,13 +213,15 @@ Describe 'Binary Operators' {
         }
     }
 
-    Context 'About binary NOT (-bnot)' {
+    Context 'About bitwise NOT (-bnot)' {
         <#
-            The Binary NOT operator inverts the bits in a value.
+            The bitwise NOT operator inverts the bits in a value.
 
-            Value  | 0 | 1 | 0 | 1 |
-            -------+---+---+---+---+
-            Result | 1 | 0 | 1 | 0 |
+                Value  | 0 | 1 | 0 | 1 |
+                -------+---+---+---+---+
+                Result | 1 | 0 | 1 | 0 |
+
+            The operation performed by bitwise NOT is also known as a One's Complement.
         #>
 
         It 'inverts the bits in a value' {
@@ -214,17 +232,17 @@ Describe 'Binary Operators' {
         }
     }
 
-    Context 'About binary exclusive OR (-bxor)' {
+    Context 'About bitwise exclusive OR (-bxor)' {
         <#
-            A Binary exclusive OR comparison returns the bits from two values where one, but not both, is one.
+            A bitwise exclusive OR comparison returns the bits from two values where one, but not both, is one.
 
-            Value 1  | 0 | 1 | 0 | 1 |
-            Value 2  | 1 | 1 | 0 | 0 |
-            ---------+---+---+---+---+
-            Result   | 1 | 0 | 0 | 1 |
+                Value 1  | 0 | 1 | 0 | 1 |
+                Value 2  | 1 | 1 | 0 | 0 |
+                ---------+---+---+---+---+
+                Result   | 1 | 0 | 0 | 1 |
         #>
 
-        It 'inverts the bits in a value' {
+        It 'gets a value where one, but not both, bits are set' {
             $Value1 = '10000011' | ConvertFrom-Binary
             $Value2 = '00001110' | ConvertFrom-Binary
             $Result = '________' | ConvertFrom-Binary
@@ -244,9 +262,9 @@ Describe 'Binary Operators' {
             <#
                 The example below shows the result of a shift one bit to the left.
 
-                Value  | 0 | 0 | 1 | 1 |   # 3
-                -------+---+---+---+---+
-                Result | 0 | 1 | 1 | 0 |   # 6
+                    Value  | 0 | 0 | 1 | 1 |   # 3
+                    -------+---+---+---+---+
+                    Result | 0 | 1 | 1 | 0 |   # 6
 
                 Each bit to the left doubles the value.
             #>
@@ -258,9 +276,9 @@ Describe 'Binary Operators' {
             <#
                 The example below shows the result of a shift one bit to the right.
 
-                Value  | 1 | 1 | 0 | 0 |   # 12
-                -------+---+---+---+---+
-                Result | 0 | 1 | 1 | 0 |   # 6
+                    Value  | 1 | 1 | 0 | 0 |   # 12
+                    -------+---+---+---+---+
+                    Result | 0 | 1 | 1 | 0 |   # 6
 
                 Each bit to the right halves the value.
             #>
@@ -276,9 +294,9 @@ Describe 'Binary Operators' {
                 A byte is made 8 bits with a maximum value of 255. In binary, 128 is the
                 highest order bit:
 
-                Binary | 10000000
-                -------+---------
-                Byte   | 128
+                    Binary | 10000000
+                    -------+---------
+                    Byte   | 128
 
                 When [Byte]128 is shifted one bit to the left the result is 0. A Byte cannot hold a value
                 greater than 255.
@@ -286,6 +304,17 @@ Describe 'Binary Operators' {
 
             0 | Should -Be [Byte]128 -shl 1
             __ | Should -Be [Byte]224 -shl 2
+        }
+
+        It 'can be used with casting to create a larger number' {
+            <#
+                If the value is cast to a larger numeric type, the left shift operation will succeed.
+            #>
+
+            $Byte = [Byte]128
+
+            $Byte -shl $__ | Should -Be 0
+            [Int]$Byte -shl $__ | Should -Be 512
         }
 
         It 'loses bits when shifting outside of the range of the type when shifting right' {
@@ -296,13 +325,58 @@ Describe 'Binary Operators' {
 
                 Shifting the lowest order bit of a numeric value to the right will always result in 0.
 
-                Byte  | 00000001
-                Int16 | 00000000 00000001
-                Int32 | 00000000 00000000 00000000 00000001
+                    Byte  | 00000001
+                    Int16 | 00000000 00000001
+                    Int32 | 00000000 00000000 00000000 00000001
             #>
 
             1 | Should -Be 3 -shr 1
             __ | Should -Be 7 -shr 1
+        }
+
+        It 'can be used to create larger values from a sequence of bytes' {
+            <#
+                A 32-bit integer is made up of four bytes.
+
+                The bytes are shifted to the left based on their position. The most significant
+                byte is shifted 24 bits to the left (3 * 8).
+
+                The most significant byte is first, the bytes below are in Big Endian order.
+
+
+                    Binary            | 00010110  | 00111000 | 11000000 | 00001111 |
+                    ------------------+-----------+----------+----------+----------+
+                    Byte Value        | 22        | 56       | 192      | 15       |
+                    ------------------+-----------+----------+----------+----------+
+                    Bitwise operation | -shl 24   | -shl 16  | -shl 8   |          |
+                    ------------------+----------=+----------+----------+----------+
+                    Int32 Value       | 369098752 | 3670016  | 49152    | 15       |
+
+                The final Int32 value, 372817935, is obtained by adding each of the individual pieces together.
+            #>
+
+            # Hint: set one bit for each value
+            $Bytes = @(
+                '________'
+                '________'
+                '________'
+                '________'
+            ) | ConvertFrom-Binary
+
+            [Int]$Bytes[0] -shl 24 | Should -Be 1073741824
+            [Int]$Bytes[1] -shl 16 | Should -Be 2097152
+            [Int]$Bytes[2] -shl 8 | Should -Be 4096
+            $Bytes[3] | Should -Be 8
+
+            $Value = (
+                ([Int]$Bytes[0] -shl 24) +
+                ([Int]$Bytes[1] -shl 16) +
+                ([Int]$Bytes[2] -shl 8) +
+                $Bytes[3]
+            )
+
+            $Value | Should -Be 1652126821
+            $Bytes -join ' ' | ConvertFrom-Binary -To Int32 | Should -Be $Value
         }
     }
 
@@ -334,7 +408,11 @@ Describe 'Binary Operators' {
         #>
 
         It 'allows positive values to be expressed in the same way as an unsigned integer' {
-            '0000____' | ConvertFrom-Binary | Should -Be (1 + 4 + 8)
+            <#
+                Positive values do not use the signing bit.
+            #>
+
+            '0_______' | ConvertFrom-Binary -To SByte | Should -Be (1 + 4 + 8)
         }
 
         It 'uses the most significant bit to describe a negative number' {
@@ -345,7 +423,7 @@ Describe 'Binary Operators' {
             '1000000' | ConvertFrom-Binary -To SByte | Should -Be -128
 
             <#
-                This mirrors the maximum positive value for the number.
+                The opposite binary value is the maximum positive value for the number.
             #>
 
             '01111111' | ConvertFrom-Binary -To SByte | Should -Be 127
@@ -360,32 +438,138 @@ Describe 'Binary Operators' {
             '1_______' | ConvertFrom-Binary -To SByte | Should -Be (-128 + 8)
         }
 
-        It 'Shifting positive number left can create a negative number' {
-            $Value = '01000001' | ConvertFrom-Binary -To SByte
+        It 'can use -shl to create a negative number from a positive number' {
+            $Value = '00100001' | ConvertFrom-Binary -To SByte
 
-            $Value | Should -Be 65
-            $Value -shl $__ | Should -Be -126
+            $Value | Should -Be 33
+            $Value -shl $__ | Should -Be -124
         }
     }
 
-    Context 'Perspective' {
-        It 'A binary value has many faces' {
-            # A string of binary digits, 8 bits long
-            $value = '________'
+    Context 'A matter of perspective' {
+        It 'a binary string can be used to represent different numeric values' {
+            <#
+                The number it represents can depend on the numeric type used.
+            #>
 
-            $whenItIsJustAByte = $Value | ConvertFrom-Binary -To Byte
-            $whenItHasASigningBit = $Value | ConvertFrom-Binary -To SByte
+            $BinaryValue = '________'
 
-            $whenItIsJustAByte | Should -Be 128
-            $whenItHasASigningBit | Should -Be -127
+            $BinaryValue | ConvertFrom-Binary -To Byte | Should -Be 225
+            $BinaryValue | ConvertFrom-Binary -To SByte | Should -Be -31
+        }
+
+        It 'the value might be a number, or it might be a string, or something else' {
+            <#
+                Large values are made up of bytes. The bytes are shifted to the left based
+                on their position.
+
+                As with the bits in the string,
+            #>
+
+            $BinaryValue = '________ ________ ________ ________'
+
+            $BinaryValue | ConvertFrom-Binary -To Int32 | Should -Be 1652126821
+            $BinaryValue | ConvertFrom-Binary -To String | Should -Be 'byte'
+
+            <#
+                The byte sequence might represent something else still.
+
+                It might be an IP address.
+            #>
+
+            [Byte[]]$bytes = $BinaryValue -split ' ' | ConvertFrom-Binary
+            [IPAddress]::new($bytes) | Should -Be '98.121.116.101'
+
+            <#
+                It could be a date, although the date is less likely in this case.
+            #>
+
+            $Date = [DateTime]::FromFileTime(($BinaryValue | ConvertFrom-Binary -To Int64))
+
+            $Date | Should -Be '01 January 1601 00:02:45'
         }
     }
 
-    Context 'Hexadecimal and nibbles' {
-        It 'A nibble is made up of 4 bits, a hexadecimal byte is made up of a left nibble and a right nibble' {
-            # .NET and PowerShell cannot convert directly to 4-bit number, each of the examples below will need four zeros.
-            '________' | ConvertFrom-Binary | Should -Be 0xF0
-            '________' | ConvertFrom-Binary | Should -Be 0x0F
+    Context 'Perspective and Endianness' {
+        <#
+            Big Endian and Little Endian are terms used to describe the order of of the bits
+            or bytes in a binary value.
+
+            If a value is Big Endian, the largest value, the "big end", is first.
+
+            If a value is Little Endian, the largest value is last.
+        #>
+
+        It 'might use a different byte order' {
+            <#
+                The significance assigned to each bit can dramatically change the value.
+            #>
+
+            $BinaryValue = '________ ________ ________ ________'
+
+            <#
+                The value below is the result if the value is Big Endian.
+            #>
+
+            $BinaryValue | ConvertFrom-Binary -To Int32 | Should -Be 1652126821
+            $BinaryValue | ConvertFrom-Binary -To String | Should -Be 'byte'
+
+            <#
+                The Convert type used to change the value from binary expects the order
+                to be Big Endian.
+
+                To convert Little Endian to Big Endian the order of the values must be
+                reversed.
+            #>
+
+            $Bytes = $BinaryValue -split ' ' | ConvertFrom-Binary
+
+            <#
+                The BitConverter type has a number of static methods which can be used to create a value from a
+                series of bytes.
+
+                Like the Convert type, BitConverter expects to deal with Big Endian values.
+            #>
+
+            # The bytes are in reverse order. Least significant first.
+            [Array]::Reverse($Bytes)
+
+            # Convert byte sequence to Int32, starting from the first byte
+            [BitConverter]::ToInt32($Bytes, 0) | Should -Be 1702132066
+        }
+
+        It 'The IPAddress type can be used to change the order of a byte sequence' {
+            <#
+                IP Addresses in network packets are normally transmitted in Little Endian order.
+
+                An operating system might need to convert from Little Endian to Big Endian, or from
+                Big Endian to Little Endian.
+
+                The IPAddress class has two static methods available to change the Endian order of a value.
+
+                    [IPAddress] | Get-Member -Static
+
+                In PowerShell Core, the System.Buffers.Binary.BinaryPrimitives type offers more functionality.
+
+                    [System.Buffers.Binary.BinaryPrimitives] | Get-Member -Static
+            #>
+
+            $Value = $__
+
+            [IPAddress]::HostToNetworkOrder($value) | Should -Be 1702132066
+
+            <#
+                As the operation reverses a byte array, repeating the operation will return the original value.
+            #>
+
+            [IPAddress]::HostToNetworkOrder(1702132066) | Should -Be $value
+
+            <#
+                The IP address class has a second method, NetworkToHostOrder. This behaves in exactly
+                the same way as HostToNetworkOrder.
+            #>
+
+            [IPAddress]::NetworkToHostOrder($value) | Should -Be 1702132066
         }
     }
 }
