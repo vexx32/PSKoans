@@ -32,9 +32,9 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
     - [Install from Gallery](#install-from-gallery)
     - [Or clone the Repo](#or-clone-the-repo)
     - [Start your Journey](#start-your-journey)
-      - [1. Run `Measure-Karma` to start your journey towards PowerShell enlightenment](#1-run-measure-karma-to-start-your-journey-towards-powershell-enlightenment)
-      - [2. Run `Measure-Karma -Meditate` to open your Koans folder](#2-run-measure-karma--meditate-to-open-your-koans-folder)
-      - [3. Run `Measure-Karma` again to see how you did](#3-run-measure-karma-again-to-see-how-you-did)
+      - [1. Run `Show-Karma` to start your journey towards PowerShell enlightenment](#1-run-show-karma-to-start-your-journey-towards-powershell-enlightenment)
+      - [2. Run `Show-Karma -Meditate` to open your Koans folder](#2-run-show-karma--meditate-to-open-your-koans-folder)
+      - [3. Run `Show-Karma` again to see how you did](#3-run-show-karma-again-to-see-how-you-did)
   - [Contributing](#contributing)
 
 
@@ -69,7 +69,7 @@ Install-Module Pester -Scope CurrentUser
 
 ### Start your Journey
 
-#### 1. Run `Measure-Karma` to start your journey towards PowerShell enlightenment
+#### 1. Run `Show-Karma` to start your journey towards PowerShell enlightenment
 
 You will be presented with a page describing your goal:
 
@@ -105,14 +105,14 @@ at <ScriptBlock>, C:\Users\Joel\PSKoans\Foundations\AboutAssertions.Koans.ps1: l
 
  [Total]: [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/279
 
-Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
+Type 'Show-Karma -Meditate' when you are ready to begin your meditations.
 ```
 
 Inspect the red messages carefully, most importantly the last one.
 The error message contains path to the file that you need to edit in order to progress forward.
 In this case, you'll need to examine `Foundations\AboutAssertions.Koans.ps1`.
 
-#### 2. Run `Measure-Karma -Meditate` to open your Koans folder
+#### 2. Run `Show-Karma -Meditate` to open your Koans folder
 
 Navigate to `Foundations\AboutAssertions.Koans.ps1`. Near the top you'll see:
 
@@ -126,7 +126,7 @@ It 'is a simple comparison' {
 The `__` represents a blank for you to fill, and `| Should -Be 'True!'` shows the expected result.
 To pass this koan you need to replace `__` with `True!`, like this: `'True!' | Should -Be 'True!'`.
 
-#### 3. Run `Measure-Karma` again to see how you did
+#### 3. Run `Show-Karma` again to see how you did
 
 You passed your first koan!
 You'll notice that your overall progress updated to `1/279` and you are presented with the next challenge.
@@ -157,7 +157,7 @@ at <ScriptBlock>, C:\Users\Joel\PSKoans\Foundations\AboutAssertions.Koans.ps1: l
 
  [Total]: [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/279
 
-Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
+Type 'Show-Karma -Meditate' when you are ready to begin your meditations.
 ```
 
  You are on your own from here, but the progression should be fairly smooth.
