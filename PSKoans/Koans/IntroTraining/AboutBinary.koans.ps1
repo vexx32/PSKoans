@@ -6,8 +6,8 @@ param()
 
     Binary is a base 2 number system, and only uses two numbers: 0 and 1.
 
-    Binary is the basis of all computing and computational storage. It's elegant,
-    and the 0/1 method is quick to detect and off or on state.
+    Binary is the basis of all computing and computational storage. It's simple & straightforward,
+    and directly represents the underlying hardware states, which can only be on (1) or off (0).
 
     It's useful to know binary when working with PowerShell to understand how integers are represented,
     which is our next Koan. It's also extremely useful knowledge if you plan on delving deeper into computing;
@@ -47,7 +47,7 @@ Describe "Binary conversion" {
 
     # What would 0 be if converted to be boolean?
     # Replace "__" with either $true or $false
-    "__" -eq [Boolean]0 | should -be $true
+    $____ -as [int] | Should -Be 1
 
     # What would 1 be if converted to be boolean?
     # Replace "__" with either $true or $false
@@ -62,7 +62,9 @@ Describe "Binary conversion" {
         
         # Replace "__" with the decimal value of 1111
         # E.G. "__" becomes 1234
-        ([Convert]::ToInt32("1111",2)) -eq "__" | should -be $true
+        $Binary = "1111"
+        $Value = __
+        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
         
         # Replace "__" with the decimal value of 1000
         # E.G. "__" becomes 1234
