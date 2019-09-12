@@ -14,32 +14,17 @@ param()
     the knowledge is applicable to networking, programming, data science, databases, and essentially every
     other area of computing.
 
-    The structure is as follows
+    What is represents is a base 2 number. 
 
-    - 0 or 1 represents a bit
-    - 4 bits represents a nibble
-    - 8 bits, or two nibbles, represents a byte
-    - 1024 bytes represents a kilobyte (KB)
-    - 1024KB represents a megabyte (MB)
-    - 1024MB represents a gigabyte (GB)
-    - 1024GB represents a terrabyte (TB)
+    For example, the below binary represents a "byte" of data, 
+    which contains 8 "bits". Each bit being either 1 or 0 as mentioned earlier.
 
-    And so on and so forth
+    So:
 
-    What is represents is a base 2 number. The values in a byte are as follows:
-
-    --------------------------------------
-    # 128 # 64 # 32 # 16 # 8 # 4 # 2 # 1 #
-    --------------------------------------
-
-    With each of these bits either being on or off.
-
-    So
-
-    --------------------------------------
-    # 128 # 64 # 32 # 16 # 8 # 4 # 2 # 1 #
-    --------------------------------------
-    #  0  # 0  #  0  # 0 # 0 # 0 # 0 # 1 #
+     2^7 | 2^6 | 2^5 | 2^4 | 2^3 | 2^2 | 2^1 | 2^0
+     128 |  64 |  32 |  16 |   8 |   4 |   2 |   1 
+    -----+-----+-----+-----+-----+-----+-----+-----
+       0     0     0     0     0     0     0     1 
     
     Or:
 
