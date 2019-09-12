@@ -9,10 +9,10 @@ param()
     Binary is the basis of all computing and computational storage. It's elegant,
     and the 0/1 method is quick to detect and off or on state.
 
-    It's useful to know binary when working with PowerShell to understand how Ints work, which
-    is our next Koan. But it's also an extremely useful skill if you plan on delving deeper 
-    into computing; networking, programming, data science, databases... you need binary for all 
-    of them.
+    It's useful to know binary when working with PowerShell to understand how integers are represented,
+    which is our next Koan. It's also extremely useful knowledge if you plan on delving deeper into computing;
+    the knowledge is applicable to networking, programming, data science, databases, and essentially every
+    other area of computing.
 
     The structure is as follows
 
