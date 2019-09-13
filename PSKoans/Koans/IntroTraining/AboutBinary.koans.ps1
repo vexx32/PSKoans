@@ -16,8 +16,8 @@ param()
 
     What is represents is a base 2 number. 
 
-    For example, the below binary represents a "byte" of data, 
-    which contains 8 "bits". Each bit being either 1 or 0 as mentioned earlier.
+    For example, the below binary represents a "byte" of data, which contains 8 "bits".
+    Each bit will be either 1 or 0, as mentioned earlier.
 
     So:
 
@@ -56,7 +56,7 @@ Describe "Binary conversion" {
 
     It "Nibble to Int conversion" {
         <#
-            Convert the following  nibbles into full numbers
+            Convert the following nibbles into their decimal equivalent.
         #>
         
         # Replace __ with the decimal value of 1111
