@@ -34,7 +34,7 @@ Describe 'Select-Object' {
 
         $Folder = Get-Item -Path $PSHome
 
-        '__' | Should -Be $Selected.Attributes
+        '____' | Should -Be $Folder.Attributes
 
         $Selected = $Folder | Select-Object -Property * -ExcludeProperty Attributes
 
