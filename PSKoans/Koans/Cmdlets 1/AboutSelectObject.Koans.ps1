@@ -194,7 +194,7 @@ Describe 'Select-Object' {
         $Selected.__ | Should -BeGreaterThan 0
 
         <#
-            Custom properties are often used to marge information from multiple sources into
+            Custom properties are often used to merge information from multiple sources into
             a single object.
         #>
 
