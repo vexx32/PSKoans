@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 206)]
+[Koan(Position = 205)]
 param()
 <#
     Select-Object
