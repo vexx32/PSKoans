@@ -191,7 +191,7 @@ Describe 'Select-Object' {
             @{ Name = 'RunningTime'; Expression = { (Get-Date) - $_.StartTime } }
         )
 
-        $Selected.__ | Should -BeGreaterThan 0
+        $Selected____ | Should -BeGreaterThan 0
 
         <#
             Custom properties are often used to merge information from multiple sources into
