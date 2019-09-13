@@ -22,7 +22,7 @@ Describe 'Select-Object' {
 
         @('__', '__', 'Path') | Should -Be $Selected.PSObject.Properties.Name
 
-        $Selected.__ | Should -Be $PID
+        $Selected.____ | Should -Be $PID
     }
 
     It 'can exclude specific properties from an object' {
