@@ -58,12 +58,12 @@ Describe 'ErrorRecord' {
 
         It 'is an ErrorRecord' {
             # At times, even tautologies can make sense of what is, and is not.
-            $ErrorRecord -is [__] | Should -BeTrue
+            $ErrorRecord -is [____] | Should -BeTrue
         }
 
         It 'always contains a reference to an Exception' {
             $ErrorRecord.Exception | Should -Not -BeNullOrEmpty
-            $ErrorRecord.Exception -is [__] | Should -BeTrue
+            $ErrorRecord.Exception -is [____] | Should -BeTrue
             '____' | Should -Be $ErrorRecord.Exception.Message
         }
 
@@ -234,8 +234,8 @@ Describe 'Types of Errors' {
             }
             catch {
                 # A red ball is thrown... and what is caught?
-                $_ -is [__] | Should -BeTrue
-                $_.Exception -is [__] | Should -BeTrue
+                $_ -is [____] | Should -BeTrue
+                $_.Exception -is [____] | Should -BeTrue
                 '____' | Should -Be $_.Exception.Message
             }
         }
@@ -293,8 +293,8 @@ Describe 'Types of Errors' {
             }
             catch {
                 # What can we catch here?
-                $_ -is [__] | Should -BeTrue
-                $_.Exception -is [__] | Should -BeTrue
+                $_ -is [____] | Should -BeTrue
+                $_.Exception -is [____] | Should -BeTrue
                 '____' | Should -Be $_.Exception.Message
                 '____' | Should -Be $_.TargetObject.Secret
             }
@@ -313,8 +313,8 @@ Describe 'Types of Errors' {
                 Write-Error @Params
             }
             catch {
-                $_ -is [__] | Should -BeTrue
-                [__] | Should -Be $_.Exception.GetType()
+                $_ -is [____] | Should -BeTrue
+                [____] | Should -Be $_.Exception.GetType()
                 '____' | Should -Be $_.Exception.Message
                 @('____', '____', '____') | Should -Be $_.TargetObject[3..1]
             }

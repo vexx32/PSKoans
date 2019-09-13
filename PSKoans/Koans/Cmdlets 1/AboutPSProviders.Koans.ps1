@@ -194,7 +194,7 @@ Describe 'Function Provider' {
         $Functions[3].ScriptBlock | Should -BeOfType ScriptBlock
         __ | Should -Be $Functions[1].ScriptBlock.ToString().Length
 
-        $Functions[4] | Get-Content | Should -BeOfType [__]
+        $Functions[4] | Get-Content | Should -BeOfType [____]
     }
 
     It 'allows you to rename the functions however you wish' {
@@ -214,7 +214,7 @@ Describe 'Function Provider' {
             syntax must be used to indicate to the PowerShell parser that all contained characters
             are part of the variable name.
         #>
-        ${function:Test-Function} | Should -BeOfType [__]
+        ${function:Test-Function} | Should -BeOfType [____]
     }
 
     It 'can be defined using variable syntax' {

@@ -15,7 +15,7 @@ Describe 'Type Operators' {
 
         It 'examines the type of the left hand object' {
             45 -isnot [double] | Should -BeTrue
-            'string' -is [__] | Should -BeTrue
+            'string' -is [____] | Should -BeTrue
         }
 
         It 'is useful for determining available methods' {

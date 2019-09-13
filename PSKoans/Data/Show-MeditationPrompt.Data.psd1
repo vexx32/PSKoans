@@ -43,7 +43,7 @@ Describing '{0}' has damaged your karma.
 "@
         OpenFolder     = @"
 
-Type 'Measure-Karma -Meditate' when you are ready to begin your meditations.
+Run 'Show-Karma -Meditate' to begin your meditations.
 
 "@
         Completed      = @"
