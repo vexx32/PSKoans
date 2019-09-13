@@ -41,18 +41,17 @@ param()
 Describe "Binary conversion" {
 
     It "Bit conversion" {
-    <#
-        When converting from bit to a boolean try and guess what each would be
-    #>
+        <#
+            When converting from bit to a boolean try and guess what each would be
+        #>
 
-    # What would 0 be if converted to be boolean?
-    # Replace __ with either $true or $false
-    $____ -as [int] | Should -Be 0
+        # What would 0 be if converted to be boolean?
+        # Replace __ with either $true or $false
+        $____ -as [int] | Should -Be 0
 
-    # What would 1 be if converted to be boolean?
-    # Replace __ with either $true or $false
-    $__ -as [int] | should -Be 1
-
+        # What would 1 be if converted to be boolean?
+        # Replace __ with either $true or $false
+        $__ -as [int] | should -Be 1
     }
 
     It "Nibble to Int conversion" {
@@ -67,19 +66,16 @@ Describe "Binary conversion" {
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
         
         # Replace __ with the decimal value of 1000
-        # E.G. __ becomes 1234
         $Binary = "1000"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the decimal value of 0010
-        # E.G. __ becomes 1234
         $Binary = "0010"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the decimal value of 1001
-        # E.G. __ becomes 1234
         $Binary = "1001"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
@@ -98,19 +94,16 @@ Describe "Binary conversion" {
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
         
         # Replace __ with the binary value of 12
-        # E.G. "__" becomes "0100"
         $Binary = "__"
         $Value = 12
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 2
-        # E.G. "__" becomes "0100"
         $Binary = "__"
         $Value = 2
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 14
-        # E.G. "__" becomes "0100"
         $Binary = "__"
         $Value = 7
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
@@ -129,19 +122,16 @@ Describe "Binary conversion" {
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the decimal value of 10101010
-        # E.G. __ becomes 1234
         $Binary = "10101010"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the decimal value of 11001100
-        # E.G. __ becomes 1234
         $Binary = "11001100"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the decimal value of 11110001
-        # E.G. __ becomes 1234
         $Binary = "11110001"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
@@ -159,19 +149,16 @@ Describe "Binary conversion" {
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
         
         # Replace __ with the binary value of 250
-        # E.G. "__" becomes "01001110"
         $Binary = "__"
         $Value = 250
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 74
-        # E.G. "__" becomes "01001110"
         $Binary = "__"
         $Value = 74
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 32
-        # E.G. "__" becomes "01001110"
         $Binary = "__"
         $Value = 32
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
