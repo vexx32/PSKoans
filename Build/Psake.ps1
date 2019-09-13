@@ -35,7 +35,11 @@ Build System Details:
     Get-Item 'ENV:BH*'
 }
 
-Task 'Test' -Depends 'Init' {
+Task 'Build' -Depends 'Init' {
+    Build-Module -SourcePath $PSScriptRoot\..\PSKoans\PSKoans.psd1
+}
+
+Task 'Test' -Depends 'Build' {
     Write-Information @Continue @"
 $Lines
 STATUS: Testing with PowerShell $PSVersion
@@ -70,7 +74,7 @@ STATUS: Testing with PowerShell $PSVersion
     }
 }
 
-Task 'Build' -Depends 'Test' {
+Task 'Publish' -Depends 'Test' {
     Write-Information @Continue @"
 
 $Lines

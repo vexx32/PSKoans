@@ -31,13 +31,11 @@ function Update-PSKoanFile {
         $params.Topic = $Topic
     }
     Get-PSKoanFile @params | ForEach-Object {
-        $position = 0
-        $moduleKoans = Get-PSKoanIt -Path $_.ModuleFilePath | ForEach-Object {
+        $moduleKoans = Get-PSKoanIt -Path $_.ModuleFile.FullName | ForEach-Object {
             [PSCustomObject]@{
-                ID       = $_.ID
-                Position = $position++
-                Name     = $_.Name
-                Ast      = $_.Ast
+                ID   = $_.ID
+                Name = $_.Name
+                Ast  = $_.Ast
             }
         } | Group-Object -Property ID -AsHashTable -AsString
 
@@ -46,18 +44,17 @@ function Update-PSKoanFile {
             return
         }
 
-        if (Test-Path -Path $_.UserFilePath) {
-            $userKoans = Get-PSKoanIt -Path $_.UserFilePath
+        if (Test-Path -Path $_.UserFile.FullName) {
+            $userKoans = Get-PSKoanIt -Path $_.UserFile.FullName
             $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
 
             if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
-                $content = Get-Content -Path $_.ModuleFilePath -Raw
+                $content = Get-Content -Path $_.ModuleFile.FullName -Raw
 
                 $userKoans |
                     Where-Object { $moduleKoans.Contains($_.ID) } |
                     Select-Object -Property @(
                         'ID'
-                        @{ Name = 'Position';  Expression = { $moduleKoans[$_.ID].Position }}
                         'Name'
                         'Ast'
                         @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast }}
@@ -74,13 +71,13 @@ function Update-PSKoanFile {
                         )
                     }
 
-                if ($PSCmdlet.ShouldProcess($_.UserFilePath, 'Updating Koan File')) {
-                    Set-Content -Path $_.UserFilePath -Value $content -NoNewline
+                if ($PSCmdlet.ShouldProcess($_.UserFile.FullName, 'Updating Koan File')) {
+                    Set-Content -Path $_.UserFile.FullName -Value $content -NoNewline
                 }
             }
         }
         else {
-            Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.UserFilePath)
+            Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.Name)
         }
     }
 }

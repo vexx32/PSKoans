@@ -18,6 +18,18 @@
         [string[]]
         $Topic,
 
+        [ArgumentCompleter(
+            {
+                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+
+                $Values = (Get-PSKoanFile -Module * -ExcludeDefaultKoans).Topic
+                return @($Values) -like "$WordToComplete*"
+            }
+        )]
+        [Parameter(ParameterSetName = 'Default')]
+        [string[]]
+        $Module,
+
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
         [Alias('ListKoans')]
         [switch]
@@ -71,9 +83,16 @@
 
             Show-MeditationPrompt -Greeting
 
-            $Results = if ($Topic) { Get-Karma -Topic $Topic } else { Get-Karma }
+            $GetParams = @{}
+            if ($Topic) {
+                $GetParams['Topic'] = $Topic
+            }
+            if ($IncludeModule) {
+                $GetParams['IncludeModule'] = $IncludeModule
+            }
+            $Results = Get-Karma @GetParams
 
-            $Params = @{
+            $ShowParams = @{
                 DescribeName   = $Results.Describe
                 ItName         = $Results.It
                 Expectation    = $Results.Expectation
@@ -85,10 +104,10 @@
                 RequestedTopic = $Topic
             }
             if (-not $Detailed) {
-                $Params.Remove('Results')
+                $ShowParams.Remove('Results')
             }
 
-            Show-MeditationPrompt @Params
+            Show-MeditationPrompt @ShowParams
         }
     }
 }

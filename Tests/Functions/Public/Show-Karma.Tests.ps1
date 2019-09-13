@@ -142,6 +142,11 @@ Describe 'Show-Karma' {
             }
         }
 
+        Context 'With -Module Parameter' {
+
+
+        }
+
         Context 'With -Contemplate Switch' {
 
             Context 'VS Code Installed' {

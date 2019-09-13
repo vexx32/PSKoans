@@ -35,7 +35,7 @@ function Reset-PSKoan {
         $params.Topic = $Topic
     }
     Get-PSKoanFile @params | ForEach-Object {
-        $moduleKoan = Get-PSKoanIt -Path $_.ModuleFilePath |
+        $moduleKoan = Get-PSKoanIt -Path $_.ModuleFile.FullName |
             Where-Object {
                 $_.Name -like $Name -and
                 ($pscmdlet.ParameterSetName -eq 'NameOnly' -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
@@ -44,11 +44,11 @@ function Reset-PSKoan {
         if ($moduleKoan) {
             foreach ($koan in $moduleKoan) {
                 if ($Name -or $Context) {
-                    $userKoan = Get-PSKoanIt -Path $_.UserFilePath |
+                    $userKoan = Get-PSKoanIt -Path $_.UserFile.FullName |
                         Where-Object ID -eq $koan.ID
 
                     if ($userKoan) {
-                        $content = Get-Content -Path $_.UserFilePath -Raw
+                        $content = Get-Content -Path $_.UserFile.FullName -Raw
 
                         $content = $content.Remove(
                             $userKoan.Ast.Extent.StartOffset,
@@ -59,7 +59,7 @@ function Reset-PSKoan {
                         )
 
                         if ($PSCmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $_.Topic))) {
-                            Set-Content -Path $_.UserFilePath -Value $content -NoNewline
+                            Set-Content -Path $_.UserFile.FullName -Value $content -NoNewline
                         }
                     }
                     else {
@@ -68,7 +68,7 @@ function Reset-PSKoan {
                 }
                 else {
                     if ($PSCmdlet.ShouldProcess($_.Topic, "Resetting all koans")) {
-                        Copy-Item -Path $_.ModuleFilePath -Destination $_.UserFilePath -Force
+                        Copy-Item -Path $_.ModuleFile.FullName -Destination $_.UserFile.FullName -Force
                     }
                 }
             }

@@ -15,16 +15,15 @@
 
 #region SupportingClasses
 
-class KoanAttribute : Attribute {
-    [uint32] $Position = [uint32]::MaxValue
-    [string] $Module = '_powershell'
+Add-Type -TypeDefinition '
+using System;
 
-    Koan() { }
+public class KoanAttribute : Attribute
+{
+    public uint Position = UInt32.MaxValue;
+    public string Module = "_powershell";
 }
-
-class Koan : KoanAttribute {
-    Koan() : base() { }
-}
+'
 
 # load classes
 

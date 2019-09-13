@@ -18,6 +18,21 @@
         [string[]]
         $Topic,
 
+        [Parameter(ParameterSetName = 'Default')]
+        [ArgumentCompleter(
+            {
+                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+
+                $Values = (Get-PSKoanFile -Module * -ExcludeDefaultKoans).Topic
+                return @($Values) -like "$WordToComplete*"
+            }
+        )]
+        [string[]]
+        $Module,
+
+        [Switch]
+        $ExcludeDefaultKoans,
+
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
         [Alias('ListKoans')]
         [switch]
@@ -30,13 +45,18 @@
         "Default" {
             Write-Verbose 'Sorting koans...'
             try {
+                $Params = @{
+                    ExcludeDefaultKoans = $ExcludeDefaultKoans
+                }
                 if ($Topic) {
                     Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
-                    $SortedKoanList = Get-Koan -Topic $Topic
+                    $Params['Topic'] = $Topic
                 }
-                else {
-                    $SortedKoanList = Get-Koan
+                if ($Module) {
+                    Write-Verbose "Getting Koans from the selected module(s): $($Module -join ', ')"
+                    $Params['Module'] = $Module
                 }
+                $SortedKoanList = Get-Koan @Params
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)

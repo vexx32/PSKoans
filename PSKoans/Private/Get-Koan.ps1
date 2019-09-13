@@ -9,6 +9,13 @@
     .PARAMETER Topic
         Specify one or more topic names or patterns to filter the list. Wildcards are permitted.
 
+    .PARAMETER Module
+        Specify one or more modules. Wildcards are permitted.
+
+    .PARAMETER ExcludeDefaultKoans
+        Koans which are not specific to a module are included by default in search results. ExcludeDefaultKoans may be used to
+        restrict a Koan search to one or more modules.
+
     .EXAMPLE
         Get-Koan
 
@@ -21,7 +28,15 @@
         [Parameter(Position = 0, ValueFromPipeline)]
         [SupportsWildcards()]
         [string[]]
-        $Topic
+        $Topic,
+
+        [Parameter(ParameterSetName = 'FromModule')]
+        [string[]]
+        $Module,
+
+        [Parameter()]
+        [Switch]
+        $ExcludeDefaultKoans
     )
     begin {
         $Topics = [System.Collections.Generic.List[string]]::new()

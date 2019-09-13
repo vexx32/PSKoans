@@ -5,7 +5,16 @@ function Get-PSKoanFile {
         [Parameter()]
         [SupportsWildcards()]
         [string[]]
-        $Topic
+        $Topic,
+
+        [Parameter()]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
+
+        [Parameter()]
+        [Switch]
+        $ExcludeDefaultKoans
     )
 
     begin {
@@ -23,9 +32,9 @@ function Get-PSKoanFile {
                 $PathFragment = $_.Fullname -replace $ParentPathPattern
 
                 [PSCustomObject]@{
-                    Topic          = $_.BaseName -replace '\.koans$'
-                    ModuleFilePath = $_.FullName
-                    UserFilePath   = Join-Path -Path $KoanFolder -ChildPath $PathFragment
+                    Topic      = $_.BaseName -replace '\.koans$'
+                    ModuleFile = $_
+                    UserFile   = (Join-Path -Path $KoanFolder -ChildPath $PathFragment) -as [System.IO.FileInfo]
                 }
             }
     }
