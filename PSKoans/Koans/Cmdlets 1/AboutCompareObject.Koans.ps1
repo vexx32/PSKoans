@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 205)]
+[Koan(Position = 204)]
 param()
 <#
     Compare-Object

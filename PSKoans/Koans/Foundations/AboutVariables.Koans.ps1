@@ -33,14 +33,14 @@ Describe 'Variable Assignment' {
     It 'infers types on its own' {
         $Number = 10
 
-        $Number | Should -BeOfType [__]
+        $Number | Should -BeOfType [____]
     }
 
     It 'can directly compare types' {
         # For each task, a different tool.
         $Number = 5
         $Number -is [int] | Should -BeTrue
-        $Number | Should -BeOfType [__]
+        $Number | Should -BeOfType [____]
 
         $Text = 'Every worthwhile step is uphill.'
         $ExpectedType = __
@@ -56,8 +56,8 @@ Describe 'Variable Assignment' {
         # Its contents may choose their own kind, or it be chosen for them.
         $String = [string]$true
 
-        $Number | Should -BeOfType [__]
-        $String | Should -BeOfType [__]
+        $Number | Should -BeOfType [____]
+        $String | Should -BeOfType [____]
     }
 
     It 'distinguishes between types of numbers' {
@@ -70,23 +70,27 @@ Describe 'Variable Assignment' {
         $NotInteger = 12.0
 
         $Integer | Should -BeOfType [int]
-        $NotInteger | Should -BeOfType [__]
+        $NotInteger | Should -BeOfType [____]
     }
 
     It 'allows you to declare constant variables' {
-        {
+        $RemoveConstant = {
             Set-Variable -Name 'Constant' -Value 25 -Option Constant
-            # The next operation will never succeed; constant variables cannot be altered.
-            # Try uncommenting the below line to see what happens.
+            # Constant variables cannot be altered.
 
-            # $Constant = 'NewValue'
-        } | Should -Throw
-        {
-            # Contrast Read-Only variables, which can be later removed
+            # So what happens if we try to modify $Constant in some way?
+            $____ = 'NewValue'
+        }
+        $RemoveConstant | Should -Throw -ExpectedMessage '____'
+
+        $RemoveReadOnly = {
+            # Contrast Read-Only variables, which can be later removed (if you do it right.)
             Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
-            Remove-Variable -Name 'Constant' -Force
+            # While these variables can be Removed, they cannot be directly altered.
+            Remove-Variable -Name '____' -Force -ErrorAction Stop
             $Constant = 2
             $Constant++
-        } | Should -Not -Throw
+        }
+        $RemoveReadOnly | Should -Not -Throw
     }
 }
