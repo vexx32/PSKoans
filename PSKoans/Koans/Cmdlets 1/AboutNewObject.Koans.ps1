@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 204)]
+[Koan(Position = 203)]
 param()
 <#
     New-Object
