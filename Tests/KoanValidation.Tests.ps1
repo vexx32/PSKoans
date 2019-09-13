@@ -55,7 +55,7 @@ Describe "Koan Assessment" {
 
     It "Should not have other PS1 files in the Koan directory" {
         Get-ChildItem -Path $KoanFolder -Recurse -Filter '*.ps1' |
-            Where-Object BaseName -notmatch '\.Koans' |
+            Where-Object BaseName -notmatch '\.Koans$' |
             Should -BeNullOrEmpty
     }
 }
