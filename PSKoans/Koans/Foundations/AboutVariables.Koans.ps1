@@ -33,14 +33,14 @@ Describe 'Variable Assignment' {
     It 'infers types on its own' {
         $Number = 10
 
-        $Number | Should -BeOfType [__]
+        $Number | Should -BeOfType [____]
     }
 
     It 'can directly compare types' {
         # For each task, a different tool.
         $Number = 5
         $Number -is [int] | Should -BeTrue
-        $Number | Should -BeOfType [__]
+        $Number | Should -BeOfType [____]
 
         $Text = 'Every worthwhile step is uphill.'
         $ExpectedType = __
@@ -56,8 +56,8 @@ Describe 'Variable Assignment' {
         # Its contents may choose their own kind, or it be chosen for them.
         $String = [string]$true
 
-        $Number | Should -BeOfType [__]
-        $String | Should -BeOfType [__]
+        $Number | Should -BeOfType [____]
+        $String | Should -BeOfType [____]
     }
 
     It 'distinguishes between types of numbers' {
@@ -70,7 +70,7 @@ Describe 'Variable Assignment' {
         $NotInteger = 12.0
 
         $Integer | Should -BeOfType [int]
-        $NotInteger | Should -BeOfType [__]
+        $NotInteger | Should -BeOfType [____]
     }
 
     It 'allows you to declare constant variables' {
@@ -81,12 +81,12 @@ Describe 'Variable Assignment' {
 
             # $Constant = 'NewValue'
         } | Should -Throw
-        {
-            # Contrast Read-Only variables, which can be later removed
-            Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
-            Remove-Variable -Name 'Constant' -Force
-            $Constant = 2
-            $Constant++
-        } | Should -Not -Throw
-    }
+    {
+        # Contrast Read-Only variables, which can be later removed
+        Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
+        Remove-Variable -Name 'Constant' -Force
+        $Constant = 2
+        $Constant++
+    } | Should -Not -Throw
+}
 }

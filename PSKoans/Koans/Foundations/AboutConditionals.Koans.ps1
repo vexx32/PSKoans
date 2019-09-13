@@ -128,7 +128,7 @@ Describe 'Switch' {
             }
 
             $Variable | Should -Be -1
-            $Variable | Should -BeOfType [__]
+            $Variable | Should -BeOfType [____]
         }
 
         It 'can go through multiple branches' {
