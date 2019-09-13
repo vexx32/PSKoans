@@ -248,6 +248,6 @@ Describe 'Select-Object' {
             @{ n = 'Size'; e = { (Get-Item $_.Path).Length } }
         )
 
-        $Selected.__ | Should -BeOfType [TimeSpan]
+        $Selected.____ | Should -BeOfType [TimeSpan]
     }
 }
