@@ -20,7 +20,7 @@ Describe 'Select-Object' {
 
         $Selected = Get-Proces -Id $PID | Select-Object Name, ID, Path
 
-        @('__', '__', 'Path') | Should -Be $Selected.PSObject.Properties.Name
+        @('____', '____', 'Path') | Should -Be $Selected.PSObject.Properties.Name
 
         $Selected.____ | Should -Be $PID
     }
