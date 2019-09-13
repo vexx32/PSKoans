@@ -228,7 +228,7 @@ Describe 'Select-Object' {
             @{ Label = 'ProcessId'; Expression = 'Id' }
         )
 
-        $Selected.__ | Should -Be $Process.Id
+        $Selected.____ | Should -Be $Process.Id
     }
 
     It 'supports abbreviated names in a calculated property' {
