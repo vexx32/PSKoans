@@ -54,9 +54,7 @@ Describe 'Select-Object' {
 
         'System.IO.Directoryinfo' | Should -BeIn $Folder.PSTypeNames
 
-        <#
-            The new selected object is an instance of [System.Management.Automation.PSCustomObject].
-        #>
+        # The new selected object is an instance of [System.Management.Automation.PSCustomObject].
 
         $Selected = $Folder | Select-Object -Property * -ExcludeProperty Attributes
 
@@ -73,9 +71,7 @@ Describe 'Select-Object' {
     }
 
     It 'can retrieve just the contents or value of a property' {
-        <#
-            Individual properties can be expanded, retrieving the just a value.
-        #>
+        # Individual properties can be expanded, retrieving the just a value.
 
         $PropertyToExpand = '___'
 
@@ -94,9 +90,7 @@ Describe 'Select-Object' {
 
         $Selected = $PowerShellExe | Select-Object Name -ExpandProperty VersionInfo
 
-        <#
-            The resulting object will contain all of the properties found under VersionInfo.
-        #>
+        # The resulting object will contain all of the properties found under VersionInfo.
 
         $Selected.__ | Should -Be $PowerShellExe.FullName
     }
@@ -113,18 +107,14 @@ Describe 'Select-Object' {
         $Values = $Array | Select-Object -Skip 10 -First 5
         __ | Should -Be $Values
 
-        <#
-            SkipLast cannot be used alongside the Last, First, and Skip parameters.
-        #>
+        # SkipLast cannot be used alongside the Last, First, and Skip parameters.
 
         $Values = $Array | Select-Object -SkipLast 95
         ___ | Should -Be $Values
     }
 
     It 'can ignore duplicate objects' {
-        <#
-            Select-Object can be used to create a unique list.
-        #>
+        # Select-Object can be used to create a unique list.
 
         $Array = 6, 1, 4, 8, 7, 5, 3, 9, 2, 3, 2, 1, 5, 1, 6, 2, 8, 4,
         7, 3, 1, 2, 6, 3, 7, 1, 4, 5, 2, 1, 3, 6, 2, 5, 1, 4
@@ -165,9 +155,7 @@ Describe 'Select-Object' {
     }
 
     It 'maintains the original object type when the Property parameter is not used' {
-        <#
-            When the Property parameter is used, a new object
-        #>
+        # When the Property parameter is used, a new object
 
         $Files = Get-ChildItem -Path $PSHome -File
 
@@ -191,7 +179,7 @@ Describe 'Select-Object' {
             @{ Name = 'RunningTime'; Expression = { (Get-Date) - $_.StartTime } }
         )
 
-        $Selected____ | Should -BeGreaterThan 0
+        $Selected.____ | Should -BeGreaterThan 0
 
         <#
             Custom properties are often used to merge information from multiple sources into
