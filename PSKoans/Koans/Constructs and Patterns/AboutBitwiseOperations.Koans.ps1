@@ -1,8 +1,11 @@
 using module PSKoans
-[Koan(Position = 115)]
+[Koan(Position = 309)]
 param()
 <#
     Binary
+
+    Binary is introduced in the AboutBinary topic. This topic extends on AboutBinary, exploring different binary operations
+    and more complex scenarios.
 
     PowerShell includes a number of operators which can be used to perform binary or bitwise operations.
 
@@ -64,19 +67,6 @@ Describe 'Binary Operators' {
         }
     }
 
-    Context 'Bits' {
-        It 'A bit has two possible values' {
-            <#
-                A bit is a single binary digit it can be either 0 or 1. Similar to a boolean value.
-
-                Binary is a base 2 system.
-            #>
-
-            __ | Should -BeFalse
-            __ | Should -BeTrue
-        }
-    }
-
     Context 'Bytes' {
         It 'A byte is made up of 8 bits' {
             <#
@@ -108,25 +98,6 @@ Describe 'Binary Operators' {
             '00100000' | ConvertFrom-Binary | Should -Be 32
             '01000000' | ConvertFrom-Binary | Should -Be 64
             '________' | ConvertFrom-Binary | Should -Be 128    # Most significant
-        }
-
-        It 'is made up of 2, raised to a power' {
-            <#
-                Each of the values used above is 2 (the base), raised to a power (the position of the bit).
-
-                The first position is 0. 2 raised to the power of 1 is 1. This is
-
-                2 raised to the power of 1 is 2, and so on.
-            #>
-
-            [Math]::Pow(2, 0) | Should -Be 1
-            [Math]::Pow(2, 1) | Should -Be 2
-            [Math]::Pow(2, $__) | Should -Be 4
-            [Math]::Pow(2, 3) | Should -Be 8
-            [Math]::Pow(2, 4)| Should -Be 16
-            [Math]::Pow(2, $__) | Should -Be 32
-            [Math]::Pow(2, $__) | Should -Be 64
-            [Math]::Pow(2, $__) | Should -Be 128
         }
 
         It 'can be used to create a larger number' {
