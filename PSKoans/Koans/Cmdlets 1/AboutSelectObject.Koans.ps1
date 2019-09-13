@@ -218,7 +218,7 @@ Describe 'Select-Object' {
             @{ Name = 'ProcessId'; Expression = 'Id' }
         )
 
-        $Selected.__ | Should -Be $Process.Id
+        $Selected.____ | Should -Be $Process.Id
     }
 
     It 'allows Label to be used instead of Name' {
