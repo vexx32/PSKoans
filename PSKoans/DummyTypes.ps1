@@ -2,9 +2,12 @@
 
 switch ($null) {
     ('FillerType' -as [type]) {
-        class FillerType {}
+        class FillerType { }
     }
     ('__' -as [type]) {
-        class __ : FillerType {}
+        class __ : FillerType { }
+    }
+    ('____' -as [type]) {
+        class ____ : FillerType { }
     }
 }
