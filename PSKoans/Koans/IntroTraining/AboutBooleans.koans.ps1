@@ -26,11 +26,11 @@ param()
 #>
 
 Describe "Booleans" {
-<#
+    <#
 
-    Using only booleans, so $True or $False, answer the following questions
+        Using only booleans, so $True or $False, answer the following questions
 
-#>
+    #>
     It "True or False" {
 
         # Replace the blanks with $true or $false
