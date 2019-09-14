@@ -54,9 +54,9 @@ Describe "Binary conversion" {
         $__ -as [int] | Should -Be 1
     }
 
-    It "Binary to interger conversion" {
+    It "Binary to integer conversion" {
         <#
-            Convert the following binary representations into intergers
+            Convert the following binary representations into integers
         #>
         
         # Replace __ with the decimal value of 1111
@@ -103,7 +103,7 @@ Describe "Binary conversion" {
 
     }
 
-    It "Interger to Binary conversion" {
+    It "Integer to Binary conversion" {
         <#
             Convert the following integers into their binary representation
         #>
