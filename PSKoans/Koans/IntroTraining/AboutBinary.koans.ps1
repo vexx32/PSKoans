@@ -51,12 +51,12 @@ Describe "Binary conversion" {
 
         # What would 1 be if converted to be boolean?
         # Replace __ with either $true or $false
-        $__ -as [int] | should -Be 1
+        $__ -as [int] | Should -Be 1
     }
 
-    It "Nibble to Int conversion" {
+    It "Binary to interger conversion" {
         <#
-            Convert the following nibbles into their decimal equivalent.
+            Convert the following binary representations into intergers
         #>
         
         # Replace __ with the decimal value of 1111
@@ -80,11 +80,32 @@ Describe "Binary conversion" {
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
+        # Replace __ with the decimal value of 11111111
+        $Binary = "11111111"
+        $Value = __
+        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+
+        # Replace __ with the decimal value of 10101010
+        $Binary = "10101010"
+        $Value = __
+        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+
+        # Replace __ with the decimal value of 11001100
+        $Binary = "11001100"
+        $Value = __
+        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+
+        # Replace __ with the decimal value of 11110001
+        $Binary = "11110001"
+        $Value = __
+        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+
+
     }
 
-    It "Int to Nibble conversion" {
+    It "Interger to Binary conversion" {
         <#
-            Convert the following  full numbers into nibbles
+            Convert the following integers into their binary representation
         #>
         
         # Replace __ with the binary value of 7
@@ -108,41 +129,7 @@ Describe "Binary conversion" {
         $Value = 7
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
-    }
-
-    It "Byte to Int conversion" {
-        <#
-            Convert the following bytes into full numbers
-        #>
-
-        # Replace __ with the decimal value of 11111111
-        # E.G. __ becomes 1234
-        $Binary = "11111111"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 10101010
-        $Binary = "10101010"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 11001100
-        $Binary = "11001100"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 11110001
-        $Binary = "11110001"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-    }
-
-    It "Int to Byte conversion" {
-        <#
-            Convert the following full numbers into bytes
-        #>
-        
-        # Replace __ with the binary value of 103
+         # Replace __ with the binary value of 103
         # E.G. "__" becomes "01001110"
         $Binary = "__"
         $Value = 103
@@ -162,6 +149,7 @@ Describe "Binary conversion" {
         $Binary = "__"
         $Value = 32
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-       
+
     }
+
 }
