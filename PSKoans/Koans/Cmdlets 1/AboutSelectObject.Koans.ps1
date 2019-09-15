@@ -79,31 +79,31 @@ Describe 'Select-Object' {
             property up to a new parent object.
         #>
 
-        $PowerShellExe = Get-Item (Get-Process -Id $PID | Select-Object -ExpandProperty Path)
+        $PowerShellExe = Get-Process -Id $PID | Select-Object -ExpandProperty Path | Get-Item
 
         $Selected = $PowerShellExe | Select-Object Name -ExpandProperty VersionInfo
 
         # The resulting object will contain all of the properties found under VersionInfo.
 
-        $Selected.__ | Should -Be $PowerShellExe.FullName
+        $Selected.____ | Should -Be $PowerShellExe.FullName
     }
 
     It 'can pick specific numbers of objects' {
         $Array = 1..100
 
         $FirstThreeValues = $Array | Select-Object -First 3
-        __ | Should -Be $FirstThreeValues
+        @(__, __, __) | Should -Be $FirstThreeValues
 
         $LastFourValues = $Array | Select-Object -Last 4
-        __ | Should -Be $LastFourValues
+        @(__, __, __, __) | Should -Be $LastFourValues
 
         $Values = $Array | Select-Object -Skip 10 -First 5
-        __ | Should -Be $Values
+        @(__, __, __, __, __) | Should -Be $Values
 
         # SkipLast cannot be used alongside the Last, First, and Skip parameters.
 
         $Values = $Array | Select-Object -SkipLast 95
-        ___ | Should -Be $Values
+        @(__, __, __, __, __) | Should -Be $Values
     }
 
     It 'can ignore duplicate objects' {
@@ -113,7 +113,7 @@ Describe 'Select-Object' {
         7, 3, 1, 2, 6, 3, 7, 1, 4, 5, 2, 1, 3, 6, 2, 5, 1, 4
 
         $UniqueItems = $Array | Select-Object -Unique
-        6, '__', 4, 8, '__', '__', 3, '__', 2 | Should -Be $UniqueItems
+        @(6, __, 4, 8, __, __, 3, __, 2) | Should -Be $UniqueItems
     }
 
     It 'can ignore duplicate complex objects' {
@@ -126,7 +126,10 @@ Describe 'Select-Object' {
             Select-Object falls back on the ToString method of an object.
         #>
 
-        $Processes = (Get-Process -Id $PID), (Get-Process -Id $PID)
+        $Processes = @(
+            Get-Process -Id $PID
+            Get-Process -Id $PID
+        )
 
         __ | Should -Be $Processes.Count
 
@@ -135,15 +138,27 @@ Describe 'Select-Object' {
         __ | Should -Be $UniqueProcesses.Count
 
         <#
-            Processes are made unique based on comparing the value returned by running:
+            As Process objects are not directly comparable, they are made unique by comparing a
+            string representation of the process.
 
-                (Get-Process -Id $PID).ToString()
+            The string to compare is created as shown below:
+
+                $object = Get-Process -Id $PID
+                [PSObject]::AsPSObject($object).ToString()
+
+            For PSCustomObjects the conversion to string is slightly different:
+
+                $object = [PSCustomObject]@{ Name = 'one'}
+                [PSObject]::AsPSObject($object.PSBase).ToString()
 
             This value includes the name of the process, but not the
             ProcessId.
 
             If several processes of the name name are running these
             will be removed by the Unique parameter.
+
+            If the Property parameter is used, Unique is evaluated after creating a new
+            custom object.
         #>
     }
 
@@ -162,8 +177,10 @@ Describe 'Select-Object' {
             The property parameter can read a hashtable which describes a property.
 
             The hashtable requires a Name, and Expression to calculate a value for the property.
-
             The Expression is most often a script block, a short script enclosed in curly braces.
+
+            The variable $_, or $PSItem, is used to refer to the object from the pipeline within the
+            Exrpression. Properties may be used even if they are not selected.
         #>
 
         $Selected = Get-Process -Id $PID | Select-Object @(
