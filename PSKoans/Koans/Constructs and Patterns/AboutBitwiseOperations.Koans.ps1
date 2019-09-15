@@ -185,7 +185,7 @@ Describe 'Binary Operators' {
         }
 
         It 'compares the bits of two different values, returning the bits set in either value' {
-            __ | Should -Be 3 -bor 14
+            __ | Should -Be (3 -bor 14)
         }
     }
 
