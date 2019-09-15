@@ -92,18 +92,18 @@ Describe 'Select-Object' {
         $Array = 1..100 -as [string[]]
 
         $FirstThreeValues = $Array | Select-Object -First 3
-        @('____', '____', '____') | Should -Be $FirstThreeValues
+        @('__', '__', '__') | Should -Be $FirstThreeValues
 
         $LastFourValues = $Array | Select-Object -Last 4
-        @('____', '____', '____', '____') | Should -Be $LastFourValues
+        @('__', '__', '__', '__') | Should -Be $LastFourValues
 
         $Values = $Array | Select-Object -Skip 10 -First 5
-        @('____', '____', '____', '____', '____') | Should -Be $Values
+        @('__', '__', '__', '__', '__') | Should -Be $Values
 
         # SkipLast cannot be used alongside the Last, First, and Skip parameters.
 
         $Values = $Array | Select-Object -SkipLast 95
-        @('____', '____', '____', '____', '____') | Should -Be $Values
+        @('__', '__', '__', '__', '__') | Should -Be $Values
     }
 
     It 'can ignore duplicate objects' {
@@ -114,7 +114,7 @@ Describe 'Select-Object' {
             '6', '2', '5', '1', '4'
 
         $UniqueItems = $Array | Select-Object -Unique
-        @('6', '____', '4', '8', '____', '____', '3', '____', '2') | Should -Be $UniqueItems
+        @('6', '__', '4', '8', '__', '__', '3', '__', '2') | Should -Be $UniqueItems
     }
 
     It 'can ignore duplicate complex objects' {
