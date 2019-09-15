@@ -391,7 +391,7 @@ Describe 'Binary Operators' {
         It 'uses the most significant bit to describe a negative number' {
             # When the signing bit alone is set, the value is the smallest value, -128.
 
-            '1000000' | ConvertFrom-Binary -To SByte | Should -Be -128
+            '1000000' | ConvertFrom-Binary -To SByte | Should -Be (-128)
 
             # The opposite binary value is the maximum positive value for the number.
 
