@@ -60,13 +60,13 @@ Describe 'Select-Object' {
 
         $Selected | Should -BeOfType [System.Management.Automation.PSCustomObject]
 
-        '___' | Should -BeIn $Selected.PSTypeNames
+        '____' | Should -BeIn $Selected.PSTypeNames
     }
 
     It 'can retrieve just the contents or value of a property' {
         # Individual properties can be expanded, retrieving the just a value.
 
-        $PropertyToExpand = '___'
+        $PropertyToExpand = '____'
 
         $Value = Get-Item -Path $PSHome | Select-Object -ExpandProperty $PropertyToExpand
 
@@ -89,31 +89,32 @@ Describe 'Select-Object' {
     }
 
     It 'can pick specific numbers of objects' {
-        $Array = 1..100
+        $Array = 1..100 -as [string[]]
 
         $FirstThreeValues = $Array | Select-Object -First 3
-        @(__, __, __) | Should -Be $FirstThreeValues
+        @('____', '____', '____') | Should -Be $FirstThreeValues
 
         $LastFourValues = $Array | Select-Object -Last 4
-        @(__, __, __, __) | Should -Be $LastFourValues
+        @('____', '____', '____', '____') | Should -Be $LastFourValues
 
         $Values = $Array | Select-Object -Skip 10 -First 5
-        @(__, __, __, __, __) | Should -Be $Values
+        @('____', '____', '____', '____', '____') | Should -Be $Values
 
         # SkipLast cannot be used alongside the Last, First, and Skip parameters.
 
         $Values = $Array | Select-Object -SkipLast 95
-        @(__, __, __, __, __) | Should -Be $Values
+        @('____', '____', '____', '____', '____') | Should -Be $Values
     }
 
     It 'can ignore duplicate objects' {
         # Select-Object can be used to create a unique list.
 
-        $Array = 6, 1, 4, 8, 7, 5, 3, 9, 2, 3, 2, 1, 5, 1, 6, 2, 8, 4,
-        7, 3, 1, 2, 6, 3, 7, 1, 4, 5, 2, 1, 3, 6, 2, 5, 1, 4
+        $Array = '6', '1', '4', '8', '7', '5', '3', '9', '2', '3', '2', '1', '5', '1', '6',
+            '2', '8', '4', '7', '3', '1', '2', '6', '3', '7', '1', '4', '5', '2', '1', '3',
+            '6', '2', '5', '1', '4'
 
         $UniqueItems = $Array | Select-Object -Unique
-        @(6, __, 4, 8, __, __, 3, __, 2) | Should -Be $UniqueItems
+        @('6', '____', '4', '8', '____', '____', '3', '____', '2') | Should -Be $UniqueItems
     }
 
     It 'can ignore duplicate complex objects' {
@@ -169,7 +170,7 @@ Describe 'Select-Object' {
 
         $SelectedFile = $Files | Select-Object -First 1
 
-        '___' | Should -Be $SelectedFile.GetType().FullName
+        '____' | Should -Be $SelectedFile.GetType().FullName
     }
 
     It 'supports custom, or calculated, properties' {
