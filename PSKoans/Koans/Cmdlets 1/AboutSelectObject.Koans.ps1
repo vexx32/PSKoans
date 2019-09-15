@@ -58,16 +58,9 @@ Describe 'Select-Object' {
 
         $Selected = $Folder | Select-Object -Property * -ExcludeProperty Attributes
 
-        $Selected.GetType().FullName | Should -BeOfType [System.Management.Automation.PSCustomObject]
+        $Selected | Should -BeOfType [System.Management.Automation.PSCustomObject]
 
         '___' | Should -BeIn $Selected.PSTypeNames
-
-        <#
-            [System.Management.Automation.PSCustomObject] type should not be confused with commonly used
-            [PSCustomObject] type behind the accelerator.
-        #>
-
-        [System.Management.Automation.PSCustomObject] | Should -Not -Be [PSCustomObject]
     }
 
     It 'can retrieve just the contents or value of a property' {
@@ -237,5 +230,52 @@ Describe 'Select-Object' {
         )
 
         $Selected.____ | Should -BeOfType [TimeSpan]
+    }
+
+    It 'From Select-Object to PSCustomObject' {
+        <#
+            As mentioned above, the Select-Object command creates instances of the
+            System.Management.Automation.PSCustomObject type.
+
+            Select-Object can be used to create an object from scratch. The
+            technique below was widely used before PowerShell 2 was released.
+        #>
+
+        $customObject = '' | Select-Object -Property @(
+            @{ Name = 'Property1'; Expression = { 'Value1' } }
+            @{ Name = 'Property2'; Expression = { 'Value2' } }
+        )
+
+        $customObject | Should -BeOfType [System.Management.Automation.PSCustomObject]
+
+        # The approach above was replaced with New-Object with the release of PowerShell 2.
+
+        $customObject = New-Object PSObject -Property @{
+            Property1 = 'Value1'
+            Property2 = 'Value2'
+        }
+
+        $customObject | Should -BeOfType [System.Management.Automation.PSCustomObject]
+
+        <#
+            The [PSCustomObject] type accelerator was made available with PowerShell 3. It provides
+            a neater way of creating objects from scratch, replacing both of the methods above.
+
+            Select-Object is still widely used when creating a new object from another object.
+        #>
+
+        $customObject = [PSCustomObject]@{
+            Property1 = 'Value1'
+            Property2 = 'Value2'
+        }
+
+        $customObject | Should -BeOfType [System.Management.Automation.PSCustomObject]
+
+        <#
+            Despite the similar naming, the PSCustomObject type accelerator is shorthand for
+            System.Management.Automation.PSObject. It is named as it is because it creates a custom object.
+        #>
+
+        [PSCustomObject] | Should -Be [System.Management.Automation.PSObject]
     }
 }
