@@ -5,7 +5,6 @@ See below for a table of all koans and their corresponding positions. When worki
 |---------------------------|---------------------------------|----------------|--------------|
 |  Foundations              |  AboutAssertions                | 101            |  Untouched   |
 |  IntroTraining            |  AboutExamples                  | 102            |  Drafted     |
-|  IntroTraining            |  AboutDotNet                    | 103            |  Drafted     |
 |  IntroTraining            |  AboutOOP                       | 104            |  Drafted     |
 |  IntroTraining            |  AboutCmdletVerbs               | 105            |  Drafted     |
 |  IntroTraining            |  AboutGetMember                 | 106            |  Drafted     |
