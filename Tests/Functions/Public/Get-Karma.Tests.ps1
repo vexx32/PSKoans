@@ -110,7 +110,7 @@ Describe 'Get-Karma' {
                 }
 
                 It 'should indicate total number of koans' {
-                    $Result.TotalKoans | Should -Be 1
+                    $Result.TotalKoans | Should -Be 2
                 }
 
                 It 'should indicate the requested topic' {
