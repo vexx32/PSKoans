@@ -77,7 +77,7 @@ function Show-Karma {
                 $Params = @{
                     KoansPassed    = $Results.KoansPassed
                     TotalKoans     = $Results.TotalKoans
-                    RequestedTopic = $Results.RequestedTopic
+                    RequestedTopic = $Topic
                     Complete       = $Results.Complete
                 }
             }
