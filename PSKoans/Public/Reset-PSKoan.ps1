@@ -19,47 +19,63 @@ function Reset-PSKoan {
         [string[]]
         $Topic,
 
+        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
+
+        [Parameter(ParameterSetName = 'IncludeModule')]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule,
+
         [Parameter()]
         [SupportsWildcards()]
         [string]
         $Name = '*',
 
-        [Parameter(Mandatory, ParameterSetName = 'NameAndContext')]
+        [Parameter()]
         [SupportsWildcards()]
         [string]
-        $Context
+        $Context = '*'
     )
 
-    $params = @{ }
-    if ($Topic) {
-        $params.Topic = $Topic
+    $params = @{
+        Scope = 'User'
     }
-    Get-PSKoanFile @params | ForEach-Object {
-        $moduleKoan = Get-PSKoanIt -Path $_.ModuleFile.FullName |
+    switch ($true) {
+        { $Topic }         { $params['Topic'] = $Topic }
+        { $Module }        { $params['Module'] = $Module }
+        { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
+    }
+    Get-PSKoan @params | ForEach-Object {
+        $moduleKoan = Get-PSKoanIt -Path $_.Path |
             Where-Object {
                 $_.Name -like $Name -and
-                ($pscmdlet.ParameterSetName -eq 'NameOnly' -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
+                (-not $Context -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
             }
 
         if ($moduleKoan) {
             foreach ($koan in $moduleKoan) {
-                if ($Name -or $Context) {
-                    $userKoan = Get-PSKoanIt -Path $_.UserFile.FullName |
+                $userKoanPath = Join-Path (Get-PSKoanLocation) -ChildPath $_.RelativePath
+
+                if ($Name -ne '*' -or $Context) {
+                    $userKoan = Get-PSKoanIt -Path $userKoanPath |
                         Where-Object ID -eq $koan.ID
 
                     if ($userKoan) {
-                        $content = Get-Content -Path $_.UserFile.FullName -Raw
+                        $content = Get-Content -Path $userKoanPath -Raw
 
                         $content = $content.Remove(
                             $userKoan.Ast.Extent.StartOffset,
                             ($userKoan.Ast.Extent.EndOffset - $userKoan.Ast.Extent.StartOffset)
                         ).Insert(
                             $userKoan.Ast.Extent.StartOffset,
-                            $koan.Ast.Extent.Text
+                            $moduleKoan.Ast.Extent.Text
                         )
 
-                        if ($PSCmdlet.ShouldProcess(('Resetting "{0}" in {1}' -f $koan.Name, $_.Topic))) {
-                            Set-Content -Path $_.UserFile.FullName -Value $content -NoNewline
+                        if ($PSCmdlet.ShouldProcess($koan.Topic, ('Resetting "{0}"' -f $koan.Name))) {
+                            Set-Content -Path $userKoanPath -Value $content.TrimEnd() -NoNewline
                         }
                     }
                     else {
@@ -68,7 +84,7 @@ function Reset-PSKoan {
                 }
                 else {
                     if ($PSCmdlet.ShouldProcess($_.Topic, "Resetting all koans")) {
-                        Copy-Item -Path $_.ModuleFile.FullName -Destination $_.UserFile.FullName -Force
+                        Copy-Item -Path $koan.Path -Destination $userKoanPath -Force
                     }
                 }
             }

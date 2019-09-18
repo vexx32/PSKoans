@@ -4,13 +4,12 @@
     [OutputType([void])]
     [Alias()]
     param(
-        [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
         [ArgumentCompleter(
             {
                 param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-                $Values = (Get-PSKoanFile).Topic
+                $Values = (Get-PSKoan -IncludeModule * -Scope User -SkipAttributeParsing).Topic
                 return @($Values) -like "$WordToComplete*"
             }
         )]
@@ -18,20 +17,26 @@
         [string[]]
         $Topic,
 
-        [Parameter(ParameterSetName = 'Default')]
+        [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
         [ArgumentCompleter(
             {
                 param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-                $Values = (Get-PSKoanFile -Module * -ExcludeDefaultKoans).Topic
+                $Values = Get-PSKoanLocation |
+                    Join-Path -ChildPath 'Modules' |
+                    Get-ChildItem -Directory |
+                    Select-Object -ExpandProperty Name
                 return @($Values) -like "$WordToComplete*"
             }
         )]
         [string[]]
-        $Module,
+        $IncludeModule,
 
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
         [Switch]
-        $ExcludeDefaultKoans,
+        $Module,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
         [Alias('ListKoans')]
@@ -40,7 +45,15 @@
     )
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
-            Get-PSKoanFile
+            $params = @{
+                Scope = 'User'
+            }
+            switch ($true) {
+                { $Topic }         { $params['Topic'] = $Topic }
+                { $Module }        { $params['Module'] = $Module }
+                { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
+            }
+            Get-PSKoan @params
         }
         "Default" {
             Write-Verbose 'Sorting koans...'

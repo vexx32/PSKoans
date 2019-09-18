@@ -22,7 +22,7 @@
             {
                 param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-                $Values = (Get-PSKoanFile -Module * -ExcludeDefaultKoans).Topic
+                $Values = (Get-PSKoan -Module * -ExcludeDefaultKoans).Topic
                 return @($Values) -like "$WordToComplete*"
             }
         )]
@@ -84,11 +84,10 @@
             Show-MeditationPrompt -Greeting
 
             $GetParams = @{}
-            if ($Topic) {
-                $GetParams['Topic'] = $Topic
-            }
-            if ($IncludeModule) {
-                $GetParams['IncludeModule'] = $IncludeModule
+            switch ($true) {
+                { $Topic }         { $GetParams['Topic'] = $Topic }
+                { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
+                { $Module }        { $GetParams['Module'] = $Module }
             }
             $Results = Get-Karma @GetParams
 

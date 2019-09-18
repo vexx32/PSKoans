@@ -17,7 +17,17 @@ function Update-PSKoan {
         )]
         [SupportsWildcards()]
         [string[]]
-        $Topic
+        $Topic,
+
+        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
+
+        [Parameter(ParameterSetName = 'IncludeModule')]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule
     )
 
     $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topic
