@@ -90,37 +90,22 @@ Describe 'Get-Karma' {
 
             Describe 'Behaviour When All Koans Are Completed' {
                 BeforeAll {
-                    $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
-                    $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
+                    $StartLocation = Get-PSKoanLocation
+                    Set-PSKoanLocation -Path "$PSScriptRoot/CompletedKoan"
 
-                    New-Item $KoansCompletedTestLocation -ItemType Directory
-                    New-Item $TestFile -ItemType File
-
-                    Set-Content $TestFile -Value @'
-using module PSKoans
-[Koan(Position = 1)]
-param()
-
-Describe 'Koans Test' {
-    It 'is easy to solve' {
-        $true | should -be $true
-    }
-}
-'@
-
-                    Set-PSKoanLocation $KoansCompletedTestLocation
-                    $Result = Get-Karma -Topic SingleTopicTest
+                    $Result = Get-Karma -Topic SelectedTopicTest
                 }
 
-                It 'should not divide by zero' {
+                It 'should output the result object' {
                     $Result | Should -Not -BeNullOrEmpty
+                    $Result.PSTypeNames | Should -Contain 'PSKoans.CompleteResult'
                 }
 
                 It 'should indicate completion' {
                     $Result.Complete | Should -BeTrue
                 }
 
-                It 'should indicate total koans passed' {
+                It 'should indicate number of koans passed' {
                     $Result.KoansPassed | Should -Be 1
                 }
 
@@ -129,10 +114,10 @@ Describe 'Koans Test' {
                 }
 
                 It 'should indicate the requested topic' {
-                    $Result.RequestedTopic | Should -BeNullOrEmpty
+                    $Result.RequestedTopic | Should -Be 'SelectedTopicTest'
                 }
 
-                Set-PSKoanLocation $TestLocation
+                Set-PSKoanLocation -Path $StartLocation
             }
         }
     }
