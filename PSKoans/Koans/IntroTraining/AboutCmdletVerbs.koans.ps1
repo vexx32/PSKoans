@@ -10,7 +10,7 @@ param()
 
         Verb-Noun
 
-    With the verb being an action, and the noun being an object.
+    With the verb being an action, and the noun representing the target of the command.
 
     In this Koan, we'll cover the 5 basic verbs which'll see you through the majority of your
     PowerShell needs. But PowerShell has more than just 5 predefined verbs! You can see them

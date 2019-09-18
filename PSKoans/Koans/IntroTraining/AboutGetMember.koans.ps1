@@ -3,29 +3,40 @@ using module PSKoans
 param()
 <#
 
-    AboutGetMember
+    Introduction to Get-Member
  
     Following on from our last Koan about cmdlet verbs, lets cover the nouns.
 
-    As previously stated, the nouns are objects. These are also known as DataTypes.
+    As previously stated, the noun portion indicates the target of a given command.
 
-    If you use the "Get-Member" cmdlet on any object you'll see its datatype.
+    If you use the "Get-Member" cmdlet on any object you'll see its type name, or data type.
 
     For example:
 
-    PS C:\Users\Administrator\Documents\GitHub\Dev\PSKoans> Get-Service | Get-Member
+        PS C:\Users\Administrator\Documents\GitHub\Dev\PSKoans> Get-Process | Get-Member
 
 
-   TypeName: System.ServiceProcess.ServiceController
+            TypeName: System.Diagnostics.Process
 
-    Notice the "TypeName" is System.ServiceProcess.ServiceController. This tells us that
-    the Get-Service cmdlet returns objects of a ServiceController type. They reside in
-    the System.ServiceProcess namespace but you don't need to know more about this unless
-    you dive into .NET development.
+        Name                       MemberType     Definition
+        ----                       ----------     ----------
+        Handles                    AliasProperty  Handles = Handlecount
+        Name                       AliasProperty  Name = ProcessName
+        NPM                        AliasProperty  NPM = NonpagedSystemMemorySize64
+        PM                         AliasProperty  PM = PagedMemorySize64
+        SI                         AliasProperty  SI = SessionId
+        VM                         AliasProperty  VM = VirtualMemorySize64
+        WS                         AliasProperty  WS = WorkingSet64
 
-    In these Koans we'll go over the Get-Member cmdlet,
-    expanding upon our knowledge of object-orientated program, in order to find properties
-    and methods of an object. The next kew Koans will relate to what these "TypeName" items are.
+    You'll also see properties and methods. Together with the TypeName, this tells us everything
+    we need to know in order to access the object's data and any actions it can perform.
+
+    Accessing a property or method is done via dot notation, which boils down to:
+
+    $Object.Property
+    $Object.Method()
+
+    We'll cover why we have to use parentheses with method calls later.
 
 #>
 
@@ -35,132 +46,85 @@ Import-Module $RelativePath
 
 Describe 'Get-Member' {
 <#
-    The Get-Member cmdlet is super useful.
+    Use Get-Member to identify properties or methods of some common objects!
 
-    If you remember back in "AboutDotNet" we discovered that PowerShell is object-orientated;
-    everything is an object with properties (things the object has) and methods (things
-    the object can do). 
-
-    When we use Get-Member on any object (everything is an object in PowerShell!) it'll return to you
-    the datatype (TypeName) and a list of properties and methods the object has.
-
-    That's pretty neat. Using this not only can we figure out what type of object a 
-    thing is, but we can also see all of the information available to us from it and
-    any actions we can do with it.
-
-    So we can get properties and methods via Get-Member, and we know what these things are,
-    but how do we access them? .NET has a concept called dot notation, which boils down to:
-
-    Object.property
-    Object.method()
-
-    We'll cover why we have to use brackets with methods later.
-
-    For now, use Get-Member - plus dot notation - to retrieve a few methods and properties.
+    Make sure you use a different cmdlet each time, we'll be checking :)
 #>
 
-    It 'Propeties' {
+    It 'allows us to explore properties on an object' {
 
-        # Retrieve properties returned by various cmdlets.
-        # See below for an example:
-        <# EXAMPLE
-        # Specify the cmdlet here.
-        $cmdlet = Get-Service
-        # And the name of the property you've found
-        # E.G. "__" becomes "CanPauseAndContinue"
-        $PropertyName = "CanPauseAndContinue"
-        VerifyMember -MemberType Property -MemberName $PropertyName -Object $cmdlet | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
-        #>
+        # Get some properties!
         
+        <# EXAMPLE
 
-        # Below, specify three cmdlets and some of their properites you've discovered.
-
-        ##### 01 #####
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = "__"
-        # And the name of the property you've found
-        # E.G. "__" becomes "CanPauseAndContinue"
-        $PropertyName = "__"
-        VerifyMember -MemberType Property -MemberName $PropertyName -Object $cmdlet | Should -BeTrue `
+        $cmdlet = Get-Process
+        $PropertyName = "Threads"
+        $Members =  $cmdlet | Get-Member -MemberType Property -Name $PropertyName
+        $Members.count -ne 0 | Should -BeTrue `
         -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
 
-        ##### 02 #####
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = "__"
-        # And the name of the property you've found
-        # E.G. "__" becomes "CanPauseAndContinue"
-        $PropertyName = "__"
-        VerifyMember -MemberType Property -MemberName $PropertyName -Object $cmdlet | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
+        #>
 
-        ##### 03 #####
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = "__"
-        # And the name of the property you've found
-        # E.G. "__" becomes "CanPauseAndContinue"
+        $cmdlet1 = '__'
         $PropertyName = "__"
-        VerifyMember -MemberType Property -MemberName $PropertyName -Object $cmdlet | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
+        $Members = ____ | Get-Member -MemberType Property -Name $PropertyName
+        $Members.count -ne 0 | Should -BeTrue `
+        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet1"
+
+        $cmdlet2 = '__'
+        $PropertyName = "__"
+        $Members =  ____ | Get-Member -MemberType Property -Name $PropertyName
+        $Members.count -ne 0 | Should -BeTrue `
+        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet2"
+
+        $cmdlet3 = '__'
+        $PropertyName = "__"
+        $Members =  ____ | Get-Member -MemberType Property -Name $PropertyName
+        $Members.count -ne 0 | Should -BeTrue `
+        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet3"
+
+        $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
+        $UniqueCheck = $Cmdlets | Get-Unique
+        $UniqueCheck -eq 3 | Should -BeTrue `
+        -Because "three unique cmdlets should be supplied"
 
     }
 
-    It 'Methods' {
+    It 'allows us to explore methods on an object' {
 
-        # Retrieve methods returned by various cmdlets.
-        # See below for an example:
+        # Get some methods!
+
         <# EXAMPLE
 
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = Get-Service
-        # And the name of the Method you've found
-        # E.G. "__" becomes "GetType"
-        $MethodName = "GetType"
-        VerifyMember -MemberType Method -MemberName $MethodName -Object $cmdlet | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet"
-
+            $cmdlet = Get-Process
+            $PropertyName = "Close"
+            VerifyMember -MemberType Property -MemberName $PropertyName -Object $cmdlet | Should -BeTrue `
+            -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
 
         #>
-        
 
-        # Below, specify three cmdlets and some of their methods you've discovered.
-
-
-        ##### 01 #####
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = "__"
-        # And the name of the Method you've found
-        # E.G. "__" becomes "GetType"
+        $cmdlet1 = "__"
         $MethodName = "__"
-        VerifyMember -MemberType Method -MemberName $MethodName -Object $cmdlet | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet"
+        $Members =  $cmdlet | Get-Member -MemberType Method -Name $MethodName
+        $Members.count -ne 0 | Should -BeTrue `
+        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet1"
 
-
-        ##### 02 #####
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = "__"
-        # And the name of the Method you've found
-        # E.G. "__" becomes "GetType"
+        $cmdlet2 = "__"
         $MethodName = "__"
-        VerifyMember -MemberType Method -MemberName $MethodName -Object $cmdlet | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet"
+        $Members =  $cmdlet | Get-Member -MemberType Method -Name $MethodName
+        $Members.count -ne 0 | Should -BeTrue `
+        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet2"
 
-
-        ##### 03 #####
-        # Specify the cmdlet here.
-        # e.g. "__" becomes Get-Service
-        $cmdlet = "__"
-        # And the name of the Method you've found
-        # E.G. "__" becomes "GetType"
+        $cmdlet3 = "__"
         $MethodName = "__"
-        VerifyMember -MemberType Method -MemberName $MethodName -Object $cmdlet | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet"
+        $Members =  $cmdlet | Get-Member -MemberType Method -Name $MethodName
+        $Members.count -ne 0 | Should -BeTrue `
+        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet3"
+
+        $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
+        $UniqueCheck = $Cmdlets | Get-Unique
+        $UniqueCheck -eq 3 | Should -BeTrue `
+        -Because "three unique cmdlets should be supplied"
 
     }
 
