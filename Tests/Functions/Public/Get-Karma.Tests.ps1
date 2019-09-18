@@ -113,7 +113,8 @@ Describe 'Koans Test' {
 
                 $Result.Complete | Should -BeTrue
                 $Result.KoansPassed | Should -Be 1
-                $Resukt.RequestedTopic | Should -BeNullOrEmpty
+                $Result.TotalKoans | Should -Be 1
+                $Result.RequestedTopic | Should -BeNullOrEmpty
 
                 Set-PSKoanLocation $TestLocation
             }
