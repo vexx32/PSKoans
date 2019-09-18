@@ -40,11 +40,7 @@ param()
 
 #>
 
-$RelativePath = ".\AnswerFunctions\IntroTraining\AboutGetMemberAnswers\AboutGetMemberAnswers.psd1"
-Import-Module $RelativePath
-
-
-Describe 'Get-Member' {
+Describe "Get Member" {
 <#
     Use Get-Member to identify properties or methods of some common objects!
 
@@ -57,36 +53,41 @@ Describe 'Get-Member' {
         
         <# EXAMPLE
 
-        $cmdlet = Get-Process
+        $cmdlet1 = 'Get-Process'
         $PropertyName = "Threads"
-        $Members =  $cmdlet | Get-Member -MemberType Property -Name $PropertyName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
+        $Reason = $BecauseString -f $PropertyName, $cmdlet1
+        Get-Process |
+            Get-Member -MemberType Property -Name $PropertyName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
         #>
+        $BecauseString = "property '{0}' should be present in output from {1}"
 
         $cmdlet1 = '__'
         $PropertyName = "__"
-        $Members = ____ | Get-Member -MemberType Property -Name $PropertyName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet1"
+        $Reason = $BecauseString -f $PropertyName, $cmdlet1
+        ____ |
+            Get-Member -MemberType Property -Name $PropertyName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
         $cmdlet2 = '__'
         $PropertyName = "__"
-        $Members =  ____ | Get-Member -MemberType Property -Name $PropertyName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet2"
+        $Reason = $BecauseString -f $PropertyName, $cmdlet2
+        ____ |
+            Get-Member -MemberType Property -Name $PropertyName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
         $cmdlet3 = '__'
         $PropertyName = "__"
-        $Members =  ____ | Get-Member -MemberType Property -Name $PropertyName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet3"
+        $Reason = $BecauseString -f $PropertyName, $cmdlet3
+        ____ |
+            Get-Member -MemberType Property -Name $PropertyName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
         $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
         $UniqueCheck = $Cmdlets | Get-Unique
-        $UniqueCheck -eq 3 | Should -BeTrue `
-        -Because "three unique cmdlets should be supplied"
+        $UniqueCheck.count -eq 3 | 
+            Should -BeTrue -Because "three unique cmdlets should be supplied"
 
     }
 
@@ -96,35 +97,42 @@ Describe 'Get-Member' {
 
         <# EXAMPLE
 
-            $cmdlet = Get-Process
-            $PropertyName = "Close"
-            VerifyMember -MemberType Property -MemberName $PropertyName -Object $cmdlet | Should -BeTrue `
-            -Because "$PropertyName property doesn't exist in given cmdlet $cmdlet"
+        $cmdlet1 = 'Get-Process'
+        $MethodName = "Close"
+        $Reason = $BecauseString -f $PropertyName, $cmdlet1
+        Get-Process |
+            Get-Member -MemberType Method -Name $MethodName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
         #>
 
-        $cmdlet1 = "__"
-        $MethodName = "__"
-        $Members =  $cmdlet | Get-Member -MemberType Method -Name $MethodName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet1"
+        $BecauseString = "method '{0}' should be present in output from {1}"
 
-        $cmdlet2 = "__"
+        $cmdlet1 = '__'
         $MethodName = "__"
-        $Members =  $cmdlet | Get-Member -MemberType Method -Name $MethodName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet2"
+        $Reason = $BecauseString -f $MethodName, $cmdlet1
+        ____ |
+            Get-Member -MemberType Method -Name $MethodName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
-        $cmdlet3 = "__"
+        $cmdlet2 = '__'
         $MethodName = "__"
-        $Members =  $cmdlet | Get-Member -MemberType Method -Name $MethodName
-        $Members.count -ne 0 | Should -BeTrue `
-        -Because "$MethodName method doesn't exist in given cmdlet $cmdlet3"
+        $Reason = $BecauseString -f $MethodName, $cmdlet2
+        ____ |
+            Get-Member -MemberType Method -Name $MethodName |
+            Should -Not -BeNullOrEmpty -Because $Reason
+
+        $cmdlet3 = '__'
+        $MethodName = "__"
+        $Reason = $BecauseString -f $MethodName, $cmdlet3
+        ____ |
+            Get-Member -MemberType Method -Name $MethodName |
+            Should -Not -BeNullOrEmpty -Because $Reason
 
         $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
         $UniqueCheck = $Cmdlets | Get-Unique
-        $UniqueCheck -eq 3 | Should -BeTrue `
-        -Because "three unique cmdlets should be supplied"
+        $UniqueCheck.count -eq 3 | 
+            Should -BeTrue -Because "three unique cmdlets should be supplied"
 
     }
 
