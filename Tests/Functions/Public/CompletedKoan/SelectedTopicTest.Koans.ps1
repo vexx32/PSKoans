@@ -5,6 +5,10 @@ param()
 Describe 'Koans Test' {
 
     It 'is easy to solve' {
-        $true | should -be $true
+        $true | Should -BeTrue
+    }
+
+    It 'is positively trivial' {
+        $false | Should -BeFalse
     }
 }
