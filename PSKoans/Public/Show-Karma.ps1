@@ -75,6 +75,14 @@ function Show-Karma {
 
             if ($Results.Complete) {
                 $Params = @{
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    RequestedTopic = $Results.RequestedTopic
+                    Complete       = $Results.Complete
+                }
+            }
+            else {
+                $Params = @{
                     DescribeName   = $Results.Describe
                     ItName         = $Results.It
                     Expectation    = $Results.Expectation
@@ -88,14 +96,6 @@ function Show-Karma {
 
                 if (-not $Detailed) {
                     $Params.Remove('Results')
-                }
-            }
-            else {
-                $Params = @{
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    RequestedTopic = $Results.RequestedTopic
-                    Complete       = $Results.Complete
                 }
             }
 

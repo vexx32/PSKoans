@@ -109,7 +109,12 @@ Describe 'Koans Test' {
 
                 Set-PSKoanLocation $KoansCompletedTestLocation
 
-                { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
+                $Result = Get-Karma -Topic SingleTopicTest
+
+                $Result.Complete | Should -BeTrue
+                $Result.KoansPassed | Should -Be 1
+                $Result.TotalKoans | Should -Be 1
+                $Resukt.RequestedTopic | Should -BeNullOrEmpty
 
                 Set-PSKoanLocation $TestLocation
             }
