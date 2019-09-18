@@ -90,12 +90,11 @@ function Show-Karma {
                     KoansPassed    = $Results.KoansPassed
                     TotalKoans     = $Results.TotalKoans
                     CurrentTopic   = $Results.CurrentTopic
-                    Results        = $PesterTests.TestResult
                     RequestedTopic = $Topic
                 }
 
-                if (-not $Detailed) {
-                    $Params.Remove('Results')
+                if ($Detailed) {
+                    $Params.Add('Results', $PesterTests.TestResult)
                 }
             }
 
