@@ -88,14 +88,15 @@ Describe 'Get-Karma' {
                 Assert-MockCalled Invoke-Koan -Times @($Topic).Count
             }
 
-            It 'should not divide by zero if all Koans are completed' {
-                $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
-                $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
+            Describe 'Behaviour When All Koans Are Completed' {
+                BeforeAll {
+                    $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
+                    $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
 
-                New-Item $KoansCompletedTestLocation -ItemType Directory
-                New-Item $TestFile -ItemType File
+                    New-Item $KoansCompletedTestLocation -ItemType Directory
+                    New-Item $TestFile -ItemType File
 
-                Set-Content $TestFile -Value @'
+                    Set-Content $TestFile -Value @'
 using module PSKoans
 [Koan(Position = 1)]
 param()
@@ -107,14 +108,29 @@ Describe 'Koans Test' {
 }
 '@
 
-                Set-PSKoanLocation $KoansCompletedTestLocation
+                    Set-PSKoanLocation $KoansCompletedTestLocation
+                    $Result = Get-Karma -Topic SingleTopicTest
+                }
 
-                $Result = Get-Karma -Topic SingleTopicTest
+                It 'should not divide by zero' {
+                    $Result | Should -Not -BeNullOrEmpty
+                }
 
-                $Result.Complete | Should -BeTrue
-                $Result.KoansPassed | Should -Be 1
-                $Result.TotalKoans | Should -Be 1
-                $Result.RequestedTopic | Should -BeNullOrEmpty
+                It 'should indicate completion' {
+                    $Result.Complete | Should -BeTrue
+                }
+
+                It 'should indicate total koans passed' {
+                    $Result.KoansPassed | Should -Be 1
+                }
+
+                It 'should indicate total number of koans' {
+                    $Result.TotalKoans | Should -Be 1
+                }
+
+                It 'should indicate the requested topic' {
+                    $Result.RequestedTopic | Should -BeNullOrEmpty
+                }
 
                 Set-PSKoanLocation $TestLocation
             }
