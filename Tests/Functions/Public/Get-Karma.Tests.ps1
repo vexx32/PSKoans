@@ -34,7 +34,6 @@ Describe 'Get-Karma' {
 
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
                 Mock Get-Koan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
@@ -67,7 +66,6 @@ Describe 'Get-Karma' {
 
         Context 'With -Topic Parameter' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Invoke-Koan -ModuleName 'PSKoans' { }
 
                 $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
@@ -87,38 +85,38 @@ Describe 'Get-Karma' {
                 Get-Karma -Topic $Topic
                 Assert-MockCalled Invoke-Koan -Times @($Topic).Count
             }
+        }
 
-            Describe 'Behaviour When All Koans Are Completed' {
-                BeforeAll {
-                    $StartLocation = Get-PSKoanLocation
-                    Set-PSKoanLocation -Path "$PSScriptRoot/CompletedKoan"
+        Describe 'Behaviour When All Koans Are Completed' {
+            BeforeAll {
+                $StartLocation = Get-PSKoanLocation
+                Set-PSKoanLocation -Path "$PSScriptRoot/CompletedKoan"
 
-                    $Result = Get-Karma -Topic SelectedTopicTest
-                }
-
-                It 'should output the result object' {
-                    $Result | Should -Not -BeNullOrEmpty
-                    $Result.PSTypeNames | Should -Contain 'PSKoans.CompleteResult'
-                }
-
-                It 'should indicate completion' {
-                    $Result.Complete | Should -BeTrue
-                }
-
-                It 'should indicate number of koans passed' {
-                    $Result.KoansPassed | Should -Be 1
-                }
-
-                It 'should indicate total number of koans' {
-                    $Result.TotalKoans | Should -Be 2
-                }
-
-                It 'should indicate the requested topic' {
-                    $Result.RequestedTopic | Should -Be 'SelectedTopicTest'
-                }
-
-                Set-PSKoanLocation -Path $StartLocation
+                $Result = Get-Karma -Topic SelectedTopicTest
             }
+
+            It 'should output the result object' {
+                $Result | Should -Not -BeNullOrEmpty
+                $Result.PSTypeNames | Should -Contain 'PSKoans.CompleteResult'
+            }
+
+            It 'should indicate completion' {
+                $Result.Complete | Should -BeTrue
+            }
+
+            It 'should indicate number of koans passed' {
+                $Result.KoansPassed | Should -Be 2
+            }
+
+            It 'should indicate total number of koans' {
+                $Result.TotalKoans | Should -Be 2
+            }
+
+            It 'should indicate the requested topic' {
+                $Result.RequestedTopic | Should -Be 'SelectedTopicTest'
+            }
+
+            Set-PSKoanLocation -Path $StartLocation
         }
     }
 }
