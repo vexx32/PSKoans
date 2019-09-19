@@ -10,7 +10,7 @@ function Get-KoanAttribute {
     #>
 
     [CmdletBinding()]
-    [OutputType([KoanAttribute])]
+    [OutputType('PSKoans.KoanAttributeInfo')]
     param (
         [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('PSPath')]
@@ -18,24 +18,41 @@ function Get-KoanAttribute {
         $Path
     )
 
+    begin {
+        $defaultModule = [KoanAttribute]::new().Module
+    }
+
     process {
         try {
-            $tokens = $errors = $null
+            $ast = Get-KoanAst -Path $Path
+            $attributeAst = $ast.Find(
+                {
+                    param ( $node )
 
-            # Remove the "using module" line. Avoids a slow call to Get-Module -ListAvailable from "using module".
-            $content = Get-Content -Path $Path |
-                Where-Object { -not $_.StartsWith('using module', [StringComparison]::InvariantCultureIgnoreCase) } |
-                Out-String
-
-            $ast = [Parser]::ParseInput(
-                $content,
-                [Ref]$tokens,
-                [Ref]$errors
+                    $node -is [AttributeAst] -and
+                    $node.TypeName.Name -in 'Koan', 'KoanAttribute'
+                },
+                $false
             )
+            $namedArguments = $attributeAst.NamedArguments | Group-Object ArgumentName -AsHashTable -AsString
 
-            $ast.GetScriptBlock().Attributes.Where{ $_.TypeId.Name -eq 'KoanAttribute' }
+            [PSCustomObject]@{
+                Position   = $namedArguments['Position'].Argument.SafeGetValue()
+                Module     = if ($namedArguments.Contains('Module')) {
+                    $namedArguments['Module'].Argument.SafeGetValue()
+                } else {
+                    $defaultModule
+                }
+                PSTypeName = 'PSKoans.KoanAttributeInfo'
+            }
         } catch {
-            $pscmdlet.ThrowTerminatingError($_)
+            $ErrorDetails = @{
+                Exception     = $_.Exception
+                ErrorId       = 'PSKoans.KoanAttributeParserFailed'
+                ErrorCategory = 'OperationStopped'
+                TargetObject  = $Path
+            }
+            Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
         }
     }
 }

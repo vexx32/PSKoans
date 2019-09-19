@@ -14,7 +14,7 @@ $Params = @{
     ScriptBlock   = {
         param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-        $Values = (Get-PSKoan -Scope Module -IncludeModule *).Topic
+        $Values = (Get-PSKoan -Scope Module -IncludeModule * -SkipAttributeParsing).Topic
         return @($Values) -like "$WordToComplete*"
     }
 }

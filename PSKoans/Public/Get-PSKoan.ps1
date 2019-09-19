@@ -2,7 +2,7 @@ function Get-PSKoan {
     [CmdletBinding(
         DefaultParameterSetName = 'IncludeModule',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoan.md')]
-    [OutputType([PSObject[]])]
+    [OutputType('PSKoans.KoanInfo')]
     param(
         [Parameter()]
         [SupportsWildcards()]
@@ -43,9 +43,9 @@ function Get-PSKoan {
             Select-Object -ExpandProperty Name
     }
 
-    $Module = $IncludeModule
     $KoanDirectories = switch ($true) {
         { $pscmdlet.ParameterSetName -eq 'IncludeModule' } {
+            $Module = $IncludeModule
             Get-ChildItem $ParentPath -Exclude Modules -Directory
         }
         { $Module } {
@@ -75,7 +75,7 @@ function Get-PSKoan {
                 Position     = $koanAttribute.Position
                 Path         = $_.FullName
                 RelativePath = $_.Fullname -replace $ParentPathPattern -replace '^\\'
-                PSTypeName   = 'PSKoan.KoanInfo'
+                PSTypeName   = 'PSKoans.KoanInfo'
             }
         } |
         Sort-Object { $_.Module -ne '_powershell' }, Module, Position, Topic

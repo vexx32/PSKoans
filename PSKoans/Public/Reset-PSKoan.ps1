@@ -41,15 +41,15 @@ function Reset-PSKoan {
         { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
     }
     Get-PSKoan @params | ForEach-Object {
-        $moduleKoan = Get-PSKoanIt -Path $_.Path |
+        $moduleKoan = Get-KoanIt -Path $_.Path |
             Where-Object ID -like ('{0}/{1}' -f $Context, $Name)
 
         if ($moduleKoan) {
+            $userKoanPath = Join-Path (Get-PSKoanLocation) -ChildPath $_.RelativePath
+
             if ($Name -ne '*' -or $Context -ne '*') {
                 foreach ($koan in $moduleKoan) {
-                    $userKoanPath = Join-Path (Get-PSKoanLocation) -ChildPath $_.RelativePath
-
-                    $userKoan = Get-PSKoanIt -Path $userKoanPath |
+                    $userKoan = Get-KoanIt -Path $userKoanPath |
                         Where-Object ID -eq $koan.ID
 
                     if ($userKoan) {

@@ -9,15 +9,15 @@
         [string[]]
         $Topic,
 
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'ListKoans')]
+        [string[]]
+        $Module,
+
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'ListKoans')]
         [string[]]
         $IncludeModule,
-
-        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
-        [Parameter(ParameterSetName = 'ListKoans')]
-        [Switch]
-        $Module,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
         [Alias('ListKoans')]
@@ -29,9 +29,9 @@
         Scope = 'User'
     }
     switch ($true) {
-        { $Topic }         { $params['Topic'] = $Topic }
-        { $Module }        { $params['Module'] = $Module }
-        { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
+        { $Topic }         { $GetParams['Topic'] = $Topic }
+        { $Module }        { $GetParams['Module'] = $Module }
+        { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
     }
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
@@ -116,7 +116,7 @@
                     KoansPassed    = $KoansPassed
                     TotalKoans     = $TotalKoans
                     CurrentTopic   = [PSCustomObject]@{
-                        Name      = $KoanFile.Name -replace '\.Koans\.ps1$'
+                        Name      = $KoanFile.Topic
                         Completed = $PesterTests.PassedCount
                         Total     = $PesterTests.TotalCount
                     }

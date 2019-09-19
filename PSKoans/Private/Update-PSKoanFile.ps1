@@ -38,7 +38,7 @@ function Update-PSKoanFile {
     )
 
     Get-PSKoan @PSBoundParameters | ForEach-Object {
-        $moduleKoans = Get-PSKoanIt -Path $_.Path | ForEach-Object {
+        $moduleKoans = Get-KoanIt -Path $_.Path | ForEach-Object {
             [PSCustomObject]@{
                 ID   = $_.ID
                 Name = $_.Name
@@ -54,7 +54,7 @@ function Update-PSKoanFile {
         $path = Get-PSKoanLocation | Join-Path -ChildPath $_.RelativePath
 
         if (Test-Path -Path $path) {
-            $userKoans = Get-PSKoanIt -Path $path
+            $userKoans = Get-KoanIt -Path $path
             $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
 
             if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
