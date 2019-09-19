@@ -1,4 +1,4 @@
-function Get-PSKoanSetting {
+function Set-PSKoanSetting {
     <#
     .SYNOPSIS
     Modifies the configuration settings for PSKoans.
