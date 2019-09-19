@@ -29,6 +29,7 @@ Task 'Init' {
     Write-Information @Continue @"
 $Lines
 Repository Branch: $env:BUILD_SOURCEBRANCHNAME ($env:BUILD_SOURCEBRANCH)
+
 Build System Details:
 "@
     Get-Item 'ENV:BH*'
@@ -71,6 +72,7 @@ STATUS: Testing with PowerShell $PSVersion
 
 Task 'Build' -Depends 'Test' {
     Write-Information @Continue @"
+
 $Lines
 "@
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
