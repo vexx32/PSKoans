@@ -7,24 +7,16 @@ function Reset-PSKoan {
     param(
         [Parameter()]
         [Alias('Koan', 'File')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = (Get-PSKoanFile).Topic
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
         [SupportsWildcards()]
         [string[]]
         $Topic,
 
-        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
         [SupportsWildcards()]
         [string[]]
         $Module,
 
-        [Parameter(ParameterSetName = 'IncludeModule')]
+        [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
         [SupportsWildcards()]
         [string[]]
         $IncludeModule,
@@ -41,7 +33,7 @@ function Reset-PSKoan {
     )
 
     $params = @{
-        Scope = 'User'
+        Scope = 'Module'
     }
     switch ($true) {
         { $Topic }         { $params['Topic'] = $Topic }
@@ -50,16 +42,13 @@ function Reset-PSKoan {
     }
     Get-PSKoan @params | ForEach-Object {
         $moduleKoan = Get-PSKoanIt -Path $_.Path |
-            Where-Object {
-                $_.Name -like $Name -and
-                (-not $Context -or $_.ID -like ('{0}/{1}' -f $Context, $Name))
-            }
+            Where-Object ID -like ('{0}/{1}' -f $Context, $Name)
 
         if ($moduleKoan) {
-            foreach ($koan in $moduleKoan) {
-                $userKoanPath = Join-Path (Get-PSKoanLocation) -ChildPath $_.RelativePath
+            if ($Name -ne '*' -or $Context -ne '*') {
+                foreach ($koan in $moduleKoan) {
+                    $userKoanPath = Join-Path (Get-PSKoanLocation) -ChildPath $_.RelativePath
 
-                if ($Name -ne '*' -or $Context) {
                     $userKoan = Get-PSKoanIt -Path $userKoanPath |
                         Where-Object ID -eq $koan.ID
 
@@ -79,13 +68,20 @@ function Reset-PSKoan {
                         }
                     }
                     else {
-                        Write-Error ('The koan "{0}" does not exist in the user path.' -f $koan.Name)
+                        $ErrorDetails = @{
+                            ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
+                            ExceptionMessage = 'The koan "{0}" does not exist in the user path.' -f $koan.Name
+                            ErrorId          = 'PSKoans.NoMatchingKoanItFound'
+                            ErrorCategory    = 'ObjectNotFound'
+                            TargetObject     = $koan
+                        }
+                        Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
                     }
                 }
-                else {
-                    if ($PSCmdlet.ShouldProcess($_.Topic, "Resetting all koans")) {
-                        Copy-Item -Path $koan.Path -Destination $userKoanPath -Force
-                    }
+            }
+            else {
+                if ($PSCmdlet.ShouldProcess($_.Topic, "Resetting all koans")) {
+                    Copy-Item -Path $_.Path -Destination $userKoanPath -Force
                 }
             }
         }
@@ -95,7 +91,7 @@ function Reset-PSKoan {
                 $ErrorDetails = @{
                     ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
                     ExceptionMessage = $message
-                    ErrorId          = 'PSKoans.NoMatchingKoanFound'
+                    ErrorId          = 'PSKoans.NoMatchingKoanTopicFound'
                     ErrorCategory    = 'ObjectNotFound'
                     TargetObject     = $Topic -join ','
                 }

@@ -43,9 +43,7 @@ function Get-PSKoan {
             Select-Object -ExpandProperty Name
     }
 
-    $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topic
     $Module = $IncludeModule
-
     $KoanDirectories = switch ($true) {
         { $pscmdlet.ParameterSetName -eq 'IncludeModule' } {
             Get-ChildItem $ParentPath -Exclude Modules -Directory
@@ -59,6 +57,7 @@ function Get-PSKoan {
         }
     }
 
+    $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topic
     $ParentPathPattern = [regex]::Escape($parentPath)
     # Declared to avoid scope problems when attribute parsing is not required.
     $KoanAttribute = $null
@@ -76,7 +75,7 @@ function Get-PSKoan {
                 Position     = $koanAttribute.Position
                 Path         = $_.FullName
                 RelativePath = $_.Fullname -replace $ParentPathPattern -replace '^\\'
-                PSTypeName = 'PSKoan.KoanFile'
+                PSTypeName   = 'PSKoan.KoanInfo'
             }
         } |
         Sort-Object { $_.Module -ne '_powershell' }, Module, Position, Topic

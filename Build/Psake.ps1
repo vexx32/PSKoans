@@ -29,17 +29,12 @@ Task 'Init' {
     Write-Information @Continue @"
 $Lines
 Repository Branch: $env:BUILD_SOURCEBRANCHNAME ($env:BUILD_SOURCEBRANCH)
-
 Build System Details:
 "@
     Get-Item 'ENV:BH*'
 }
 
-Task 'Build' -Depends 'Init' {
-    Build-Module -SourcePath $PSScriptRoot\..\PSKoans\PSKoans.psd1
-}
-
-Task 'Test' -Depends 'Build' {
+Task 'Test' -Depends 'Init' {
     Write-Information @Continue @"
 $Lines
 STATUS: Testing with PowerShell $PSVersion
@@ -74,9 +69,8 @@ STATUS: Testing with PowerShell $PSVersion
     }
 }
 
-Task 'Publish' -Depends 'Test' {
+Task 'Build' -Depends 'Test' {
     Write-Information @Continue @"
-
 $Lines
 "@
     # Load the module, read the exported functions, update the psd1 FunctionsToExport

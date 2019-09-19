@@ -21,17 +21,24 @@ function Update-PSKoanFile {
     [OutputType([void])]
     param(
         [Parameter()]
+        [Alias('Koan', 'File')]
         [SupportsWildcards()]
         [string[]]
-        $Topic
+        $Topic,
+
+        [Parameter()]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
+
+        [Parameter()]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule
     )
 
-    $params = @{}
-    if ($Topic) {
-        $params.Topic = $Topic
-    }
-    Get-PSKoanFile @params | ForEach-Object {
-        $moduleKoans = Get-PSKoanIt -Path $_.ModuleFile.FullName | ForEach-Object {
+    Get-PSKoan @PSBoundParameters | ForEach-Object {
+        $moduleKoans = Get-PSKoanIt -Path $_.Path | ForEach-Object {
             [PSCustomObject]@{
                 ID   = $_.ID
                 Name = $_.Name
@@ -44,12 +51,14 @@ function Update-PSKoanFile {
             return
         }
 
-        if (Test-Path -Path $_.UserFile.FullName) {
-            $userKoans = Get-PSKoanIt -Path $_.UserFile.FullName
+        $path = Get-PSKoanLocation | Join-Path -ChildPath $_.RelativePath
+
+        if (Test-Path -Path $path) {
+            $userKoans = Get-PSKoanIt -Path $path
             $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
 
             if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
-                $content = Get-Content -Path $_.ModuleFile.FullName -Raw
+                $content = Get-Content -Path $_.Path -Raw
 
                 $userKoans |
                     Where-Object { $moduleKoans.Contains($_.ID) } |
@@ -71,8 +80,8 @@ function Update-PSKoanFile {
                         )
                     }
 
-                if ($PSCmdlet.ShouldProcess($_.UserFile.FullName, 'Updating Koan File')) {
-                    Set-Content -Path $_.UserFile.FullName -Value $content -NoNewline
+                if ($PSCmdlet.ShouldProcess($path, 'Updating Koan File')) {
+                    Set-Content -Path $path -Value $content.TrimEnd() -NoNewline
                 }
             }
         }

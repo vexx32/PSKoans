@@ -6,7 +6,7 @@ param(
 # Grab nuget bits, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
-Import-Module -Name Psake, BuildHelpers, ModuleBuilder
+Import-Module -Name Psake, BuildHelpers
 
 Set-BuildEnvironment
 

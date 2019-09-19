@@ -5,36 +5,17 @@
     [Alias()]
     param(
         [Alias('Koan', 'File')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = (Get-PSKoan -IncludeModule * -Scope User -SkipAttributeParsing).Topic
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
         [SupportsWildcards()]
         [string[]]
         $Topic,
 
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
-        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = Get-PSKoanLocation |
-                    Join-Path -ChildPath 'Modules' |
-                    Get-ChildItem -Directory |
-                    Select-Object -ExpandProperty Name
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
+        [Parameter(ParameterSetName = 'ListKoans')]
         [string[]]
         $IncludeModule,
 
         [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
-        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Parameter(ParameterSetName = 'ListKoans')]
         [Switch]
         $Module,
 
@@ -43,17 +24,18 @@
         [switch]
         $ListTopics
     )
+
+    $GetParams = @{
+        Scope = 'User'
+    }
+    switch ($true) {
+        { $Topic }         { $params['Topic'] = $Topic }
+        { $Module }        { $params['Module'] = $Module }
+        { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
+    }
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
-            $params = @{
-                Scope = 'User'
-            }
-            switch ($true) {
-                { $Topic }         { $params['Topic'] = $Topic }
-                { $Module }        { $params['Module'] = $Module }
-                { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
-            }
-            Get-PSKoan @params
+            Get-PSKoan @GetParams
         }
         "Default" {
             Write-Verbose 'Sorting koans...'
@@ -69,7 +51,7 @@
                     Write-Verbose "Getting Koans from the selected module(s): $($Module -join ', ')"
                     $Params['Module'] = $Module
                 }
-                $SortedKoanList = Get-Koan @Params
+                $SortedKoanList = Get-PSKoan @GetParams
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
