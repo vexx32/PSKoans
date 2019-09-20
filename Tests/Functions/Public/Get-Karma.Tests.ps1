@@ -93,13 +93,8 @@ InModuleScope 'PSKoans' {
                 Mock Get-PSKoanLocation {
                     Join-Path -Path $TestDrive -ChildPath 'CompletedKoan'
                 }
-                
-                $Result = Get-Karma -Topic SelectedTopicTest
-            }
 
-            It 'should not divide by zero if all Koans are completed' {
-                $TestFile = Join-Path -Path (Get-PSKoanLocation) -ChildPath 'Group\SingleTopicTest.Koans.Ps1'
-
+                $TestFile = Join-Path -Path (Get-PSKoanLocation) -ChildPath 'Group\SelectedTopicTest.Koans.Ps1'
                 New-Item -Path (Split-Path $TestFile -Parent) -ItemType Directory -Force
                 Set-Content -Path $TestFile -Value @'
                     using module PSKoans
@@ -107,13 +102,26 @@ InModuleScope 'PSKoans' {
                     param()
 
                     Describe 'Koans Test' {
+
                         It 'is easy to solve' {
-                            $true | should -be $true
+                            $true | Should -BeTrue
+                        }
+
+                        It 'is positively trivial' {
+                            $false | Should -BeFalse
                         }
                     }
 '@
 
-                { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
+                try {
+                    $Result = Get-Karma -Topic SelectedTopicTest
+                } catch {
+                    # Ignore this. Error tests follow.
+                }
+            }
+
+            It 'should not divide by zero if all Koans are completed' {
+                { Get-Karma -Topic SelectedTopicTest } | Should -Not -Throw
             }
 
             It 'should output the result object' {
