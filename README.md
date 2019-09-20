@@ -4,8 +4,6 @@
 | :---------------------------------------------: |
 | [![Build Status][build-badge]][build-link]      |
 
-[Become a Patron](https://www.patreon.com/bePatron?u=23168283) of the PSKoans project!
-
 ## About the Author
 
 ### Joel Sallow
@@ -41,7 +39,14 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 ## Prerequisites
 
 - Windows PowerShell version 5.1 / PowerShell 6+
+- NuGet
 - Pester
+
+If you've never installed PowerShell modules before, you need to first install the NuGet PackageProvider to enable modules to be installed:
+
+```PowerShell
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+```
 
 To install the latest version of Pester, use the appropriate command for your version of PowerShell:
 

@@ -44,6 +44,25 @@ Describe 'Show-Karma' {
             }
         }
 
+        Context 'With All Koans Completed' {
+            BeforeAll {
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { $Complete }
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    [PSCustomObject]@{
+                        PSTypeName     = 'PSKoans.CompleteResult'
+                        KoansPassed    = 10
+                        TotalKoans     = 10
+                        RequestedTopci = $null
+                        Complete       = $true
+                    }
+                }
+            }
+
+            It 'should not throw errors' {
+                { Show-Karma } | Should -Not -Throw
+            }
+        }
+
         Context 'With -ClearScreen Switch' {
             BeforeAll {
                 Mock Clear-Host { }
@@ -148,9 +167,23 @@ Describe 'Show-Karma' {
             }
         }
 
-        Context 'With -Module Parameter' {
+        Context 'With All Koans in a Single Topic Completed' {
+            BeforeAll {
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { $Complete }
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    [PSCustomObject]@{
+                        PSTypeName     = 'PSKoans.CompleteResult'
+                        KoansPassed    = 10
+                        TotalKoans     = 10
+                        RequestedTopic = 'TestTopic'
+                        Complete       = $true
+                    }
+                }
+            }
 
-
+            It 'should not throw errors' {
+                { Show-Karma } | Should -Not -Throw
+            }
         }
 
         Context 'With -Contemplate Switch' {

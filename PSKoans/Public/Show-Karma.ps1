@@ -1,4 +1,4 @@
-﻿function Show-Karma {
+function Show-Karma {
     [CmdletBinding(DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Show-Karma.md')]
     [OutputType([void])]
@@ -89,22 +89,32 @@
             Show-MeditationPrompt -Greeting
             $Results = Get-Karma @GetParams
 
-            $ShowParams = @{
-                DescribeName   = $Results.Describe
-                ItName         = $Results.It
-                Expectation    = $Results.Expectation
-                Meditation     = $Results.Meditation
-                KoansPassed    = $Results.KoansPassed
-                TotalKoans     = $Results.TotalKoans
-                CurrentTopic   = $Results.CurrentTopic
-                Results        = $PesterTests.TestResult
-                RequestedTopic = $Topic
+            if ($Results.Complete) {
+                $Params = @{
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    RequestedTopic = $Topic
+                    Complete       = $Results.Complete
+                }
             }
-            if (-not $Detailed) {
-                $ShowParams.Remove('Results')
+            else {
+                $Params = @{
+                    DescribeName   = $Results.Describe
+                    ItName         = $Results.It
+                    Expectation    = $Results.Expectation
+                    Meditation     = $Results.Meditation
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    CurrentTopic   = $Results.CurrentTopic
+                    RequestedTopic = $Topic
+                }
+
+                if ($Detailed) {
+                    $Params.Add('Results', $PesterTests.TestResult)
+                }
             }
 
-            Show-MeditationPrompt @ShowParams
+            Show-MeditationPrompt @Params
         }
     }
 }

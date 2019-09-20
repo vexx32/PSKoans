@@ -41,7 +41,6 @@ InModuleScope 'PSKoans' {
 
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
@@ -74,7 +73,6 @@ InModuleScope 'PSKoans' {
 
         Context 'With -Topic Parameter' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Invoke-Koan -ModuleName 'PSKoans' { }
             }
 
@@ -90,11 +88,13 @@ InModuleScope 'PSKoans' {
             }
         }
 
-        Context 'All koans completed' {
+        Context 'Behaviour When All Koans Are Completed' {
             BeforeAll {
                 Mock Get-PSKoanLocation {
-                    Join-Path -Path $TestDrive -ChildPath 'PSKoansCompletedTest'
+                    Join-Path -Path $TestDrive -ChildPath 'CompletedKoan'
                 }
+                
+                $Result = Get-Karma -Topic SelectedTopicTest
             }
 
             It 'should not divide by zero if all Koans are completed' {
@@ -102,18 +102,39 @@ InModuleScope 'PSKoans' {
 
                 New-Item -Path (Split-Path $TestFile -Parent) -ItemType Directory -Force
                 Set-Content -Path $TestFile -Value @'
-using module PSKoans
-[Koan(Position = 1)]
-param()
+                    using module PSKoans
+                    [Koan(Position = 1)]
+                    param()
 
-Describe 'Koans Test' {
-    It 'is easy to solve' {
-        $true | should -be $true
-    }
-}
+                    Describe 'Koans Test' {
+                        It 'is easy to solve' {
+                            $true | should -be $true
+                        }
+                    }
 '@
 
                 { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
+            }
+
+            It 'should output the result object' {
+                $Result | Should -Not -BeNullOrEmpty
+                $Result.PSTypeNames | Should -Contain 'PSKoans.CompleteResult'
+            }
+
+            It 'should indicate completion' {
+                $Result.Complete | Should -BeTrue
+            }
+
+            It 'should indicate number of koans passed' {
+                $Result.KoansPassed | Should -Be 2
+            }
+
+            It 'should indicate total number of koans' {
+                $Result.TotalKoans | Should -Be 2
+            }
+
+            It 'should indicate the requested topic' {
+                $Result.RequestedTopic | Should -Be 'SelectedTopicTest'
             }
         }
     }
