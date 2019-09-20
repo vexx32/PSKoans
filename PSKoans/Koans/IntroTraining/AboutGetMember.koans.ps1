@@ -3,12 +3,10 @@ using module PSKoans
 param()
 <#
 
-    Introduction to Get-Member
+    Get-Member
  
     Following on from our last Koan about cmdlet verbs, lets cover the nouns.
-
     As previously stated, the noun portion indicates the target of a given command.
-
     If you use the "Get-Member" cmdlet on any object you'll see its type name, or data type.
 
     For example:
@@ -37,7 +35,6 @@ param()
     $Object.Method()
 
     We'll cover why we have to use parentheses with method calls later.
-
 #>
 
 Describe "Get Member" {
@@ -53,41 +50,40 @@ Describe "Get Member" {
         
         <# EXAMPLE
 
-        $cmdlet1 = 'Get-Process'
-        $PropertyName = "Threads"
+        $Cmdlet1 = 'Get-Process'
+        $PropertyName = 'Threads'
         $Reason = $BecauseString -f $PropertyName, $cmdlet1
-        Get-Process |
+        & (Get-Command -Name $Cmdlet1) |
             Get-Member -MemberType Property -Name $PropertyName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
         #>
         $BecauseString = "property '{0}' should be present in output from {1}"
 
-        $cmdlet1 = '__'
-        $PropertyName = "__"
+        $Cmdlet1 = '____'
+        $PropertyName = '____'
         $Reason = $BecauseString -f $PropertyName, $cmdlet1
-        ____ |
+        & (Get-Command -Name $Cmdlet1) |
             Get-Member -MemberType Property -Name $PropertyName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
-        $cmdlet2 = '__'
-        $PropertyName = "__"
+        $Cmdlet2 = '____'
+        $PropertyName = '____'
         $Reason = $BecauseString -f $PropertyName, $cmdlet2
-        ____ |
+        & (Get-Command -Name $Cmdlet2) |
             Get-Member -MemberType Property -Name $PropertyName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
-        $cmdlet3 = '__'
-        $PropertyName = "__"
+        $Cmdlet3 = '____'
+        $PropertyName = '____'
         $Reason = $BecauseString -f $PropertyName, $cmdlet3
-        ____ |
+        & (Get-Command -Name $Cmdlet3) |
             Get-Member -MemberType Property -Name $PropertyName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
         $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
         $UniqueCheck = $Cmdlets | Get-Unique
         $UniqueCheck.Count -eq 3 | Should -BeTrue -Because "three unique cmdlets should be supplied"
-
     }
 
     It 'allows us to explore methods on an object' {
@@ -96,42 +92,38 @@ Describe "Get Member" {
 
         <# EXAMPLE
 
-        $cmdlet1 = 'Get-Process'
-        $MethodName = "Close"
-        $Reason = $BecauseString -f $PropertyName, $cmdlet1
-        Get-Process |
-            Get-Member -MemberType Method -Name $MethodName |
+        $Cmdlet1 = 'Get-Process'
+        $MethodName = 'Close'
+        $Reason = $BecauseString -f $MethodName, $cmdlet1
+        & (Get-Command -Name $Cmdlet1) |
+            Get-Member -MemberType Property -Name $MethodName |
             Should -Not -BeNullOrEmpty -Because $Reason
-
         #>
-
         $BecauseString = "method '{0}' should be present in output from {1}"
 
-        $cmdlet1 = '__'
-        $MethodName = "__"
+        $Cmdlet1 = '____'
+        $MethodName = '____'
         $Reason = $BecauseString -f $MethodName, $cmdlet1
-        ____ |
+        & (Get-Command -Name $Cmdlet1) |
             Get-Member -MemberType Method -Name $MethodName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
-        $cmdlet2 = '__'
-        $MethodName = "__"
+        $Cmdlet2 = '____'
+        $MethodName = '____'
         $Reason = $BecauseString -f $MethodName, $cmdlet2
-        ____ |
+        & (Get-Command -Name $Cmdlet2) |
             Get-Member -MemberType Method -Name $MethodName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
-        $cmdlet3 = '__'
-        $MethodName = "__"
+        $Cmdlet3 = '____'
+        $MethodName = '____'
         $Reason = $BecauseString -f $MethodName, $cmdlet3
-        ____ |
+        & (Get-Command -Name $Cmdlet3) |
             Get-Member -MemberType Method -Name $MethodName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
         $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
         $UniqueCheck = $Cmdlets | Get-Unique
         $UniqueCheck.Count -eq 3 | Should -BeTrue -Because "three unique cmdlets should be supplied"
-
     }
-
 }
