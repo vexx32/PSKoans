@@ -72,7 +72,6 @@ Describe "Basic Verbs" {
             $UniqueCheck = $Answers | Get-Unique
             $UniqueCheck.Count -eq 5 | Should -BeTrue -Because "five unique cmdlets should be supplied"
         }
-
     }
 
     Context "Add" {
