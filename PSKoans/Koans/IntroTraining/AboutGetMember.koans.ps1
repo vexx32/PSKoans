@@ -86,8 +86,7 @@ Describe "Get Member" {
 
         $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
         $UniqueCheck = $Cmdlets | Get-Unique
-        $UniqueCheck.count -eq 3 | 
-            Should -BeTrue -Because "three unique cmdlets should be supplied"
+        $UniqueCheck.Count -eq 3 | Should -BeTrue -Because "three unique cmdlets should be supplied"
 
     }
 
@@ -131,8 +130,7 @@ Describe "Get Member" {
 
         $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
         $UniqueCheck = $Cmdlets | Get-Unique
-        $UniqueCheck.count -eq 3 | 
-            Should -BeTrue -Because "three unique cmdlets should be supplied"
+        $UniqueCheck.Count -eq 3 | Should -BeTrue -Because "three unique cmdlets should be supplied"
 
     }
 
