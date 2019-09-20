@@ -17,9 +17,20 @@ Reflect on your progress and check your answers.
 Show-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
+### IncludeModule
+```
+Show-Karma [-Topic <String[]>] -IncludeModule <String[]> [-ClearScreen] [-Detailed] [<CommonParameters>]
+```
+
+### ModuleOnly
+```
+Show-Karma [-Topic <String[]>] -Module <String[]> [-ClearScreen] [-Detailed] [<CommonParameters>]
+```
+
 ### ListKoans
 ```
-Show-Karma [-ListTopics] [-ClearScreen] [<CommonParameters>]
+Show-Karma [-Topic <String[]>] [-Module <String[]>] [-IncludeModule <String[]>] [-ListTopics] [-ClearScreen]
+ [<CommonParameters>]
 ```
 
 ### OpenFolder
@@ -90,7 +101,34 @@ The summary will contain a full list of all koans in the file, and indicate thei
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Default
+Parameter Sets: Default, IncludeModule, ModuleOnly
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeModule
+Show Karma for the default PowerShell Koans as well as Koans for the specified module. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: IncludeModule
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String[]
+Parameter Sets: ListKoans
 Aliases:
 
 Required: False
@@ -115,13 +153,40 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Module
+Show Karma for Koans in the specified module only. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: ModuleOnly
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String[]
+Parameter Sets: ListKoans
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Topic
 Execute koans only from the selected Topic(s).
 Wildcard patterns are permitted.
 
 ```yaml
 Type: String[]
-Parameter Sets: Default
+Parameter Sets: Default, IncludeModule, ModuleOnly, ListKoans
 Aliases: Koan, File
 
 Required: False

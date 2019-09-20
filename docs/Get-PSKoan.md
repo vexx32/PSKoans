@@ -5,74 +5,74 @@ online version: https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoan.md
 schema: 2.0.0
 ---
 
-# Get-PSKoanFile
+# Get-PSKoan
 
 ## SYNOPSIS
-Get the paths for module and user koan topics.
+Get Koan file information.
 
 ## SYNTAX
 
-```powershell
-Get-PSKoan [-Topic <string[]>] [-IncludeModule <string[]>] [-Scope <string>] [-SkipAttributeParsing] [<CommonParameters>]
+### IncludeModule (Default)
+```
+Get-PSKoan [-Topic <String[]>] [-IncludeModule <String[]>] [-Scope <String>] [-SkipAttributeParsing]
+ [<CommonParameters>]
 ```
 
-```powershell
-Get-PSKoan [-Topic <string[]>] [-Module <string[]>] [-Scope <string>] [-SkipAttributeParsing] [<CommonParameters>]
+### ModuleOnly
+```
+Get-PSKoan [-Topic <String[]>] [-Module <String[]>] [-Scope <String>] [-SkipAttributeParsing]
+ [<CommonParameters>]
+```
+
+### ListModules
+```
+Get-PSKoan [-Topic <String[]>] [-Scope <String>] [-SkipAttributeParsing] [-ListModules] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a sorted list of objects describing each Koan file. Metadata includes module, position, absolute and relative paths.
+Get-PSKoan finds Koans in either the Module or User locations. Koan information includes position and module information.
 
 ## EXAMPLES
 
-### EXAMPLE 1
+### Example 1
 ```powershell
-Get-PSKoan
+PS C:\> Get-PSKoan
 ```
 
-Returns information for all Koans except module specific Koans.
+Get all Koans in the PSKoans module, excluding koans for individual modules.
 
-### EXAMPLE 2
+### Example 2
 ```powershell
-Get-PSKoan -Topic AboutArrays
+PS C:\> Get-PSKoan -IncludeModule *
 ```
 
-Returns information about the AboutArrays topic.
+Get all Koans in the PSKoans module, include all koans for individual PowerShell modules.
 
-### EXAMPLE 3
+### Example 3
 ```powershell
-Get-PSKoan -IncludeModule *
+PS C:\> Get-PSKoan -Topic AboutArrays
 ```
 
-Returns information for all Koans including module specific Koans.
+Get information about the AboutArrays koans.
 
-### EXAMPLE 4
+### Example 4
 ```powershell
-Get-PSKoan -Module ActiveDirectory
+PS C:\> Get-PSKoan -Module ActiveDirectory
 ```
 
-Returns information about Koans for the ActiveDirectory module only.
+Get koans from the ActiveDirectory module only.
+
+### Example 5
+```powershell
+PS C:\> Get-PSKoan -Scope User
+```
+
+Get all Koans in the User location, excluding koans for individual modules.
 
 ## PARAMETERS
 
-### -Topic
-Specify one or more topic names or patterns to filter the list.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -IncludeModule
-
-Specify one or more modules to include. By default module koans are not included in the list.
+Get default PowerShell Koans as well as Koans for the specified module. Wildcards are supported.
 
 ```yaml
 Type: String[]
@@ -80,15 +80,29 @@ Parameter Sets: IncludeModule
 Aliases:
 
 Required: False
-Position: 0
+Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard
+Accept wildcard characters: True
+```
+
+### -ListModules
+List the modules included with PSKoans.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ListModules
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
 ```
 
 ### -Module
-
-Get koans for the specified modules. Wildcards are supported.
+Get Koans for the specified module only. Wildcards are supported.
 
 ```yaml
 Type: String[]
@@ -96,10 +110,56 @@ Parameter Sets: ModuleOnly
 Aliases:
 
 Required: False
-Position: 0
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: True
+```
+
+### -Scope
+Get koans from the specified scope. The default scope is Module. User scope gets Koan information from the location used by Get-PSKoanLocation.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: User, Module
+
+Required: False
+Position: Named
+Default value: Module
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SkipAttributeParsing
+By default, Get-PSKoan attempts to retrieve the Position and Module information from the Koan attribute in each file. This process may be skipped by using this parameter.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Topic
+Reset the specified topic or topics. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
 ```
 
 ### CommonParameters
@@ -107,11 +167,15 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
+### None
+
 ## OUTPUTS
 
-### System.Management.Automation.PSObject[]
+### PSKoans.KoanInfo
+
 ## NOTES
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanFile.md](https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanFile.md)
+[https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoan.md](https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoan.md)
+

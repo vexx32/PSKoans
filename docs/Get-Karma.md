@@ -19,7 +19,18 @@ Get-Karma [-Topic <String[]>] [<CommonParameters>]
 
 ### ListKoans
 ```
-Get-Karma [-ListTopics] [<CommonParameters>]
+Get-Karma [-Topic <String[]>] [-Module <String[]>] [-IncludeModule <String[]>] [-ListTopics]
+ [<CommonParameters>]
+```
+
+### ModuleOnly
+```
+Get-Karma [-Topic <String[]>] -Module <String[]> [<CommonParameters>]
+```
+
+### IncludeModule
+```
+Get-Karma [-Topic <String[]>] -IncludeModule <String[]> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -56,6 +67,33 @@ Outputs a list of koan topics, including both the user file location and the mod
 
 ## PARAMETERS
 
+### -IncludeModule
+Get Karma for the default PowerShell Koans as well as Koans for the specified module. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: ListKoans
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String[]
+Parameter Sets: IncludeModule
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ListTopics
 Output a complete list of available koan topics.
 
@@ -71,13 +109,40 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Module
+Get Karma for the specified module only. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: ListKoans
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String[]
+Parameter Sets: ModuleOnly
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Topic
 Execute koans only from the selected Topic(s).
 Wildcard patterns are permitted.
 
 ```yaml
 Type: String[]
-Parameter Sets: Default
+Parameter Sets: (All)
 Aliases: Koan, File
 
 Required: False
