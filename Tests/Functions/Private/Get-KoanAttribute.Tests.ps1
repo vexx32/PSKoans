@@ -115,5 +115,27 @@ InModuleScope PSKoans {
                 $attributeInfo.Position | Should -Be 1
             }
         }
+
+        Context 'Attribute is missing' {
+            BeforeAll {
+                Mock Get-KoanAst {
+                    {
+                        param( )
+
+                        Describe 'About something' {
+                            It 'Has examples' {
+                                $true | Should -BeTrue
+                            }
+                        }
+                    }.Ast
+                }
+            }
+
+            It 'When the Koan attribute is missing, returns nothing' {
+                $attributeInfo = Get-KoanAttribute @defaultParams
+
+                $attributeInfo | Should -BeNullOrEmpty
+            }
+        }
     }
 }

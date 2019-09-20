@@ -40,17 +40,6 @@
         "Default" {
             Write-Verbose 'Sorting koans...'
             try {
-                $Params = @{
-                    ExcludeDefaultKoans = $ExcludeDefaultKoans
-                }
-                if ($Topic) {
-                    Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
-                    $Params['Topic'] = $Topic
-                }
-                if ($Module) {
-                    Write-Verbose "Getting Koans from the selected module(s): $($Module -join ', ')"
-                    $Params['Module'] = $Module
-                }
                 $SortedKoanList = Get-PSKoan @GetParams
             }
             catch {

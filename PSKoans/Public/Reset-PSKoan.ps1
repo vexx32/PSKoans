@@ -32,73 +32,95 @@ function Reset-PSKoan {
         $Context = '*'
     )
 
-    $params = @{
+    $GetParams = @{
         Scope = 'Module'
     }
     switch ($true) {
-        { $Topic }         { $params['Topic'] = $Topic }
-        { $Module }        { $params['Module'] = $Module }
-        { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
+        { $Topic }         { $GetParams['Topic'] = $Topic }
+        { $Module }        { $GetParams['Module'] = $Module }
+        { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
     }
-    Get-PSKoan @params | ForEach-Object {
-        $moduleKoan = Get-KoanIt -Path $_.Path |
-            Where-Object ID -like ('{0}/{1}' -f $Context, $Name)
+    $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
-        if ($moduleKoan) {
-            $userKoanPath = Join-Path (Get-PSKoanLocation) -ChildPath $_.RelativePath
+    $GetParams['Scope'] = 'User'
+    $UserKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
-            if ($Name -ne '*' -or $Context -ne '*') {
-                foreach ($koan in $moduleKoan) {
-                    $userKoan = Get-KoanIt -Path $userKoanPath |
-                        Where-Object ID -eq $koan.ID
+    if (-not $UserKoanList) {
+        $UserKoanList = @{}
+    }
 
-                    if ($userKoan) {
-                        $content = Get-Content -Path $userKoanPath -Raw
+    if (-not $ModuleKoanList) {
+        $ErrorDetails = @{
+            ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
+            ExceptionMessage = 'No koans found matching the specified Topic in the PSKoan module'
+            ErrorId          = 'PSKoans.ModuleTopicNotFound'
+            ErrorCategory    = 'ObjectNotFound'
+            TargetObject     = $Topic
+        }
+        $pscmdlet.ThrowTerminatingError((New-PSKoanErrorRecord @ErrorDetails))
+    }
 
-                        $content = $content.Remove(
-                            $userKoan.Ast.Extent.StartOffset,
-                            ($userKoan.Ast.Extent.EndOffset - $userKoan.Ast.Extent.StartOffset)
-                        ).Insert(
-                            $userKoan.Ast.Extent.StartOffset,
-                            $moduleKoan.Ast.Extent.Text
-                        )
+    foreach ($moduleTopic in $ModuleKoanList.Keys) {
+        if (-not $UserKoanList.ContainsKey($moduleTopic)) {
+            $ErrorDetails = @{
+                ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
+                ExceptionMessage = 'No matching topic {0} in the user Koan location' -f $moduleTopic
+                ErrorId          = 'PSKoans.UserTopicNotFound'
+                ErrorCategory    = 'ObjectNotFound'
+                TargetObject     = $moduleTopic
+            }
+            Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
 
-                        if ($PSCmdlet.ShouldProcess($koan.Topic, ('Resetting "{0}"' -f $koan.Name))) {
-                            Set-Content -Path $userKoanPath -Value $content.TrimEnd() -NoNewline
+            continue
+        }
+
+        if ($Name -ne '*' -or $Context -ne '*') {
+            $ModuleItCommands = Get-KoanIt -Path $ModuleKoanList[$moduleTopic].Path |
+                Where-Object ID -like ('{0}/{1}' -f $Context, $Name) |
+                Group-Object ID -AsHashTable -AsString
+
+            if ($ModuleItCommands) {
+                $UserItCommands = Get-KoanIt -Path $UserKoanList[$moduleTopic].Path |
+                    Where-Object { $ModuleItCommands.Contains($_.ID) }
+
+                if ($UserItCommands) {
+                    $content = Get-Content -Path $UserKoanList[$moduleTopic].Path -Raw
+
+                    $UserItCommands |
+                        Sort-Object { $_.SourceAst.Extent.StartLineNumber } -Descending |
+                        ForEach-Object {
+                            # Replace the content of the koan with the modules content.
+                            $content = $content.Remove(
+                                $_.Ast.Extent.StartOffset,
+                                ($_.Ast.Extent.EndOffset - $_.Ast.Extent.StartOffset)
+                            ).Insert(
+                                $_.Ast.Extent.StartOffset,
+                                $ModuleItCommands[$_.ID].Ast.Extent.Text
+                            )
                         }
+
+                    if ($PSCmdlet.ShouldProcess($moduleTopic, 'Resetting selected Koans')) {
+                        Set-Content -Path $UserKoanList[$moduleTopic].Path -Value $content.TrimEnd() -NoNewline
                     }
-                    else {
-                        $ErrorDetails = @{
-                            ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
-                            ExceptionMessage = 'The koan "{0}" does not exist in the user path.' -f $koan.Name
-                            ErrorId          = 'PSKoans.NoMatchingKoanItFound'
-                            ErrorCategory    = 'ObjectNotFound'
-                            TargetObject     = $koan
-                        }
-                        Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
+                }
+                else {
+                    $ErrorDetails = @{
+                        ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
+                        ExceptionMessage = 'No matching koans in the topic {0} in the user Koan location' -f $moduleTopic
+                        ErrorId          = 'PSKoans.UserItNotFound'
+                        ErrorCategory    = 'ObjectNotFound'
+                        TargetObject     = $moduleTopic
                     }
+                    Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
                 }
             }
             else {
-                if ($PSCmdlet.ShouldProcess($_.Topic, "Resetting all koans")) {
-                    Copy-Item -Path $_.Path -Destination $userKoanPath -Force
-                }
+                Write-Verbose -Message ('{0}: No matching koans in module' -f $moduleTopic)
             }
         }
         else {
-            $message = 'The koan "{0}" does not exist in the topic {1}.' -f $Name, $_.Topic
-            if ($Topic) {
-                $ErrorDetails = @{
-                    ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
-                    ExceptionMessage = $message
-                    ErrorId          = 'PSKoans.NoMatchingKoanTopicFound'
-                    ErrorCategory    = 'ObjectNotFound'
-                    TargetObject     = $Topic -join ','
-                }
-                Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
-            }
-            else {
-                Write-Verbose -Message $message
+            if ($PSCmdlet.ShouldProcess($moduleTopic, "Resetting all koans in topic")) {
+                Copy-Item -Path $ModuleKoanList[$moduleTopic].Path -Destination $UserKoanList[$moduleTopic].Path -Force
             }
         }
     }

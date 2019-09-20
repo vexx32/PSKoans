@@ -43,7 +43,6 @@ InModuleScope 'PSKoans' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
-                Mock Get-Koan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
             }

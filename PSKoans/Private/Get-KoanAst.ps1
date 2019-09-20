@@ -24,6 +24,10 @@ function Get-KoanAst {
 
     process {
         try {
+            if (-not (Test-Path $Path)) {
+                return
+            }
+
             $tokens = $errors = $null
 
             # Remove the "using module" line. Avoids a slow call to Get-Module -ListAvailable from "using module".

@@ -39,7 +39,7 @@ function Test-UnblockedFile {
         if (Get-Content -Path $FileInfo.FullName -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileLoadException'
-                ExceptionMessage = 'Could not read the koan file. The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.'
+                ExceptionMessage = 'Could not read the koan file "{0}". The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.' -f $FileInfo.FullName
                 ErrorId          = 'PSKoans.KoanFileIsBlocked'
                 ErrorCategory    = 'ReadError'
                 TargetObject     = $FileInfo

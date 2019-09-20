@@ -8,7 +8,7 @@ $CommandName = @(
 
 #region Topic completer
 
-$Params = @{
+$RegisterParams = @{
     CommandName   = $CommandName
     ParameterName = 'Topic'
     ScriptBlock   = {
@@ -18,13 +18,13 @@ $Params = @{
         return @($Values) -like "$WordToComplete*"
     }
 }
-Register-ArgumentCompleter @Params
+Register-ArgumentCompleter @RegisterParams
 
 #endregion
 
 #region Module / IncludeModule completer
 
-$Params = @{
+$RegisterParams = @{
     CommandName   = $CommandName
     ParameterName = 'Module'
     ScriptBlock   = {
@@ -39,9 +39,9 @@ $Params = @{
         return @($Values) -like "$WordToComplete*"
     }
 }
-Register-ArgumentCompleter @Params
+Register-ArgumentCompleter @RegisterParams
 
-$Params.ParameterName = 'IncludeModule'
-Register-ArgumentCompleter @Params
+$RegisterParams.ParameterName = 'IncludeModule'
+Register-ArgumentCompleter @RegisterParams
 
 #endregion

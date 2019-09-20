@@ -30,19 +30,19 @@ function Update-PSKoan {
         New-Item -Path $KoanFolder -ItemType Directory > $null
     }
 
-    $params = @{
+    $GetParams = @{
         Scope                = 'Module'
         SkipAttributeParsing = $true
     }
     switch ($true) {
-        { $Topic }         { $params['Topic'] = $Topic }
-        { $Module }        { $params['Module'] = $Module }
-        { $IncludeModule } { $params['IncludeModule'] = $IncludeModule }
+        { $Topic }         { $GetParams['Topic'] = $Topic }
+        { $Module }        { $GetParams['Module'] = $Module }
+        { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
     }
-    $ModuleKoanList = Get-PSKoan @params | Group-Object Topic -AsHashtable -AsString
+    $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
-    $params['Scope'] = 'User'
-    $UserKoanList = Get-PSKoan @params | Group-Object Topic -AsHashtable -AsString
+    $GetParams['Scope'] = 'User'
+    $UserKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
     if (-not $UserKoanList) {
         $UserKoanList = @{ }

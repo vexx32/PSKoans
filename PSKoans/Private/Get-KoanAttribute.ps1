@@ -34,6 +34,10 @@ function Get-KoanAttribute {
                 },
                 $false
             )
+            if (-not $attributeAst) {
+                return
+            }
+
             $namedArguments = $attributeAst.NamedArguments | Group-Object ArgumentName -AsHashTable -AsString
 
             [PSCustomObject]@{

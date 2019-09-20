@@ -61,23 +61,32 @@ function Get-PSKoan {
     $ParentPathPattern = [regex]::Escape($parentPath)
     # Declared to avoid scope problems when attribute parsing is not required.
     $KoanAttribute = $null
-    $KoanDirectories |
-        Get-ChildItem -Recurse -Filter *.Koans.ps1 |
-        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
-        Test-UnblockedFile |
-        ForEach-Object {
-            if (-not $SkipAttributeParsing) {
-                $KoanAttribute = Get-KoanAttribute -Path $_.FullName
-            }
+    try {
+        $KoanDirectories |
+            Get-ChildItem -Recurse -Filter *.Koans.ps1 |
+            Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
+            Test-UnblockedFile |
+            ForEach-Object {
+                if (-not $SkipAttributeParsing) {
+                    $KoanAttribute = Get-KoanAttribute -Path $_.FullName
 
-            [PSCustomObject]@{
-                Topic        = $_.BaseName -replace '\.koans$'
-                Module       = $KoanAttribute.Module
-                Position     = $koanAttribute.Position
-                Path         = $_.FullName
-                RelativePath = $_.Fullname -replace $ParentPathPattern -replace '^\\'
-                PSTypeName   = 'PSKoans.KoanInfo'
-            }
-        } |
-        Sort-Object { $_.Module -ne '_powershell' }, Module, Position, Topic
+                    if (-not $KoanAttribute) {
+                        return
+                    }
+                }
+
+                [PSCustomObject]@{
+                    Topic        = $_.BaseName -replace '\.koans$'
+                    Module       = $KoanAttribute.Module
+                    Position     = $koanAttribute.Position
+                    Path         = $_.FullName
+                    RelativePath = $_.Fullname -replace $ParentPathPattern -replace '^\\'
+                    PSTypeName   = 'PSKoans.KoanInfo'
+                }
+            } |
+            Sort-Object { $_.Module -ne '_powershell' }, Module, Position, Topic
+    }
+    catch {
+        $pscmdlet.ThrowTerminatingError($_)
+    }
 }

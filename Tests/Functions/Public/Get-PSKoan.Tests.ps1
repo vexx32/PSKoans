@@ -20,7 +20,7 @@ InModuleScope PSKoans {
             New-Item -Path $path -ItemType Directory -Force
             Set-Content -Path (Join-Path -Path $path -ChildPath 'AboutSomething.Koans.ps1') -Value @'
                 using module PSKoans
-                [PSKoans(Position = 1, Module = 'TestModule')]
+                [Koan(Position = 1, Module = 'TestModule')]
                 param( )
 
                 Describe 'AboutSomething' {
@@ -55,7 +55,7 @@ InModuleScope PSKoans {
         ) {
             param($Topic, $Module)
 
-            (Get-PSKoan -Module $Module).Topic | Should -Be $Topic
+            (Get-PSKoan -Module $Module -Scope User).Topic | Should -Be $Topic
         }
 
         if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Win32NT') {
