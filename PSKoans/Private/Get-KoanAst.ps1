@@ -1,6 +1,5 @@
 using namespace System.Management.Automation.Language
 
-
 function Get-KoanAst {
     <#
     .SYNOPSIS
@@ -29,7 +28,7 @@ function Get-KoanAst {
 
             # Remove the "using module" line. Avoids a slow call to Get-Module -ListAvailable from "using module".
             $content = Get-Content -Path $Path |
-                Where-Object { -not $_.StartsWith('using module', [StringComparison]::InvariantCultureIgnoreCase) } |
+                Where-Object { $_ -notmatch '^\s*using module' } |
                 Out-String
 
             [Parser]::ParseInput(
@@ -37,12 +36,6 @@ function Get-KoanAst {
                 [Ref]$tokens,
                 [Ref]$errors
             )
-
-            if ($errors) {
-                foreach ($errorRecord in $error) {
-                    $errors | Write-Error
-                }
-            }
         } catch {
             throw
         }

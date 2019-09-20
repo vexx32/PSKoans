@@ -5,12 +5,12 @@ InModuleScope 'PSKoans' {
         BeforeAll {
             Mock Get-PSKoan {
                 [PSCustomObject]@{
-                    Path         = Join-Path $TestDrive 'Koans\AboutSomething.ps1'
-                    RelativePath = Join-Path $TestDrive 'Module\AboutSomething.ps1'
+                    Path         = Join-Path $TestDrive 'Module\AboutSomething.ps1'
+                    RelativePath = 'Koans\AboutSomething.ps1'
                 }
             }
-            New-Item -Path (Join-Path $TestDrive 'Koans') -ItemType Directory
             New-Item -Path (Join-Path $TestDrive 'Module') -ItemType Directory
+            New-Item -Path (Join-Path $TestDrive 'Koans') -ItemType Directory
 
             Set-Content -Path (Get-PSKoan).Path -Value @'
                 Describe 'AboutSomething' {

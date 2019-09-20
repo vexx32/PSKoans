@@ -48,7 +48,7 @@ function Measure-Koan {
         Write-Verbose "Parsing koan files from [$($KoanInfo.Name -join '], [')]"
 
         # Find all Pester 'It' commands
-        $ItCommands = Get-KoanIt -Path $KoanInfo.Path
+        $ItCommands = @(Get-KoanIt -Path $KoanInfo.Path)
 
         # Find the -TestCases parameters
         $TestCasesParameters = $ItCommands.Ast.CommandElements | Where-Object {

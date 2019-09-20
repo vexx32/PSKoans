@@ -1,8 +1,22 @@
-#Requires -Modules PSKoans
+#region Header
+if (-not (Get-Module PSKoans)) {
+    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
 
-Describe 'Get-Karma' {
+    Import-Module $moduleBase -Force
+}
+#endregion
 
-    InModuleScope 'PSKoans' {
+InModuleScope 'PSKoans' {
+    Describe 'Get-Karma' {
+        BeforeAll {
+            $TestLocation = Join-Path -Path $TestDrive -ChildPath 'PSKoans'
+
+            Mock Get-PSKoanLocation {
+                $TestLocation
+            }
+
+            Update-PSKoan -Confirm:$false
+        }
 
         Context 'Default Behaviour' {
             BeforeAll {
@@ -12,11 +26,6 @@ Describe 'Get-Karma' {
                         FailedCount = 4
                     }
                 }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
             }
 
             It 'should produce a hashtable with data' {
@@ -26,8 +35,6 @@ Describe 'Get-Karma' {
             }
 
             It 'should Invoke-Pester on koans until it fails a test' {
-                $ValidKoans = Get-PSKoanFile
-
                 Assert-MockCalled Invoke-Koan -Times 1
             }
         }
@@ -56,12 +63,13 @@ Describe 'Get-Karma' {
 
         Context 'With -ListTopics Parameter' {
             BeforeAll {
-                Mock Get-PSKoanFile { }
+                Mock Get-PSKoan { }
             }
 
             It 'should list all the koan topics' {
                 Get-Karma -ListTopics
-                Assert-MockCalled Get-PSKoanFile
+
+                Assert-MockCalled Get-PSKoan
             }
         }
 
@@ -69,33 +77,32 @@ Describe 'Get-Karma' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Invoke-Koan -ModuleName 'PSKoans' { }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
-
-                $TestCases = @(
-                    @{ Topic = @( 'AboutAssertions' ) }
-                    @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' ) }
-                )
             }
 
-            It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases $TestCases {
+            It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases @(
+                @{ Topic = @( 'AboutAssertions' ) }
+                @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' ) }
+            ) {
                 param([string[]] $Topic)
 
                 Get-Karma -Topic $Topic
+
                 Assert-MockCalled Invoke-Koan -Times @($Topic).Count
+            }
+        }
+
+        Context 'All koans completed' {
+            BeforeAll {
+                Mock Get-PSKoanLocation {
+                    Join-Path -Path $TestDrive -ChildPath 'PSKoansCompletedTest'
+                }
             }
 
             It 'should not divide by zero if all Koans are completed' {
-                $KoansCompletedTestLocation = 'TestDrive:{0}PSKoansCompletedTest' -f [System.IO.Path]::DirectorySeparatorChar
-                $TestFile = Join-Path -Path $KoansCompletedTestLocation -ChildPath 'SingleTopicTest.Koans.Ps1'
+                $TestFile = Join-Path -Path (Get-PSKoanLocation) -ChildPath 'Group\SingleTopicTest.Koans.Ps1'
 
-                New-Item $KoansCompletedTestLocation -ItemType Directory
-                New-Item $TestFile -ItemType File
-
-                Set-Content $TestFile -Value @'
+                New-Item -Path (Split-Path $TestFile -Parent) -ItemType Directory -Force
+                Set-Content -Path $TestFile -Value @'
 using module PSKoans
 [Koan(Position = 1)]
 param()
@@ -107,11 +114,7 @@ Describe 'Koans Test' {
 }
 '@
 
-                Set-PSKoanLocation $KoansCompletedTestLocation
-
                 { Get-Karma -Topic SingleTopicTest } | Should -Not -Throw
-
-                Set-PSKoanLocation $TestLocation
             }
         }
     }

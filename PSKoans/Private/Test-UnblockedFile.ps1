@@ -12,7 +12,7 @@ function Test-UnblockedFile {
         This check is skipped if the platform is not Windows or the file does not exist.
 
     .PARAMETER FileInfo
-        The file which should be tested.
+        An instance of System.IO.FileInfo to test.
 
     .INPUTS
         System.IO.FileInfo
@@ -20,33 +20,33 @@ function Test-UnblockedFile {
     #>
 
     [CmdletBinding()]
-    [OutputType([System.IO.FileInfo])]
+    [OutputType([bool])]
     param(
-        [Parameter(ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline)]
         [System.IO.FileInfo]
         $FileInfo
     )
 
     process {
-        if (-not $FileInfo.Exists) {
-            return $FileInfo
-        }
-
         if ($PSVersionTable.PSEdition -ne 'Desktop' -and $PSVersionTable.Platform -ne 'Win32NT') {
             return $FileInfo
         }
 
-        if (Get-Content -LiteralPath $_.PSPath -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
+        if (-not $FileInfo.Exists) {
+            return $FileInfo
+        }
+
+        if (Get-Content -Path $FileInfo.FullName -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileLoadException'
                 ExceptionMessage = 'Could not read the koan file. The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.'
                 ErrorId          = 'PSKoans.KoanFileIsBlocked'
                 ErrorCategory    = 'ReadError'
-                TargetObject     = $_.FullName
+                TargetObject     = $FileInfo
             }
             $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
         } else {
-            return $true
+            return $FileInfo
         }
     }
 }

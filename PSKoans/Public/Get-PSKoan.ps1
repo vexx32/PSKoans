@@ -64,6 +64,7 @@ function Get-PSKoan {
     $KoanDirectories |
         Get-ChildItem -Recurse -Filter *.Koans.ps1 |
         Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
+        Test-UnblockedFile |
         ForEach-Object {
             if (-not $SkipAttributeParsing) {
                 $KoanAttribute = Get-KoanAttribute -Path $_.FullName

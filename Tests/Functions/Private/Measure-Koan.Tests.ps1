@@ -1,24 +1,96 @@
-# This is required due to having to parse the KoanAttribute to verify the correct files are returned
-# Using a relative path to the module being tested removes duplicate loading of the module.
-using module ..\..\..\PSKoans\PSKoans.psd1
+#region Header
+if (-not (Get-Module PSKoans)) {
+   $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
 
-${global:Test Root} = $PSScriptRoot
+    Import-Module $moduleBase -Force
+}
+#endregion
 
 InModuleScope 'PSKoans' {
     Describe 'Measure-Koan' {
-        It 'counts the number of tests in <File>' {
-            param($File, $ExpectedValue)
+        BeforeAll {
+            Set-Content -Path TestDrive:\TestCases.Koans.ps1 -Value @'
+                Describe 'Test cases param' {
+                    It 'first <TestCase>' -TestCases @(
+                        @{ TestCase = 1 }
+                        @{ TestCase = 2 }
+                        @{ TestCase = 3 }
+                    ) {
+                        param($TestCase)
 
-            Get-Item -Path $File |
-                Get-Command { $_.FullName } |
-                Measure-Koan |
-                Should -Be $ExpectedValue
-        } -TestCases @{
-            File          = "${global:Test Root}/ControlTests/Measure-Koan.Control_Tests.ps1"
-            ExpectedValue = 3
-        }, @{
-            File          = "${global:Test Root}/../Public/Get-Blank.Tests.ps1"
-            ExpectedValue = 3
+                        $TestCase | Should -BeOfType int
+                    }
+                }
+'@
+
+                Set-Content -Path TestDrive:\JustIt.Koans.ps1 -Value @'
+                    Describe 'Just it' {
+                        It 'first' {
+                            $true | Should -BeTrue
+                        }
+
+                        It 'second' {
+                            $true | Should -BeTrue
+                        }
+                    }
+'@
+
+                Set-Content -Path TestDrive:\Mixed.Koans.ps1 -Value @'
+                    Describe 'Mixed' {
+                        It 'first' {
+                            $true | Should -BeTrue
+                        }
+
+                        It 'second <TestCase>' -TestCases @(
+                            @{ TestCase = 1 }
+                            @{ TestCase = 2 }
+                        ) {
+                            param($TestCase)
+
+                            $TestCase | Should -BeOfType int
+                        }
+                    }
+'@
+
+                Set-Content -Path TestDrive:\MutlipleTestCases.Koans.ps1 -Value @'
+                    Describe 'Test cases param' {
+                        It 'first <TestCase>' -TestCases @(
+                            @{ TestCase = 1 }
+                            @{ TestCase = 2 }
+                            @{ TestCase = 3 }
+                        ) {
+                            param($TestCase)
+
+                            $TestCase | Should -BeOfType int
+                        }
+
+                        It 'second <TestCase>' -TestCases @(
+                            @{ TestCase = 1 }
+                            @{ TestCase = 2 }
+                            @{ TestCase = 3 }
+                        ) {
+                            param($TestCase)
+
+                            $TestCase | Should -BeOfType int
+                        }
+                    }
+'@
+        }
+
+        It 'counts the number of tests in <Path>' -TestCases @(
+            @{ Path = 'TestDrive:\TestCases.Koans.ps1';         ExpectedValue = 3 }
+            @{ Path = 'TestDrive:\JustIt.Koans.ps1';            ExpectedValue = 2 }
+            @{ Path = 'TestDrive:\Mixed.Koans.ps1';             ExpectedValue = 3 }
+            @{ Path = 'TestDrive:\MutlipleTestCases.Koans.ps1'; ExpectedValue = 6 }
+        ) {
+            param($Path, $ExpectedValue)
+
+            $koanInfo = [PSCustomObject]@{
+                Path       = $Path
+                PSTypeName = 'PSKoans.KoanInfo'
+            }
+
+            $koanInfo | Measure-Koan | Should -Be $ExpectedValue
         }
     }
 }
