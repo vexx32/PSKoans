@@ -14,6 +14,10 @@
 #>
 
 $script:ModuleRoot = $PSScriptRoot
+$script:ConfigPath = '~/.config/PSKoans/config.json'
+$script:DefaultSettings = @{
+    KoanLocation = '~/PSKoans'
+}
 
 #region SupportingClasses
 

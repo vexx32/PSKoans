@@ -22,16 +22,16 @@ function Get-PSKoanSetting {
         [string]
         $Name
     )
-    if (-not (Test-Path $script:ConfigPath)) {
-        if ($Name) {
-            Set-PSKoanSetting -Name $Name -Value $null
-        }
-        else {
-            Set-PSKoanSetting -Settings @{ }
-        }
+
+    $Configuration = if (-not (Test-Path $script:ConfigPath)) {
+        # No settings file present, create file with default settings
+        Set-PSKoanSetting -Settings $script:DefaultSettings
+        [PSCustomObject]$script:DefaultSettings
+    }
+    else {
+        Get-Content -Path $script:ConfigPath | ConvertFrom-Json
     }
 
-    $Configuration = Get-Content -Path $script:ConfigPath | ConvertFrom-Json
     if ($Name) {
         $Configuration.$Name
     }
