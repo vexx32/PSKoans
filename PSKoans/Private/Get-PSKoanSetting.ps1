@@ -22,7 +22,16 @@ function Get-PSKoanSetting {
         [string]
         $Name
     )
-    $Configuration = Import-Configuration
+    if (-not (Test-Path $script:ConfigPath)) {
+        if ($Name) {
+            Set-PSKoanSetting -Name $Name -Value $null
+        }
+        else {
+            Set-PSKoanSetting -Settings @{ }
+        }
+    }
+
+    $Configuration = Get-Content -Path $script:ConfigPath | ConvertFrom-Json
     if ($Name) {
         $Configuration.$Name
     }

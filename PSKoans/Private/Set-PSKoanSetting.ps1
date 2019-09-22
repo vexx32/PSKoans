@@ -30,13 +30,49 @@ function Set-PSKoanSetting {
         [hashtable]
         $Settings
     )
-    switch ($PSCmdlet.ParameterSetName) {
-        'Single' {
-            @{ $Name = $Value } | Export-Configuration -Scope User
-        }
-        'Multiple' {
-            $Settings | Export-Configuration -Scope User
+    if (Test-Path $script:ConfigPath) {
+        switch ($PSCmdlet.ParameterSetName) {
+            'Single' {
+                (Get-Content -Path $script:ConfigPath) |
+                    ConvertFrom-Json |
+                    Select-Object -Property *, @{ Name = $Name; Expression = { $Value } } -ExcludeProperty $Name |
+                    ConvertTo-Json |
+                    Set-Content -Path $script:ConfigPath
+            }
+            'Multiple' {
+                if (Test-Path $script:ConfigPath) {
+                    $Properties = @(
+                        '*'
+                        foreach ($key in $Settings.Keys) {
+                            @{ Name = $key; Expression = { $Settings[$key] } }
+                        }
+                    )
+                    (Get-Content -Path $script:ConfigPath) |
+                        ConvertFrom-Json |
+                        Select-Object -Property $Properties -ExcludeProperty $Settings.Keys |
+                        ConvertTo-Json |
+                        Set-Content -Path $script:ConfigPath
+                }
+            }
         }
     }
-    $Configuration = Import-Configuration
+    else {
+        $ConfigRoot = $script:ConfigPath | Split-Path -Parent
+        if (-not (Test-Path $ConfigRoot)) {
+            New-Item -ItemType Directory -Path $ConfigRoot > $null
+        }
+
+        switch ($PSCmdlet.ParameterSetName) {
+            'Single' {
+                [PSCustomObject]@{ $Name = $Value } |
+                    ConvertTo-Json |
+                    Set-Content -Path $script:ConfigPath
+            }
+            'Multiple' {
+                [PSCustomObject]$Settings |
+                    ConvertTo-Json |
+                    Set-Content -Path $script:ConfigPath
+            }
+        }
+    }
 }
