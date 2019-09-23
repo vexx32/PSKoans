@@ -4,7 +4,7 @@ function Get-KoanAttribute {
     <#
     .SYNOPSIS
         Get the KoanAttribute from a file.
-    .DESCRIPTIOn
+    .DESCRIPTION
         Modified koan file parser that avoids "using module" statements. Semantic checks for using module include
         invoking "Get-Module -ListAvailable" which adds a considerable delay when parsing individual files.
     #>
