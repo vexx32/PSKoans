@@ -10,6 +10,7 @@ See below for a table of all koans and their corresponding positions. When worki
 |  Foundations              |  AboutStrings                   | 107            |  Untouched   |
 |  IntroTraining            |  AboutBooleans                  | 108            |  Drafted     |
 |  IntroTraining            |  AboutBinary                    | 109            |  Drafted     |
+|  IntroTraining            |  AboutNumbers                   | 110            |  Drafted     |
 |  Foundations              |  AboutVariables                 | 111            |  Untouched   |
 |  Foundations              |  AboutAssignmentAndArithmetic   | 112            |  Untouched   |
 |  Foundations              |  AboutArrays                    | 113            |  Untouched   |
