@@ -40,7 +40,8 @@ function Get-KoanAst {
                 [Ref]$tokens,
                 [Ref]$errors
             )
-        } catch {
+        }
+        catch {
             throw
         }
     }
