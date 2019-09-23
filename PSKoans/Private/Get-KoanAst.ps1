@@ -42,7 +42,7 @@ function Get-KoanAst {
             )
         }
         catch {
-            throw
+            $PSCmdlet.ThrowTerminatingError($_)
         }
     }
 }
