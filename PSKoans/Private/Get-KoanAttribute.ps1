@@ -44,7 +44,8 @@ function Get-KoanAttribute {
                 Position   = $namedArguments['Position'].Argument.SafeGetValue()
                 Module     = if ($namedArguments.Contains('Module')) {
                     $namedArguments['Module'].Argument.SafeGetValue()
-                } else {
+                }
+                else {
                     $defaultModule
                 }
                 PSTypeName = 'PSKoans.KoanAttributeInfo'
