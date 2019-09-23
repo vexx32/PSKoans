@@ -5,7 +5,7 @@ $script:MeditationStrings = $ShowMeditationPromptData['Koans']
 $script:MeditationPrompts = $ShowMeditationPromptData['Prompts']
 Remove-Variable -Name 'ShowMeditationPromptData'
 
-$script:LibraryFolder = $Home | Join-Path -ChildPath 'PSKoans'
+$script:LibraryFolder = '~/PSKoans'
 Write-Verbose "Koans folder set to $script:LibraryFolder"
 
 if (-not (Test-Path -Path $script:LibraryFolder)) {
