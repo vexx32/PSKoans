@@ -50,7 +50,7 @@ if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Wi
             }
 
             Context 'File is not blocked' {
-                It 'returns true if the file is not blocked' {
+                It 'returns the original object with -PassThru if the file is not blocked' {
                     Assert-UnblockedFile @defaultParams | Should -BeOfType [System.IO.FileInfo]
                 }
             }
