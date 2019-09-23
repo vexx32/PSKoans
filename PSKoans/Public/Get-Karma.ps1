@@ -15,23 +15,22 @@
         $Module,
 
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
-        [Parameter(ParameterSetName = 'ListKoans')]
         [string[]]
         $IncludeModule,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
-        [Alias('ListKoans')]
+        [Alias('ListKoans', 'ListTopics')]
         [switch]
-        $ListTopics
+        $List
     )
 
     $GetParams = @{
         Scope = 'User'
     }
-    switch ($true) {
-        { $Topic }         { $GetParams['Topic'] = $Topic }
-        { $Module }        { $GetParams['Module'] = $Module }
-        { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
     }
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {

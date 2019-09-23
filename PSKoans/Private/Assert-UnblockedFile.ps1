@@ -1,7 +1,7 @@
-function Test-UnblockedFile {
+function Assert-UnblockedFile {
     <#
     .SYNOPSIS
-        Tests whether or not a file is blocked.
+        Asserts that the file is not a file is blocked.
 
     .DESCRIPTION
         Files may be blocked when copied from Internet zones on Windows. Blocked files will have an alternate NTFS
@@ -20,20 +20,27 @@ function Test-UnblockedFile {
     #>
 
     [CmdletBinding()]
-    [OutputType([bool])]
+    [OutputType([System.IO.FileInfo])]
     param(
         [Parameter(Mandatory, ValueFromPipeline)]
         [System.IO.FileInfo]
-        $FileInfo
+        $FileInfo,
+
+        [Switch]
+        $PassThru
     )
 
     process {
         if ($PSVersionTable.PSEdition -ne 'Desktop' -and $PSVersionTable.Platform -ne 'Win32NT') {
-            return $FileInfo
+            if ($PassThru) {
+                return $FileInfo
+            }
         }
 
         if (-not $FileInfo.Exists) {
-            return $FileInfo
+            if ($PassThru) {
+                return $FileInfo
+            }
         }
 
         if (Get-Content -Path $FileInfo.FullName -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
@@ -46,7 +53,9 @@ function Test-UnblockedFile {
             }
             $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
         } else {
-            return $FileInfo
+            if ($PassThru) {
+                return $FileInfo
+            }
         }
     }
 }

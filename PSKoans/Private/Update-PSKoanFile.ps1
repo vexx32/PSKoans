@@ -38,6 +38,7 @@ function Update-PSKoanFile {
     )
 
     $PSBoundParameters.Remove('Confirm') > $null
+    $PSBoundParameters.Remove('WhatIf') > $null
     Get-PSKoan @PSBoundParameters | ForEach-Object {
         $moduleKoans = Get-KoanIt -Path $_.Path | ForEach-Object {
             [PSCustomObject]@{

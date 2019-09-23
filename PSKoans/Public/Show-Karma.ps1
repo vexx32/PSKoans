@@ -20,15 +20,14 @@ function Show-Karma {
         $Module,
 
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
-        [Parameter(ParameterSetName = 'ListKoans')]
         [SupportsWildcards()]
         [string[]]
         $IncludeModule,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
-        [Alias('ListKoans')]
+        [Alias('ListKoans', 'ListTopics')]
         [switch]
-        $ListTopics,
+        $List,
 
         [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
         [Alias('Meditate')]
@@ -49,10 +48,10 @@ function Show-Karma {
     )
 
     $GetParams = @{}
-    switch ($true) {
-        { $Topic }         { $GetParams['Topic'] = $Topic }
-        { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
-        { $Module }        { $GetParams['Module'] = $Module }
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
     }
 
     switch ($PSCmdlet.ParameterSetName) {

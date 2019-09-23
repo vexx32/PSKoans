@@ -8,10 +8,11 @@ if (-not (Get-Module PSKoans)) {
 
 if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Win32NT') {
     InModuleScope PSKoans {
-        Describe Test-UnblockedFile {
+        Describe Assert-UnblockedFile {
             BeforeAll {
                 $defaultParams = @{
                     FileInfo = [System.IO.FileInfo](Join-Path -Path $TestDrive -ChildPath 'AboutSomething.Koans.ps1')
+                    PassThru = $true
                 }
             }
 
@@ -44,13 +45,13 @@ if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Wi
                 }
 
                 It 'should throw a terminating error if the file is blocked' {
-                    { Test-UnblockedFile @defaultParams } | Should -Throw -ErrorId 'PSKoans.KoanFileIsBlocked'
+                    { Assert-UnblockedFile @defaultParams } | Should -Throw -ErrorId 'PSKoans.KoanFileIsBlocked'
                 }
             }
 
             Context 'File is not blocked' {
                 It 'returns true if the file is not blocked' {
-                    Test-UnblockedFile @defaultParams | Should -BeTrue
+                    Assert-UnblockedFile @defaultParams | Should -BeOfType [System.IO.FileInfo]
                 }
             }
         }

@@ -1,6 +1,5 @@
 function Get-PSKoan {
-    [CmdletBinding(
-        DefaultParameterSetName = 'IncludeModule',
+    [CmdletBinding(DefaultParameterSetName = 'IncludeModule',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoan.md')]
     [OutputType('PSKoans.KoanInfo')]
     param(
@@ -24,11 +23,11 @@ function Get-PSKoan {
         $Scope = 'Module',
 
         [Parameter()]
-        [Switch]
+        [switch]
         $SkipAttributeParsing,
 
         [Parameter(Mandatory, ParameterSetName = 'ListModules')]
-        [Switch]
+        [switch]
         $ListModules
     )
 
@@ -38,13 +37,15 @@ function Get-PSKoan {
     }
 
     if ($pscmdlet.ParameterSetName -eq 'ListModules') {
-        return Join-Path -Path $ParentPath -ChildPath 'Modules' |
+        $moduleList = Join-Path -Path $ParentPath -ChildPath 'Modules' |
             Get-ChildItem -Directory |
             Select-Object -ExpandProperty Name
+
+        return $moduleList
     }
 
-    $KoanDirectories = switch ($true) {
-        { $pscmdlet.ParameterSetName -eq 'IncludeModule' } {
+    $KoanDirectories = switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' {
             $Module = $IncludeModule
             Get-ChildItem $ParentPath -Exclude Modules -Directory
         }
@@ -65,7 +66,7 @@ function Get-PSKoan {
         $KoanDirectories |
             Get-ChildItem -Recurse -Filter *.Koans.ps1 |
             Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
-            Test-UnblockedFile |
+            Assert-UnblockedFile -PassThru |
             ForEach-Object {
                 if (-not $SkipAttributeParsing) {
                     $KoanAttribute = Get-KoanAttribute -Path $_.FullName

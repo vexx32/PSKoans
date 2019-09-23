@@ -29,8 +29,7 @@ Show-Karma [-Topic <String[]>] -Module <String[]> [-ClearScreen] [-Detailed] [<C
 
 ### ListKoans
 ```
-Show-Karma [-Topic <String[]>] [-Module <String[]>] [-IncludeModule <String[]>] [-ListTopics] [-ClearScreen]
- [<CommonParameters>]
+Show-Karma [-Topic <String[]>] [-Module <String[]>] [-List] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### OpenFolder
@@ -126,25 +125,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-```yaml
-Type: String[]
-Parameter Sets: ListKoans
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ListTopics
+### -List
 Output a complete list of available koan topics.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: ListKoans
-Aliases: ListKoans
+Aliases: ListKoans, ListTopics
 
 Required: True
 Position: Named

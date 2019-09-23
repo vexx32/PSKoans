@@ -6,7 +6,7 @@ function Get-KoanAst {
         Get the AST for a Koan.
 
     .DESCRIPTION
-        Parse the content of a Koan file into an AST without, ignoring "using module" statements.
+        Parse the content of a Koan file into an AST. Ignores "using module" statements.
 
     .PARAMETER Path
         The path to a Koan file.

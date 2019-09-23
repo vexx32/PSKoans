@@ -34,10 +34,10 @@ function Update-PSKoan {
         Scope                = 'Module'
         SkipAttributeParsing = $true
     }
-    switch ($true) {
-        { $Topic }         { $GetParams['Topic'] = $Topic }
-        { $Module }        { $GetParams['Module'] = $Module }
-        { $IncludeModule } { $GetParams['IncludeModule'] = $IncludeModule }
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
     }
     $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 

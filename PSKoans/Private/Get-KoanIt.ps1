@@ -31,8 +31,7 @@ function Get-KoanIt {
             {
                 param ( $node )
 
-                $node -is [CommandAst] -and
-                $node.GetCommandName() -eq 'It'
+                $node -is [CommandAst] -and $node.GetCommandName() -eq 'It'
             },
             $true
         )
