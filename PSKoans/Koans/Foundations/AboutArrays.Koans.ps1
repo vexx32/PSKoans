@@ -197,7 +197,7 @@ Describe 'Arrays' {
         # An array of characters, or letters, can be created.
 
         $firstLetter = '____'
-        $lastLetter = '____'
+        $lastLetter = '__'
 
         if ($PSVersionTable.PSEdition -eq 'Core') {
             # PowerShell Core uses .. between the letters to create an array.
