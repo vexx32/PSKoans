@@ -223,7 +223,7 @@ Describe 'Arrays' {
         #>
 
         $Numbers = 1, 2, 3, 4
-        $Numbers.GetType().Name | Should -Be 'Object[]'
+        '____' | Should -Be $Numbers.GetType().Name
 
         $Strings = 'first', 'second', 'third'
         $Strings.GetType().Name | Should -Be 'Object[]'
