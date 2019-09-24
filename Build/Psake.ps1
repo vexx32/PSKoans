@@ -10,6 +10,10 @@ Properties {
     $PSVersion = $PSVersionTable.PSVersion
     $TestFile = "PS${PSVersion}_${TimeStamp}_PSKoans.TestResults.xml"
     $CodeCoverageFile = "PS${PSVersion}_${TimeStamp}_PSKoans.CodeCoverage.xml"
+    $ModuleFolders = @(
+        Get-ChildItem -Path "$ProjectRoot/PSKoans" -Directory -Recurse |
+            Where-Object { 'Koans' -notin $_.Parent.Name, $_.Parent.Parent.Name }
+    ).FullName -join ';'
     $Lines = '-' * 70
 
     $Continue = @{
@@ -52,6 +56,7 @@ STATUS: Testing with PowerShell $PSVersion
     # Tell Azure where the test results & code coverage files will be
     Write-Host "##vso[task.setvariable variable=TestResults]$TestFile"
     Write-Host "##vso[task.setvariable variable=CodeCoverageFile]$CodeCoverageFile"
+    Write-Host "##vso[task.setvariable variable=SourceFolders]$ProjectRoot/PSKoans;$ModuleFolders"
 
     # Gather test results. Store them in a variable and file
     $PesterParams = @{
@@ -60,7 +65,7 @@ STATUS: Testing with PowerShell $PSVersion
         OutputFormat           = 'NUnitXml'
         OutputFile             = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
         Show                   = "Header", "Failed", "Summary"
-        CodeCoverage           = "$ProjectRoot/PSKoans/"
+        CodeCoverage           = (Get-ChildItem -Recurse -Path "$ProjectRoot/PSKoans" -Filter '*.ps*1' -Exclude '*.Koans.ps1').FullName
         CodeCoverageOutputFile = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$CodeCoverageFile"
     }
     $TestResults = Invoke-Pester @PesterParams

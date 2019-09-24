@@ -32,3 +32,21 @@ steps:
     testResultsFiles: '$(TestResults)'
     searchFolder: '$(Build.ArtifactStagingDirectory)'
     mergeTestResults: true
+
+#- task: reportgenerator@4
+#  displayName: ReportGenerator
+#  inputs:
+#    reports: '$(CodeCoverageFile)'
+#    reporttypes: 'HtmlInline_AzurePipelines'
+#    sourcedirs: '$(Build.ArtifactStagingDirectory)'
+#    targetdir: coveragereport
+#  condition: succeededOrFailed()
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: JaCoCo
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)/$(CodeCoverageFile)'
+    reportDirectory: '$(Build.ArtifactStagingDirectory)'
+    pathToSources: '$(SourceFolders)'
+  displayName: 'Code Coverage'
+  condition: succeededOrFailed()
