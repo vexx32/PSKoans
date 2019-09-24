@@ -245,7 +245,7 @@ Describe 'Arrays' {
             For example, each array has a Contains method.
         #>
 
-        $Numbers.Contains(3) | Should -BeTrue
+        $____ -eq $Numbers.Contains(3) | Should -BeTrue
 
         # The Contains method is case sensitive for arrays containing strings.
 
