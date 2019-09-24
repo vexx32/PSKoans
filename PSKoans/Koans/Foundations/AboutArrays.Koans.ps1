@@ -52,7 +52,7 @@ Describe 'Arrays' {
         $Ages = 12, 25, 18, 64
 
         { $Ages.Add(59) } | Should -Throw -ExpectedMessage '____'
-        { $Ages.Remove(12) } | Should -Throw -ExpectedMessage 'Collection was of a fixed size.'
+        { $Ages.Remove(12) } | Should -Throw -ExpectedMessage '____'
     }
 
     It 'new arrays are created using the addition operator' {
