@@ -189,7 +189,8 @@ Describe 'Arrays' {
 
         $Array = 1, 2, 3, 4, 5
 
-        __..5 | Should -Be $Array
+        $StartIndex = __
+        $StartIndex..5 | Should -Be $Array
     }
 
     It 'an array of letters may be created from a range' {
