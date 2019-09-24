@@ -196,7 +196,7 @@ Describe 'Arrays' {
     It 'an array of letters may be created from a range' {
         # An array of characters, or letters, can be created.
 
-        $firstLetter = '____'
+        $firstLetter = '__'
         $lastLetter = '__'
 
         if ($PSVersionTable.PSEdition -eq 'Core') {
