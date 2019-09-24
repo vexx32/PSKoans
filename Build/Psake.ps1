@@ -9,6 +9,7 @@ Properties {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
     $TestFile = "PS${PSVersion}_${TimeStamp}_PSKoans.TestResults.xml"
+    $CodeCoverageFile = "PS${PSVersion}_${TimeStamp}_PSKoans.CodeCoverage.xml"
     $Lines = '-' * 70
 
     $Continue = @{
@@ -48,16 +49,19 @@ STATUS: Testing with PowerShell $PSVersion
     $env:PSModulePath = '{0}{1}{2}' -f $ProjectRoot, ([System.IO.Path]::PathSeparator), $env:PSModulePath
     Import-Module 'PSKoans'
 
-    # Tell Azure where the test results file will be
+    # Tell Azure where the test results & code coverage files will be
     Write-Host "##vso[task.setvariable variable=TestResults]$TestFile"
+    Write-Host "##vso[task.setvariable variable=CodeCoverageFile]$CodeCoverageFile"
 
     # Gather test results. Store them in a variable and file
     $PesterParams = @{
-        Path         = "$ProjectRoot/Tests"
-        PassThru     = $true
-        OutputFormat = 'NUnitXml'
-        OutputFile   = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
-        Show         = "Header", "Failed", "Summary"
+        Path                   = "$ProjectRoot/Tests"
+        PassThru               = $true
+        OutputFormat           = 'NUnitXml'
+        OutputFile             = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
+        Show                   = "Header", "Failed", "Summary"
+        CodeCoverage           = "$ProjectRoot/PSKoans/"
+        CodeCoverageOutputFile = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$CodeCoverageFile"
     }
     $TestResults = Invoke-Pester @PesterParams
 
