@@ -61,6 +61,8 @@ Describe 'Arrays' {
             in the background when the addition operator is used.
         #>
 
+        $Ages = 12, 25, 18, 64
+
         $Age = __
         $Ages = $Ages + $Age
 
@@ -226,10 +228,10 @@ Describe 'Arrays' {
         '____' | Should -Be $Numbers.GetType().Name
 
         $Strings = 'first', 'second', 'third'
-        $Strings.GetType().Name | Should -Be 'Object[]'
+        '____' | Should -Be $Strings.GetType().Name
 
         $Processes = Get-Process
-        $Processes.GetType().Name | Should -Be 'Object[]'
+        '____' | Should -Be $Processes.GetType().Name
 
         <#
             The base type of Object[], Char[], and other fixed size array types is the System.Array
@@ -249,12 +251,12 @@ Describe 'Arrays' {
 
         # The Contains method is case sensitive for arrays containing strings.
 
-        $Strings.Contains('first') | Should -BeTrue
-        $Strings.Contains('First') | Should -BeFalse
+        $____ -eq $Strings.Contains('first') | Should -BeTrue
+        $____ -eq $Strings.Contains('First') | Should -BeTrue
 
         # PowerShell's -contains operator is not case sensitive.
 
-        $Strings -contains 'first' | Should -BeTrue
-        $Strings -contains 'First' | Should -BeTrue
+        $Strings -contains '____' | Should -BeTrue
+        $Strings -contains '____' | Should -BeTrue
     }
 }
