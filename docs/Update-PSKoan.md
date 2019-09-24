@@ -12,8 +12,19 @@ Update the user Koan directory with new topics and koans.
 
 ## SYNTAX
 
+### TopicOnly (Default)
 ```
-Update-PSKoan [[-Topic] <String[]>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Update-PSKoan [-Topic <String[]>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### ModuleOnly
+```
+Update-PSKoan [-Topic <String[]>] -Module <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### IncludeModule
+```
+Update-PSKoan [-Topic <String[]>] -IncludeModule <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -39,21 +50,6 @@ All missing topics will be copied from the module.
 
 ## PARAMETERS
 
-### -Topic
-Updates the specified topic from the module.
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases: Koan, File
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
 
@@ -61,6 +57,51 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeModule
+Update the default PowerShell Koans as well as Koans for the specified module. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: IncludeModule
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Module
+Update Koans in the specified module only. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: ModuleOnly
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Topic
+Updates the specified topic from the module.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases: Koan, File
 
 Required: False
 Position: Named

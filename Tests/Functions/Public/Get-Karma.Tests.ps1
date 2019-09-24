@@ -1,8 +1,22 @@
-#Requires -Modules PSKoans
+#region Header
+if (-not (Get-Module PSKoans)) {
+    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
 
-Describe 'Get-Karma' {
+    Import-Module $moduleBase -Force
+}
+#endregion
 
-    InModuleScope 'PSKoans' {
+InModuleScope 'PSKoans' {
+    Describe 'Get-Karma' {
+        BeforeAll {
+            $TestLocation = Join-Path -Path $TestDrive -ChildPath 'PSKoans'
+
+            Mock Get-PSKoanLocation {
+                $TestLocation
+            }
+
+            Update-PSKoan -Confirm:$false
+        }
 
         Context 'Default Behaviour' {
             BeforeAll {
@@ -12,11 +26,6 @@ Describe 'Get-Karma' {
                         FailedCount = 4
                     }
                 }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
             }
 
             It 'should produce a hashtable with data' {
@@ -26,8 +35,6 @@ Describe 'Get-Karma' {
             }
 
             It 'should Invoke-Pester on koans until it fails a test' {
-                $ValidKoans = Get-PSKoanFile
-
                 Assert-MockCalled Invoke-Koan -Times 1
             }
         }
@@ -35,7 +42,6 @@ Describe 'Get-Karma' {
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
-                Mock Get-Koan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
             }
@@ -55,44 +61,67 @@ Describe 'Get-Karma' {
 
         Context 'With -ListTopics Parameter' {
             BeforeAll {
-                Mock Get-PSKoanFile { }
+                Mock Get-PSKoan { }
             }
 
             It 'should list all the koan topics' {
                 Get-Karma -ListTopics
-                Assert-MockCalled Get-PSKoanFile
+
+                Assert-MockCalled Get-PSKoan
             }
         }
 
         Context 'With -Topic Parameter' {
             BeforeAll {
                 Mock Invoke-Koan -ModuleName 'PSKoans' { }
-
-                $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-                Set-PSKoanLocation -Path $TestLocation
-
-                Update-PSKoan -Confirm:$false
-
-                $TestCases = @(
-                    @{ Topic = @( 'AboutAssertions' ) }
-                    @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' ) }
-                )
             }
 
-            It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases $TestCases {
+            It 'should Invoke-Pester on only the topics selected: <Topic>' -TestCases @(
+                @{ Topic = @( 'AboutAssertions' ) }
+                @{ Topic = @( 'AboutArrays', 'AboutConditionals', 'AboutComparison' ) }
+            ) {
                 param([string[]] $Topic)
 
                 Get-Karma -Topic $Topic
+
                 Assert-MockCalled Invoke-Koan -Times @($Topic).Count
             }
         }
 
-        Describe 'Behaviour When All Koans Are Completed' {
+        Context 'Behaviour When All Koans Are Completed' {
             BeforeAll {
-                $StartLocation = Get-PSKoanLocation
-                Set-PSKoanLocation -Path "$PSScriptRoot/CompletedKoan"
+                Mock Get-PSKoanLocation {
+                    Join-Path -Path $TestDrive -ChildPath 'CompletedKoan'
+                }
 
-                $Result = Get-Karma -Topic SelectedTopicTest
+                $TestFile = Join-Path -Path (Get-PSKoanLocation) -ChildPath 'Group\SelectedTopicTest.Koans.Ps1'
+                New-Item -Path (Split-Path $TestFile -Parent) -ItemType Directory -Force
+                Set-Content -Path $TestFile -Value @'
+                    using module PSKoans
+                    [Koan(Position = 1)]
+                    param()
+
+                    Describe 'Koans Test' {
+
+                        It 'is easy to solve' {
+                            $true | Should -BeTrue
+                        }
+
+                        It 'is positively trivial' {
+                            $false | Should -BeFalse
+                        }
+                    }
+'@
+
+                try {
+                    $Result = Get-Karma -Topic SelectedTopicTest
+                } catch {
+                    # Ignore this. Error tests follow.
+                }
+            }
+
+            It 'should not divide by zero if all Koans are completed' {
+                { Get-Karma -Topic SelectedTopicTest } | Should -Not -Throw
             }
 
             It 'should output the result object' {
@@ -115,8 +144,6 @@ Describe 'Get-Karma' {
             It 'should indicate the requested topic' {
                 $Result.RequestedTopic | Should -Be 'SelectedTopicTest'
             }
-
-            Set-PSKoanLocation -Path $StartLocation
         }
     }
 }

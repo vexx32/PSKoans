@@ -14,12 +14,19 @@ Reset a Koan or a number of koans to the default.
 
 ### NameOnly (Default)
 ```
-Reset-PSKoan [-Topic <String[]>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan [-Topic <String[]>] [-Name <String>] [-Context <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### NameAndContext
+### ModuleOnly
 ```
-Reset-PSKoan [-Topic <String[]>] [-Name <String>] -Context <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Reset-PSKoan [-Topic <String[]>] -Module <String[]> [-Name <String>] [-Context <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
+### IncludeModule
+```
+Reset-PSKoan [-Topic <String[]>] -IncludeModule <String[]> [-Name <String>] [-Context <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,12 +85,57 @@ Reset koans with names starting "returns" in topics matching the wildcard patter
 
 ## PARAMETERS
 
+### -Confirm
+Prompts for confirmation before making any changes. Use to always be prompted before any changes are made.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Context
 Reset koans in the specified context.
 
 ```yaml
 Type: String
-Parameter Sets: NameAndContext
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeModule
+Reset the default PowerShell Koans as well as Koans for the specified module. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: IncludeModule
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Module
+Reset Koans for the specified module only. Wildcards are supported.
+
+```yaml
+Type: String[]
+Parameter Sets: ModuleOnly
 Aliases:
 
 Required: True
@@ -115,21 +167,6 @@ Reset the specified topic or topics. Wildcards are supported.
 Type: String[]
 Parameter Sets: (All)
 Aliases: Koan, File
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts for confirmation before making any changes. Use to always be prompted before any changes are made.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
 
 Required: False
 Position: Named

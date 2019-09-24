@@ -1,40 +1,48 @@
 using namespace System.Collections.Generic
 
 function Update-PSKoan {
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = "High",
+    [CmdletBinding(
+        SupportsShouldProcess,
+        DefaultParameterSetName = 'TopicOnly',
+        ConfirmImpact = "High",
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Update-PSKoan.md')]
     [OutputType([void])]
     param(
         [Parameter()]
         [Alias('Koan', 'File')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = (Get-PSKoanFile).Topic
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
         [SupportsWildcards()]
         [string[]]
-        $Topic
-    )
+        $Topic,
 
-    $TopicRegex = ConvertFrom-WildcardPattern -Pattern $Topic
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
+
+        [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule
+    )
 
     $KoanFolder = Get-PSKoanLocation
     if (-not (Test-Path -Path $KoanFolder)) {
         New-Item -Path $KoanFolder -ItemType Directory > $null
     }
 
-    $ModuleKoanFolder = Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'
-    $ModuleKoanList = Get-ChildItem -LiteralPath $ModuleKoanFolder -Recurse -Filter *.Koans.ps1 |
-        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
-        Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
+    $GetParams = @{
+        Scope                = 'Module'
+        SkipAttributeParsing = $true
+    }
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
+    }
+    $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
-    $UserKoanList = Get-ChildItem -LiteralPath $KoanFolder -Recurse -Filter *.Koans.ps1 |
-        Where-Object { -not $Topic -or $_.BaseName -replace '\.Koans$' -match $TopicRegex } |
-        Group-Object { $_.BaseName -replace '\.Koans$' } -AsHashTable -AsString
+    $GetParams['Scope'] = 'User'
+    $UserKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
     if (-not $UserKoanList) {
         $UserKoanList = @{ }
@@ -45,8 +53,6 @@ function Update-PSKoan {
         $null = $TopicList.Add($TopicName)
     }
 
-    $ParentPathPattern = [regex]::Escape((Join-Path -Path $script:ModuleRoot -ChildPath 'Koans'))
-
     switch ($TopicList) {
         <#
             Create the parent folder if the topic is in the module list,
@@ -55,8 +61,7 @@ function Update-PSKoan {
             Update or Copy will follow.
         #>
         { $ModuleKoanList.ContainsKey($_) } {
-            $PathFragment = $ModuleKoanList[$_].Fullname -replace $ParentPathPattern
-            $DestinationPath = Join-Path -Path $KoanFolder -ChildPath $PathFragment
+            $DestinationPath = Join-Path -Path $KoanFolder -ChildPath $ModuleKoanList[$_].RelativePath
 
             $ParentPath = Split-Path -Path $DestinationPath -Parent
             if (-not (Test-Path -Path $ParentPath)) {
@@ -71,11 +76,11 @@ function Update-PSKoan {
             file copied from the module.
         #>
         { $ModuleKoanList.ContainsKey($_) -and $UserKoanList.ContainsKey($_) } {
-            if ($UserKoanList[$_].FullName -ne $DestinationPath) {
+            if ($UserKoanList[$_].Path -ne $DestinationPath) {
                 if ($PSCmdlet.ShouldProcess($_, 'Moving Topic')) {
                     Write-Verbose "Moving $_"
 
-                    $UserKoanList[$_] | Move-Item -Destination $DestinationPath
+                    $UserKoanList[$_].Path | Move-Item -Destination $DestinationPath
                 }
             }
 
@@ -93,7 +98,7 @@ function Update-PSKoan {
             if ($PSCmdlet.ShouldProcess($_, 'Adding Topic')) {
                 Write-Verbose "Adding $_"
 
-                $ModuleKoanList[$_] | Copy-Item -Destination $DestinationPath -Force
+                $ModuleKoanList[$_].Path | Copy-Item -Destination $DestinationPath -Force
             }
 
             continue
@@ -108,7 +113,7 @@ function Update-PSKoan {
             if ($PSCmdlet.ShouldProcess($_, 'Removing Topic')) {
                 Write-Verbose "Removing $_"
 
-                $UserKoanList[$_] | Remove-Item
+                $UserKoanList[$_].Path | Remove-Item
             }
 
             continue

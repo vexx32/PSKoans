@@ -4,26 +4,32 @@ function Show-Karma {
     [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path', 'Measure-Karma')]
     param(
+        [Parameter(ParameterSetName = 'ListKoans')]
+        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = (Get-PSKoanFile).Topic
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
         [SupportsWildcards()]
         [string[]]
         $Topic,
 
-        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
-        [Alias('ListKoans')]
-        [switch]
-        $ListTopics,
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'ListKoans')]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
 
-        [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
+        [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule,
+
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Alias('ListKoans', 'ListTopics')]
+        [switch]
+        $List,
+
+        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
@@ -33,14 +39,24 @@ function Show-Karma {
         [switch]
         $ClearScreen,
 
+        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias()]
         [switch]
         $Detailed
     )
+
+    $GetParams = @{}
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
+    }
+
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
-            Get-PSKoanFile
+            Get-PSKoan @GetParams
         }
         'OpenFolder' {
             Write-Verbose "Opening koans folder"
@@ -64,14 +80,13 @@ function Show-Karma {
                 Get-PSKoanLocation | Invoke-Item
             }
         }
-        "Default" {
+        default {
             if ($ClearScreen) {
                 Clear-Host
             }
 
             Show-MeditationPrompt -Greeting
-
-            $Results = if ($Topic) { Get-Karma -Topic $Topic } else { Get-Karma }
+            $Results = Get-Karma @GetParams
 
             if ($Results.Complete) {
                 $Params = @{

@@ -4,39 +4,42 @@
     [OutputType([void])]
     [Alias()]
     param(
-        [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = (Get-PSKoanFile).Topic
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
         [SupportsWildcards()]
         [string[]]
         $Topic,
 
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'ListKoans')]
+        [string[]]
+        $Module,
+
+        [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [string[]]
+        $IncludeModule,
+
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
-        [Alias('ListKoans')]
+        [Alias('ListKoans', 'ListTopics')]
         [switch]
-        $ListTopics
+        $List
     )
+
+    $GetParams = @{
+        Scope = 'User'
+    }
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
+    }
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
-            Get-PSKoanFile
+            Get-PSKoan @GetParams
         }
         "Default" {
             Write-Verbose 'Sorting koans...'
             try {
-                if ($Topic) {
-                    Write-Verbose "Getting Koans matching selected topic(s): $($Topic -join ', ')"
-                    $SortedKoanList = Get-Koan -Topic $Topic
-                }
-                else {
-                    $SortedKoanList = Get-Koan
-                }
+                $SortedKoanList = Get-PSKoan @GetParams
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
@@ -101,7 +104,7 @@
                     KoansPassed    = $KoansPassed
                     TotalKoans     = $TotalKoans
                     CurrentTopic   = [PSCustomObject]@{
-                        Name      = $KoanFile.Name -replace '\.Koans\.ps1$'
+                        Name      = $KoanFile.Topic
                         Completed = $PesterTests.PassedCount
                         Total     = $PesterTests.TotalCount
                     }

@@ -1,4 +1,10 @@
-#Requires -Modules PSKoans
+#region Header
+if (-not (Get-Module PSKoans)) {
+    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+
+    Import-Module $moduleBase -Force
+}
+#endregion
 
 Describe 'Show-Karma' {
 
@@ -100,7 +106,7 @@ Describe 'Show-Karma' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
-                Mock Get-Koan -ModuleName 'PSKoans' { }
+                Mock Get-PSKoan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
             }
@@ -124,12 +130,12 @@ Describe 'Show-Karma' {
 
         Context 'With -ListTopics Parameter' {
             BeforeAll {
-                Mock Get-PSKoanFile { }
+                Mock Get-PSKoan
             }
 
             It 'should list all the koan topics' {
                 Show-Karma -ListTopics
-                Assert-MockCalled Get-PSKoanFile
+                Assert-MockCalled Get-PSKoan
             }
         }
 
