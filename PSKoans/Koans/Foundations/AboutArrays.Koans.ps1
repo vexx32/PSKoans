@@ -211,7 +211,7 @@ Describe 'Arrays' {
         else {
             # Windows PowerShell 5 and below have to work a lot harder to achieve the same thing.
 
-            $letters = [Int][Char]$firstLetter..[Int][Char]$lastLetter -as [Char[]]
+            $letters = ([Int][Char]$firstLetter)..([Int][Char]$lastLetter) -as [Char[]]
 
             $letters | Should -Be 'a', 'b', 'c', 'd'
         }
