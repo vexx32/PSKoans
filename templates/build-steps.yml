@@ -27,8 +27,19 @@ steps:
 - task: PublishTestResults@2
   displayName: 'Publish Test Results'
   condition: succeededOrFailed()
+
   inputs:
     testResultsFormat: NUnit
     testResultsFiles: '$(TestResults)'
     searchFolder: '$(Build.ArtifactStagingDirectory)'
     mergeTestResults: true
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage'
+  condition: succeededOrFailed()
+
+  inputs:
+    codeCoverageTool: JaCoCo
+    summaryFileLocation: '$(Build.ArtifactStagingDirectory)/$(CodeCoverageFile)'
+    #reportDirectory: '$(Build.ArtifactStagingDirectory)'
+    pathToSources: '$(SourceFolders)'
