@@ -26,7 +26,7 @@ jobs:
     displayName: 'Publish Built Module Artifact'
     inputs:
       path: '$(System.DefaultWorkingDirectory)/PSKoans'
-      artifact: BuiltModule
+      artifact: PSKoans
 
 - job: Windows
   pool:
@@ -55,7 +55,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     displayName: '[TEST] Download Built Module Artifact'
     inputs:
-      artifact: BuiltModule
+      artifact: PSKoans
       path: '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
 
   - task: PowerShell@2
@@ -89,7 +89,7 @@ jobs:
   - task: DownloadPipelineArtifact@2
     displayName: '[PUBLISH] Download Built Module Artifact'
     inputs:
-      artifact: BuiltModule
+      artifact: PSKoans
       path: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
 
   - task: PowerShell@2
