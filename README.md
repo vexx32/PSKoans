@@ -1,8 +1,8 @@
 # PowerShell Koans
 
-| [![PSKoans Logo](./logo-128px.png)](./logo.svg) |
-| :---------------------------------------------: |
-| [![Build Status][build-badge]][build-link]      |
+| [![PSKoans Logo](./logo-128px.png)](./logo.svg)                                                 |
+| :---------------------------------------------------------------------------------------------: |
+| [![Build Status][build-badge]][build-link]<br/>[![Coverage Status][coverage-badge]][build-link] |
 
 ## About the Author
 
@@ -24,6 +24,9 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 ## Table of Contents
 
 - [PowerShell Koans](#powershell-koans)
+  - [About the Author](#about-the-author)
+    - [Joel Sallow](#joel-sallow)
+  - [Synopsis](#synopsis)
   - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
@@ -178,7 +181,8 @@ Good luck!
 
 ## Contributing
 
-If you would like to contribute to PSKoans, please check out the [Contributing](https://github.com/vexx32/PSKoans/blob/master/CONTRIBUTING.md) document. 
+If you would like to contribute to PSKoans, please check out the [Contributing](https://github.com/vexx32/PSKoans/blob/master/CONTRIBUTING.md) document.
 
 [build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
 [build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
+[coverage-badge]: https://img.shields.io/azure-devops/coverage/SallowCode/PSKoans/1
