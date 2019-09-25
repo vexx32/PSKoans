@@ -80,13 +80,12 @@ jobs:
       artifact: PSKoans.nupkg
 
 - job: PublishModule
-  displayName: "Publish Module to PowerShell Gallery"
+  displayName: "Publish Module to PSGallery"
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   dependsOn:
     - Linux
     - Windows
     - MacOS
-    - TestPublishModule
   pool:
     vmImage: ubuntu-latest
 
@@ -99,7 +98,7 @@ jobs:
       path: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery/PSKoans'
 
   - task: PowerShell@2
-    displayName: 'Deploy to PSGallery'
+    displayName: 'Deploy to PowerShell Gallery'
 
     inputs:
       targetType: 'filePath'
