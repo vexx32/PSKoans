@@ -20,6 +20,17 @@ if ($OutputDirectory) {
         InstallationPolicy   = 'Trusted'
     }
     Register-PSRepository @Params
+
+    Import-Module "$PSScriptRoot/FileSystem/PSKoans"
+    $Module = Get-Module -Name PSKoans
+    $Dependencies = @(
+        $Module.RequiredModules.Name
+        $Module.NestedModules.Name
+    ).Where{ $_ }
+
+    foreach ($Module in $Dependencies) {
+        Publish-Module -Name $Module -Repository FileSystem -NugetApiKey "Test-Publish"
+    }
 }
 
 $DeploymentParams = @{
@@ -29,6 +40,6 @@ $DeploymentParams = @{
     Verbose = $true
 }
 
-Get-ChildItem -Path $DeploymentParams['Path'] | Write-Host
-
 Invoke-PSDeploy @DeploymentParams
+
+Get-ChildItem -Path $DeploymentParams['Path'] | Out-String | Write-Host
