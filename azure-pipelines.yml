@@ -14,59 +14,65 @@ trigger:
 pr:
 - master
 
-jobs:
+stages:
 
-- job: Linux
-  pool:
-    vmImage: ubuntu-latest
+- stage: BuildAndTest
+  jobs:
 
-  steps:
-  - template: templates/build-steps.yml
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish External Help Artifacts'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    inputs:
-      path: '$(System.DefaultWorkingDirectory)/PSKoans/en-us'
-      artifact: ExternalHelp
+  - job: Linux
+    pool:
+      vmImage: ubuntu-latest
 
-- job: Windows
-  pool:
-    vmImage: windows-latest
+    steps:
+    - template: templates/build-steps.yml
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish External Help Artifacts'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      inputs:
+        path: '$(System.DefaultWorkingDirectory)/PSKoans'
+        artifact: Module
 
-  steps:
-  - template: templates/build-steps.yml
+  - job: Windows
+    pool:
+      vmImage: windows-latest
 
-- job: MacOS
-  pool:
-    vmImage: macOS-latest
+    steps:
+    - template: templates/build-steps.yml
 
-  steps:
-  - template: templates/build-steps.yml
+  - job: MacOS
+    pool:
+      vmImage: macOS-latest
 
-- job: PublishModule
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  dependsOn:
-    - Linux
-    - Windows
-    - MacOS
-  pool:
-    vmImage: ubuntu-latest
+    steps:
+    - template: templates/build-steps.yml
 
-  steps:
-  - task: DownloadPipelineArtifact@2
-    displayName: 'Download External Help Artifact'
-    inputs:
-      artifact: ExternalHelp
-      path: '$(System.DefaultWorkingDirectory)/PSKoans/'
+- stage: PublishModule
+  jobs:
 
-  - task: PowerShell@2
-    displayName: 'Deploy to Gallery'
+  - job: PublishToGallery
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    dependsOn:
+      - Linux
+      - Windows
+      - MacOS
+    pool:
+      vmImage: ubuntu-latest
 
-    inputs:
-      targetType: 'filePath'
-      arguments: $(PSApiKey)
-      filePath: ./Build/Publish.ps1
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Built Module Artifact'
+      inputs:
+        artifact: Module
+        path: '$(System.DefaultWorkingDirectory)'
 
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
+    - task: PowerShell@2
+      displayName: 'Deploy to Gallery'
+
+      inputs:
+        targetType: 'filePath'
+        arguments: $(PSApiKey)
+        filePath: ./Build/Publish.ps1
+
+        errorActionPreference: 'stop'
+        failOnStderr: true
+        pwsh: true
