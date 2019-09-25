@@ -24,6 +24,9 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 ## Table of Contents
 
 - [PowerShell Koans](#powershell-koans)
+  - [About the Author](#about-the-author)
+    - [Joel Sallow](#joel-sallow)
+  - [Synopsis](#synopsis)
   - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
