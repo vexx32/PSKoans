@@ -5,7 +5,7 @@ param()
     About Enumerations
 
     Enumerations are used to give names to lists of constant values. Enumerations are very widely used in the .NET
-    framework and frequently encoutered in PowerShell.
+    framework and frequently encountered in PowerShell.
 
     Examples in this topic use Start-Job to avoid problems when continually loading a type in the current
     PowerShell session. Enumeration values demonstrated in this section are cast to String within the jobs,
