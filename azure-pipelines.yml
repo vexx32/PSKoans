@@ -76,7 +76,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Module Nupkg'
     inputs:
-      path: '$(System.DefaultWorkingDirectory)/Deploy/FileSystem/*.nupkg'
+      path: '$(NupkgPath)'
       artifact: Nupkg
 
 - job: PublishModule

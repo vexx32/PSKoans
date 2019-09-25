@@ -43,3 +43,6 @@ $DeploymentParams = @{
 Invoke-PSDeploy @DeploymentParams
 
 Get-ChildItem -Path $DeploymentParams['Path'] | Out-String | Write-Host
+
+$Nupkg = Get-ChildItem -Path $DeploymentParams['Path'] -Filter 'PSKoans*.nupkg' | ForEach-Object FullName
+Write-Host "##vso[task.setvariable variable=NupkgPath]$Nupkg"
