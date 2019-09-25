@@ -57,13 +57,13 @@ jobs:
   steps:
   - template: templates/environment-setup.yml
   - task: DownloadPipelineArtifact@2
-    displayName: '[TEST] Download Built Module Artifact'
+    displayName: 'Download Built Module Artifact'
     inputs:
       artifact: PSKoans
       path: '$(System.DefaultWorkingDirectory)/Deploy/FileSystem/PSKoans'
 
   - task: PowerShell@2
-    displayName: '[TEST] Deploy to FileSystem'
+    displayName: 'Deploy to FileSystem'
     inputs:
       targetType: 'filePath'
       arguments: -Key $(PSApiKey) -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
@@ -77,10 +77,10 @@ jobs:
     displayName: 'Publish Module Nupkg'
     inputs:
       path: '$(NupkgPath)'
-      artifact: Nupkg
+      artifact: PSKoans.nupkg
 
 - job: PublishModule
-  displayName: "Publish Module to PSGallery"
+  displayName: "Publish Module to PowerShell Gallery"
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   dependsOn:
     - Linux
@@ -93,13 +93,13 @@ jobs:
   steps:
   - template: templates/environment-setup.yml
   - task: DownloadPipelineArtifact@2
-    displayName: '[PUBLISH] Download Built Module Artifact'
+    displayName: 'Download Built Module Artifact'
     inputs:
       artifact: PSKoans
       path: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery/PSKoans'
 
   - task: PowerShell@2
-    displayName: '[PUBLISH] Deploy to Gallery'
+    displayName: 'Deploy to PSGallery'
 
     inputs:
       targetType: 'filePath'
