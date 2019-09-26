@@ -233,7 +233,7 @@ Describe 'About Enumerations' {
                 to file system rights.
             #>
 
-            It 'Each flag is reprsented by a single bit' {
+            It 'represents each flag value with a single bit' {
                 <#
                     A name in the enumeration normally represents a single bit in a numeric value.
 
