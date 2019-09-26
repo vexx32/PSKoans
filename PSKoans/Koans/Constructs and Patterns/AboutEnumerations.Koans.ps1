@@ -407,7 +407,7 @@ Describe 'About Enumerations' {
             }
         }
 
-        Context 'Enumerations and parameters' {
+        Context 'Enumerations and Parameters' {
             <#
                 An enumeration can be used to define the type for a parameter. This can be used as an
                 alternative to ValidateSet in some cases.
