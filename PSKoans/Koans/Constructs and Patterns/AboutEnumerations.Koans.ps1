@@ -272,7 +272,7 @@ Describe 'About Enumerations' {
                 '____' | Should -Be $Name
             }
 
-            It 'a comma separated list can be cast to the enum value' {
+            It 'can represent multiple flag names with a single value' {
                 # A list of names can be converted to a single flag value.
 
                 $script = {
