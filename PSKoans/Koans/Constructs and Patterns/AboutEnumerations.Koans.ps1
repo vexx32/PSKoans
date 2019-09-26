@@ -299,7 +299,7 @@ Describe 'About Enumerations' {
                 __ | Should -Be $Value
             }
 
-            It 'allows you to test for flags' {
+            It 'allows you to test for the presence of a given flag' {
                 <#
                     A value which has multiple flags set is provided as a single value.
 
