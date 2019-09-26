@@ -16,14 +16,13 @@ See below for a table of all koans and their corresponding positions. When worki
 |  Foundations              |[AboutArrays](Koans/Foundations/AboutArrays.Koans.ps1)|113| |
 |  Foundations              |[AboutComparison](Koans/Foundations/AboutComparison.Koans.ps1)|114| |
 |  Foundations              |[AboutStringOperators](Koans/Foundations/AboutStringOperators.Koans.ps1)|115| |
-|  Foundations              |[AboutConditions](Koans/Foundations/AboutConditions.Koans.ps1)|120| |
+|  Foundations              |[AboutConditionals](Koans/Foundations/AboutConditionals.Koans.ps1)|120| |
 |  Foundations              |[AboutFunctionsAndScriptBlocks](Koans/Foundations/AboutFunctionsAndScriptBlocks.Koans.ps1)|121| |
 |  Foundations              |[AboutOrderOfOperations](Koans/Foundations/AboutOrderOfOperations.Koans.ps1)|122| |
 |  Foundations              |[AboutTypeOperators](Koans/Foundations/AboutTypeOperators.Koans.ps1)|129| |
-|  Foundations              |[AboutHashTables](Koans/Foundations/AboutHashTables.Koans.ps1)|130| |
+|  Foundations              |[AboutHashtables](Koans/Foundations/AboutHashtables.Koans.ps1)|130| |
 |  Foundations              |[AboutLoopsAndPipelines](Koans/Foundations/AboutLoopsAndPipelines.Koans.ps1)|131| |
-|  Testing Grounds          |[TestingHashtables](Koans/Testing%20Grounds/TestingHashtables.Koans.ps1)              |133| |
-|  Foundations              |[AboutTheStockChallenge](Koans/Foundations/AboutTheStockChallenge.Koans.ps1)|150 | |
+|  Foundations              |[TheStockChallenge](Koans/Katas/TheStockChallenge.Koans.ps1)|150 | |
 |  Cmdlets 1                |[AboutDiscovery](Koans/Cmdlets%201/AboutDiscovery.Koans.ps1)|201| |
 |  Cmdlets 1                |[AboutPSProviders](Koans/Cmdlets%201/AboutPSProviders.Koans.ps1)|202| |
 |  Cmdlets 1                |[AboutNewObject](Koans/Cmdlets%201/AboutNewObject.Koans.ps1)|204| |
@@ -44,7 +43,6 @@ See below for a table of all koans and their corresponding positions. When worki
 |  Constructs and Patterns  |[AboutAdvancedFunctions](Koans/Constructs%20and%20Patterns/AboutAdvancedFunctions.Koans.ps1)|306| |
 |  Constructs and Patterns  |[AboutRedirection](Koans/Constructs%20and%20Patterns/AboutRedirection.Koans.ps1)|307| |
 |  Constructs and Patterns  |[AboutErrorHandling](Koans/Constructs%20and%20Patterns/AboutErrorHandling.Koans.ps1)|308| |
-|  Cmdlets 2                |[AboutOutCmdlets](Koans/Cmdlets%202/AboutOutCmdlets.Koans.ps1)|401| |
-|  Testing Grounds          |[TestingArrays](Koans/Testing%20Grounds/TestingArrays.Koans.ps1)|???| | |
+|  Cmdlets 2                |[AboutOutCmdlets](Koans/Cmdlets%202/AboutOutCmdlets.Koans.ps1)|401| | |
 
 
