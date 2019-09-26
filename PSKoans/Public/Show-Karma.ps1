@@ -109,7 +109,7 @@ function Show-Karma {
                 }
 
                 if ($Detailed) {
-                    $Params.Add('Results', $PesterTests.TestResult)
+                    $Params.Add('Results', $Results.Results)
                 }
             }
 
