@@ -96,7 +96,7 @@ Describe 'About Enumerations' {
                     The type can be found using the GetEnumUnderlyingType method.
                 #>
 
-                '____' | Should -Be ([DayOfWeek].GetEnumUnderlyingType().Name)
+                [____] | Should -Be ([DayOfWeek].GetEnumUnderlyingType())
 
                 # Many enums use Int32 as the underlying type. A few use other numeric types.
 
