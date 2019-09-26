@@ -7,6 +7,7 @@
 ## About the Author
 
 ### Joel Sallow
+
 - [Blog](https://vexx32.github.io)
 - [Twitter](https://twitter.com/vexx32)
 - Currently looking for work? [Yes](https://hirejoel.dev)
@@ -37,7 +38,6 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
       - [2. Run `Show-Karma -Meditate` to open your Koans folder](#2-run-show-karma--meditate-to-open-your-koans-folder)
       - [3. Run `Show-Karma` again to see how you did](#3-run-show-karma-again-to-see-how-you-did)
   - [Contributing](#contributing)
-
 
 ## Prerequisites
 
