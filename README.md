@@ -31,7 +31,7 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
   - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
     - [Install from Gallery](#install-from-gallery)
-    - [Or clone the Repo](#or-clone-the-repo)
+    - [Or Download the Repo](#or-download-the-repo)
     - [Start your Journey](#start-your-journey)
       - [1. Run `Show-Karma` to start your journey towards PowerShell enlightenment](#1-run-show-karma-to-start-your-journey-towards-powershell-enlightenment)
       - [2. Run `Show-Karma -Meditate` to open your Koans folder](#2-run-show-karma--meditate-to-open-your-koans-folder)
@@ -67,9 +67,9 @@ Install-Module Pester -Scope CurrentUser
 
 1. `Install-Module PSKoans -Scope CurrentUser`
 
-### Or clone the Repo
+### Or Download the Repo
 
-1. `git clone` the repository into your desired directory, or download the repository as a .zip file and extract into a directory of your choice.
+1. `git clone` the repository into your desired directory, or download the module zip file from the build artifacts available on [this page](https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1).
 2. From a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
 3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
 4. Add the repository folder to `$env:PSModulePath` so that PowerShell can see it.
