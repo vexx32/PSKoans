@@ -18,7 +18,7 @@ Describe 'About Enumerations' {
         #>
 
         Context 'Using enumerations' {
-            It 'values of an enumeration are available in a number of different ways' {
+            It 'exposes the values of an enumeration in a number of different ways' {
                 # Using the static property operator.
 
                 [DayOfWeek]::____ | Should -BeOfType [DayOfWeek]
