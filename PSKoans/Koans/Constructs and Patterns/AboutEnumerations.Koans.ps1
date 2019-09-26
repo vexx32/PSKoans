@@ -17,7 +17,7 @@ Describe 'About Enumerations' {
             example of an existing .NET enumeration.
         #>
 
-        Context 'Using enumerations' {
+        Context 'Using Enumerations' {
             It 'exposes the values of an enumeration in a number of different ways' {
                 <#
                     Using the static property operator.
