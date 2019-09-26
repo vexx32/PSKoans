@@ -141,9 +141,10 @@ Describe 'About Enumerations' {
                 <#
                     Each value in an enumeration can be assigned an explicit value.
 
-                    By default values are automatically assigned starting from 0. PowerShell
-                    only allows the use of Int32 values in an enumeration. Any decimal values will
-                    be rounded to an integer.
+                    By default values are automatically assigned starting from 0.
+
+                    Windows PowerShell only allows the use of Int32 values in an enumeration.
+                    Any decimal values will be rounded to an integer.
                 #>
 
                 $script = {
@@ -152,7 +153,12 @@ Describe 'About Enumerations' {
                         Two = 2
                     }
 
-                    # Numeric values can be cast or converted to an enumeration value.
+                    <#
+                        Numeric values can be cast or converted to an enumeration value.
+
+                        The $using scope allows access to variables from the parent PowerShell session
+                        when using Start-Job and Invoke-Command.
+                    #>
 
                     $using:Value -as [Number] -as [String]
                 }
@@ -167,10 +173,50 @@ Describe 'About Enumerations' {
                     from the last value assigned.
                 #>
 
+                $script = {
+                    enum Number {
+                        One = 1
+                        Two = 2
+                    }
+
+                    $using:Value -as [Number] -as [Int]
+                }
+
                 $Value = 'Six'
                 $NumericValue = Start-Job -ScriptBlock $script | Receive-Job -Wait
 
                 __ | Should -Be $NumericValue
+            }
+
+            It 'can represent other integer in PowerShell Core' -Skip { $PSVersionTable.PSVersion -lt '6.2.0' } {
+                <#
+                    In PowerShell Core, enumerations can be based around types other than Int32. The numeric type
+                    can be SByte, Byte, Int16, UInt16, Int32 (default), UInt32, Int64, and UInt64.
+
+                    PowerShell, like C#, uses inheritance-like syntax to express the type in use.
+
+                        enum EnumName : NumericType
+
+                    Inheritance is explored in the AboutClasses topic.
+                #>
+
+                $script = {
+                    # This number is too large for Int32, Int64 is used instead.
+
+                    enum Int64Enum : Int64 {
+                        LargeValue = 9223370000000000000
+                    }
+
+                    'LargeValue' -as [Int64Enum] -as [Int64Enum].GetEnumUnderlyingType()
+                }
+
+                $ExpectedType = [____]
+
+                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeOfType $ExpectedType
+
+                <#
+                    Smaller types such as SByte, Byte, Int16, and UInt16 can be used as well.
+                #>
             }
 
             It 'does not require explicit casting to compare values' {
@@ -200,8 +246,7 @@ Describe 'About Enumerations' {
                         TryParse
 
                     Parse is normally used to convert a string into an enum value. Parse is not required
-                    in PowerShell as values can be directly cast to the enum type as shown in the very
-                    first example.
+                    in PowerShell as values can be directly cast to the enum type as shown in the first example.
 
                     TryParse returns true if a value was successfully parsed, and false otherwise. TryParse
                     expects three arguments:
@@ -237,9 +282,12 @@ Describe 'About Enumerations' {
                 <#
                     A name in the enumeration normally represents a single bit in a numeric value.
 
-                    PowerShell enumerations use Int32, 32 unique flags can be expressed in an enumeration.
-                    Each value will be double that of the last. Therefore expected values are 1, 2, 4, 8, 16, and so on.
-                    These are the values of individual bits.
+                    PowerShell enumerations use Int32 by default. PowerShell Core can use other integer types as
+                    demonstrated in the previous context.
+
+                    32 unique flags can be expressed in an enumeration based on Int32. Each value will be double that
+                    of the last. Therefore expected values are 1, 2, 4, 8, 16, and so on. These are the values of
+                    individual bits.
 
                     The [Flags()] attribute is placed above the enum keyword.
 
@@ -303,7 +351,7 @@ Describe 'About Enumerations' {
                 <#
                     A value which has multiple flags set is provided as a single value.
 
-                    The presence of individual bits can be tested in either of two ways.
+                    The presence of individual flag can be tested in either of two ways.
 
                     The HasFlag may be called on an enumeration value:
                #>
