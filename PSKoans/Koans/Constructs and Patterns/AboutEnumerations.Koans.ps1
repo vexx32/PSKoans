@@ -288,7 +288,10 @@ Describe 'About Enumerations' {
                     $using:Names -as [Bit] -as [Int32]
                 }
 
-                # The names are a single string, not an array. Spaces are discarded when converting the value.
+                <#
+                    The names are a single string with commas separating values, not an array.
+                    Spaces are discarded when converting the value.
+                #>
 
                 $Names = '____, ____'
                 $Value = Start-Job -ScriptBlock $script | Receive-Job -Wait
