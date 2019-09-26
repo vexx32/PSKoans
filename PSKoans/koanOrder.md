@@ -3,7 +3,7 @@ See below for a table of all koans and their corresponding positions. When worki
 
 | Folder                    |  Koan                           |  Int Position  |  Module      |
 |---------------------------|---------------------------------|----------------|--------------|
-|  Foundations              |[AboutAssertions](../Koans/Foundations/AboutAssertions.Koans.ps1)|101| |
+|  Foundations              |[AboutAssertions](Koans/Foundations/AboutAssertions.Koans.ps1)|101| |
 |  IntroTraining            |[AboutOOP](../Koans/IntroTraining/AboutOOP.Koans.ps1)|104| |
 |  IntroTraining            |[AboutCmdletVerbs](../Koans/IntroTraining/AboutCmdletVerbs.Koans.ps1)|105| |
 |  IntroTraining            |[AboutGetMember](../Koans/IntroTraining/AboutGetMember.Koans.ps1)|106| |
