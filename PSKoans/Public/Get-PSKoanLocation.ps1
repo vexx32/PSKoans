@@ -3,12 +3,15 @@ function Get-PSKoanLocation {
     [OutputType([string])]
     param()
     process {
-        if ($script:LibraryFolder) {
-            $script:LibraryFolder
+        $Location = Get-PSKoanSetting -Name KoanLocation
+        if ($Location) {
+            $Location
         }
         else {
             $ErrorDetails = @{
-                Exception     = [System.IO.DirectoryNotFoundException]::new('PSKoans folder location has not been defined')
+                Exception     = [System.IO.DirectoryNotFoundException]::new(
+                    'PSKoans folder location has not been defined'
+                )
                 ErrorId       = 'PSKoans.LibraryFolderNotDefined'
                 ErrorCategory = 'NotSpecified'
                 TargetObject  = $MyInvocation.MyCommand.Name
@@ -16,4 +19,3 @@ function Get-PSKoanLocation {
             $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
         }
     }
-}

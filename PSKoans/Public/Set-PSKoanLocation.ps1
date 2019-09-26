@@ -49,15 +49,22 @@ function Set-PSKoanLocation {
         [Alias('PSPath', 'Folder')]
         [FolderTransformAttribute()]
         [string]
-        $Path
+        $Path,
+
+        [Parameter()]
+        [switch]
+        $PassThru
     )
     process {
         if ($PSCmdlet.ShouldProcess("Set PSKoans folder location to '$Path'")) {
-            $script:LibraryFolder = $Path
-            Write-Verbose "Set PSKoans folder location to $script:LibraryFolder"
+            Set-PSKoanSetting -Name KoanLocation -Value $Path
         }
         else {
             Write-Warning "PSKoans folder location has not been changed."
+        }
+
+        if ($PassThru) {
+            $Path
         }
     }
 }
