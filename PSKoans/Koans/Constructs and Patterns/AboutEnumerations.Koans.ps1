@@ -100,7 +100,7 @@ Describe 'About Enumerations' {
 
                 # Many enums use Int32 as the underlying type. A few use other numeric types.
 
-                '____' | Should -Be ([System.Security.AccessControl.AceFlags].GetEnumUnderlyingType().Name)
+                [____] | Should -Be ([System.Security.AccessControl.AceFlags].GetEnumUnderlyingType())
             }
 
             It 'is created using the enum keyword' {
