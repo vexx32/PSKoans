@@ -405,7 +405,8 @@ Describe 'About Enumerations' {
                 # The error message is long, a partial match is enough.
                 $errorMessage = '____'
 
-                { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } | Should -Throw -ExpectedMessage $errorMessage
+                { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
+                    Should -Throw -ExpectedMessage $errorMessage
             }
         }
 
