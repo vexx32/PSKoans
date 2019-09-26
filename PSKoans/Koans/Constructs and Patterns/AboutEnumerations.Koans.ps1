@@ -439,7 +439,7 @@ Describe 'About Enumerations' {
                 @('____', '____') | Should -Be $Values
             }
 
-            It 'using module can be used' {
+            It 'can import enumerations with using module' {
                 <#
                     The using module statement can be used at the top of a script to make enumerations
                     and classes within a module available in a parent scope.
