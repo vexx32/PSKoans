@@ -55,7 +55,7 @@ Describe 'About Enumerations' {
                 [Enum]::GetNames([DayOfWeek]) | Should -Be $daysOfWeek
             }
 
-            It 'each name has an associated numeric value' {
+            It 'has a numeric value associated with each name' {
                 <#
                     In the DayOfWeek enumeration, Sunday has the value 0, and Monday has
                     the value 1, and so on.
