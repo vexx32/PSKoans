@@ -4,8 +4,8 @@ param()
 <#
     About Enumerations
 
-    Enumerations are used to give names to lists of constant values. Enumerations are very widely used in the .NET
-    framework and frequently encountered in PowerShell.
+    Enumerations, or Enums, are used to give names to lists of constant values. Enumerations are very widely
+    used in the .NET framework and frequently encountered in PowerShell.
 
     Examples in this topic use Start-Job to avoid problems when continually loading a type in the current
     PowerShell session. Enumeration values demonstrated in this section are cast to String within the jobs,
@@ -13,21 +13,34 @@ param()
 #>
 Describe 'About Enumerations' {
         <#
-            The DayOfWeek enumeration which holds values describing the days of the week is a simple example
-            of an existing .NET enumeration.
+            The DayOfWeek enumeration (enum) which holds values describing the days of the week is a simple
+            example of an existing .NET enumeration.
         #>
 
         Context 'Using enumerations' {
             It 'exposes the values of an enumeration in a number of different ways' {
-                # Using the static property operator.
+                <#
+                    Using the static property operator.
+
+                    If Strict Mode (Set-StrictMode) has been enabled, accessing a non-existent value will raise
+                    an error.
+                #>
 
                 [DayOfWeek]::____ | Should -BeOfType [DayOfWeek]
 
-                # Casting a string to the enumeration type.
+                <#
+                    Casting a string to the enumeration type.
+
+                    Casting to a non-existent value always raises an error.
+                #>
 
                 [DayOfWeek]'____' | Should -BeOfType [DayOfWeek]
 
-                # Using the -as operator to convert a string to the enumeration type.
+                <#
+                    Using the -as operator to convert a string to the enumeration type.
+
+                    Using -as with a non-existent value will never raise an error.
+                #>
 
                 '____' -as [DayOfWeek] | Should -BeOfType [DayOfWeek]
             }
@@ -46,8 +59,20 @@ Describe 'About Enumerations' {
                 <#
                     In the DayOfWeek enumeration, Sunday has the value 0, and Monday has
                     the value 1, and so on.
+
+                    The value is accessible by casting to a numeric type:
+
+                        [Int][DayOfWeek]::Sunday
+
+                    Or by accessing the value__ property:
+
+                        [DayOfWeek]::Sunday.value__
+
+                    A value from the enumeration can be compared to a number without casting or
+                    directly accessing the value__ property.
                 #>
 
+                [DayOfWeek]::Sunday | Should -Be 0
                 [DayOfWeek]::____ | Should -Be 2
             }
 
@@ -166,6 +191,35 @@ Describe 'About Enumerations' {
                 $Name = '____'
                 Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
             }
+
+            It 'can use the enum type to test if a value exists in the enum' {
+                <#
+                    The Enum type includes two static methods:
+
+                        Parse
+                        TryParse
+
+                    Parse is normally used to convert a string into an enum value. Parse is not required
+                    in PowerShell as values can be directly cast to the enum type as shown in the very
+                    first example.
+
+                    TryParse returns true if a value was successfully parsed, and false otherwise. TryParse
+                    expects three arguments:
+
+                        1. The enum type.
+                        2. The string value to parse.
+                        3. A reference to a variable which can hold the parse result.
+                #>
+
+                $valueToParse = '____'
+                $enumType = [DayOfWeek]
+                $parseResult = [DayOfWeek]::Sunday
+
+                $result = [Enum]::TryParse($enumType, $valueToParse, [Ref]$parseResult)
+
+                $result | Should -BeTrue
+                $parseResult | Should -Not -Be 'Sunday'
+            }
         }
 
         Context 'About Flags' {
@@ -271,7 +325,10 @@ Describe 'About Enumerations' {
 
                 Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
 
-                # The bitwise operator, -band, can also be used to test for the presence of specific flags.
+                <#
+                    The bitwise operator, -band, can also be used to test for the presence of specific flags as an
+                    alternative to the HasFlag method.
+                #>
 
                 $script = {
                     [Flags()]
@@ -286,13 +343,13 @@ Describe 'About Enumerations' {
                     $BitValue = [Bit]$using:Value
 
                     # -band will return the result of the bitwise AND. 0, or the same value as FlagName.
-                    $BitValue -band $FlagName
+                    ($BitValue -band $using:FlagName) -eq $using:FlagName
                 }
 
                 $Value = 10
-                $FlagName = '____'
+                $FlagName = '____, ____'
 
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeGreaterThan 0
+                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
             }
 
             It 'can use values representing a combination of flags' {
