@@ -32,7 +32,7 @@ Describe 'About Enumerations' {
                 '____' -as [DayOfWeek] | Should -BeOfType [DayOfWeek]
             }
 
-            It 'the names in an enumeration can be retrieved using the GetEnumNames method' {
+            It 'can retrieve all names in an enumeration with the GetEnumNames method' {
                 $daysOfWeek = @('____', '____', '____', '____', '____', '____', '____')
 
                 $daysOfWeek | Should -Be ([DayOfWeek].GetEnumNames())
