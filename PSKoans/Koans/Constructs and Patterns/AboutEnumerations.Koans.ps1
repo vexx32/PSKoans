@@ -296,7 +296,7 @@ Describe 'About Enumerations' {
                 $Names = '____, ____'
                 $Value = Start-Job -ScriptBlock $script | Receive-Job -Wait
 
-                $Names | Should -Be $Value
+                __ | Should -Be $Value
             }
 
             It 'allows you to test for flags' {
