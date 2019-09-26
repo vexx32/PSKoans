@@ -410,7 +410,7 @@ Describe 'About Enumerations' {
             }
         }
 
-        Context 'PowerShell enumaration scope' {
+        Context 'PowerShell Enumeration Scope' {
             It 'enumerations created in PowerShell locally scoped' {
                 <#
                     Classes and enumerations are resolvable in the scope they are created. They
