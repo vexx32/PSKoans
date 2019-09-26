@@ -76,7 +76,7 @@ Describe 'About Enumerations' {
                 [DayOfWeek]::____ | Should -Be 2
             }
 
-            It 'the list of possible values can be retrieved using the GetEnumValues method' {
+            It 'can retrieve the list of possible values using the GetEnumValues method' {
                 <#
                     The values of an enumeration are displayed in much the same way as the name,
                     with one important difference.
