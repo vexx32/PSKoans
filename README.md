@@ -31,7 +31,7 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
   - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
     - [Install from Gallery](#install-from-gallery)
-    - [Or clone the Repo](#or-clone-the-repo)
+    - [Or Download the Repo](#or-download-the-repo)
     - [Start your Journey](#start-your-journey)
       - [1. Run `Show-Karma` to start your journey towards PowerShell enlightenment](#1-run-show-karma-to-start-your-journey-towards-powershell-enlightenment)
       - [2. Run `Show-Karma -Meditate` to open your Koans folder](#2-run-show-karma--meditate-to-open-your-koans-folder)
