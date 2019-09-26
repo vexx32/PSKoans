@@ -345,7 +345,7 @@ Describe 'About Enumerations' {
 
                     $BitValue = [Bit]$using:Value
 
-                    # -band will return the result of the bitwise AND. 0, or the same value as FlagName.
+                    # -band will return the result of the bitwise AND; either 0, or the same value as FlagName.
                     ($BitValue -band $using:FlagName) -eq $using:FlagName
                 }
 
