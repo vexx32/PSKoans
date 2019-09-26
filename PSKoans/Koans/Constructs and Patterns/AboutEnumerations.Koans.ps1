@@ -137,7 +137,7 @@ Describe 'About Enumerations' {
                 $enumNames | Should -Be $colours
             }
 
-            It 'values can be important too' {
+            It 'can assign specific numeric values to each enumeration value' {
                 <#
                     Each value in an enumeration can be assigned an explicit value.
 
