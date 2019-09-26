@@ -88,7 +88,7 @@ Describe 'About Enumerations' {
 
                 [DayOfWeek].GetEnumValues() | Select-Object -First 1 | Should -BeOfType [DayOfWeek]
 
-            It 'the numeric type behind an enumeration depends on the enumeration' {
+            It 'has a numeric type backing each enumeration type' {
                 <#
                     Enumerations in the .NET framework, and those created in languages such as C#
                     can be of any numeric type.
