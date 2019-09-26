@@ -14,9 +14,9 @@
 #>
 
 $script:ModuleRoot = $PSScriptRoot
-$script:ConfigPath = (Resolve-Path -Path '~/.config/PSKoans/config.json').Path
+$script:ConfigPath = '~/.config/PSKoans/config.json'
 $script:DefaultSettings = @{
-    KoanLocation = (Resolve-Path -Path '~/PSKoans').Path
+    KoanLocation = '~/PSKoans'
 }
 
 #region SupportingClasses
