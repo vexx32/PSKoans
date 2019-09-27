@@ -90,7 +90,7 @@ Describe 'About Enumerations' {
 
             It 'has a numeric type backing each enumeration type' {
                 <#
-                    Enumerations in the .NET framework, and those created in languages such as C#
+                    Enumerations in the .NET framework, for example those created in languages such as C#,
                     can be of any numeric type.
 
                     The type can be found using the GetEnumUnderlyingType method.
