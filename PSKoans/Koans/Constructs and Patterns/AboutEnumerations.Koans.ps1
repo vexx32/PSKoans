@@ -60,7 +60,7 @@ Describe 'About Enumerations' {
                     In the DayOfWeek enumeration, Sunday has the value 0, and Monday has
                     the value 1, and so on.
 
-                    The value is accessible by casting to a numeric type:
+                    The underlying value is accessible by casting to a numeric type:
 
                         [Int][DayOfWeek]::Sunday
 
