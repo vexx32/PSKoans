@@ -37,7 +37,7 @@ Describe 'About Enumerations' {
                 { [DayOfWeek]'____' } | Should -Not -Throw
 
                 <#
-                    Using the -as operator to convert a string to the enumeration type.
+                    We can also use the -as operator to do a "safe cast" to the enumeration type.
 
                     Using -as with a non-existent value will never raise an error.
                 #>
