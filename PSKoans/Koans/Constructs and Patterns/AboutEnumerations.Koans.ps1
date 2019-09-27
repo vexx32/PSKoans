@@ -39,7 +39,7 @@ Describe 'About Enumerations' {
                 <#
                     We can also use the -as operator to do a "safe cast" to the enumeration type.
 
-                    Using -as with a non-existent value will never raise an error.
+                    Using -as with a non-existent value will simply return $null.
                 #>
 
                 '____' -as [DayOfWeek] | Should -BeOfType [DayOfWeek]
