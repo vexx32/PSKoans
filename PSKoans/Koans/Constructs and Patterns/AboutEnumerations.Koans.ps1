@@ -352,7 +352,7 @@ Describe 'About Enumerations' {
 
                     The presence of individual flag can be tested in either of two ways.
 
-                    The HasFlag may be called on an enumeration value:
+                    One way is to call the HasFlag() method, which may be called on an enumeration value:
                #>
 
                 $script = {
