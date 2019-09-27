@@ -206,7 +206,7 @@ Describe 'About Enumerations' {
                         LargeValue = 9223370000000000000
                     }
 
-                    'LargeValue' -as [Int64Enum] -as [Int64Enum].GetEnumUnderlyingType()
+                    [Int64Enum]::LargeValue -as [Int64Enum].GetEnumUnderlyingType()
                 }
 
                 $ExpectedType = [____]
