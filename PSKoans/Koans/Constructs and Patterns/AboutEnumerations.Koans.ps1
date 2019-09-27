@@ -34,7 +34,7 @@ Describe 'About Enumerations' {
                     Casting to a non-existent value always raises an error.
                 #>
 
-                [DayOfWeek]'____' | Should -BeOfType [DayOfWeek]
+                { [DayOfWeek]'____' } | Should -Not -Throw
 
                 <#
                     Using the -as operator to convert a string to the enumeration type.
