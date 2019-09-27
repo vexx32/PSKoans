@@ -29,7 +29,7 @@ Describe 'About Enumerations' {
                 [DayOfWeek]::____ | Should -BeOfType [DayOfWeek]
 
                 <#
-                    Casting a string to the enumeration type.
+                    We can also cast a string to the enumeration type.
 
                     Casting to a non-existent value always raises an error.
                 #>
