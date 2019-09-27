@@ -19,3 +19,4 @@ function Get-PSKoanLocation {
             $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
         }
     }
+}
