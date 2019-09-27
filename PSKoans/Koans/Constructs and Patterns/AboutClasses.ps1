@@ -15,11 +15,25 @@ param()
     from affecting the current PowerShell session.
 #>
 Describe 'About Classes' {
-    Context 'Simple Classes' {
+    Context 'About Types' {
+        It 'has ' {
+
+        }
+    }
+
+    Context 'Classes and Properties' {
+        It 'can create simple classes using the class keyword' {
+            Start-Job {
+
+            }
+        }
+    }
+
+    Context 'Methods' {
 
     }
 
-    Context 'Properties and Methods' {
+    Context 'Constructors' {
 
     }
 
@@ -28,10 +42,6 @@ Describe 'About Classes' {
     }
 
     Context 'About Hidden' {
-
-    }
-
-    Context 'Constructors' {
 
     }
 
