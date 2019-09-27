@@ -20,7 +20,7 @@ Describe 'About Enumerations' {
         Context 'Using Enumerations' {
             It 'exposes the values of an enumeration in a number of different ways' {
                 <#
-                    Using the static property operator.
+                    The most direct way to refer to enumeration values is with the static member access operator.
 
                     If Strict Mode (Set-StrictMode) has been enabled, accessing a non-existent value will raise
                     an error.
