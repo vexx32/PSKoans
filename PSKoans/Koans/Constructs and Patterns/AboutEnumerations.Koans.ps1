@@ -187,7 +187,7 @@ Describe 'About Enumerations' {
                 __ | Should -Be $NumericValue
             }
 
-            It 'can represent other integer in PowerShell Core' -Skip { $PSVersionTable.PSVersion -lt '6.2.0' } {
+            It 'can represent other integer in PowerShell Core' -Skip:($PSVersionTable.PSVersion -lt '6.2.0') {
                 <#
                     In PowerShell Core, enumerations can be based around types other than Int32. The numeric type
                     can be SByte, Byte, Int16, UInt16, Int32 (default), UInt32, Int64, and UInt64.
