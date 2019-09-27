@@ -79,11 +79,10 @@ Describe 'About Enumerations' {
             It 'can retrieve the list of possible values using the GetEnumValues method' {
                 <#
                     The values of an enumeration are displayed in much the same way as the name,
-                    with one important difference.
+                    with one important difference:
 
-                    GetEnumNames returns an array of strings, the names of the values only.
-
-                    GetEnumValues returns an array of values, which will be presented as the names.
+                         - GetEnumNames returns an array of strings, the names of the values only.
+                         - GetEnumValues returns an array of values, which will be presented as the names.
                 #>
 
                 [DayOfWeek].GetEnumValues() | Select-Object -First 1 | Should -BeOfType [DayOfWeek]
@@ -138,9 +137,8 @@ Describe 'About Enumerations' {
 
             It 'can assign specific numeric values to each enumeration value' {
                 <#
-                    Each value in an enumeration can be assigned an explicit value.
-
-                    By default values are automatically assigned starting from 0.
+                    Each value in an enumeration can be assigned an explicit value. By default values
+                    are automatically assigned starting from 0.
 
                     Windows PowerShell only allows the use of Int32 values in an enumeration.
                     Any decimal values will be rounded to an integer.
@@ -213,9 +211,7 @@ Describe 'About Enumerations' {
 
                 Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeOfType $ExpectedType
 
-                <#
-                    Smaller types such as SByte, Byte, Int16, and UInt16 can be used as well.
-                #>
+                # Smaller types such as SByte, Byte, Int16, and UInt16 can be used as well.
             }
 
             It 'does not require explicit casting to compare values' {
@@ -544,6 +540,27 @@ Describe 'About Enumerations' {
                 } | Receive-Job -Wait
 
                 @('____', '____') | Should -Be $Values
+            }
+
+            It 'cannot access enumerations created in child scopes' {
+                $script = {
+                    function New-Enumeration {
+                        enum ObjectType {
+                            User
+                            Group
+                        }
+                    }
+
+                    # The enum created in the function is not available in the parent scope.
+
+                    New-Enumeration
+                    [ObjectType]::User
+                }
+
+                $ExpectedError = '____'
+
+                { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
+                    Should -Throw $ExpectedError
             }
 
             It 'can import enumerations with using module' {
