@@ -112,7 +112,6 @@ Describe 'About Enumerations' {
                     words.
 
                     The following restrictions apply to the names used in an enumeration:
-
                         * Must start with A-Z, a-z, or _.
                         * May contain A-Z, a-z, _, and 0-9.
                         * Cannot use other special characters.
