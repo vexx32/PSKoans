@@ -215,6 +215,7 @@ If you think it should be placed between two existing koan files, make sure to m
 
 Always add some introductory comments for the topic being covered just after the header section, so students know what to expect.
 Add further comments wherever required.
+**All** comments must be written in clear English.
 
 Comments may consist of flavour-text, hints for specific koans, or explanations.
 
