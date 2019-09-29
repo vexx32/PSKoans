@@ -1,6 +1,3 @@
-using module PSKoans
-[Koan(Position = 104)]
-param()
 <#
     Object-Orientated Programming (OOP)
 
