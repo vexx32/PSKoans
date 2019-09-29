@@ -232,9 +232,18 @@ If you need a hand, don't be afraid to simply submit the pull request before it'
 You're more than welcome to submit WIP pull requests for early feedback and to ask for help if you're not sure how to proceed.
 We're more than happy to offer our own suggestions and help for your ideas!
 
+> **Note on Compatibility**
+>
+> PSKoans is designed to function on PowerShell 6 and above, although Windows PowerShell is still supported.
+> Please be aware that new users may be working with Linux or Mac operating systems, and that not all features are available on these operating systems.
+> For example, the CIM cmdlets are presently only available on Windows.
+>
+> While we do want to cover platform- or version-specific features, we want to ensure that the module will still function appropriately on other platforms and versions, within reason.
+> When covering platform- or version-dependent features of PowerShell, please ensure that you add an appropriate `-Skip` condition to any individual koans that require it.
+> If covering in detail a platform-dependent segment, it is recommended that these be confined to individual koan 'Modules' with appropriate restrictions in each file using `#Requires` statements.
+
 If you just want to make a general comment, some recommendations, or if you want to suggest a koan topic to cover, feel free to submit your thoughts as an issue.
 I try to keep up to speed with those as best I can. :smile:
 
-> **Thank You!**
->
-> Your contributions and involvement will help to ensure the growth and success of PSKoans! :blush:
+**Thank You!**
+Your contributions and involvement will help to ensure the growth and success of PSKoans! :blush:
