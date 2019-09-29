@@ -251,13 +251,13 @@ Do not use multi-line comment syntax where only a single line of comments is nee
 In PSKoans, each question requires the student to insert answers into blank spaces, which will allow the pester tests to pass successfully.
 Please utilise the following blank formats when writing koans:
 
-|  Blank   |                      Format                      | Used For                                                                                               |
-| :------: | :----------------------------------------------: | :----------------------------------------------------------------------------------------------------- |
-|   `__`   |                **2** underscores                 | Answers that expect numeric input.                                                                     |
-| `'____'` | **4** underscores, enclosed in **single quotes** | Answers that expect string inputs.                                                                     |
-| `"____"` | **4** underscores, enclosed in **double quotes** | Answers that expect string inputs which may **also** include variables.                                |
-| `$____`  |      **dollar sign** with **4** underscores      | Answers that expect variable inputs.                                                                   |
-|  `____`  |               **four** underscores               | Answers that expect bare strings: command names, hashtable key names, string parameter arguments, etc. |
+|  Blank   |                 Format                 | Used For                                                                                   |
+| :------: | :------------------------------------: | :----------------------------------------------------------------------------------------- |
+|   `__`   |           **2** underscores            | Answers that expect numeric input.                                                         |
+| `'____'` | **4** underscores in **single quotes** | Answers that expect string inputs.                                                         |
+| `"____"` | **4** underscores in **double quotes** | Answers that expect string inputs which may **also** include variables.                    |
+| `$____`  |      **$** with **4** underscores      | Answers that expect variable name inputs.                                                  |
+|  `____`  |          **four** underscores          | Answers that expect bare strings: command names, hashtable keys, parameter arguments, etc. |
 
 #### Notes for Contributors
 
