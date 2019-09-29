@@ -3,14 +3,13 @@ See below for a table of all koans and their corresponding positions. When worki
 
 | Folder                    |  Koan                           |  Int Position  |  Module      |
 |---------------------------|---------------------------------|----------------|--------------|
-|  Foundations              |[AboutAssertions](Koans/Foundations/AboutAssertions.Koans.ps1)|101| |
-|  IntroTraining            |[AboutOOP](Koans/IntroTraining/AboutOOP.Koans.ps1)|104| |
-|  IntroTraining            |[AboutCmdletVerbs](Koans/IntroTraining/AboutCmdletVerbs.Koans.ps1)|105| |
-|  IntroTraining            |[AboutGetMember](Koans/IntroTraining/AboutGetMember.Koans.ps1)|106| |
-|  Foundations              |[AboutStrings](Koans/Foundations/AboutStrings.Koans.ps1)|107| |
-|  IntroTraining            |[AboutBooleans](Koans/IntroTraining/AboutBooleans.Koans.ps1)|108| |
-|  IntroTraining            |[AboutBinary](Koans/IntroTraining/AboutBinary.Koans.ps1)|109| |
-|  IntroTraining            |[AboutNumbers](Koans/IntroTraining/AboutNumbers.Koans.ps1)|110| |
+|  Introduction              |[AboutAssertions](Koans/Introduction/AboutAssertions.Koans.ps1)|101| |
+|  Introduction            |[AboutCmdletVerbs](Koans/Introduction/AboutCmdletVerbs.Koans.ps1)|105| |
+|  Introduction            |[AboutGetMember](Koans/Introduction/AboutGetMember.Koans.ps1)|106| |
+|  Introduction              |[AboutStrings](Koans/Introduction/AboutStrings.Koans.ps1)|107| |
+|  Introduction            |[AboutBooleans](Koans/Introduction/AboutBooleans.Koans.ps1)|108| |
+|  Introduction            |[AboutBinary](Koans/Introduction/AboutBinary.Koans.ps1)|109| |
+|  Introduction            |[AboutNumbers](Koans/Introduction/AboutNumbers.Koans.ps1)|110| |
 |  Foundations              |[AboutVariables](Koans/Foundations/AboutVariables.Koans.ps1)|111| |
 |  Foundations              |[AboutAssignmentAndArithmetic](Koans/Foundations/AboutAssignmentAndArithmetic.Koans.ps1)|112| |
 |  Foundations              |[AboutArrays](Koans/Foundations/AboutArrays.Koans.ps1)|113| |
@@ -44,5 +43,3 @@ See below for a table of all koans and their corresponding positions. When worki
 |  Constructs and Patterns  |[AboutRedirection](Koans/Constructs%20and%20Patterns/AboutRedirection.Koans.ps1)|307| |
 |  Constructs and Patterns  |[AboutErrorHandling](Koans/Constructs%20and%20Patterns/AboutErrorHandling.Koans.ps1)|308| |
 |  Cmdlets 2                |[AboutOutCmdlets](Koans/Cmdlets%202/AboutOutCmdlets.Koans.ps1)|401| | |
-
-
