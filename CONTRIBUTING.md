@@ -21,8 +21,11 @@ There are many ways that you can contribute, beyond writing or coding. The goal 
       - [Github Desktop](#github-desktop)
       - [PowerShell Git](#powershell-git)
       - [VSCode](#vscode)
-    - [Question Declaration in Koan files](#question-declaration-in-koan-files)
     - [Writing Koans](#writing-koans)
+      - [Use of Comments](#use-of-comments)
+      - [Use of Whitespace](#use-of-whitespace)
+      - [Use of Blanks](#use-of-blanks)
+      - [Notes for Contributors](#notes-for-contributors)
 
 ## Asking Questions
 
@@ -191,26 +194,11 @@ To do so, go to [the main page of the repo](ttps://github.com/vexx32/PSKoans) an
 Your submissions and contributions will be reviewed and processed by the PSKoans maintainers.
 You will be notified if any further action is required once your pull request has been reviewed.
 
-### Question Declaration in Koan files
-
-In PSKoans, each question requires the "Seeker of Enlightenment" to replace text which will allow the pester tests to pass successfully.
-The following are a list of prompts that a Seeker might encounter.
-
-`__`= Answers that request int or double inputs (aka numeric). The standard will be **two underscores**.
-
-`'____'` = Answers that request string inputs. The standard will be a **single quote** followed by **four underscores** followed by a **single quote**.
-
-`"____"` = Answers that request string inputs which **also** include Variables (aka $Variables). The standard will be a **double quote** followed by **four underscores** followed by a **double quote**.
-
-`$____` = Answers that request variable inputs (aka $Variables). The standard will be a **dollar sign** followed by **four underscores**.
-
-`____` = General-purpose usage. This could be a command name, a hashtable key name, or a parameter argument that expects a string. Any place a bare string is a valid answer, this should be used. Use **four underscores** for bare string blanks.
-
 There are some questions that do not include any of the above prompts. These questions implicitly request the Seeker of Enlightenment to remove data that is already in place to pass the test. In some instances there are comments announcing this fact, but in other there are not.
 
 ### Writing Koans
 
-If you are writing a koan file, the header of the file _must_ follow this format.
+When writing a new koan file, the header of the file _must_ follow this format.
 
 ```powershell
 using module PSKoans
@@ -218,12 +206,60 @@ using module PSKoans
 param()
 ```
 
-Comments can be placed around this area if you feel the need to as well.
-
 `$Index` should be an unsigned integer.
 The index indicates the order in which the koans should be sorted.
 Try to pick an index that is unused and makes sense in the progression of lessons.
 If you think it should be placed between two existing koan files, make sure to modify other indexes as necessary so that we can properly review the pull request.
+
+#### Use of Comments
+
+Always add some introductory comments for the topic being covered just after the header section, so students know what to expect.
+Add further comments wherever required.
+
+Comments may consist of flavour-text, hints for specific koans, or explanations.
+
+- Flavour-text comments can vary, but should in general be at least tangentially related to the topic at hand.
+- Hints may be obtuse where appropriate, but should be clearly relating to the topic at hand.
+- Explanatory comments may be as detailed as necessary for individual koans.
+- Topic summary / introduction comments may consist of a combination of the above, but should _always_ contain a large proportion of explanatory comments
+
+Both single-line and multi-line comments are acceptable.
+For multi-line comments, please use PowerShell's multi-line comment syntax, with the following style:
+
+```powershell
+It 'demonstrates comment style' {
+    <#
+        Comments go here.
+        More comments.
+    #>
+    $true | Should -BeTrue
+}
+```
+
+Do not use multi-line comment syntax where only a single line of comments is needed.
+
+#### Use of Whitespace
+
+1. Use 4 **spaces** per level of indentation.
+2. Use blank lines:
+    - Between each `It` block.
+    - After an opening `Describe` or `Context` (if it does not contain block comments on the next line).
+    - Semantically to separate expected answers from code that does not need to be modified, and to group related lines of code.
+
+#### Use of Blanks
+
+In PSKoans, each question requires the student to insert answers into blank spaces, which will allow the pester tests to pass successfully.
+Please utilise the following blank formats when writing koans:
+
+|  Blank   |                      Format                      | Used For                                                                                               |
+| :------: | :----------------------------------------------: | :----------------------------------------------------------------------------------------------------- |
+|   `__`   |                **2** underscores                 | Answers that expect numeric input.                                                                     |
+| `'____'` | **4** underscores, enclosed in **single quotes** | Answers that expect string inputs.                                                                     |
+| `"____"` | **4** underscores, enclosed in **double quotes** | Answers that expect string inputs which may **also** include variables.                                |
+| `$____`  |      **dollar sign** with **4** underscores      | Answers that expect variable inputs.                                                                   |
+|  `____`  |               **four** underscores               | Answers that expect bare strings: command names, hashtable key names, string parameter arguments, etc. |
+
+#### Notes for Contributors
 
 The goal of the koans is to help those who have very limited knowledge learn PowerShell.
 In order to do that, simplicity and accessibility are key.
