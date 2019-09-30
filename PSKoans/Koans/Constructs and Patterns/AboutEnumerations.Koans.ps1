@@ -153,7 +153,7 @@ Describe 'About Enumerations' {
                     <#
                         Numeric values can be cast or converted to an enumeration value.
 
-                        The $using scope allows access to variables from the parent PowerShell session
+                        The $using: syntax allows access to variables from the parent PowerShell session
                         when using Start-Job and Invoke-Command.
                     #>
 
