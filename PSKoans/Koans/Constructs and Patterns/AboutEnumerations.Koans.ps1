@@ -216,7 +216,7 @@ Describe 'About Enumerations' {
 
             It 'does not require explicit casting to compare values' {
                 <#
-                    In PowerShell the value on the right hand side of an operator is coerced into the type
+                    In PowerShell the value on the right hand side of a comparison operator is coerced into the type
                     of the value on the left hand side of an operator.
                 #>
 
