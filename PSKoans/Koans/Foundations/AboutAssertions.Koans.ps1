@@ -17,7 +17,7 @@ param()
     has failed. Your job is to fill in the blanks (the __, $__, FILL_ME_IN,
     or $FILL_ME_IN symbols) to make it pass. Once you make the change,
     re-run the program to make sure the koan passes, and continue on to the
-    next failing koan. With each  passing koan, you'll learn more about
+    next failing koan. With each passing koan, you'll learn more about
     PowerShell, and add another weapon to your PowerShell scripting arsenal.
 #>
 Describe 'Equality' {
