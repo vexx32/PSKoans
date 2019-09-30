@@ -10,15 +10,14 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
                     throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
                 }
                 elseif (-not [string]::IsNullOrWhiteSpace($inputData)) {
-                    try {
-                        $FullPath = Resolve-Path -Path $InputData -ErrorAction Stop
+                    $Oops = $null
+                    $FullPath = Resolve-Path -Path $InputData -ErrorAction SilentlyContinue -ErrorVariable Oops
 
-                        if (-not [string]::IsNullOrWhiteSpace($FullPath)) {
-                            return $FullPath.Path
-                        }
+                    if (-not [string]::IsNullOrWhiteSpace($FullPath)) {
+                        return $FullPath.Path
                     }
-                    catch [ItemNotFoundException] {
-                        return $_.TargetObject
+                    else {
+                        $Oops.TargetObject
                     }
                 }
 
