@@ -514,6 +514,7 @@ Describe 'About Enumerations' {
         }
 
         Context 'PowerShell Enumeration Scope' {
+
             It 'creates PowerShell enumerations in the local scope' {
                 <#
                     Classes and enumerations are resolvable in the scope they are created and child scopes. They
