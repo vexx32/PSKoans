@@ -2,7 +2,7 @@
 
 Describe 'Get-PSKoanSetting' {
     BeforeAll {
-        InModuleScope {
+        InModuleScope PSKoans {
             $script:ConfigPath = 'TestDrive:/config.json'
         }
         ${/} = [IO.Path]::DirectorySeparatorChar

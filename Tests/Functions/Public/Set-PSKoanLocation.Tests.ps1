@@ -14,6 +14,7 @@ Describe 'Set-PSKoanLocation' {
     }
 
     It 'returns the input -Path value back to the pipeline with -PassThru' {
-        Set-PSKoanLocation -Path '~/PSKoans' -PassThru | Should -BeExactly '~/PSKoans'
+        $ResolvedPath = Resolve-Path -Path '~' | Join-Path -ChildPath 'PSKoans'
+        Set-PSKoanLocation -Path '~/PSKoans' -PassThru | Should -BeExactly $ResolvedPath
     }
 }
