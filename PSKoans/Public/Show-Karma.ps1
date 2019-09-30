@@ -1,29 +1,35 @@
-﻿function Show-Karma {
+function Show-Karma {
     [CmdletBinding(DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Show-Karma.md')]
     [OutputType([void])]
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path', 'Measure-Karma')]
     param(
+        [Parameter(ParameterSetName = 'ListKoans')]
+        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
-        [ArgumentCompleter(
-            {
-                param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
-
-                $Values = (Get-PSKoanFile).Topic
-                return @($Values) -like "$WordToComplete*"
-            }
-        )]
         [SupportsWildcards()]
         [string[]]
         $Topic,
 
-        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
-        [Alias('ListKoans')]
-        [switch]
-        $ListTopics,
+        [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'ListKoans')]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
 
-        [Parameter(Mandatory, ParameterSetName = "OpenFolder")]
+        [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule,
+
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Alias('ListKoans', 'ListTopics')]
+        [switch]
+        $List,
+
+        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
@@ -33,14 +39,24 @@
         [switch]
         $ClearScreen,
 
+        [Parameter(ParameterSetName = 'ModuleOnly')]
+        [Parameter(ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias()]
         [switch]
         $Detailed
     )
+
+    $GetParams = @{}
+    switch ($pscmdlet.ParameterSetName) {
+        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
+        'ModuleOnly'    { $GetParams['Module'] = $Module }
+        { $Topic }      { $GetParams['Topic'] = $Topic }
+    }
+
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
-            Get-PSKoanFile
+            Get-PSKoan @GetParams
         }
         'OpenFolder' {
             Write-Verbose "Opening koans folder"
@@ -64,28 +80,37 @@
                 Get-PSKoanLocation | Invoke-Item
             }
         }
-        "Default" {
+        default {
             if ($ClearScreen) {
                 Clear-Host
             }
 
             Show-MeditationPrompt -Greeting
+            $Results = Get-Karma @GetParams
 
-            $Results = if ($Topic) { Get-Karma -Topic $Topic } else { Get-Karma }
-
-            $Params = @{
-                DescribeName   = $Results.Describe
-                ItName         = $Results.It
-                Expectation    = $Results.Expectation
-                Meditation     = $Results.Meditation
-                KoansPassed    = $Results.KoansPassed
-                TotalKoans     = $Results.TotalKoans
-                CurrentTopic   = $Results.CurrentTopic
-                Results        = $PesterTests.TestResult
-                RequestedTopic = $Topic
+            if ($Results.Complete) {
+                $Params = @{
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    RequestedTopic = $Topic
+                    Complete       = $Results.Complete
+                }
             }
-            if (-not $Detailed) {
-                $Params.Remove('Results')
+            else {
+                $Params = @{
+                    DescribeName   = $Results.Describe
+                    ItName         = $Results.It
+                    Expectation    = $Results.Expectation
+                    Meditation     = $Results.Meditation
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    CurrentTopic   = $Results.CurrentTopic
+                    RequestedTopic = $Topic
+                }
+
+                if ($Detailed) {
+                    $Params.Add('Results', $Results.Results)
+                }
             }
 
             Show-MeditationPrompt @Params

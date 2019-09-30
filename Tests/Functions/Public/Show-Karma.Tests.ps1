@@ -1,4 +1,10 @@
-#Requires -Modules PSKoans
+#region Header
+if (-not (Get-Module PSKoans)) {
+    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+
+    Import-Module $moduleBase -Force
+}
+#endregion
 
 Describe 'Show-Karma' {
 
@@ -35,6 +41,25 @@ Describe 'Show-Karma' {
 
             It 'should call Get-Karma to examine the koans' {
                 Assert-MockCalled Get-Karma
+            }
+        }
+
+        Context 'With All Koans Completed' {
+            BeforeAll {
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { $Complete }
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    [PSCustomObject]@{
+                        PSTypeName     = 'PSKoans.CompleteResult'
+                        KoansPassed    = 10
+                        TotalKoans     = 10
+                        RequestedTopci = $null
+                        Complete       = $true
+                    }
+                }
+            }
+
+            It 'should not throw errors' {
+                { Show-Karma } | Should -Not -Throw
             }
         }
 
@@ -81,7 +106,7 @@ Describe 'Show-Karma' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
                 Mock Measure-Koan -ModuleName 'PSKoans' { }
-                Mock Get-Koan -ModuleName 'PSKoans' { }
+                Mock Get-PSKoan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
             }
@@ -105,12 +130,12 @@ Describe 'Show-Karma' {
 
         Context 'With -ListTopics Parameter' {
             BeforeAll {
-                Mock Get-PSKoanFile { }
+                Mock Get-PSKoan
             }
 
             It 'should list all the koan topics' {
                 Show-Karma -ListTopics
-                Assert-MockCalled Get-PSKoanFile
+                Assert-MockCalled Get-PSKoan
             }
         }
 
@@ -139,6 +164,25 @@ Describe 'Show-Karma' {
             It 'should call Get-Karma on the selected topic' {
                 Show-Karma -Topic TestTopic
                 Assert-MockCalled Get-Karma -ParameterFilter { $Topic -eq "TestTopic" }
+            }
+        }
+
+        Context 'With All Koans in a Single Topic Completed' {
+            BeforeAll {
+                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { $Complete }
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    [PSCustomObject]@{
+                        PSTypeName     = 'PSKoans.CompleteResult'
+                        KoansPassed    = 10
+                        TotalKoans     = 10
+                        RequestedTopic = 'TestTopic'
+                        Complete       = $true
+                    }
+                }
+            }
+
+            It 'should not throw errors' {
+                { Show-Karma } | Should -Not -Throw
             }
         }
 

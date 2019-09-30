@@ -1,0 +1,13 @@
+steps:
+- task: PowerShell@2
+  displayName: 'Setup Build Environment'
+
+  inputs:
+    targetType: 'inline'
+    script: |
+      Install-Module -Name Psake, PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
+      Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+
+    errorActionPreference: 'stop'
+    failOnStderr: true
+    pwsh: true
