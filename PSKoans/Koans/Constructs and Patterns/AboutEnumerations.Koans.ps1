@@ -45,6 +45,29 @@ Describe 'About Enumerations' {
                 '____' -as [DayOfWeek] | Should -BeOfType [DayOfWeek]
             }
 
+            It 'will find a match from a partial name if it can' {
+                <#
+                    PowerShell will match an enum value based on a partial name. The named used
+                    must match a unique value in the enum.
+
+                    Try making Name less than the whole word.
+                #>
+
+                $Name = '____'
+
+                $Name | Should -Not -Be 'Monday'
+                $Name -as [DayOfWeek] | Should -Be 'Monday'
+
+                <#
+                    Using -as with a non-unique value will simply return $null. Casting to a non-unique
+                    value will raise an error.
+                #>
+
+                $ExpectedError = '____'
+
+                { [DayOfWeek]'T' } | Should -Throw -ExpectedMessage $ExpectedError
+            }
+
             It 'can retrieve all names in an enumeration with the GetEnumNames method' {
                 $daysOfWeek = @('____', '____', '____', '____', '____', '____', '____')
 
@@ -172,8 +195,10 @@ Describe 'About Enumerations' {
 
                 $script = {
                     enum Number {
-                        One = 1
-                        Two = 2
+                        One  = 1
+                        Two
+                        Five = 5
+                        Six
                     }
 
                     $using:Value -as [Number] -as [Int]
@@ -249,6 +274,8 @@ Describe 'About Enumerations' {
                         1. The enum type.
                         2. The string value to parse.
                         3. A reference to a variable which can hold the parse result.
+
+                    Running [Enum]::TryParse without parentheses will show the arguments the method expects.
                 #>
 
                 $valueToParse = '____'
@@ -506,10 +533,10 @@ Describe 'About Enumerations' {
                 }
 
                 # The error message is long, a partial match is enough.
-                $errorMessage = '____'
+                $ExpectedError = '____'
 
                 { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
-                    Should -Throw -ExpectedMessage $errorMessage
+                    Should -Throw -ExpectedMessage $ExpectedError
             }
         }
 
@@ -558,10 +585,10 @@ Describe 'About Enumerations' {
                     [ObjectType]::User
                 }
 
-                $ExpectedError = '____'
+                $ErrorMessage = '____'
 
                 { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
-                    Should -Throw $ExpectedError
+                    Should -Throw $ErrorMessage
             }
 
             It 'can import enumerations with using module' {
