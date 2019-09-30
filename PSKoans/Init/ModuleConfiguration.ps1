@@ -6,17 +6,11 @@ $script:MeditationStrings = $ShowMeditationPromptData['Koans']
 $script:MeditationPrompts = $ShowMeditationPromptData['Prompts']
 Remove-Variable -Name 'ShowMeditationPromptData'
 
-$Configuration = Get-PSKoanSetting
-$LibraryFolder = if ($Configuration.LibraryFolder) {
-    $Configuration.LibraryFolder
-}
-else {
-    Set-PSKoanLocation -Path "~/PSKoans" -PassThru
-}
+$Settings = Get-PSKoanSetting
 
-Write-Information "Koans folder set to $LibraryFolder"
+Write-Information "Koans folder set to $($Settings.KoanLocation)"
 
-if (-not (Test-Path -Path $LibraryFolder)) {
-    Write-Information "Koans folder '$LibraryFolder' was not found; creating koans directory."
+if (-not (Test-Path -Path $Settings.KoanLocation)) {
+    Write-Information "Koans folder '$($Settings.KoanLocation)' was not found; creating koans directory."
     Update-PSKoan -Confirm:$false
 }
