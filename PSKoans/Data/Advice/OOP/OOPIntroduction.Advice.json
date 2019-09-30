@@ -2,15 +2,15 @@
     "Title": "Object-Orientated Programming (OOP) Introduction",
     "Content": [
 
-        "PowerShell is object-orientated, but what does this mean? Everything is an object! ",
+        "PowerShell is an object-oriented shell, but what does this mean? Everything is an object!",
         "\n",
-        "Objects are a way for us to build programs to scale, and OOP is standard in software development. For the purposes of this advise file there's only three fundamentals you need to know:",
+        "Objects are a way for us to build programs to scale, and OOP is standard in software development. There are three fundamentals you need to know:",
         "\n",
-        "\tObjects are blueprints",
-        "\tObjects have properties",
-        "\tObjects have methods",
+        "\t1. Objects have defined types, which are like blueprints",
+        "\t2. Objects store data in properties",
+        "\t3. Objects have methods which can be called to perform an action",
         "\n",
-        "If you've already done the Get-Member Koan then you'll know we can use this cmdlet to discover what blueprint an item is using, what properties it has and what methods it may execute. For example we may take any string and pass it through into Get-Member in order to get the below result:",
+        "If you've already completed the Get-Member topic, then you'll know we can use this cmdlet to discover what blueprint an object is using, what properties it has, and what methods it may execute. For example, we may take a string and pass it into Get-Member in order to get the below result:",
         "\n",
         "\t\tTypeName: System.String",
         "\n",
@@ -19,15 +19,15 @@
         "\tClone            Method                System.Object Clone(), System.Object ICloneable.Clone()",
         "\tLength           Property              int Length {get;}",
         "\n",
-        "Which shows us the object type 'System.String' as well as some properties and methods.",
+        "Which shows us the object type (System.String), as well as some properties and methods.",
         "\n",
         "For more information please see the below articles on OOP concepts:",
         "\n",
         "\t Abstraction: https://stackify.com/oop-concept-abstraction/",
         "\t Encapsulation: https://stackify.com/oop-concept-for-beginners-what-is-encapsulation/",
         "\t Inheritance: https://stackify.com/oop-concept-inheritance/",
-        "\t Polymrophism: https://stackify.com/oop-concept-polymorphism/",
+        "\t Polymorphism: https://stackify.com/oop-concept-polymorphism/",
         "\n",
-        "The .NET Core API browser may also be useful given that PowerShell uses it for translation: https://docs.microsoft.com/en-us/dotnet/api/?view=netcore-3.0"
+        "The .NET Core API browser may also be useful given that .NET is the foundation on which PowerShell is built: https://docs.microsoft.com/en-us/dotnet/api/?view=netcore-3.0"
     ]
 }
