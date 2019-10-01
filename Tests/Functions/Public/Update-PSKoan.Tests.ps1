@@ -1,29 +1,55 @@
-#Requires -Modules PSKoans
+#region Header
+if (-not (Get-Module PSKoans)) {
+    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+
+    Import-Module $moduleBase -Force
+}
+#endregion
 
 InModuleScope 'PSKoans' {
     Describe 'Update-PSKoan' {
+        BeforeAll {
+            Mock Get-PSKoanLocation {
+                Join-Path -Path $TestDrive -ChildPath 'PSKoans'
+            }
+            New-Item -Path (Get-PSKoanLocation) -ItemType Directory
+        }
+
         Context 'Mocked Commands' {
             BeforeAll {
-                Mock Remove-Item { }
-                Mock Copy-Item { }
-                Mock New-Item { }
-                Mock Move-Item { }
-                Mock Update-PSKoanFile { }
+                Mock Remove-Item
+                Mock Copy-Item
+                Mock New-Item
+                Mock Move-Item
+                Mock Update-PSKoanFile
 
-                Mock Get-PSKoanLocation {
-                    Join-Path $TestDrive 'Koans'
+                Mock Get-PSKoan -ParameterFilter { $Scope -eq 'Module' } -MockWith {
+                    [PSCustomObject]@{
+                        Topic = 'Missing'
+                        Path  = 'Module\Group\AboutSomethingMissing.Koans.ps1'
+                    }
+                    [PSCustomObject]@{
+                        Topic = 'IncorrectPath'
+                        Path  = 'Module\Group\AboutSomethingIncorrectPath.Koans.ps1'
+                    }
+                    [PSCustomObject]@{
+                        Topic = 'Existing'
+                        Path  = 'Module\Group\AboutSomethingExisting.Koans.ps1'
+                    }
                 }
-
-                Mock Get-ChildItem -ParameterFilter { $LiteralPath -match 'PSKoans' } -MockWith {
-                    [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koans', 'Missing.Koans.ps1')
-                    [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koan', 'Right', 'Path.Koans.ps1')
-                    [System.IO.FileInfo][System.IO.Path]::Combine('Module', 'Koans', 'Update.Koans.ps1')
-                }
-
-                Mock Get-ChildItem -ParameterFilter { $LiteralPath -notmatch 'PSKoans' } -MockWith {
-                    [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Wrong', 'Path.Koans.ps1')
-                    [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Update.Koans.ps1')
-                    [System.IO.FileInfo][System.IO.Path]::Combine($TestDrive, 'Koans', 'Remove.Koans.ps1')
+                Mock Get-PSKoan -ParameterFilter { $Scope -eq 'User' } -MockWith {
+                    [PSCustomObject]@{
+                        Topic = 'IncorrectPath'
+                        Path  = 'Module\RetiredGroup\AboutSomethingIncorrectPath.Koans.ps1'
+                    }
+                    [PSCustomObject]@{
+                        Topic = 'RetiredTopic'
+                        Path  = 'Module\RetiredGroup\AboutSomethingRetiredTopic.Koans.ps1'
+                    }
+                    [PSCustomObject]@{
+                        Topic = 'Existing'
+                        Path  = 'Module\Group\AboutSomethingExisting.Koans.ps1'
+                    }
                 }
             }
 
@@ -50,12 +76,6 @@ InModuleScope 'PSKoans' {
 
         Context 'Practical Tests with TestDrive' {
             BeforeAll {
-                if (Get-PSKoanLocation) {
-                    $LocalKoanFolder = Get-PSKoanLocation
-                }
-
-                Set-PSKoanLocation -Path (Join-Path $TestDrive 'Koans')
-
                 Update-PSKoan -Confirm:$false
 
                 $file = Get-ChildItem -Path (Get-PSKoanLocation) -Filter *.koans.ps1 -File -Recurse |
@@ -72,7 +92,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should move incorrectly placed topics' {
-                $directory = New-Item -Path (Join-Path $TestDrive 'Koans\Wrong') -ItemType Directory
+                $directory = New-Item -Path (Join-Path -Path $TestDrive -ChildPath 'PSKoans\Wrong') -ItemType Directory
                 $file | Move-Item -Destination $directory.FullName
                 $file.FullName | Should -Not -Exist
 
@@ -82,19 +102,13 @@ InModuleScope 'PSKoans' {
             }
 
             It 'should remove discarded topics' {
-                $oldTopicPath = Join-Path $TestDrive 'Koans\OldTopic.koans.ps1'
+                $oldTopicPath = Join-Path $TestDrive 'PSKoans\Foundations\OldTopic.koans.ps1'
                 $file | Copy-Item -Destination $oldTopicPath
                 $oldTopicPath | Should -Exist
 
                 Update-PSKoan -Confirm:$false
 
                 $oldTopicPath | Should -Not -Exist
-            }
-
-            AfterAll {
-                if ($LocalKoanFolder) {
-                    Set-PSKoanLocation -Path $LocalKoanFolder
-                }
             }
         }
     }

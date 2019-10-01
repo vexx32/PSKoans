@@ -37,8 +37,8 @@ function Measure-Koan {
     [OutputType([int])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
-        [ValidateNotNull()]
-        [CommandInfo[]]
+        [PSTypeName('PSKoans.KoanInfo')]
+        [object[]]
         $KoanInfo
     )
     begin {
@@ -48,25 +48,19 @@ function Measure-Koan {
         Write-Verbose "Parsing koan files from [$($KoanInfo.Name -join '], [')]"
 
         # Find all Pester 'It' commands
-        $ItCommands = $KoanInfo.ScriptBlock.Ast.FindAll(
-            {
-                param($Item)
-                $Item -is [CommandAst] -and
-                $Item.GetCommandName() -eq 'It'
-            }, $true
-        )
+        $ItCommands = @(Get-KoanIt -Path $KoanInfo.Path)
 
         # Find the -TestCases parameters
-        $TestCasesParameters = $ItCommands.CommandElements | Where-Object {
+        $TestCasesParameters = $ItCommands.Ast.CommandElements | Where-Object {
             $_ -is [CommandParameterAst] -and
             $_.ParameterName -eq 'TestCases'
         }
 
         if ($TestCasesParameters) {
             # Get the right CommandElements indexes for their arguments
-            $Indexes = $TestCasesParameters.ForEach{$ItCommands.CommandElements.IndexOf($_) + 1}
+            $Indexes = $TestCasesParameters.ForEach{$ItCommands.Ast.CommandElements.IndexOf($_) + 1}
             # Get value of the argument for each -TestCases
-            $ParameterArgument = $ItCommands.CommandElements[$Indexes]
+            $ParameterArgument = $ItCommands.Ast.CommandElements[$Indexes]
 
             try {
                 $TestCaseCount = $ParameterArgument.SafeGetValue().Count
@@ -79,7 +73,7 @@ function Measure-Koan {
                 )
                 $ErrorRecord = [ErrorRecord]::new(
                     $ParseException,
-                    "KoanAstParseError",
+                    "PSKoans.KoanAstParseError",
                     [ErrorCategory]::ParserError,
                     $ParameterValues.PipelineElements.Extent.Text
                 )

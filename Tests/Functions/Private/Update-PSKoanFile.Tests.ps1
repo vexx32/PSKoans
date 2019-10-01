@@ -1,18 +1,28 @@
-#Requires -Modules PSKoans
+#region Header
+if (-not (Get-Module PSKoans)) {
+    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+
+    Import-Module $moduleBase -Force
+}
+#endregion
 
 InModuleScope 'PSKoans' {
     Describe 'Update-PSKoanFile' {
         BeforeAll {
-            Mock Get-PSKoanFile {
+            Mock Get-PSKoanLocation {
+                Join-Path -Path $TestDrive -ChildPath 'Koans'
+            }
+            Mock Get-PSKoan {
                 [PSCustomObject]@{
-                    UserFilePath   = Join-Path $TestDrive 'Koans\AboutSomething.ps1'
-                    ModuleFilePath = Join-Path $TestDrive 'Module\AboutSomething.ps1'
+                    Topic        = 'AboutSomething'
+                    Path         = Join-Path -Path $TestDrive -ChildPath 'Module/Group/AboutSomething.ps1'
+                    RelativePath = 'Group/AboutSomething.ps1'
                 }
             }
-            New-Item -Path (Join-Path $TestDrive 'Koans') -ItemType Directory
-            New-Item -Path (Join-Path $TestDrive 'Module') -ItemType Directory
+            New-Item -Path (Join-Path -Path $TestDrive -ChildPath 'Koans/Group') -ItemType Directory
+            New-Item -Path (Join-Path -Path $TestDrive -ChildPath 'Module/Group') -ItemType Directory
 
-            Set-Content -Path (Get-PSKoanFile).ModuleFilePath -Value @'
+            Set-Content -Path (Get-PSKoan).Path -Value @'
                 Describe 'AboutSomething' {
                     It 'koan 1' {
                         __ | Should -Be 1
@@ -36,7 +46,7 @@ InModuleScope 'PSKoans' {
                 }
 '@
 
-            $userFilePath = (Get-PSKoanFile).UserFilePath
+            $userFilePath = Join-Path -Path (Get-PSKoanLocation) -ChildPath (Get-PSKoan).RelativePath
         }
 
         BeforeEach {
