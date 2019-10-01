@@ -11,7 +11,7 @@
         $AdviceFolder = $script:ModuleRoot | Join-Path -ChildPath 'Data/Advice'
     }
     process {
-        $AdviceObject = Get-ChildItem -Path $AdviceFolder -Recurse -File -Filter "$Name.json" |
+        $AdviceObject = Get-ChildItem -Path $AdviceFolder -Recurse -File -Filter "$Name.Advice.json" |
         Get-Random |
         Get-Content |
         ConvertFrom-Json
