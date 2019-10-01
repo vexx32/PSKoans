@@ -79,6 +79,16 @@ Install-Module Pester -Scope CurrentUser
 
 #### 1. Run `Show-Karma` to start your journey towards PowerShell enlightenment
 
+---
+
+##### NOTE
+
+In version 0.50.x and below (the current release on the PSGallery), the command name is `Measure-Karma`.
+`Show-Karma` is only currently available for those downloading the module directly from this repository, and will make its way to the PSGallery in a future release.
+`Measure-Karma` will be retained as an alias for `Show-Karma` in future releases.
+
+---
+
 You will be presented with a page describing your goal:
 
 ```code
