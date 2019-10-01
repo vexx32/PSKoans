@@ -24,7 +24,7 @@ about: File an issue or bug report about the module features/functions themselve
 Get-Module -Name PSKoans -ListAvailable |
     Select-Object -Property Name, Version
 
-$PSVersionTable
+$PSVersionTable | Out-String
 ```
 
 <!-- Add any other context or references you think would be helpful (existing unit tests, documentation, etc.) -->

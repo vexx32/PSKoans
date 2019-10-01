@@ -21,23 +21,30 @@ function Update-PSKoanFile {
     [OutputType([void])]
     param(
         [Parameter()]
+        [Alias('Koan', 'File')]
         [SupportsWildcards()]
         [string[]]
-        $Topic
+        $Topic,
+
+        [Parameter()]
+        [SupportsWildcards()]
+        [string[]]
+        $Module,
+
+        [Parameter()]
+        [SupportsWildcards()]
+        [string[]]
+        $IncludeModule
     )
 
-    $params = @{}
-    if ($Topic) {
-        $params.Topic = $Topic
-    }
-    Get-PSKoanFile @params | ForEach-Object {
-        $position = 0
-        $moduleKoans = Get-PSKoanIt -Path $_.ModuleFilePath | ForEach-Object {
+    $PSBoundParameters.Remove('Confirm') > $null
+    $PSBoundParameters.Remove('WhatIf') > $null
+    Get-PSKoan @PSBoundParameters | ForEach-Object {
+        $moduleKoans = Get-KoanIt -Path $_.Path | ForEach-Object {
             [PSCustomObject]@{
-                ID       = $_.ID
-                Position = $position++
-                Name     = $_.Name
-                Ast      = $_.Ast
+                ID   = $_.ID
+                Name = $_.Name
+                Ast  = $_.Ast
             }
         } | Group-Object -Property ID -AsHashTable -AsString
 
@@ -46,18 +53,19 @@ function Update-PSKoanFile {
             return
         }
 
-        if (Test-Path -Path $_.UserFilePath) {
-            $userKoans = Get-PSKoanIt -Path $_.UserFilePath
+        $path = Get-PSKoanLocation | Join-Path -ChildPath $_.RelativePath
+
+        if (Test-Path -Path $path) {
+            $userKoans = Get-KoanIt -Path $path
             $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
 
             if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
-                $content = Get-Content -Path $_.ModuleFilePath -Raw
+                $content = Get-Content -Path $_.Path -Raw
 
                 $userKoans |
                     Where-Object { $moduleKoans.Contains($_.ID) } |
                     Select-Object -Property @(
                         'ID'
-                        @{ Name = 'Position';  Expression = { $moduleKoans[$_.ID].Position }}
                         'Name'
                         'Ast'
                         @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast }}
@@ -74,13 +82,13 @@ function Update-PSKoanFile {
                         )
                     }
 
-                if ($PSCmdlet.ShouldProcess($_.UserFilePath, 'Updating Koan File')) {
-                    Set-Content -Path $_.UserFilePath -Value $content -NoNewline
+                if ($PSCmdlet.ShouldProcess($path, 'Updating Koan File')) {
+                    Set-Content -Path $path -Value $content.TrimEnd() -NoNewline
                 }
             }
         }
         else {
-            Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.UserFilePath)
+            Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.Name)
         }
     }
 }

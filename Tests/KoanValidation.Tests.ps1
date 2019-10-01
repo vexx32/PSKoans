@@ -4,16 +4,17 @@ $ProjectRoot = Resolve-Path "$PSScriptRoot/.."
 $KoanFolder = $ProjectRoot | Join-Path -ChildPath 'PSKoans' | Join-Path -ChildPath 'Koans'
 
 Describe "Koan Assessment" {
-
     BeforeAll {
         # TestCases are splatted to the script so we need hashtables
         $TestCases = InModuleScope PSKoans {
             Get-ChildItem -Path $KoanFolder -Recurse -Filter '*.Koans.ps1' | ForEach-Object {
                 $commandInfo = Get-Command -Name $_.FullName -ErrorAction SilentlyContinue
+                $koanAttribute = $commandInfo.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }
 
                 @{
                     File     = $_
-                    Position = $commandInfo.ScriptBlock.Attributes.Where{ $_.TypeID -match 'Koan' }.Position
+                    Position = $koanAttribute.Position
+                    Module   = $koanAttribute.Module
                 }
             }
         }
@@ -46,7 +47,7 @@ Describe "Koan Assessment" {
     It "Should not duplicate the Koan Position" {
         $DuplicatePosition = $TestCases |
             ForEach-Object { [PSCustomObject]$_ } |
-            Group-Object Position |
+            Group-Object { '{0}/{1}' -f $_.Module, $_.Position } |
             Where-Object Count -gt 1 |
             ForEach-Object { '{0}: {1}' -f $_.Name, ($_.Group.File -join ', ') }
 

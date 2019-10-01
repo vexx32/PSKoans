@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+    <ViewDefinitions>
+        <View>
+            <Name>PSKoans.KoanInfo</Name>
+            <ViewSelectedBy>
+                <TypeName>PSKoans.KoanInfo</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <TableHeaders>
+                    <TableColumnHeader />
+                    <TableColumnHeader />
+                    <TableColumnHeader />
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Topic</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Module</PropertyName>
+                            </TableColumnItem>
+                            <TableColumnItem>
+                                <PropertyName>Position</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>PSKoans.Result</Name>
+            <ViewSelectedBy>
+                <TypeName>PSKoans.Result</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Describe</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>It</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Expectation</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Meditation</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>KoansPassed</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>TotalKoans</PropertyName>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>CurrentTopic</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+    </ViewDefinitions>
+</Configuration>
