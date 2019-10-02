@@ -8,12 +8,12 @@ When adding or updating koan topics, please keep this file up to date.
 | Folder                  | Topic                                                          | Position |
 | ----------------------- | :------------------------------------------------------------- | :------: |
 | Introduction            | [AboutAssertions][AboutAssertions]                             |   101    |
+| Introduction            | [AboutBooleans][AboutBooleans]                                 |   102    |
+| Introduction            | [AboutNumbers][AboutNumbers]                                   |   103    |
+| Introduction            | [AboutStrings][AboutStrings]                                   |   104    |
 | Introduction            | [AboutCmdletVerbs][AboutCmdletVerbs]                           |   105    |
 | Introduction            | [AboutGetMember][AboutGetMember]                               |   106    |
-| Introduction            | [AboutStrings][AboutStrings]                                   |   107    |
-| Introduction            | [AboutBooleans][AboutBooleans]                                 |   108    |
-| Introduction            | [AboutBinary][AboutBinary]                                     |   109    |
-| Introduction            | [AboutNumbers][AboutNumbers]                                   |   110    |
+| Introduction            | [AboutBinary][AboutBinary]                                     |   107    |
 | Foundations             | [AboutVariables][AboutVariables]                               |   111    |
 | Foundations             | [AboutAssignmentAndArithmetic][AboutAssignmentAndArithmetic]   |   112    |
 | Foundations             | [AboutArrays][AboutArrays]                                     |   113    |
@@ -49,6 +49,7 @@ When adding or updating koan topics, please keep this file up to date.
 | Cmdlets 2               | [AboutOutCmdlets][AboutOutCmdlets]                             |   401    |
 
 <!-- Links for default koan topics -->
+
 [AboutAssertions]: PSKoans/Koans/Introduction/AboutAssertions.Koans.ps1
 [AboutCmdletVerbs]: PSKoans/Koans/Introduction/AboutCmdletVerbs.Koans.ps1
 [AboutGetMember]: PSKoans/Koans/Introduction/AboutGetMember.Koans.ps1
