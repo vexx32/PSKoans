@@ -217,5 +217,28 @@ Describe 'Show-Karma' {
                 }
             }
         }
+
+        Context 'With -Meditate Switch' {
+
+            Context 'PSKoans directory exists' {
+                BeforeAll {
+                    Mock Get-PSKoanLocation { "$HOME/PSKoans" }
+                }
+
+                It 'should find the PSKoan directory' {
+                    Test-Path -Path (Get-PSKoanLocation) | Should -Be $true
+                }
+            }
+
+            Context "PSKoans directory doesn't exist" {
+                BeforeAll {
+                    Mock Test-Path { $false }
+                }
+
+                It 'should not find the PSKoan directory' {
+                    Test-Path -Path (Get-PSKoanLocation) | Should -Be $false
+                }
+            }
+        }
     }
 }
