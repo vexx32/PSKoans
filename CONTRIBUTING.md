@@ -92,7 +92,7 @@ If you want to contribute, at the very least, you'll need [a GitHub account][git
 Your development environment is entirely up to you, but the following tools are recommended:
 
 - [ ] [GitHub Desktop][github-desktop]
-- [ ] [Visual Studio Code][vs-code]
+- [ ] [Visual Studio Code][vscode]
 
 If you're using VS Code, you may find the following extensions useful:
 
