@@ -2,7 +2,7 @@
 [Koan(Position = 150)]
 param()
 <#
-    Apply Your Knowledge!
+    Kata: Processing Strings
 
     Below is a list containing comma separated data about Microsoft's stock prices
     during March of 2012. Without modifying the list, programatically find the day

@@ -25,7 +25,8 @@ When adding or updating koan topics, please keep this file up to date.
 | Foundations             | [AboutTypeOperators][AboutTypeOperators]                       |   119    |
 | Foundations             | [AboutHashtables][AboutHashtables]                             |   120    |
 | Foundations             | [AboutLoopsAndPipelines][AboutLoopsAndPipelines]               |   121    |
-| Foundations             | [TheStockChallenge][TheStockChallenge]                         |   150    |
+| Katas                   | [ProcessingStrings][ProcessingStrings]                         |   150    |
+| Katas                   | [SortingCharacters][SortingCharacters]                         |   151    |
 | Cmdlets 1               | [AboutDiscovery][AboutDiscovery]                               |   201    |
 | Cmdlets 1               | [AboutPSProviders][AboutPSProviders]                           |   202    |
 | Cmdlets 1               | [AboutNewObject][AboutNewObject]                               |   204    |
@@ -74,7 +75,8 @@ When adding or updating koan topics, please keep this file up to date.
 [AboutTypeOperators]: PSKoans/Koans/Foundations/AboutTypeOperators.Koans.ps1
 [AboutHashtables]: PSKoans/Koans/Foundations/AboutHashtables.Koans.ps1
 [AboutLoopsAndPipelines]: PSKoans/Koans/Foundations/AboutLoopsAndPipelines.Koans.ps1
-[TheStockChallenge]: PSKoans/Koans/Katas/TheStockChallenge.Koans.ps1
+[ProcessingStrings]: PSKoans/Koans/Katas/ProcessingStrings.Koans.ps1
+[SortingCharacters]: PSKoans/Koans/Katas/SortingCharacters.Koans.ps1
 [AboutDiscovery]: PSKoans/Koans/Cmdlets%201/AboutDiscovery.Koans.ps1
 [AboutPSProviders]: PSKoans/Koans/Cmdlets%201/AboutPSProviders.Koans.ps1
 [AboutNewObject]: PSKoans/Koans/Cmdlets%201/AboutNewObject.Koans.ps1
