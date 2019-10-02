@@ -1,5 +1,5 @@
 using module PSKoans
-[Koan(Position = 109)]
+[Koan(Position = 107)]
 param()
 <#
     Binary
@@ -14,7 +14,7 @@ param()
     the knowledge is applicable to networking, programming, data science, databases, and essentially every
     other area of computing.
 
-    What is represents is a base 2 number. 
+    What is represents is a base 2 number.
 
     For example, the below binary represents a "byte" of data, which contains 8 "bits".
     Each bit will be either 1 or 0, as mentioned earlier.
@@ -22,10 +22,10 @@ param()
     So:
 
      2^7 | 2^6 | 2^5 | 2^4 | 2^3 | 2^2 | 2^1 | 2^0
-     128 |  64 |  32 |  16 |   8 |   4 |   2 |   1 
+     128 |  64 |  32 |  16 |   8 |   4 |   2 |   1
     -----+-----+-----+-----+-----+-----+-----+-----
-       0     0     0     0     0     0     0     1 
-    
+       0     0     0     0     0     0     0     1
+
     Or:
 
     00000001
@@ -58,13 +58,13 @@ Describe "Binary conversion" {
         <#
             Convert the following binary representations into integers
         #>
-        
+
         # Replace __ with the decimal value of 1111
         # E.G. __ becomes 1234
         $Binary = "1111"
         $Value = __
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-        
+
         # Replace __ with the decimal value of 1000
         $Binary = "1000"
         $Value = __
@@ -107,13 +107,13 @@ Describe "Binary conversion" {
         <#
             Convert the following integers into their binary representation
         #>
-        
+
         # Replace __ with the binary value of 7
         # E.G. "__" becomes "0100"
         $Binary = "__"
         $Value = 7
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-        
+
         # Replace __ with the binary value of 12
         $Binary = "__"
         $Value = 12
@@ -129,12 +129,12 @@ Describe "Binary conversion" {
         $Value = 7
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
-         # Replace __ with the binary value of 103
+        # Replace __ with the binary value of 103
         # E.G. "__" becomes "01001110"
         $Binary = "__"
         $Value = 103
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-        
+
         # Replace __ with the binary value of 250
         $Binary = "__"
         $Value = 250
