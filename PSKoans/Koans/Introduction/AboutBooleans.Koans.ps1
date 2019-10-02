@@ -28,23 +28,23 @@ Describe "Booleans" {
 
     # Using only booleans, so either $true or $false, fill in the blanks below.
 
-    It "( 1 -gt 2 ) is either true or false" {
+    It '( 1 -gt 2 ) is either true or false' {
         $____ | Should -Be ( 1 -gt 2 ) -Because '1 is not greater than 2'
     }
 
-    It "( 1 -lt 2 ) is either true or false" {
+    It '( 1 -lt 2 ) is either true or false' {
         $____ | Should -Be ( 1 -lt 2 ) -Because '1 is less than 2'
     }
 
-    It "( 10 -lt 20 ) is either true or false" {
+    It '( 10 -lt 20 ) is either true or false' {
         $____ | Should -Be ( 10 -lt 20 ) -Because '10 is less than 20'
     }
 
-    It "( 10 -gt 20 ) is either true or false" {
+    It '( 10 -gt 20 ) is either true or false' {
         $____ | Should -Be ( 10 -gt 20 ) -Because 'The lesser is not greater'
     }
 
-    It "( 3 -eq 3 ) is either true or false" {
+    It '( 3 -eq 3 ) is either true or false' {
         $____ | Should -Be ( 3 -eq 3 ) -Because 'A mirror reflects true'
     }
 
