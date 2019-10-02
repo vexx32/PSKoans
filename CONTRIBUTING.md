@@ -25,7 +25,8 @@ There are many ways that you can contribute, beyond writing or coding. The goal 
       - [Use of Comments](#use-of-comments)
       - [Use of Whitespace](#use-of-whitespace)
       - [Use of Blanks](#use-of-blanks)
-      - [Notes for Contributors](#notes-for-contributors)
+    - [Writing Advice Snippets](#writing-advice-snippets)
+    - [Notes for Contributors](#notes-for-contributors)
 
 ## Asking Questions
 
@@ -260,7 +261,35 @@ Please utilise the following blank formats when writing koans:
 | `$____`  |      **$** with **4** underscores      | Answers that expect variable name inputs.                                                  |
 |  `____`  |          **four** underscores          | Answers that expect bare strings: command names, hashtable keys, parameter arguments, etc. |
 
-#### Notes for Contributors
+### Writing Advice Snippets
+
+Advice snippets are stored in [the Data/Advice folder][Advice] and contain short tips on working with PowerShell or popular modules.
+All Advice snippets are written in JSON format and stored in category folders under `Data/Advice` in the module directory with an `.Advice.json` suffix.
+The JSON files must have the following structure:
+
+```json
+{
+  "Title": "Snippet Title",
+  "Content": [
+    "Paragraph 1",
+    "Paragraph 2. Additional sentences.",
+    "Etc.",
+  ]
+}
+```
+
+Each line of `"Content"` must be a complete paragraph.
+A new line will be automatically inserted between each line of the json file when the advice content is written to the console.
+Line breaks and one level of indentation are automatically added by the `Write-ConsoleLine` internal function.
+
+If an empty line is desired, enter a line in the json with only a single newline character encoded in JSON notation: `"\n"`.
+Do not mix in additional newlines by adding them to the beginning or end of another line.
+Where it can be avoided, do not add newlines or other control characters in the middle of advice content lines.
+
+Only one advice snippet can be included in a single JSON file; multiple snippets will require multiple files, each named appropriately.
+File names should reflect the `"Title"` element in the JSON, with any spaces and special characters removed.
+
+### Notes for Contributors
 
 The goal of the koans is to help those who have very limited knowledge learn PowerShell.
 In order to do that, simplicity and accessibility are key.
@@ -284,3 +313,5 @@ I try to keep up to speed with those as best I can. :smile:
 
 **Thank You!**
 Your contributions and involvement will help to ensure the growth and success of PSKoans! :blush:
+
+[Advice]: PSKoans/Data/Advice
