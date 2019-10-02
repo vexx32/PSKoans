@@ -3,7 +3,7 @@
 Below are tables of all koan topics and their corresponding positions.
 When adding or updating koan topics, please keep this file up to date.
 
-## Default Set
+## Default Topics
 
 | Folder                  | Topic                                                          | Position |
 | ----------------------- | :------------------------------------------------------------- | :------: |
@@ -19,12 +19,12 @@ When adding or updating koan topics, please keep this file up to date.
 | Foundations             | [AboutArrays][AboutArrays]                                     |   113    |
 | Foundations             | [AboutComparison][AboutComparison]                             |   114    |
 | Foundations             | [AboutStringOperators][AboutStringOperators]                   |   115    |
-| Foundations             | [AboutConditionals][AboutConditionals]                         |   120    |
-| Foundations             | [AboutFunctionsAndScriptBlocks][AboutFunctionsAndScriptBlocks] |   121    |
-| Foundations             | [AboutOrderOfOperations][AboutOrderOfOperations]               |   122    |
-| Foundations             | [AboutTypeOperators][AboutTypeOperators]                       |   129    |
-| Foundations             | [AboutHashtables][AboutHashtables]                             |   130    |
-| Foundations             | [AboutLoopsAndPipelines][AboutLoopsAndPipelines]               |   131    |
+| Foundations             | [AboutConditionals][AboutConditionals]                         |   116    |
+| Foundations             | [AboutFunctionsAndScriptBlocks][AboutFunctionsAndScriptBlocks] |   117    |
+| Foundations             | [AboutOrderOfOperations][AboutOrderOfOperations]               |   118    |
+| Foundations             | [AboutTypeOperators][AboutTypeOperators]                       |   119    |
+| Foundations             | [AboutHashtables][AboutHashtables]                             |   120    |
+| Foundations             | [AboutLoopsAndPipelines][AboutLoopsAndPipelines]               |   121    |
 | Foundations             | [TheStockChallenge][TheStockChallenge]                         |   150    |
 | Cmdlets 1               | [AboutDiscovery][AboutDiscovery]                               |   201    |
 | Cmdlets 1               | [AboutPSProviders][AboutPSProviders]                           |   202    |
@@ -48,15 +48,21 @@ When adding or updating koan topics, please keep this file up to date.
 | Constructs and Patterns | [AboutErrorHandling][AboutErrorHandling]                       |   308    |
 | Cmdlets 2               | [AboutOutCmdlets][AboutOutCmdlets]                             |   401    |
 
+## Module Topics
+
+### Dbatools
+
+> TBD
+
 <!-- Links for default koan topics -->
 
 [AboutAssertions]: PSKoans/Koans/Introduction/AboutAssertions.Koans.ps1
+[AboutBooleans]: PSKoans/Koans/Introduction/AboutBooleans.Koans.ps1
+[AboutNumbers]: PSKoans/Koans/Introduction/AboutNumbers.Koans.ps1
+[AboutStrings]: PSKoans/Koans/Introduction/AboutStrings.Koans.ps1
 [AboutCmdletVerbs]: PSKoans/Koans/Introduction/AboutCmdletVerbs.Koans.ps1
 [AboutGetMember]: PSKoans/Koans/Introduction/AboutGetMember.Koans.ps1
-[AboutStrings]: PSKoans/Koans/Introduction/AboutStrings.Koans.ps1
-[AboutBooleans]: PSKoans/Koans/Introduction/AboutBooleans.Koans.ps1
 [AboutBinary]: PSKoans/Koans/Introduction/AboutBinary.Koans.ps1
-[AboutNumbers]: PSKoans/Koans/Introduction/AboutNumbers.Koans.ps1
 [AboutVariables]: PSKoans/Koans/Foundations/AboutVariables.Koans.ps1
 [AboutAssignmentAndArithmetic]: PSKoans/Koans/Foundations/AboutAssignmentAndArithmetic.Koans.ps1
 [AboutArrays]: PSKoans/Koans/Foundations/AboutArrays.Koans.ps1

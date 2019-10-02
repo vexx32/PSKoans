@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 121)]
+[Koan(Position = 117)]
 param()
 <#
     Functions & Script Blocks (I)
