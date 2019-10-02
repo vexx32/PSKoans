@@ -3,6 +3,8 @@
 Below are tables of all koan topics and their corresponding positions.
 When adding or updating koan topics, please keep this file up to date.
 
+> Draft / incomplete / stub / planned topics are marked with **§**
+
 ## Default Topics
 
 | Folder                  | Topic                                                          | Position |
@@ -44,9 +46,11 @@ When adding or updating koan topics, please keep this file up to date.
 | Constructs and Patterns | [AboutCustomObjects][AboutCustomObjects]                       |   303    |
 | Constructs and Patterns | [AboutPSObjects][AboutPSObjects]                               |   304    |
 | Constructs and Patterns | [AboutSplatting][AboutSplatting]                               |   305    |
-| Constructs and Patterns | [AboutAdvancedFunctions][AboutAdvancedFunctions]               |   306    |
+| Constructs and Patterns | [**§** AboutAdvancedFunctions][AboutAdvancedFunctions]         |   306    |
 | Constructs and Patterns | [AboutRedirection][AboutRedirection]                           |   307    |
 | Constructs and Patterns | [AboutErrorHandling][AboutErrorHandling]                       |   308    |
+| Constructs and Patterns | [AboutBitwiseOperators][AboutBitwiseOperators]                 |   309    |
+| Constructs and Patterns | [AboutEnumerations][AboutEnumerations]                         |   310    |
 | Cmdlets 2               | [AboutOutCmdlets][AboutOutCmdlets]                             |   401    |
 
 ## Module Topics
@@ -97,6 +101,8 @@ When adding or updating koan topics, please keep this file up to date.
 [AboutAdvancedFunctions]: PSKoans/Koans/Constructs%20and%20Patterns/AboutAdvancedFunctions.Koans.ps1
 [AboutRedirection]: PSKoans/Koans/Constructs%20and%20Patterns/AboutRedirection.Koans.ps1
 [AboutErrorHandling]: PSKoans/Koans/Constructs%20and%20Patterns/AboutErrorHandling.Koans.ps1
+[AboutBitwiseOperators]: PSKoans/Koans/Constructs%20and%20Patterns/AboutBitwiseOperators.Koans.ps1
+[AboutEnumerations]: PSKoans/Koans/Constructs%20and%20Patterns/AboutEnumerations.Koans.ps1
 [AboutOutCmdlets]: PSKoans/Koans/Cmdlets%202/AboutOutCmdlets.Koans.ps1
 
 <!-- Add links for koans from other modules below this line -->
