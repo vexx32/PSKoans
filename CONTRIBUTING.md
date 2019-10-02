@@ -30,7 +30,9 @@ There are many ways that you can contribute, beyond writing or coding. The goal 
 
 ## Asking Questions
 
-Have a question? Open an new issue using relevant labels. The community will be eager to assist you. Your well-worded question will serve as a resource to others searching for help.
+Have a question? Open an new issue using the relevant template.
+The community will be happy to assist you.
+There are no stupid questions! :blush:
 
 ## Providing Feedback
 
@@ -195,7 +197,9 @@ To do so, go to [the main page of the repo][pskoans] and click the Fork button a
 Your submissions and contributions will be reviewed and processed by the PSKoans maintainers.
 You will be notified if any further action is required once your pull request has been reviewed.
 
-There are some questions that do not include any of the above prompts. These questions implicitly request the Seeker of Enlightenment to remove data that is already in place to pass the test. In some instances there are comments announcing this fact, but in other there are not.
+There are some questions that do not include any of the above prompts.
+These questions implicitly request the Seeker of Enlightenment to remove data that is already in place to pass the test.
+In some instances there are comments announcing this fact, but in other there are not.
 
 ### Writing Koans
 
@@ -264,6 +268,10 @@ Please utilise the following blank formats when writing koans:
 ### Writing Advice Snippets
 
 Advice snippets are stored in [the Data/Advice folder][advice] and contain short tips on working with PowerShell or popular modules.
+An advice snippet can be retrieved by name or at random with the `Show-Advice` command;
+users can use the `Register-Advice` command to automatically add a `Show-Advice` call to your PowerShell Profile script,
+which will display a random piece of advice on every PowerShell session start.
+
 All Advice snippets are written in JSON format and stored in category folders under `Data/Advice` in the module directory with an `.Advice.json` suffix.
 The JSON files must have the following structure:
 
