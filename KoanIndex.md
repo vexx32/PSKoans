@@ -52,6 +52,7 @@ When adding or updating koan topics, please keep this file up to date.
 | Constructs and Patterns | [AboutBitwiseOperators][AboutBitwiseOperators]                 |   309    |
 | Constructs and Patterns | [AboutEnumerations][AboutEnumerations]                         |   310    |
 | Constructs and Patterns | [AboutClasses][AboutClasses]                                   |   311    |
+| Constructs and Patterns | [AboutRegularExpressions][AboutRegularExpressions]             |   320    |
 | Cmdlets 2               | [AboutOutCmdlets][AboutOutCmdlets]                             |   401    |
 
 ## Module Topics
