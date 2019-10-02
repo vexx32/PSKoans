@@ -46,9 +46,9 @@ Please share any of the following:
 
 ## Check for existing issues first
 
-- Enter and monitor PSKoans issues via the [PSKoans GitHub Issues tab](https://github.com/vexx32/PSKoans/issues). You can sort by author, contributor, label (class), and more here.
-- Before you begin creating new issues, search first! Be sure to check out the [Advanced Search](https://github.com/search/advanced) features of GitHub
-- If you find your issue already exists, contribute relevant comments and add your reaction
+- Enter and monitor PSKoans issues via the [PSKoans GitHub Issues tab][pskoans-issues]. You can sort by author, contributor, label (class), and more here.
+- Before you begin creating new issues, search first! Be sure to check out Github's [Advanced Search][advanced-search].
+- If you find your issue already exists, contribute relevant comments and add your reaction.
 
 > ProTip: Use a **reaction** response (👍 / 👎) rather than submitting a "+1" comment response.
 
@@ -86,17 +86,17 @@ Please remember to do the following:
 
 ### Recommended Tools
 
-If you want to contribute, at the very least, you'll need [a GitHub account](http://github.com).
+If you want to contribute, at the very least, you'll need [a GitHub account][github].
 Your development environment is entirely up to you, but the following tools are recommended:
 
-- [ ] [GitHub Desktop](https://desktop.github.com)
-- [ ] [Visual Studio Code](https://code.visualstudio.com)
+- [ ] [GitHub Desktop][github-desktop]
+- [ ] [Visual Studio Code][vs-code]
 
 If you're using VS Code, you may find the following extensions useful:
 
-- [ ] [PowerShell Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
-- [ ] [PowerShell Preview Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell-Preview)
-- [ ] [Code Spell Checker Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+- [ ] [PowerShell Extension for VSCode][vscode-powershell]
+- [ ] [PowerShell Preview Extension for VSCode][vscode-powershell-preview]
+- [ ] [Code Spell Checker Extension for Visual Studio Code][code-spellcheck]
 
 ### Getting Started
 
@@ -105,21 +105,21 @@ The below steps will cover a few possible approaches to a contributing workflow 
 #### Fork the Repository
 
 Before getting started, you will need to create your own fork of the PSKoans repository.
-To do so, go to [the main page of the repo](ttps://github.com/vexx32/PSKoans) and click the Fork button at the top right hand side of the page.
+To do so, go to [the main page of the repo][pskoans] and click the Fork button at the top right hand side of the page.
 
 #### Github Desktop
 
 1. Setup
-    - Download and Install [GitHub Desktop](https://desktop.github.com)
+    - Download and Install [GitHub Desktop][github-desktop]
     - Sign in to GitHub Desktop with your GitHub account information
     - Configure Git by entering the name and email address you want to make commits with.
 1. Clone Repository
     - Option 1
-        - On your forked repository page (it should be https://github.com/$YOURNAME/PSKoans), click the green "Clone or download" button and then click "Open in Desktop"
+        - On your forked repository page (it should be `https://github.com/$YOURNAME/PSKoans`), click the green "Clone or download" button and then click "Open in Desktop"
     - Option 2
         - Open Desktop and click "Clone a repository from the Internet..."
         - You should see your repositories and should choose the fork you just created.
-        - alternatively, you can hit the URL tab and paste in your URL (https://github.com/$YOURNAME/PSKoans)
+        - Alternatively, you can hit the URL tab and paste in your URL (`https://github.com/$YOURNAME/PSKoans`)
 1. Make Changes!
     - Fix some bugs, write some code! Save your work!
 1. Commit
@@ -140,7 +140,7 @@ To do so, go to [the main page of the repo](ttps://github.com/vexx32/PSKoans) an
 #### PowerShell Git
 
 1. Setup
-    - Download and Install [Git](https://git-scm.com/downloads)
+    - Download and Install [Git][git]
         - The only non-default you may want is selecting which editor you want to use as your default.
     - Configure the username you will use for your commit messages.
         - from powershell type: `git config --global user.name "Username"`
@@ -173,10 +173,10 @@ To do so, go to [the main page of the repo](ttps://github.com/vexx32/PSKoans) an
 #### VSCode
 
 1. Setup.
-    - Download and Install [VSCode](https://desktop.github.com).
-    - Download and Install [Git](#powershell-git) (Follow the setup instructions from the git setup).
+    - Download and Install [VSCode][vscode].
+    - Download and Install [Git][git] (Follow the setup instructions from the git setup).
 1. Clone Repository.
-    - Follow the options from either [GitHub Desktop](#github-desktop) or [PowerShell Git](#powershell-git).
+    - Follow the options from either [GitHub Desktop](#github-desktop) or [PowerShell Git](#powershell-git) sections.
 1. Make Changes!
     - Fix some bugs, write some code! Save your work!
 1. Commit.
@@ -263,7 +263,7 @@ Please utilise the following blank formats when writing koans:
 
 ### Writing Advice Snippets
 
-Advice snippets are stored in [the Data/Advice folder][Advice] and contain short tips on working with PowerShell or popular modules.
+Advice snippets are stored in [the Data/Advice folder][advice] and contain short tips on working with PowerShell or popular modules.
 All Advice snippets are written in JSON format and stored in category folders under `Data/Advice` in the module directory with an `.Advice.json` suffix.
 The JSON files must have the following structure:
 
@@ -314,4 +314,14 @@ I try to keep up to speed with those as best I can. :smile:
 **Thank You!**
 Your contributions and involvement will help to ensure the growth and success of PSKoans! :blush:
 
-[Advice]: PSKoans/Data/Advice
+[advanced-search]: https://github.com/search/advanced
+[advice]: PSKoans/Data/Advice
+[code-spellcheck]: https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
+[git]: https://git-scm.com/downloads
+[github]: http://github.com
+[github-desktop]: https://desktop.github.com
+[pskoans]: https://github.com/vexx32/PSKoans
+[pskoans-issues]: https://github.com/vexx32/PSKoans/issues
+[vscode]: https://code.visualstudio.com
+[vscode-powershell]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell
+[vscode-powershell-preview]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell-Pre
