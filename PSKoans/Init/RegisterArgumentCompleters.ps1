@@ -32,8 +32,7 @@ $RegisterParams = @{
     ScriptBlock   = {
         param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-        $Values = Get-Module PSKoans |
-            Select-Object -ExpandProperty ModuleBase |
+        $Values = $script:ModuleRoot |
             Join-Path -ChildPath 'Koans/Modules' |
             Get-ChildItem -Directory |
             Select-Object -ExpandProperty Name
@@ -56,8 +55,7 @@ $RegisterParams = @{
     ScriptBlock   = {
         param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
 
-        $Values = Get-Module PSKoans |
-            Select-Object -ExpandProperty ModuleBase |
+        $Values = $script:ModuleRoot |
             Join-Path -ChildPath 'Data/Advice' |
             Get-ChildItem -File -Recurse |
             Select-Object @{
