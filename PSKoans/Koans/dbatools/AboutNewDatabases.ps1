@@ -101,6 +101,22 @@ Describe 'New-DbaDatabase' {
         @('Val', 'Dev', 'Prod') -in $_.SqlInstance
     }
 
+    Mock -CommandName New-DbaDatabase -MockWith {
+        [PSCustomObject]@{
+            FileGroups = @{
+                Files = @{
+                    FileName = 'E:\DATA\TestDataLogFile_PRIMARY.mdf'
+                }
+            }
+            LogFiles = @{
+                FileName = 'E:\LOG\TestDataLogFile_Log.ldf'
+            }
+        }
+    } -ParameterFilter {
+        $_.DataFilePath -eq 'E:\DATA' -and
+        $_.LogFilePath -eq 'E:\LOG'
+    }
+
     <#
         New-DbaDatabase, while having a few different parameters, requires only that you have an instance
         of SQL Server that you can connect to and it can create a database on.
