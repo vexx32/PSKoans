@@ -129,4 +129,9 @@ Describe 'New-DbaDatabase' {
     #>
     $NewScriptsDatabase = New-DbaDatabase -SqlInstance '____', '____', '____' -Name DBScripts
     $NewScriptsDatabase.SqlInstance | Should -Be 'Dev', 'Val', 'Prod'
+
+    <#
+        There is also an option to specify where to place the database data and log files. By using the parameters
+        -DataFilePath and -LogFilePath, you can specify where to place these files.
+    #>
 }
