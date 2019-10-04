@@ -4,6 +4,9 @@ $CommandName = @(
     'Reset-PSKoan'
     'Show-Karma'
     'Update-PSKoan'
+)
+
+$AdviceCommandName = @(
     'Show-Advice'
     'Get-Advice'
 )
@@ -47,10 +50,10 @@ Register-ArgumentCompleter @RegisterParams
 
 #endregion
 
-#region Name completer
+#region Name completer for *-Advice command names
 
 $RegisterParams = @{
-    CommandName   = $CommandName
+    CommandName   = $AdviceCommandName
     ParameterName = 'Name'
     ScriptBlock   = {
         param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
