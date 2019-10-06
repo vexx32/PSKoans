@@ -1,0 +1,26 @@
+{
+    "Title": "Fun with Cat Facts",
+    "Content": [
+        "PowerShell doesn't have to all be about Server administration, ops, or automation.",
+        "\n",
+        "It can also be fun!",
+        "\n",
+        "We've provided some fun examples below just to give you a taste of what PowerShell can do",
+        "Cats",
+        "\n",
+        "   The below code snippit will query a RESTAPI on the internet that provides some fun facts about cats. It then uses the SpeechSynthesizer to tell you these facts! Feel free to run it on your machine:",
+        "\n",
+        "function Get-CatFact {",
+        "\n",
+        "\tAdd-Type -AssemblyName System.Speech",
+        "\t$SpeechSynth = New-Object System.Speech.Synthesis.SpeechSynthesizer",
+        "\t$URI = 'http://www.catfact.info/api/v1/facts.json?per_page=200'",     
+        "\t$Random = Get-Random -Maximum 200",
+        "\t$CatFact = (ConvertFrom-Json (Invoke-WebRequest -Uri $URI)).Facts[$Random]",
+        "\t$SpeechSynth.Speak('did you know?')",     
+        "\t$SpeechSynth.Speak($CatFact.details)",
+        "}",
+        "\n",
+        "Get-CatFact"
+    ]
+}

@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 112)]
+[Koan(Position = 120)]
 param()
 <#
     Hashtables
