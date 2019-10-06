@@ -217,5 +217,26 @@ Describe 'Show-Karma' {
                 }
             }
         }
+
+        Context 'With -Meditate Switch' {
+
+            Context 'PSKoans directory does not exist' {
+                BeforeAll {
+                    Mock Test-Path { $false }
+                    Mock Update-PSKoan
+                    Mock Get-Command { $false }
+                    Mock Invoke-Item
+                }
+
+                It 'should create PSKoans directory' {
+                    Show-Karma -Meditate
+
+                    Assert-MockCalled Test-Path -Times 1
+                    Assert-MockCalled Update-PSKoan -Times 1
+                    Assert-MockCalled Get-Command -Times 1
+                    Assert-MockCalled Invoke-Item -Times 1
+                }
+            }
+        }
     }
 }
