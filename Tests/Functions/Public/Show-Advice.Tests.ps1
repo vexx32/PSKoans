@@ -21,7 +21,7 @@ InModuleScope 'PSKoans' {
                Assert-MockCalled -CommandName Write-ConsoleLine -Times 1
             }
             
-            It "Show-Advice Output Should be Void"{
+            It "outputs nothing to the pipeline" {
                 $result | Should -BeNullOrEmpty
             }
         }
