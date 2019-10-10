@@ -26,7 +26,7 @@ InModuleScope 'PSKoans' {
             }
         }
 
-        Context "Checking the Behaviour of  Function Calling with parameter" {
+        Context "Behaviour with -Name Parameter" {
 
             It "Write-ConsoleLine Without Paramter Should be Called " {
                 Show-Advice -Name "Profile" | Should -BeNullOrEmpty
