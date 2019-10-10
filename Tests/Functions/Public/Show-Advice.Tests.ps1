@@ -14,7 +14,7 @@ InModuleScope 'PSKoans' {
             $result = Show-Advice
 
             It "calls Write-ConsoleLine with Parameter -Title" {
-                Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter {$Title -eq $true}
+                Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter {$null -ne $Title}
             }
 
             It "Write-ConsoleLine Without Paramter Should be Called " {
