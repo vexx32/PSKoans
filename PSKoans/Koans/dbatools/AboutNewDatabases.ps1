@@ -147,6 +147,16 @@ Describe 'New-DbaDatabase' {
     $NewScriptsDatabase.SqlInstance | Should -Be 'Dev', 'Val', 'Prod'
 
     <#
+        When new databases get created they get created with a recovery model. They take this
+        recovery model from the system database model.
+
+        New-DbaDatabase allows you to specify a recovery model that you want the new database to
+        have. This recovery model does not need to be what the model database is set to.
+
+        Finish the below block of code to create a new database with the Simple recovery model.
+    #>
+
+    <#
         There is also an option to specify where to place the database data and log files. By using the parameters
         -DataFilePath and -LogFilePath, you can specify where to place these files.
     #>
