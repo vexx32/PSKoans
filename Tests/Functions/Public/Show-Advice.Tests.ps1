@@ -12,7 +12,7 @@ InModuleScope 'PSKoans' {
                 Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -eq $Title }
             }
 
-            It "Write-ConsoleLine Without Paramter Should be Called " {
+            It "calls Write-ConsoleLine with only the display string" {
                 Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -ne $Title } -Times 1
             }
             
