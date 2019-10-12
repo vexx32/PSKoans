@@ -16,6 +16,28 @@
         Get-Content |
         ConvertFrom-Json
 
+        # Checking for errors
+        if (-not $AdviceObject) {
+            $ErrorDetails = @{
+                ExceptionType    = 'System.IO.FileNotFoundException'
+                ExceptionMessage = 'Could not find any advices that match the specified Name'
+                ErrorId          = 'PSKoans.NoMatchingAdvicesFound'
+                ErrorCategory    = 'ObjectNotFound'
+                TargetObject     = $Name
+            }
+            $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
+        }
+        elseif ($AdviceObject -and ((-not $AdviceObject.Title) -or ((-not $AdviceObject.Content)))) {
+            $ErrorDetails = @{
+                ExceptionType    = 'System.IO.FileLoadException'
+                ExceptionMessage = 'Could not find title and/or content for specified Advice'
+                ErrorId          = 'PSKoans.IncorrectAdviceData'
+                ErrorCategory    = 'InvalidData'
+                TargetObject     = $Name
+            }
+            $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
+        }
+
         $AdviceObject.Title | Write-ConsoleLine -Title
         $AdviceObject.Content | Write-ConsoleLine
     }
