@@ -5,28 +5,22 @@ class FolderTransformAttribute : ArgumentTransformationAttribute {
         switch ($inputData) {
 
             { $_ -is [string] } {
-
-                if (-not (Test-Path -Path $_ -PathType Container -IsValid)) {
-                    throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
-                }
-                elseif (-not [string]::IsNullOrWhiteSpace($inputData)) {
-                    $Oops = $null
-                    $FullPath = Resolve-Path -Path $InputData -ErrorAction SilentlyContinue -ErrorVariable Oops
-
-                    if (-not [string]::IsNullOrWhiteSpace($FullPath)) {
-                        return $FullPath.Path
-                    }
-                    else {
-                        $Oops.TargetObject
-                    }
+                if (-not (Test-Path $_ -IsValid -PathType Container)) {
+                    throw [ArgumentTransformationMetadataException]::new(
+                        "Could not resolve path: $_",
+                        $_.Exception
+                    )
                 }
 
+                return $engineIntrinsics.SessionState.Path.GetUnresolvedProviderPathFromPSPath($_)
             }
 
             { $_ -is [System.IO.FileSystemInfo] } {
 
                 if (-not (Test-Path -Path $_.FullName -PathType Container)) {
-                    throw [ArgumentTransformationMetadataException]::new('Path could not be resolved to a valid container.')
+                    throw [ArgumentTransformationMetadataException]::new(
+                        'Path could not be resolved to a valid container.'
+                    )
                 }
                 else {
                     return $inputData.Fullname

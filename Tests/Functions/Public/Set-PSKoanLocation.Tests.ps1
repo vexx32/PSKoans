@@ -6,7 +6,7 @@ Describe 'Set-PSKoanLocation' {
     }
 
     It 'outputs no data by default' {
-        Set-PSKoanLocation -Path 'TestDrive:/PSKoans' | Should -BeNullOrEmpty
+        Set-PSKoanLocation -Path 'TestDrive:/PSKoans/' | Should -BeNullOrEmpty
     }
 
     It 'sets the KoanLocation setting' {
@@ -15,6 +15,6 @@ Describe 'Set-PSKoanLocation' {
 
     It 'returns the input -Path value back to the pipeline with -PassThru' {
         $ResolvedPath = Resolve-Path -Path '~' | Join-Path -ChildPath 'PSKoans'
-        Set-PSKoanLocation -Path '~/PSKoans' -PassThru | Should -BeExactly $ResolvedPath
+        Set-PSKoanLocation -Path '~/PSKoans/' -PassThru | Should -BeExactly $ResolvedPath
     }
 }
