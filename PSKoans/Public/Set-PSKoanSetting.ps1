@@ -4,18 +4,6 @@ function Set-PSKoanSetting {
     [OutputType([void])]
     param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]
-        [ArgumentCompleter(
-            {
-                $script:DefaultSettings.Keys.ForEach{
-                    [System.Management.Automation.CompletionResult]::new(
-                        $_, <# completionText #>
-                        $_, <# listItemText #>
-                        'ParameterValue', <# completionResultType #>
-                        $_ <# toolTip #>
-                    )
-                }
-            }
-        )]
         [string]
         $Name,
 
