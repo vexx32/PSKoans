@@ -1,24 +1,21 @@
 function Set-PSKoanSetting {
-    <#
-    .SYNOPSIS
-    Modifies the configuration settings for PSKoans.
-
-    .DESCRIPTION
-    Stores configuration data via the PoshCode Configuration module. Module settings
-    for PSKoans are stored in the user location / scope.
-
-    .PARAMETER Name
-    Specifies which setting value to modify.
-
-    .EXAMPLE
-    Get-PSKoanSetting -Name LibraryFolder
-
-    Retrieves the library folder location (exposed to the user via Get-PSKoanLocation).
-    #>
-
-    [CmdletBinding(DefaultParameterSetName = 'Single')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium', DefaultParameterSetName = 'Single',
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Set-PSKoanSetting.md')]
+    [OutputType([void])]
     param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]
+        [ArgumentCompleter(
+            {
+                $script:DefaultSettings.Keys.ForEach{
+                    [System.Management.Automation.CompletionResult]::new(
+                        $_, <# completionText #>
+                        $_, <# listItemText #>
+                        'ParameterValue', <# completionResultType #>
+                        $_ <# toolTip #>
+                    )
+                }
+            }
+        )]
         [string]
         $Name,
 
@@ -33,6 +30,10 @@ function Set-PSKoanSetting {
     if (Test-Path $script:ConfigPath) {
         switch ($PSCmdlet.ParameterSetName) {
             'Single' {
+                if ($Name -eq 'Location') {
+                    $Value = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Value)
+                }
+
                 (Get-Content -Path $script:ConfigPath) |
                     ConvertFrom-Json |
                     Select-Object -Property *, @{ Name = $Name; Expression = { $Value } } -ExcludeProperty $Name |
@@ -44,7 +45,17 @@ function Set-PSKoanSetting {
                     $Properties = @(
                         '*'
                         foreach ($key in $Settings.Keys) {
-                            @{ Name = $key; Expression = { $Settings[$key] } }
+                            @{
+                                Name       = $key
+                                Expression = {
+                                    if ($Key -eq 'Location') {
+                                        $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Settings[$key])
+                                    }
+                                    else {
+                                        $Settings[$key]
+                                    }
+                                }
+                            }
                         }
                     )
                     (Get-Content -Path $script:ConfigPath) |
