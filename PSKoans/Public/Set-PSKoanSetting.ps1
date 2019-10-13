@@ -61,14 +61,21 @@ function Set-PSKoanSetting {
             New-Item -ItemType Directory -Path $ConfigRoot > $null
         }
 
+        $SettingsToExport = $script:DefaultSettings.Clone()
+
         switch ($PSCmdlet.ParameterSetName) {
             'Single' {
-                [PSCustomObject]@{ $Name = $Value } |
+                $SettingsToExport[$Name] = $Value
+
+                [PSCustomObject]$SettingsToExport |
                     ConvertTo-Json |
                     Set-Content -Path $script:ConfigPath
             }
             'Multiple' {
-                [PSCustomObject]$Settings |
+                $Settings.Keys.ForEach{
+                    $SettingsToExport[$_] = $Settings[$_]
+                }
+                [PSCustomObject]$SettingsToExport |
                     ConvertTo-Json |
                     Set-Content -Path $script:ConfigPath
             }
