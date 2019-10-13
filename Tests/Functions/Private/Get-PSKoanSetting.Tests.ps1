@@ -10,7 +10,7 @@ Describe 'Get-PSKoanSetting' {
 
     Context 'Settings file does not exist' {
         BeforeAll {
-            Mock Set-PSKoanSetting { } -ParameterFilter { $Settings -is [hashtable] } -ModuleName PSKoans
+            Mock Set-PSKoanSetting { } -ParameterFilter { $Settings -is [PSCustomObject] } -ModuleName PSKoans
             $DefaultSettings = InModuleScope PSKoans { $script:DefaultSettings }
         }
 
