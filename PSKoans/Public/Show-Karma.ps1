@@ -59,6 +59,12 @@ function Show-Karma {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
+            Write-Verbose "Checking existence of koans folder"
+            if (-not (Test-Path (Get-PSKoanLocation))) {
+                Write-Verbose "Koans folder does not exist. Initiating full reset..."
+                Update-PSKoan -Confirm:$false
+            }
+
             Write-Verbose "Opening koans folder"
             if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and
                 (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
