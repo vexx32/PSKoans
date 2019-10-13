@@ -10,13 +10,13 @@ Describe 'Get-PSKoanSetting' {
 
     Context 'Settings file does not exist' {
         BeforeAll {
-            Mock Set-PSKoanSetting { } -ParameterFilter { $Settings -is [PSCustomObject] } -ModuleName PSKoans
+            Mock Set-PSKoanSetting { } -ParameterFilter { $Settings -is [hashtable] } -ModuleName PSKoans
             $DefaultSettings = InModuleScope PSKoans { $script:DefaultSettings }
         }
 
         It 'returns the default settings' {
             $Result = InModuleScope PSKoans { Get-PSKoanSetting }
-            $Result | Should -BeOfType [hashtable]
+            $Result | Should -BeOfType [PSCustomObject]
             $Result.KoanLocation | Should -BeExactly "$HOME${/}PSKoans"
             $Result.Editor | Should -BeExactly 'code'
         }
