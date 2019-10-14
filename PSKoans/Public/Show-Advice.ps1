@@ -20,7 +20,7 @@
         if (-not $AdviceObject) {
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileNotFoundException'
-                ExceptionMessage = 'Could not find any advices that match the specified Name'
+                ExceptionMessage = 'Could not find any Advice files matching the specified Name: {0}.' -f $Name
                 ErrorId          = 'PSKoans.NoMatchingAdvicesFound'
                 ErrorCategory    = 'ObjectNotFound'
                 TargetObject     = $Name
