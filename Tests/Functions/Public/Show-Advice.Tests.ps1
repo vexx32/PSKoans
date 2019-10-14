@@ -35,7 +35,7 @@ InModuleScope 'PSKoans' {
                 Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -eq $Title }
             }
 
-            It "Should Throw an Expected Messae if invalid parameter is passed" {
+            It "should throw an error if the requested file cannot be found" {
                 $message = "Cannot validate argument on parameter 'InputString'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
                 
                 { Show-Advice -Name "ThisDoesntExist" -ErrorAction Stop } | Should -Throw -ExpectedMessage $message
