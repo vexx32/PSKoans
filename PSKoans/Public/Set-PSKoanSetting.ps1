@@ -48,7 +48,7 @@ function Set-PSKoanSetting {
                     )
                     (Get-Content -Path $script:ConfigPath) |
                         ConvertFrom-Json |
-                        Select-Object -Property $Properties -ExcludeProperty $Settings.Keys |
+                        Select-Object -Property $Properties -ExcludeProperty $Settings.Keys.ForEach{ $_ } |
                         ConvertTo-Json |
                         Set-Content -Path $script:ConfigPath
                 }
