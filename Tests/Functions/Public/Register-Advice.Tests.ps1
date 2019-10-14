@@ -45,7 +45,7 @@ InModuleScope 'PSKoans' {
             )
             It "Checking with the possible Parameter Values" -TestCases $testdata {
                 param($1)
-                Register-Advice $1 | should -BeNullOrEmpty 
+                Register-Advice $ProfilePath | Should -BeNullOrEmpty 
             
             }
         }
