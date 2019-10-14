@@ -3,15 +3,15 @@ function Set-PSKoanSetting {
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Set-PSKoanSetting.md')]
     [OutputType([void])]
     param(
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]
+        [Parameter(Position = 0, Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]
         [string]
         $Name,
 
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]
+        [Parameter(Position = 1, Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]
         [object]
         $Value,
 
-        [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = 'Multiple')]
+        [Parameter(Position = 0, Mandatory, ValueFromPipeline, ParameterSetName = 'Multiple')]
         [hashtable]
         $Settings
     )
@@ -48,7 +48,8 @@ function Set-PSKoanSetting {
                     )
                     (Get-Content -Path $script:ConfigPath) |
                         ConvertFrom-Json |
-                        Select-Object -Property $Properties -ExcludeProperty $Settings.Keys.ForEach{ $_ } |
+                        Select-Object -Property * -ExcludeProperty $Settings.Keys.ForEach{ $_ } |
+                        Select-Object -Property $Properties |
                         ConvertTo-Json |
                         Set-Content -Path $script:ConfigPath
                 }

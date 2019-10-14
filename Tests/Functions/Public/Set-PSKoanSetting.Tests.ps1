@@ -18,27 +18,30 @@ Describe 'Set-PSKoanSetting' {
     }
 
     Context 'Settings file Exists' {
-        BeforeEach {
-            $Settings = [PSCustomObject]@{
-                LibraryFolder = "$TestDrive/PSKoans"
-                Editor        = 'code'
-            }
-            $Settings |
-                ConvertTo-Json |
-                Set-Content -Path $NewConfigPath
-        }
-
-        AfterAll {
-            Remove-Item -Path $NewConfigPath -Force
-        }
 
         Describe 'Setting values with -Name and -Value' {
             BeforeAll {
+                if (-not (Test-Path $TestDrive)) {
+                    New-Item -ItemType File -Path "$TestDrive/config.json"
+                }
+
+                $Settings = [PSCustomObject]@{
+                    LibraryFolder = "$TestDrive/PSKoans"
+                    Editor        = 'code'
+                }
+                $Settings |
+                    ConvertTo-Json |
+                    Set-Content -Path $NewConfigPath
+
                 $TestCases = @(
                     @{ Name = 'TestSetting1'; Value = 'TestValue1' }
                     @{ Name = 'LibraryFolder'; Value = "$TestDrive/AltLocation/PSKoans" }
                     @{ Name = 'Editor'; Value = 'code-insiders' }
                 )
+            }
+
+            AfterAll {
+                Remove-Item -Path $NewConfigPath -Force
             }
 
             It 'should add a new setting: <Name> = <Value>' -TestCases $TestCases {
@@ -48,12 +51,30 @@ Describe 'Set-PSKoanSetting' {
 
                 Get-PSKoanSetting -Name $Name | Should -BeExactly $Value
                 Get-Content -Path $NewConfigPath |
-                    Where-Object { $_ -match $Name } |
-                    Should -MatchExactly $Value
+                    ConvertFrom-Json |
+                    Select-Object -ExpandProperty $Name
+                Should -BeExactly $Value
             }
         }
 
         Context 'Setting values with -Settings Hashtable' {
+            BeforeAll {
+                if (-not (Test-Path $TestDrive)) {
+                    New-Item -ItemType File -Path "$TestDrive/config.json"
+                }
+
+                $Settings = [PSCustomObject]@{
+                    LibraryFolder = "$TestDrive/PSKoans"
+                    Editor        = 'code'
+                }
+                $Settings |
+                    ConvertTo-Json |
+                    Set-Content -Path $NewConfigPath
+            }
+
+            AfterAll {
+                Remove-Item -Path $NewConfigPath -Force
+            }
 
             It 'should add or overwrite multiple new settings' {
                 $NewSettings = @{
@@ -71,11 +92,6 @@ Describe 'Set-PSKoanSetting' {
     }
 
     Context 'Settings file does not exist' {
-        BeforeEach {
-            if (Test-Path -Path $NewConfigPath) {
-                Remove-Item -Path $NewConfigPath
-            }
-        }
 
         Describe 'Setting values with -Name and -Value' {
             BeforeAll {
@@ -85,6 +101,12 @@ Describe 'Set-PSKoanSetting' {
                     @{ Name = 'Editor'; Value = 'TestEditor' }
                     @{ Name = 'LibraryFolder'; Value = "$TestDrive/TestFolder" }
                 )
+            }
+
+            BeforeEach {
+                if (Test-Path -Path $NewConfigPath) {
+                    Remove-Item -Path $NewConfigPath
+                }
             }
 
             It 'correctly adds the setting: <Name> = <Value>' -TestCases $TestCases {
@@ -111,6 +133,13 @@ Describe 'Set-PSKoanSetting' {
                     @{ Settings = @{ TestSetting1 = 'TestValue1'; Editor = 'TestEditor' } }
                     @{ Settings = @{ LibraryFolder = "$TestDrive/TestFolder"; TestSetting2 = 'TestValue2' } }
                 )
+            }
+
+            BeforeEach {
+                if (Test-Path -Path $NewConfigPath) {
+                    Remove-Item -Path $NewConfigPath
+                }
+
             }
 
             It 'adds and replaces values: <Settings>' -TestCases $TestCases {
