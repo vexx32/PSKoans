@@ -7,12 +7,6 @@ Describe 'Set-PSKoanSetting' {
         }
     }
 
-    BeforeEach {
-        $NewConfigPath = InModuleScope 'PSKoans' {
-            ($script:ConfigPath = "$TestDrive/config.json")
-        }
-    }
-
     AfterAll {
         InModuleScope 'PSKoans' {
             $script:ConfigPath = $script:OldConfigPath
@@ -23,6 +17,10 @@ Describe 'Set-PSKoanSetting' {
 
         Describe 'Setting values with -Name and -Value' {
             BeforeAll {
+                $NewConfigPath = InModuleScope 'PSKoans' {
+                    ($script:ConfigPath = "$TestDrive/config.json")
+                }
+
                 if (-not (Test-Path $TestDrive)) {
                     New-Item -ItemType File -Path "$TestDrive/config.json"
                 }
@@ -61,6 +59,10 @@ Describe 'Set-PSKoanSetting' {
 
         Context 'Setting values with -Settings Hashtable' {
             BeforeAll {
+                $NewConfigPath = InModuleScope 'PSKoans' {
+                    ($script:ConfigPath = "$TestDrive/config.json")
+                }
+
                 if (-not (Test-Path $TestDrive)) {
                     New-Item -ItemType File -Path "$TestDrive/config.json"
                 }
@@ -97,6 +99,10 @@ Describe 'Set-PSKoanSetting' {
 
         Describe 'Setting values with -Name and -Value' {
             BeforeAll {
+                $NewConfigPath = InModuleScope 'PSKoans' {
+                    ($script:ConfigPath = "$TestDrive/config.json")
+                }
+
                 $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
                 $TestCases = @(
                     @{ Name = 'TestSetting1' ; Value = 'TestValue1' }
@@ -130,6 +136,10 @@ Describe 'Set-PSKoanSetting' {
 
         Context 'Setting values with -Settings Hashtable' {
             BeforeAll {
+                $NewConfigPath = InModuleScope 'PSKoans' {
+                    ($script:ConfigPath = "$TestDrive/config.json")
+                }
+
                 $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
                 $TestCases = @(
                     @{ Settings = @{ TestSetting1 = 'TestValue1'; Editor = 'TestEditor' } }
