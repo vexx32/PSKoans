@@ -9,7 +9,7 @@ function Get-PSKoanSetting {
 
     $Configuration = if (-not (Test-Path $script:ConfigPath)) {
         # No settings file present, create file with default settings
-        Set-PSKoanSetting -Settings $script:DefaultSettings -Confirm
+        Set-PSKoanSetting -Settings $script:DefaultSettings -Confirm:$false
         [PSCustomObject]$script:DefaultSettings
     }
     else {
