@@ -44,7 +44,7 @@ InModuleScope 'PSKoans' {
                 @{ ProfilePath = 'CurrentUserCurrentHost' }
             )
             It "Checking with the possible Parameter Values" -TestCases $testdata {
-                param($1)
+                param($ProfilePath)
                 Register-Advice $ProfilePath | Should -BeNullOrEmpty 
             
             }
