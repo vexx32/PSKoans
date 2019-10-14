@@ -5,7 +5,9 @@ Describe 'Set-PSKoanSetting' {
         InModuleScope 'PSKoans' {
             $script:OldConfigPath = $script:ConfigPath
         }
+    }
 
+    BeforeEach {
         $NewConfigPath = InModuleScope 'PSKoans' {
             ($script:ConfigPath = "$TestDrive/config.json")
         }
@@ -52,8 +54,8 @@ Describe 'Set-PSKoanSetting' {
                 Get-PSKoanSetting -Name $Name | Should -BeExactly $Value
                 Get-Content -Path $NewConfigPath |
                     ConvertFrom-Json |
-                    Select-Object -ExpandProperty $Name
-                Should -BeExactly $Value
+                    Select-Object -ExpandProperty $Name |
+                    Should -BeExactly $Value
             }
         }
 
