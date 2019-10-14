@@ -30,7 +30,7 @@
         elseif (-not ($AdviceObject.Title -and $AdviceObject.Content)) {
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileLoadException'
-                ExceptionMessage = 'Could not find title and/or content for specified Advice'
+                ExceptionMessage = 'Could not find Title and/or Content elements for Advice file: {0}' -f $Name
                 ErrorId          = 'PSKoans.IncorrectAdviceData'
                 ErrorCategory    = 'InvalidData'
                 TargetObject     = $Name
