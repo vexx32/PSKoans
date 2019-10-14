@@ -3,9 +3,11 @@
 InModuleScope 'PSKoans' {
     Describe "Show-Advice" {
 
-        Context "Behaviour of Parameter-less Calls" {
-            
+        BeforeAll{
             Mock Write-ConsoleLine { } 
+        }
+
+        Context "Behaviour of Parameter-less Calls" {
             $result = Show-Advice
 
             It "calls Write-ConsoleLine with Parameter -Title" {
@@ -22,8 +24,6 @@ InModuleScope 'PSKoans' {
         }
 
         Context "Behaviour with -Name Parameter" {
-            
-            Mock Write-ConsoleLine { }
 
             It "should call Write-ConsoleLine with normal parameters" {
                 Show-Advice -Name "Profile" 
@@ -31,7 +31,7 @@ InModuleScope 'PSKoans' {
             }
 
             It "should call Write-ConsoleLine without parameters" {
-                Show-Advice -Name "Profile.Advice" 
+                Show-Advice -Name "Profile" 
                 Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -eq $Title }
             }
 
