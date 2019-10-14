@@ -26,7 +26,7 @@ InModuleScope 'PSKoans' {
             Mock Write-ConsoleLine { }
 
             It "should call Write-ConsoleLine with normal parameters" {
-                Show-Advice -Name "Profile.Advice" 
+                Show-Advice -Name "Profile" 
                 Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -ne $Title }
             }
             It "should call Write-ConsoleLine without parameters" {
