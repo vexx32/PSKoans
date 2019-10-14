@@ -37,7 +37,12 @@ InModuleScope 'PSKoans' {
             It "Should throw if invalid parameter(Targetprofile) value is passed" {
                 { Register-Advice -TargetProfile "Invalidvalue" } | Should -Throw
             }
-            $testdata = @{1 = 'AllUsersAllHosts' }, @{1 = 'AllUsersCurrentHost' }, @{1 = 'CurrentUserAllHosts' }, @{1 = 'CurrentUserCurrentHost' }
+            $testdata = @(
+                @{ ProfilePath = 'AllUsersAllHosts' }
+                @{ ProfilePath = 'AllUsersCurrentHost' }
+                @{ ProfilePath = 'CurrentUserAllHosts' }
+                @{ ProfilePath = 'CurrentUserCurrentHost' }
+            )
             It "Checking with the possible Parameter Values" -TestCases $testdata {
                 param($1)
                 Register-Advice $1 | should -BeNullOrEmpty 
