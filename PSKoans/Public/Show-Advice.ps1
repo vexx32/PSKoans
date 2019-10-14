@@ -27,7 +27,7 @@
             }
             $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
         }
-        elseif ($AdviceObject -and ((-not $AdviceObject.Title) -or ((-not $AdviceObject.Content)))) {
+        elseif (-not ($AdviceObject.Title -and $AdviceObject.Content)) {
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileLoadException'
                 ExceptionMessage = 'Could not find title and/or content for specified Advice'
