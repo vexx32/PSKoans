@@ -20,7 +20,7 @@ InModuleScope 'PSKoans' {
             }
         }
         Context "Checkin the Function with other Possible values" {
-            BeforeEach{
+            BeforeAll{
                 Mock Select-String { $false }
                 Mock Add-Content { }
             }
@@ -30,6 +30,12 @@ InModuleScope 'PSKoans' {
             }
         }
         Context "Checkin the behaviour of function with different parameter values" {
+            BeforeAll{
+                Mock Test-Path { $false } -ParameterFilter { $Path -eq $ProfileFolder }
+                Mock New-Item { }
+                Mock Test-Path { $false } -ParameterFilter { $Path -eq $ProfilePath }
+                Mock Set-Content { } -ParameterFilter { $Value -eq "Show-Advice" }
+            }
             It "Should throw if invalid parameter(Targetprofile) value is passed" {
                 { Register-Advice -TargetProfile "Invalidvalue" } | Should -Throw
             }
