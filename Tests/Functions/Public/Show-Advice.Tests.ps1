@@ -33,6 +33,7 @@ InModuleScope 'PSKoans' {
                 Show-Advice -Name "Profile.Advice" 
                 Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -eq $Title }
             }
+
             It "Should Throw an Expected Messae if invalid parameter is passed" {
                 $message = "Cannot validate argument on parameter 'InputString'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
                 
