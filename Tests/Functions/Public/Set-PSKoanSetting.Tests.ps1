@@ -48,7 +48,7 @@ Describe 'Set-PSKoanSetting' {
 
                 Get-PSKoanSetting -Name $Name | Should -BeExactly $Value
                 Get-Content -Path $NewConfigPath |
-                    Where-Object -Match $Name |
+                    Where-Object { $_ -match $Name } |
                     Should -MatchExactly $Value
             }
         }
