@@ -66,18 +66,10 @@ function Show-Karma {
             }
 
             Write-Verbose "Opening koans folder"
-            if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and
-                (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
+            $Editor = Get-PSKoanSetting -Name Editor
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
                 $VSCodeSplat = @{
                     FilePath     = 'code-insiders'
-                    ArgumentList = '"{0}"' -f (Resolve-Path -Path (Get-PSKoanLocation))
-                    NoNewWindow  = $true
-                }
-                Start-Process @VSCodeSplat
-            }
-            elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
-                $VSCodeSplat = @{
-                    FilePath     = 'code'
                     ArgumentList = '"{0}"' -f (Resolve-Path -Path (Get-PSKoanLocation))
                     NoNewWindow  = $true
                 }
