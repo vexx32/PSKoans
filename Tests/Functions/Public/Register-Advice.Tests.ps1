@@ -21,6 +21,7 @@ InModuleScope 'PSKoans' {
         }
         Context "Checkin the Function with other Possible values" {
             BeforeAll{
+                Mock Test-Path { $true } -ParameterFilter { $Path -eq $ProfilePath }
                 Mock Select-String { $false }
                 Mock Add-Content { }
             }
