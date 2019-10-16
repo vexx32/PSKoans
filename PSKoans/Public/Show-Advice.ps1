@@ -21,7 +21,7 @@
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileNotFoundException'
                 ExceptionMessage = 'Could not find any Advice files matching the specified Name: {0}.' -f $Name
-                ErrorId          = 'PSKoans.NoMatchingAdvicesFound'
+                ErrorId          = 'PSKoans.NoMatchingAdviceFound'
                 ErrorCategory    = 'ObjectNotFound'
                 TargetObject     = $Name
             }
