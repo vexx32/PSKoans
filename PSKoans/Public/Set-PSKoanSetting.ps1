@@ -29,30 +29,28 @@ function Set-PSKoanSetting {
                     Set-Content -Path $script:ConfigPath
             }
             'Multiple' {
-                if (Test-Path $script:ConfigPath) {
-                    $Properties = @(
-                        '*'
-                        foreach ($key in $Settings.Keys) {
-                            @{
-                                Name       = $key
-                                Expression = {
-                                    if ($Key -eq 'Location') {
-                                        $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Settings[$key])
-                                    }
-                                    else {
-                                        $Settings[$key]
-                                    }
+                $Properties = @(
+                    '*'
+                    foreach ($key in $Settings.Keys) {
+                        @{
+                            Name       = $key
+                            Expression = {
+                                if ($Key -eq 'Location') {
+                                    $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Settings[$key])
                                 }
-                            }
+                                else {
+                                    $Settings[$key]
+                                }
+                            }.GetNewClosure()
                         }
-                    )
-                    (Get-Content -Path $script:ConfigPath) |
-                        ConvertFrom-Json |
-                        Select-Object -Property * -ExcludeProperty $Settings.Keys.ForEach{ $_ } |
-                        Select-Object -Property $Properties |
-                        ConvertTo-Json |
-                        Set-Content -Path $script:ConfigPath
-                }
+                    }
+                )
+                (Get-Content -Path $script:ConfigPath) |
+                    ConvertFrom-Json |
+                    Select-Object -Property * -ExcludeProperty $Settings.Keys.ForEach{ $_ } |
+                    Select-Object -Property $Properties |
+                    ConvertTo-Json |
+                    Set-Content -Path $script:ConfigPath
             }
         }
     }
