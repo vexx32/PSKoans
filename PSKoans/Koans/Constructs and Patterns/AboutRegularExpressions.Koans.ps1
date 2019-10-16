@@ -223,6 +223,7 @@ Describe 'Special Symbols' {
         }
     }
 
+<<<<<<< Updated upstream
     Context '\n' {
         It 'matches new lines' {
             <#
@@ -237,6 +238,20 @@ Describe 'Special Symbols' {
             #>
     
             $multiLine = @"
+=======
+    # \n
+    it 'matches new lines' {
+        <#
+            The \n symbol is the first regex symbol you've encountered that isn't just a single character. Normally if you saw a lowercase "n" in
+            a regex, it would just mean "literally the letter n". When it's preceded by a backslash, however, that "n" takes on a special meaning.
+            In this case, \n matches new lines. Well, it matches the encoded character that indicates there's a new line.
+
+            There are many more regex symbols that are single letters preceded by a backslash. In fact, the backslash is probably the single most
+            important character in all of regex.
+        #>
+
+        $multiLine = @"
+>>>>>>> Stashed changes
 They might look
 similar and look
 soft, but you should
