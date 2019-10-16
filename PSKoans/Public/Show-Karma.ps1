@@ -59,7 +59,7 @@ function Show-Karma {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
-            $PSKoanLocationFullPath = (Resolve-Path (Get-PSKoanLocation)).Path
+            $PSKoanLocationFullPath = $pscmdlet.GetUnresolvedProviderPathFromPSPath((Get-PSKoanLocation))
             Write-Verbose "Checking existence of koans folder"
             if (-not (Test-Path $PSKoanLocationFullPath)) {
                 Write-Verbose "Koans folder does not exist. Initiating full reset..."
