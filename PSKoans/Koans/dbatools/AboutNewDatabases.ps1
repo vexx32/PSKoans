@@ -178,6 +178,8 @@ Describe 'New-DbaDatabase' {
 
         Finish the below block of code to create a new database with the FULL recovery model.
     #>
+    $NewRecoveryModelDatabase = New-DbaDatabase -SqlInstance localhost -RecoveryModel '____'
+    $NewRecoveryModelDatabase.RecoveryModel | Should -Be 'Full'
 
     <#
         There is also an option to specify where to place the database data and log files. By using the parameters
