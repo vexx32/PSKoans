@@ -59,8 +59,9 @@ function Show-Karma {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
+            $PSKoanLocationFullPath = $pscmdlet.GetUnresolvedProviderPathFromPSPath((Get-PSKoanLocation))
             Write-Verbose "Checking existence of koans folder"
-            if (-not (Test-Path (Get-PSKoanLocation))) {
+            if (-not (Test-Path $PSKoanLocationFullPath)) {
                 Write-Verbose "Koans folder does not exist. Initiating full reset..."
                 Update-PSKoan -Confirm:$false
             }
@@ -69,7 +70,7 @@ function Show-Karma {
             if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
                 $VSCodeSplat = @{
                     FilePath     = 'code-insiders'
-                    ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
+                    ArgumentList = $PSKoanLocationFullPath
                     NoNewWindow  = $true
                 }
                 Start-Process @VSCodeSplat
@@ -77,13 +78,13 @@ function Show-Karma {
             elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
                 $VSCodeSplat = @{
                     FilePath     = 'code'
-                    ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
+                    ArgumentList = $PSKoanLocationFullPath
                     NoNewWindow  = $true
                 }
                 Start-Process @VSCodeSplat
             }
             else {
-                Get-PSKoanLocation | Invoke-Item
+                $PSKoanLocationFullPath | Invoke-Item
             }
         }
         default {
