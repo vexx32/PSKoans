@@ -117,6 +117,29 @@ Describe 'New-DbaDatabase' {
         $_.LogFilePath -eq 'E:\LOG'
     }
 
+    Mock -CommandName New-DbaDatabase -MockWith {
+        [PSCustomObject]@{
+            ComputerName = 'localhost'
+            InstanceName = 'MSSQLSERVER'
+            SqlInstance = 'localhost'
+            Name = 'DBScripts'
+            Status = 'Normal'
+            IsAccessible = $true
+            RecoveryModel = 'FULL'
+            LogReuseWaitStatus = 'Nothing'
+            SizeMB = 16
+            Compatibility = 'Version140'
+            Collation = 'SQL_Latin1_General_CP1_CI_AS'
+            Owner = $ENV:USERNAME
+            LastFullBackup = (Get-Date '0001-01-01')
+            LastDiffBackup = (Get-Date '0001-01-01')
+            LastLogBackup = (Get-Date '0001-01-01')
+        }
+    } -ParameterFilter {
+        $_.SqlInstance -eq 'localhost' -and
+        $_.RecoveryModel -eq 'Full'
+    }
+
     <#
         New-DbaDatabase, while having a few different parameters, requires only that you have an instance
         of SQL Server that you can connect to and it can create a database on.
@@ -153,7 +176,7 @@ Describe 'New-DbaDatabase' {
         New-DbaDatabase allows you to specify a recovery model that you want the new database to
         have. This recovery model does not need to be what the model database is set to.
 
-        Finish the below block of code to create a new database with the Simple recovery model.
+        Finish the below block of code to create a new database with the FULL recovery model.
     #>
 
     <#
