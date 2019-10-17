@@ -18,8 +18,7 @@ Get-PSKoanSetting [[-Name] <String>] [<CommonParameters>]
 
 ## DESCRIPTION
 Retrieves configuration data via the PoshCode Configuration module.
-Module settings
-for PSKoans are stored in the user location / scope.
+Module settings for PSKoans are stored in the user location / scope.
 
 ## EXAMPLES
 
@@ -40,7 +39,7 @@ Retrieves the library folder location (also retrievable with `Get-PSKoanLocation
 ## PARAMETERS
 
 ### -Name
-Specifies which setting values to retrieve.
+Specifies which setting value to retrieve.
 
 ```yaml
 Type: String
