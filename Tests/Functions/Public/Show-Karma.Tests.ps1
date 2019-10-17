@@ -188,10 +188,11 @@ Describe 'Show-Karma' {
 
         Context 'With -Contemplate Switch' {
 
-            Context 'VS Code Installed' {
+            Context 'With "code" Set as the Editor' {
                 BeforeAll {
                     Mock Get-Command { $true }
                     Mock Start-Process { $FilePath }
+                    Set-PSKoanSetting -Name Editor -Value "code"
                 }
 
                 It 'should start VS Code with Start-Process' {
@@ -202,17 +203,18 @@ Describe 'Show-Karma' {
                 }
             }
 
-            Context 'VS Code Not Installed' {
+            Context 'With Editor Not Found' {
                 BeforeAll {
                     Mock Get-Command { $false }
                     Mock Invoke-Item
+                    Set-PSKoanSetting -Name Editor -Value "ascsadsa"
                 }
 
                 It 'should not produce output' {
                     Show-Karma -Meditate | Should -BeNullOrEmpty
                 }
                 It 'should open the koans directory with Invoke-Item' {
-                    Assert-MockCalled Get-Command -Times 1
+                    Assert-MockCalled Get-Command -Times 1 -ParameterFilter { $Name -eq "ascsadsa" }
                     Assert-MockCalled Invoke-Item -Times 1
                 }
             }
@@ -226,6 +228,7 @@ Describe 'Show-Karma' {
                     Mock Update-PSKoan
                     Mock Get-Command { $false }
                     Mock Invoke-Item
+                    Mock New-Item
                 }
 
                 It 'should create PSKoans directory' {
@@ -234,6 +237,7 @@ Describe 'Show-Karma' {
                     Assert-MockCalled Test-Path -Times 1
                     Assert-MockCalled Update-PSKoan -Times 1
                     Assert-MockCalled Get-Command -Times 1
+                    Assert-MockCalled New-Item -Times 1
                     Assert-MockCalled Invoke-Item -Times 1
                 }
             }

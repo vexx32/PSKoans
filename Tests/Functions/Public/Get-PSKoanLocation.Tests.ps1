@@ -1,32 +1,23 @@
 ﻿#Requires -Modules PSKoans
 
 Describe 'Get-PSKoanLocation' {
-
-    Context '$script:LibraryFolder is defined' {
-        BeforeAll {
-            $TestLocation = 'TestDrive:{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-            Set-PSKoanLocation -Path $TestLocation
-        }
-
-        It 'should return the stored location' {
-            Get-PSKoanLocation | Should -Be $TestLocation -Because 'it was set to this location previously'
-        }
+    BeforeAll {
+        Mock Get-PSKoanSetting -ModuleName PSKoans {
+            '~/PSKoans'
+        } -ParameterFilter { $Name -eq 'KoanLocation' }
     }
 
-    Context '$script:LibraryFolder is not defined' {
-        BeforeAll {
-            $OldLocation = InModuleScope 'PSKoans' { $script:LibraryFolder }
-            InModuleScope 'PSKoans' {
-                Remove-Variable -Scope Script -Name 'LibraryFolder'
-            }
-        }
+    It 'retrieves the koan library location' {
+        Get-PSKoanLocation | Should -Be '~/PSKoans'
+    }
 
-        It 'should throw an error when called' {
-            { Get-PSKoanLocation } | Should -Throw -ExpectedMessage 'PSKoans folder location has not been defined'
-        }
+    It 'calls Get-PSKoanSetting with -Name "LibraryFolder"' {
+        Assert-MockCalled Get-PSKoanSetting -ModuleName PSKoans
+    }
 
-        AfterAll {
-            Set-PSKoanLocation -Path $OldLocation
-        }
+    It 'throws an error if no value can be retrieved' {
+        Mock Get-PSKoanSetting -ModuleName PSKoans -ParameterFilter { $Name -eq 'KoanLocation' }
+
+        { Get-PSKoanLocation } | Should -Throw -ExpectedMessage 'location has not been defined'
     }
 }

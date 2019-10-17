@@ -73,3 +73,26 @@ $RegisterParams = @{
 Register-ArgumentCompleter @RegisterParams
 
 #endregion
+
+#region Setting completer
+
+$RegisterParams = @{
+    CommandName   = 'Get-PSKoanSetting', 'Set-PSKoanSetting'
+    ParameterName = 'Name'
+    ScriptBlock   = {
+        param($Command, $Parameter, $WordToComplete, $CommandAst, $FakeBoundParams)
+
+        $Settings = & (Get-Module PSKoans) { $script:DefaultSettings }
+        return $Settings.Keys.Where{ $_ -like "$WordToComplete*" }.ForEach{
+            [System.Management.Automation.CompletionResult]::new(
+                $_, <# completionText #>
+                $_, <# listItemText #>
+                'ParameterValue', <# completionResultType #>
+                $_ <# toolTip #>
+            )
+        }
+    }
+}
+Register-ArgumentCompleter @RegisterParams
+
+#endregion

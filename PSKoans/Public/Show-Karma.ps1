@@ -47,11 +47,11 @@ function Show-Karma {
         $Detailed
     )
 
-    $GetParams = @{}
+    $GetParams = @{ }
     switch ($pscmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly'    { $GetParams['Module'] = $Module }
-        { $Topic }      { $GetParams['Topic'] = $Topic }
+        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $Topic } { $GetParams['Topic'] = $Topic }
     }
 
     switch ($PSCmdlet.ParameterSetName) {
@@ -67,21 +67,14 @@ function Show-Karma {
             }
 
             Write-Verbose "Opening koans folder"
-            if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
-                $VSCodeSplat = @{
-                    FilePath     = 'code-insiders'
+            $Editor = Get-PSKoanSetting -Name Editor
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
+                $EditorSplat = @{
+                    FilePath     = $Editor
                     ArgumentList = $PSKoanLocationFullPath
                     NoNewWindow  = $true
                 }
-                Start-Process @VSCodeSplat
-            }
-            elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
-                $VSCodeSplat = @{
-                    FilePath     = 'code'
-                    ArgumentList = $PSKoanLocationFullPath
-                    NoNewWindow  = $true
-                }
-                Start-Process @VSCodeSplat
+                Start-Process @EditorSplat
             }
             else {
                 $PSKoanLocationFullPath | Invoke-Item
