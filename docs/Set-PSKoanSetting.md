@@ -14,12 +14,17 @@ Modifies the configuration settings for PSKoans.
 
 ### Single (Default)
 ```powershell
-Set-PSKoanSetting -Name <String> -Value <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PSKoanSetting [-Name] <String> [-Value] <Object> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Multiple
 ```powershell
-Set-PSKoanSetting -Settings <Hashtable> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PSKoanSetting [-Settings] <Hashtable> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### Reset
+```powershell
+Set-PSKoanSetting [-Reset] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,9 +50,24 @@ Parameter Sets: Single
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Reset
+Resets the user's settings to the default values.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Reset
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -60,7 +80,7 @@ Parameter Sets: Multiple
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
@@ -75,7 +95,7 @@ Parameter Sets: Single
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
