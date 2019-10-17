@@ -50,7 +50,7 @@ function Set-PSKoanSetting {
                     }
                 )
                 $CurrentSettings |
-                    Select-Object -Property $Properties -ExcludeProperty $Settings.Keys
+                    Select-Object -Property $Properties -ExcludeProperty $Settings.Keys.ForEach{ $_ }
             }
             'Reset' {
                 $CurrentSettings
