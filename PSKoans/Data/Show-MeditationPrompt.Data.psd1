@@ -164,5 +164,18 @@ What is the self?
 Choosing to raise a goose in a bottle,
 How will you get it out once it is grown?
 '@
+        @'
+Nothing is exactly as it seems, nor is it otherwise.
+'@
+        @'
+To a mind that is still, the whole universe surrenders.
+'@
+        @'
+To create is to see what all can see but think what none have thought.
+'@
+        @'
+If you understand, things are just as they are.
+If you do not understand, things are just as they are.
+'@
     )
 }
