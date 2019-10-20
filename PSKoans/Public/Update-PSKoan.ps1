@@ -1,10 +1,7 @@
 using namespace System.Collections.Generic
 
 function Update-PSKoan {
-    [CmdletBinding(
-        SupportsShouldProcess,
-        DefaultParameterSetName = 'TopicOnly',
-        ConfirmImpact = "High",
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'TopicOnly', ConfirmImpact = "High",
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Update-PSKoan.md')]
     [OutputType([void])]
     param(
@@ -36,8 +33,8 @@ function Update-PSKoan {
     }
     switch ($pscmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly'    { $GetParams['Module'] = $Module }
-        { $Topic }      { $GetParams['Topic'] = $Topic }
+        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $Topic } { $GetParams['Topic'] = $Topic }
     }
     $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
@@ -84,7 +81,9 @@ function Update-PSKoan {
                 }
             }
 
-            Update-PSKoanFile -Topic $_
+            if ($PSCmdlet.ShouldProcess($_, 'Updating Koan Topic')) {
+                Update-PSKoanFile -Topic $_
+            }
 
             continue
         }

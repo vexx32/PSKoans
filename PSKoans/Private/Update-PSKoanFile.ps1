@@ -48,47 +48,45 @@ function Update-PSKoanFile {
             }
         } | Group-Object -Property ID -AsHashTable -AsString
 
-        if (-not $moduleKoans) {
-            # Handles topics which do not have It blocks.
-            return
-        }
+    if (-not $moduleKoans) {
+        # Handles topics which do not have It blocks.
+        return
+    }
 
-        $path = Get-PSKoanLocation | Join-Path -ChildPath $_.RelativePath
+    $path = Get-PSKoanLocation | Join-Path -ChildPath $_.RelativePath
 
-        if (Test-Path -Path $path) {
-            $userKoans = Get-KoanIt -Path $path
-            $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
+    if (Test-Path -Path $path) {
+        $userKoans = Get-KoanIt -Path $path
+        $userKoansHash = $userKoans | Group-Object ID -AsHashTable -AsString
 
-            if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
-                $content = Get-Content -Path $_.Path -Raw
+        if ($moduleKoans.Keys.Where{ -not ($userKoansHash -and $userKoansHash.Contains($_)) }) {
+            $content = Get-Content -Path $_.Path -Raw
 
-                $userKoans |
-                    Where-Object { $moduleKoans.Contains($_.ID) } |
-                    Select-Object -Property @(
-                        'ID'
-                        'Name'
-                        'Ast'
-                        @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast }}
-                    ) |
-                    Sort-Object { $_.SourceAst.Extent.StartLineNumber } -Descending |
-                    ForEach-Object {
-                        # Replace the content of the koan with the users content.
-                        $content = $content.Remove(
-                            $_.SourceAst.Extent.StartOffset,
-                            ($_.SourceAst.Extent.EndOffset - $_.SourceAst.Extent.StartOffset)
-                        ).Insert(
-                            $_.SourceAst.Extent.StartOffset,
-                            $_.Ast.Extent.Text
-                        )
-                    }
-
-                if ($PSCmdlet.ShouldProcess($path, 'Updating Koan File')) {
-                    Set-Content -Path $path -Value $content.TrimEnd() -NoNewline
+            $userKoans |
+                Where-Object { $moduleKoans.Contains($_.ID) } |
+                Select-Object -Property @(
+                    'ID'
+                    'Name'
+                    'Ast'
+                    @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast } }
+                ) |
+                Sort-Object { $_.SourceAst.Extent.StartLineNumber } -Descending |
+                ForEach-Object {
+                    # Replace the content of the koan with the users content.
+                    $content = $content.Remove(
+                        $_.SourceAst.Extent.StartOffset,
+                        ($_.SourceAst.Extent.EndOffset - $_.SourceAst.Extent.StartOffset)
+                    ).Insert(
+                        $_.SourceAst.Extent.StartOffset,
+                        $_.Ast.Extent.Text
+                    )
                 }
-            }
-        }
-        else {
-            Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.Name)
+
+            Set-Content -Path $path -Value $content.TrimEnd() -NoNewline
         }
     }
+    else {
+        Write-Warning ('Unexpected error, the koan topic {0} does not exist in the user store' -f $_.Name)
+    }
+}
 }
