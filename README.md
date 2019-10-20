@@ -147,7 +147,7 @@ To pass this koan you need to replace `__` with `True!`, like this: `'True!' | S
 #### 3. Run `Show-Karma` again to see how you did
 
 You passed your first koan!
-You'll notice that your overall progress updated to `1/279` and you are presented with the next challenge.
+You'll notice that your overall progress updated to `1/535` and you are presented with the next challenge.
 
 ```code
     Welcome, seeker of enlightenment.
