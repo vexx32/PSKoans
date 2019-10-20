@@ -46,7 +46,7 @@ Describe 'Arrays' {
         __ | Should -Be $Names[4]
     }
 
-    It 'arrays are fixed size, elements cannot be added or removed' {
+    It 'is a fixed size collection; elements cannot be added or removed' {
         # Most arrays in PowerShell are fixed size. Elements cannot be directly added or removed.
 
         $Ages = 12, 25, 18, 64
@@ -55,7 +55,7 @@ Describe 'Arrays' {
         { $Ages.Remove(12) } | Should -Throw -ExpectedMessage '____'
     }
 
-    It 'new arrays are created using the addition operator' {
+    It 'can be created using the addition operator' {
         <#
             To add an element to a fixed size array, a new array must be created. PowerShell does this
             in the background when the addition operator is used.
@@ -84,7 +84,7 @@ Describe 'Arrays' {
         #>
     }
 
-    It 'the addition operator can be used to join two arrays together' {
+    It 'can be joined with another array using the addition operator' {
         $firstValue = __
         $fourthValue = __
 
@@ -186,7 +186,7 @@ Describe 'Arrays' {
         # NOTE: The above will actually throw errors if you have PowerShell running in Strict Mode.
     }
 
-    It 'creates arrays from a range' {
+    It 'can create be created from a range' {
         # The .. notation used to reverse an array may be used to array.
 
         $Array = 1, 2, 3, 4, 5
@@ -195,9 +195,7 @@ Describe 'Arrays' {
         $StartIndex..5 | Should -Be $Array
     }
 
-    It 'an array of letters may be created from a range' {
-        # An array of characters, or letters, can be created.
-
+    It 'can create an array of letters from a range' {
         $firstLetter = '__'
         $lastLetter = '__'
 
@@ -217,7 +215,7 @@ Describe 'Arrays' {
         }
     }
 
-    It 'Object[] and the Array type' {
+    It 'is usually of type Object[]' {
         <#
             Arrays in PowerShell are created with the type Object[]. An array of Objects.
 
@@ -228,7 +226,7 @@ Describe 'Arrays' {
         '____' | Should -Be $Numbers.GetType().Name
 
         $Strings = 'first', 'second', 'third'
-        '____' | Should -Be $Strings.GetType().Name
+        [____] | Should -Be $Strings.GetType()
 
         $Processes = Get-Process
         '____' | Should -Be $Processes.GetType().Name
@@ -258,5 +256,13 @@ Describe 'Arrays' {
 
         $Strings -contains '____' | Should -BeTrue
         $Strings -contains '____' | Should -BeTrue
+    }
+
+    It 'can be cast to a specific collection type' {
+        [string[]] $Array = 1, 2, 3, 4, 5
+
+        # We started with numbers... what do we have after the array is created?
+        [____] | Should -Be $Array[0].GetType()
+        [____] | Should -Be $Array.GetType()
     }
 }
