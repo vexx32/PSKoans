@@ -38,6 +38,7 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
       - [2. Run `Show-Karma -Meditate` to open your Koans folder](#2-run-show-karma--meditate-to-open-your-koans-folder)
       - [3. Run `Show-Karma` again to see how you did](#3-run-show-karma-again-to-see-how-you-did)
   - [Contributing](#contributing)
+  - [Support the Project](#support-the-project)
 
 ## Prerequisites
 
@@ -194,6 +195,17 @@ Good luck!
 
 If you would like to contribute to PSKoans, please check out the [Contributing](https://github.com/vexx32/PSKoans/blob/master/CONTRIBUTING.md) document.
 
+## Support the Project
+
+If you would like to support the project, you can:
+
+- [Sponsor me on Github][github-sponsor]
+- [Become a Patreon Patron][patreon]
+- [Donate with Ko-fi][ko-fi]
+
 [build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
 [build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
 [coverage-badge]: https://img.shields.io/azure-devops/coverage/SallowCode/PSKoans/1
+[github-sponsor]: https://github.com/sponsors/vexx32
+[patreon]: https://patreon.com/PSKoans
+[ko-fi]: https://ko-fi.com/joelsallow
