@@ -69,6 +69,31 @@ Describe 'Pipelines and Loops' {
                 Where-Object { $_ -notlike '*5*' } # (Indents are optional.)
             __ | Should -Be $Strings
         }
+
+        It 'can reference previous values from each pipeline segment with -PipelineVariable' {
+            <#
+                -PipelineVariable is a common parameter available to all cmdlets and advanced
+                functions. It takes a single string value, which becomes an extra variable in
+                the pipeline, similar to $PSItem or $_.
+
+                However, rather than referencing the "current" item in the pipeline at that
+                stage, it instead refers to the "current" item that is output from that
+                specific pipeline step, allowing a pipeline to self-reference a value from
+                earlier in the sequence.
+            #>
+
+            1..5 |
+                Write-Output -PipelineVariable InitialValue |
+                ForEach-Object { $_ * 2 } |
+                ForEach-Object { "Initial: $InitialValue, Current: $_" } |
+                Should -Be @(
+                    "Initial: 1, Current: 2"
+                    "Initial: __, Current: 4"
+                    "Initial: 3, Current: __"
+                    "Initial: __, Current: __"
+                    "Initial: __, Current: __"
+                )
+        }
     }
 
     Context 'Loop Statements' {
