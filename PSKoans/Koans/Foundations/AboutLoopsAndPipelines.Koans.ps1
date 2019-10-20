@@ -18,6 +18,7 @@ param()
     before storing or outputting the result.
 #>
 Describe 'Pipelines and Loops' {
+
     It 'is used to process input in several stages' {
         # The .. operator is used to quickly create arrays with a range of numbers
         $Values = 1..5
@@ -77,26 +78,33 @@ Describe 'Pipelines and Loops' {
         __ | Should -Be $Values
 
         $Values = for ($i = 0; $i -lt 5; $i++) {
-            # For loops are quite rare in native PowerShell code. They have their uses, but are
-            # frequently too semantically obscure to have a place in PS's verbose ecosystem.
-            # Remember, ++ after the variable mean assign the value then increment.
-            # ++ before the variable means increment and the assign the value.
+            <#
+                For loops are quite rare in native PowerShell code. They have their uses, but are
+                frequently too semantically obscure to have a place in PS's verbose ecosystem.
+                Remember:
+                    1. ++ after the variable will reference the existing value then increment the variable.
+                    2. ++ before the variable will increment the variable and then reference the new value.
+            #>
             $i
         }
         $Values | Should -Be @(0, 1, 2, 3, 4)
 
         $Values = while ($true) {
-            # watch out for infinite loops!
+            <#
+                Watch out for infinite loops!
 
-            # Remember: an undeclared variable acts as zero until we increment it!
-            # Incrementing a variable won't output the value
-            # unless the expression is wrapped in parentheses.
+                Remember: an undeclared variable acts as zero until we increment it!
+                Incrementing a variable won't output the value
+                unless the expression is wrapped in parentheses.
+            #>
             (++$Tick)
 
-            # An alternative would be the following:
-            # $returnvalue = ++$Tick
-            # $returnvalue
-            # Perhaps slightly more clear but more verbose
+            <#
+                An alternative would be the following:
+                $returnvalue = ++$Tick
+                $returnvalue
+                Perhaps slightly more clear but more verbose
+            #>
 
             if ($Tick -gt 2) {
                 break # the break statement breaks out of the current loop.
