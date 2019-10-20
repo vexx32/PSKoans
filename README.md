@@ -65,7 +65,9 @@ Install-Module Pester -Scope CurrentUser
 
 ### Install from Gallery
 
-1. `Install-Module PSKoans -Scope CurrentUser`
+```PowerShell
+Install-Module PSKoans -Scope CurrentUser
+```
 
 ### Or Download the Repo
 
@@ -81,9 +83,7 @@ Install-Module Pester -Scope CurrentUser
 
 ---
 
-##### NOTE
-
-In version 0.50.x and below (the current release on the PSGallery), the command name is `Measure-Karma`.
+**NOTE:** In version 0.50.x and below (the current release on the PSGallery), the command name is `Measure-Karma`.
 `Show-Karma` is only currently available for those downloading the module directly from this repository, and will make its way to the PSGallery in a future release.
 `Measure-Karma` will be retained as an alias for `Show-Karma` in future releases.
 
@@ -107,32 +107,32 @@ Actual length:   2
 Strings differ at index 0.
 Expected: 'True!'
 But was:  '__'
------------^
 
     Please meditate on the following code:
 
-[It] expects you to fill in values
-at <ScriptBlock>, C:\Users\Joel\PSKoans\Foundations\AboutAssertions.Koans.ps1: line 32
-32:        '__' | Should -Be 'True!'
+× It is a simple comparison
+at <ScriptBlock>, C:\Users\Joel\PSKoans\Introduction\AboutAssertions.Koans.ps1: line 27
+27:         '__' | Should -Be 'True!'
 
     ▌ Mountains are merely mountains.
 
     You examine the path beneath your feet...
 
- [AboutAssertions]: [――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/4
+ [AboutAssertions]: [――――――――――――――――――――――] 0/4
 
- [Total]: [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/279
 
-Type 'Show-Karma -Meditate' when you are ready to begin your meditations.
+ [Total]: [―――――――――――――――――――――――――――――――――――――――――――――] 0/535
+
+Run 'Show-Karma -Meditate' to begin your meditations.
 ```
 
 Inspect the red messages carefully, most importantly the last one.
 The error message contains path to the file that you need to edit in order to progress forward.
-In this case, you'll need to examine `Foundations\AboutAssertions.Koans.ps1`.
+In this case, you'll need to examine `Introduction\AboutAssertions.Koans.ps1`.
 
 #### 2. Run `Show-Karma -Meditate` to open your Koans folder
 
-Navigate to `Foundations\AboutAssertions.Koans.ps1`. Near the top you'll see:
+Navigate to `Introduction\AboutAssertions.Koans.ps1`. Near the top you'll see:
 
 ```powershell
 It 'is a simple comparison' {
@@ -163,19 +163,20 @@ Expected 3, but got .
 
     Please meditate on the following code:
 
-[It] expects you to fill in values
-at <ScriptBlock>, C:\Users\Joel\PSKoans\Foundations\AboutAssertions.Koans.ps1: line 32
-32:        __ | Should -Be (1 + 2)
+× It expects you to fill in values
+at <ScriptBlock>, C:\Users\Joel\PSKoans\Introduction\AboutAssertions.Koans.ps1: line 32
+32:         __ | Should -Be (1 + 2)
 
-    ▌ The most important thing is to find out what is the most important thing.
+    ▌ Make the mountains dance.
 
     You examine the path beneath your feet...
 
- [AboutAssertions]: [▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰―――――――――――――――――――――――――――――――――――――――――――――] 1/4
+ [AboutAssertions]: [■■■■■■――――――――――――――――] 1/4
 
- [Total]: [―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/279
 
-Type 'Show-Karma -Meditate' when you are ready to begin your meditations.
+ [Total]: [―――――――――――――――――――――――――――――――――――――――――――――] 1/535
+
+Run 'Show-Karma -Meditate' to begin your meditations.
 ```
 
  You are on your own from here, but the progression should be fairly smooth.
