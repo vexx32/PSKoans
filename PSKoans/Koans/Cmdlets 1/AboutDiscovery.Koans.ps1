@@ -22,29 +22,27 @@ Describe 'Get-Help' {
         a significant amount of otherwise difficult to discover tidbits.
     #>
     Context 'shows help information about cmdlets' {
-        # Try calling 'Get-Help Get-Help' in a console to see the built in help available
-        # for the help command.
+        <#
+            Try calling 'Get-Help Get-Help' in a console to see the built in help available
+            for the help command.
+        #>
 
         It 'gives exhaustive information for cmdlets and functions' {
             $HelpInfo = Get-Help 'Get-Help'
-            $GetHelpParams = $HelpInfo.Parameters.Parameter.Name | Sort-Object
+            $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
 
-            # Using the information from Get-Help, fill in the missing parameters in alphabetical order.
+            # Using the information from Get-Help, fill in a few of the available parameter names for the cmdlet.
             $ParamNames = @(
-                'Category'
-                'Component'
-                '__'
+                '____'
                 'Examples'
-                '__'
-                '__'
-                'Name'
+                '____'
+                '____'
                 'Online'
-                '__'
-                'Path'
-                'Role'
-                '__'
+                '____'
             )
-            $ParamNames | Should -Be $GetHelpParams
+
+            $ParamNames | Group-Object | Where-Object Count -gt 1 | Should -BeNullOrEmpty
+            $ParamNames | Should -BeIn $GetHelpParams
         }
 
         It 'can give detailed information on specific parameters' {
@@ -128,8 +126,10 @@ Describe 'Get-Member' {
     Context 'Members of objects returned from cmdlets' {
 
         It 'can help you discover information about unfamiliar objects' {
-            # Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random
-            # location, and returns the object representing this file.
+            <#
+                Cmdlets also return objects! This cmdlet creates an empty .tmp file in a random
+                location, and returns the object representing this file.
+            #>
             $TempFile = New-TemporaryFile
             Test-Path -Path $TempFile.FullName | Should -BeTrue
 
@@ -182,13 +182,13 @@ Describe 'Get-Command' {
     }
 
     It 'can filter the output by keywords' {
-        $Command = Get-Command -Name "*-Child*"
+        $Command = Get-Command -Name "*-Child*" | Select-Object -First 1
 
         $Command.CommandType | Should -Be 'Cmdlet'
         '____' | Should -Be $Command.Name
 
         $CimCommand = Get-Command -Name '____'
-        $CimCommand.Name | Should -Be 'Get-CimClass'
+        $CimCommand.Name | Should -Be 'Write-Information'
     }
 
     It 'can look for commands by verb' {

@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 108)]
+[Koan(Position = 104)]
 param()
 <#
     Strings
@@ -15,27 +15,27 @@ param()
 Describe 'Strings' {
 
     It 'is a simple string of text' {
-        __ | Should -Be 'string'
+        '____' | Should -Be 'string'
     }
 
     Context 'Literal Strings' {
 
         It 'assumes everything is literal' {
             $var = 'Some things you must take literally'
-            __ | Should -Be $var
+            '____' | Should -Be $var
         }
 
         It 'can contain special characters' {
             # 'Special' is just a title.
-            $complexVar = 'They have $ or : or ; or _'
-            $complexVar | Should be '__'
+            $complexVar = 'They have $ or ` or " or $()'
+            '____' | Should -Be $complexVar
         }
 
         It 'can contain quotation marks' {
             $Quotes = 'These are ''quotation marks'' you see?'
 
             # Single quotes go more easily in double-quoted strings.
-            $Quotes | Should -Be "__"
+            "____" | Should -Be $Quotes
         }
     }
 
@@ -43,24 +43,24 @@ Describe 'Strings' {
 
         It 'can expand variables' {
             $var = 'apple'
-            '__' | Should -Be "My favorite fruit is $var"
+            '____' | Should -Be "My favorite fruit is $var"
         }
 
         It 'can do a simple expansion' {
-            '__' | Should -Be "Your home directory is located here: $HOME"
+            '____' | Should -Be "Your home directory is located here: $HOME"
         }
 
         It 'handles other ways of doing the same thing' {
             # Strings can handle entire subexpressions being inserted as well!
             $String = "Your home folder is: $(Get-Item $HOME)"
-            '__' | Should -Be $String
+            '____' | Should -Be $String
         }
 
         It 'can escape special characters with backticks' {
             $LetterA = 'Apple'
             $String = "`$LetterA contains $LetterA."
 
-            '__' | Should -Be $String
+            '____' | Should -Be $String
         }
 
         It 'can escape quotation marks' {
@@ -68,7 +68,11 @@ Describe 'Strings' {
             $AlternateString = "This is a ""string"" value."
 
             # A mirror image, a familiar pattern, reflected in the glass.
-            $String, $AlternateString | Should -Be @('__', '__')
+            $Results = @(
+                '____'
+                '____'
+            )
+            $Results | Should -Be @($String, $AlternateString)
         }
 
         It 'can insert special characters with escape sequences' {
@@ -113,7 +117,7 @@ Describe 'Strings' {
             $String1 = 'This string'
             $String2 = 'is cool.'
 
-            "$String1 __" | Should -Be 'This string is cool.'
+            "$String1 ____" | Should -Be 'This string is cool.'
         }
     }
 
@@ -123,8 +127,8 @@ Describe 'Strings' {
             # Few things require the entirety of the library.
             $String = 'At the very top!'
 
-            '__' | Should -Be $String.Substring(0, 6)
-            '__' | Should -Be $String.Substring(7)
+            '____' | Should -Be $String.Substring(0, 6)
+            '____' | Should -Be $String.Substring(7)
         }
     }
 
@@ -144,7 +148,7 @@ Describe 'Strings' {
 '@ # This terminating sequence cannot be indented; it must be at the start of the line.
 
             # "Empty" space, too, is a thing of substance for some.
-            $LiteralString | Should -Be '            __'
+            '            ____' | Should -Be $LiteralString
         }
 
         It 'can be an evaluated string' {
@@ -156,14 +160,14 @@ Describe 'Strings' {
 I am number #$Number!
 "@
 
-            '__' | Should -Be $String
+            '____' | Should -Be $String
         }
 
         It 'allows use of quotation marks easily' {
             $AllYourQuotes = @"
 All things that are not 'evaluated' are "recognised" as characters.
 "@
-            '__' | Should -Be $AllYourQuotes
+            '____' | Should -Be $AllYourQuotes
         }
     }
 
@@ -179,7 +183,7 @@ All things that are not 'evaluated' are "recognised" as characters.
             '____ ____' | Should -Be "$array"
         }
 
-        It 'can be joined with a different string by setting the ofs variable' {
+        It 'can be joined with a different string by setting the OFS variable' {
             <#
                 The $OFS variable, short for output field separator, defines the separator used
                 to join an array when it is included in a string.
@@ -187,14 +191,14 @@ All things that are not 'evaluated' are "recognised" as characters.
                 By default, the OFS variable is unset, and a single space is used as the separator.
             #>
 
-            $ofs = '... '
+            $OFS = '... '
             $array = @(
                 'Hello'
                 'world'
             )
             '____' | Should -Be "$array"
 
-            Remove-Variable ofs
+            Remove-Variable OFS
         }
     }
 }

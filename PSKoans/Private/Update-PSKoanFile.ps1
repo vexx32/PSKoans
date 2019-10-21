@@ -40,13 +40,15 @@ function Update-PSKoanFile {
     $PSBoundParameters.Remove('Confirm') > $null
     $PSBoundParameters.Remove('WhatIf') > $null
     Get-PSKoan @PSBoundParameters | ForEach-Object {
-        $moduleKoans = Get-KoanIt -Path $_.Path | ForEach-Object {
-            [PSCustomObject]@{
-                ID   = $_.ID
-                Name = $_.Name
-                Ast  = $_.Ast
-            }
-        } | Group-Object -Property ID -AsHashTable -AsString
+        $moduleKoans = Get-KoanIt -Path $_.Path |
+            ForEach-Object {
+                [PSCustomObject]@{
+                    ID   = $_.ID
+                    Name = $_.Name
+                    Ast  = $_.Ast
+                }
+            } |
+            Group-Object -Property ID -AsHashTable -AsString
 
         if (-not $moduleKoans) {
             # Handles topics which do not have It blocks.
@@ -68,7 +70,7 @@ function Update-PSKoanFile {
                         'ID'
                         'Name'
                         'Ast'
-                        @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast }}
+                        @{ Name = 'SourceAst'; Expression = { $moduleKoans[$_.ID].Ast } }
                     ) |
                     Sort-Object { $_.SourceAst.Extent.StartLineNumber } -Descending |
                     ForEach-Object {
@@ -82,9 +84,7 @@ function Update-PSKoanFile {
                         )
                     }
 
-                if ($PSCmdlet.ShouldProcess($path, 'Updating Koan File')) {
-                    Set-Content -Path $path -Value $content.TrimEnd() -NoNewline
-                }
+                Set-Content -Path $path -Value $content.TrimEnd() -NoNewline
             }
         }
         else {

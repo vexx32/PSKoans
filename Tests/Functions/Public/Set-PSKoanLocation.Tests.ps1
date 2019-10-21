@@ -1,50 +1,20 @@
 ﻿#Requires -Modules PSKoans
 
 Describe 'Set-PSKoanLocation' {
-
-    Context 'Specified Folder Exists' {
-        BeforeAll {
-            $Location = 'TestDrive:{0}Test{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-            New-Item -Path $Location -ItemType Directory > $null
-
-            Set-PSKoanLocation -Path $Location
-        }
-
-        It 'should set the location correctly' {
-            Get-PSKoanLocation | Should -Be $Location
-        }
-
-        It 'should set the module-scoped LibraryFolder variable' {
-            InModuleScope 'PSKoans' { $script:LibraryFolder } | Should -Be $Location
-        }
-
-        AfterAll {
-            Remove-Item -Path $Location
-        }
+    BeforeAll {
+        Mock Set-PSKoanSetting -ParameterFilter { $Name -eq 'KoanLocation' } -ModuleName PSKoans
     }
 
-    Context 'Specified Folder Doesn''t Exist' {
-        BeforeAll {
-            $Location = 'TestDrive:{0}Test{0}PSKoans' -f [System.IO.Path]::DirectorySeparatorChar
-
-            Set-PSKoanLocation -Path $Location
-        }
-
-        It 'should set the location correctly' {
-            Get-PSKoanLocation | Should -Be $Location
-        }
-
-        It 'should set the module-scoped LibraryFolder variable' {
-            InModuleScope 'PSKoans' { $script:LibraryFolder } | Should -Be $Location
-        }
+    It 'outputs no data by default' {
+        Set-PSKoanLocation -Path 'TestDrive:/PSKoans/' | Should -BeNullOrEmpty
     }
 
-    Context 'Specified Location is an Invalid Path' {
+    It 'sets the KoanLocation setting' {
+        Assert-MockCalled Set-PSKoanSetting -ModuleName PSKoans
+    }
 
-        It 'should throw an error' {
-            $Location = 'TestDrive:::::\\\XD^^*#&'
-
-            { Set-PSKoanLocation -Path $Location } | Should -Throw -ExpectedMessage 'Path could not be resolved to a valid container'
-        }
+    It 'returns the input -Path value back to the pipeline with -PassThru' {
+        $ResolvedPath = Resolve-Path -Path '~' | Join-Path -ChildPath '/PSKoans/'
+        Set-PSKoanLocation -Path '~/PSKoans/' -PassThru | Should -BeExactly $ResolvedPath
     }
 }

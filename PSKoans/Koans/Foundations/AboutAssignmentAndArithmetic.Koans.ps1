@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 106)]
+[Koan(Position = 112)]
 param()
 <#
     Assignment and Arithmetic Operators
@@ -63,24 +63,31 @@ Describe 'Arithmetic Operators' {
         }
 
         It 'can be used to concatenate strings' {
-            __ | Should -Be ('hello' + 'world')
             'My name is ' + 'Jim' | Should -Be 'My name is Jim'
+            __ | Should -Be ('hello' + 'world')
         }
 
-        It 'can be used to create arrays' {
+        It 'can be used to put arrays together' {
             <#
-                As we covered in AboutArrays, this is not so much 'adding' arrays together as it is
+                As we will cover in AboutArrays, this is not so much 'adding' arrays together as it is
                 building a totally new array. It does, however, have its uses.
             #>
             $Array = 1, 2, 3, 4, 5
-            $NewArray = $Array + 7
+            $ExpectedResult = $Array + 7
 
-            # Match the input with what's actually in $NewArray!
-            1, 2, 3, 4, 5, 6, 7, 8 | Should -Be $NewArray
+            $Result = @(
+                __
+                __
+                3
+                __
+                5
+                __
+            )
+            $Result | Should -Be $ExpectedResult
         }
 
         It 'behaves according to the type of the left-hand item' {
-            '10.5' + 11 | Should -Be 21.5 # Or should it?
+            '____' | Should -Be ('10.5' + 11)
 
             __ | Should -Be (11 + '12.5')
             12.21 + 'FILL_ME_IN' -eq 23.43 | Should -BeTrue
@@ -99,13 +106,13 @@ Describe 'Arithmetic Operators' {
         }
 
         It 'cannot be used with strings' {
-            {'hello' - 'h'} | Should -Throw
+            { 'hello' - 'h' } | Should -Throw
 
-            # Except, of course, when the string contains a useable number.
+            # However, this work if the string contains a useable number.
             __ | Should -Be ('12' - '7.5')
 
             # In other words, subtraction only operates on numerical values.
-            {@(1, 2) - 1} | Should -Throw
+            { @(1, 2) - 1 } | Should -Throw -ExpectedMessage '____'
         }
     }
 
@@ -117,20 +124,24 @@ Describe 'Arithmetic Operators' {
         }
 
         It 'can also be used on strings' {
-            'A' * 4 -eq 'FILL_ME_IN' | Should -BeTrue
-            __ * 4 -eq 'NANANANA' | Should -BeTrue
+            '____' | Should -Be ('A' * 4)
+            '__' * 4 | Should -Be 'NANANANA'
         }
     }
 
     Context 'Division' {
 
         It 'is restricted to numeric use only' {
-            # As with subtraction, there's no useful meaning of using division on a string
-            # so any attempts to do so will throw an error.
-            {'hello!' / 3} | Should -Throw
+            <#
+                As with subtraction, there's no useful meaning of using division on a string
+                so any attempts to do so will throw an error.
+            #>
+            { 'hello!' / 3 } | Should -Throw -ExpectedMessage '____'
 
-            # Unlike with other numerical operators, however, division often results
-            # in a non-integer (double) value even when both operands are integers.
+            <#
+                Unlike with other numerical operators, however, division often results
+                in a non-integer (double) value even when both operands are integers.
+            #>
             3 / 4 | Should -Be 0.75
             __ / 10 -eq 0.5 | Should -BeTrue
         }
@@ -146,44 +157,54 @@ Describe 'Arithmetic Operators' {
         }
 
         It 'cannot be used on non-numeric values' {
-            {
+            $ModulusOnString = {
                 # Some things are better seen when you try them for yourself.
                 $String = 'hello!'
                 $String % 4
-                # Only a partially matching phrase from the error message is necessary.
-            }  | Should -Throw -ExpectedMessage __
-            {
+            }
+            # Only a partially matching phrase from the error message is necessary.
+            $ModulusOnString | Should -Throw -ExpectedMessage '____'
+
+            $ModulusOnArray = {
                 # If you have trouble, try doing something similar in the console to see what happens.
                 $Array = 1, 10, 20
                 $Array % 4
-            } | Should -Throw -ExpectedMessage __
+            }
+            $ModulusOnArray | Should -Throw -ExpectedMessage '____'
         }
     }
 }
 
 Describe 'Assignment/Arithmetic Combination Operators' {
 
-    It 'can be used to simplify expressions' {
-        # With only assignment and arithmetic, some expressions can get a bit unwieldy
+    It 'is a bit unwieldy to assign and increment without combination operators' {
         $Value = 5
         $Value = $Value + 5
         $Value | Should -Be 10
+    }
 
-        # We can combine the two to increment or decrement a variable!
+    It 'is possible to combine assignment and addition' {
         $Value = 12
         $Value += 7
         $Value | Should -Be 19
+    }
 
+    It 'is also possible to combine subtraction with assignment' {
         $Value -= 3
         __ | Should -Be $Value
+    }
 
-        # We can even combine multiplication and division with assignment
+    It 'works the same way with division' {
         $Value /= 2
         $Value | Should -Be 8
+    }
 
+    It 'works with multiplication as well' {
         $Value *= 3
         __ | Should -Be $Value
+    }
 
+    It 'even works with modulus' {
         # Modulus hasn't been left out, either.
         $Value = 12
         $Value %= 4

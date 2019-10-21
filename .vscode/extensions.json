@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-vscode.PowerShell",
+        "ms-vscode.PowerShell-Preview",
+        "streetsidesoftware.code-spell-checker",
+        "yzhang.markdown-all-in-one"
+    ]
+}
