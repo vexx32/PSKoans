@@ -321,6 +321,31 @@ Describe 'About Classes' {
             $file = Start-Job -ScriptBlock $script | Receive-Job -Wait
             'With content' | Should -Be $file.SelectedMethod
         }
+
+        It 'can describe common methods such as ToString' {
+            <#
+                By default the ToString method will return the name of the class. The ToString can be overridden
+                with a more specific implementation.
+            #>
+
+            $script = {
+                class File {
+                    [string] $Path
+
+                    [string] ToString() {
+                        return $this.Path
+                    }
+                }
+
+                $file = [File]@{
+                    Path = 'C:\Path'
+                }
+                # Providing a method implementation for ToString also provides support for casting to a string.
+                $file.ToString()
+            }
+
+            '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
     }
 
     Context 'Constructors' {
@@ -466,23 +491,495 @@ Describe 'About Classes' {
         <#
             Each of the methods used so far have needed an instance of the type to be created.
 
-            Static properties and methods can be called without first creating an instance of the
+            Static properties and methods can be called without first creating an instance of the type.
+
+            .NET includes many state properties and methods. For example, the DateTime has several of both.
+            Static members can be shown using Get-Member:
+
+                [DateTime] | Get-Member -Static
         #>
+
+        It 'can use the Static keyword for a method' {
+            $script = {
+                class Path {
+                    static [string] GetHomePath() {
+                        return Resolve-Path ~
+                    }
+                }
+
+                [Path]::GetHomePath()
+            }
+
+            $expectedPath = '____'
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -Be $expectedPath
+        }
+
+        It 'can use the Static keyword for a property' {
+            <#
+                Static properties can have a fixed value, or a value based on the result of executing
+                a, normally, simple PowerShell statement.
+            #>
+            $script = {
+                class Path {
+                    static [string] $HomePath = (Resolve-Path ~)
+                }
+
+                [Path]::HomePath
+            }
+
+            $expectedPath = '____'
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -Be $expectedPath
+        }
+
+        It 'cannot access the static member using $this' {
+            # Static methods and properties are accessed using the type name from within the class.
+
+            $script = {
+                class Path {
+                    static [string] $HomePath = (Resolve-Path ~)
+
+                    [string] $Name
+                    [string] $Parent
+                    [bool]   $IsHomePath
+
+                    Path(
+                        [string] $Path
+                    ) {
+                        if (Test-Path $Path) {
+                            $Path = Resolve-Path $Path
+                        }
+
+                        $this.Name = Split-Path -Path $Path -Leaf
+                        $this.Parent = Split-Path -Path $Path -Parent
+
+                        # The HomePath static property must be accessed using the class name. $this.HomePath cannot be used.
+                        $this.IsHomePath = $Path -eq [Path]::HomePath
+                    }
+                }
+
+                $path = [Path]::new('~')
+                $path.IsHomePath
+            }
+
+            $____ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
     }
 
     Context 'About Hidden' {
+        <#
+            Hidden stops a property or method from being offered by tab completion. It also hides the property
+            from Get-Member, except when the Force parameter is used.
+        #>
 
+        It 'can hide a property from casual view' {
+            $script = {
+                class Secret {
+                    [string] $Name
+                    hidden [string] $Value
+                }
+
+                $secret = [Secret]@{
+                    Name  = 'Password'
+                    Value = 'hunter2'
+                }
+
+                $secret.PSObject.Properties.Name
+            }
+
+            @('____') | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        It 'can still access hidden properties' {
+            <#
+                Hiding properties does not provide any degree of secrecy. Hidden properties are still accessible
+                by name.
+            #>
+
+            $script = {
+                class Secret {
+                    [string] $Name
+                    hidden [string] $Value
+                }
+
+                $secret = [Secret]@{
+                    Name  = 'Password'
+                    Value = 'hunter2'
+                }
+
+                $secret.Password
+            }
+
+            '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
     }
 
     Context 'Inheritance' {
+        <#
+            A class can inherit from another class. The class may be written in PowerShell, from elsewhere in the .NET
+            framework, or from another assembly.
 
+            A class may inherit from one other class only.
+
+            The syntax for class inheritance is:
+
+                class <Name> : <InheritedType>
+        #>
+
+        It 'can inherit from a parent class' {
+            $script = {
+                # The parent class can implement constructors, properties, and methods common to all child classes.
+                class Pet {
+                    [string] $Diet        = 'Herbivore'
+                    [int]    $HungerLevel = 100
+
+                    [Void] Feed([int] $amount) {
+                        if ($amount -gt (100 - $this.HungerLevel)) {
+                            $this.HungerLevel = 0
+                        } else {
+                            $this.HungerLevel -= $amount
+                        }
+                    }
+                }
+
+                # This specific implementation of the Pet class does not deviate from the parent class yet.
+                class Rabbit : Pet { }
+
+                $rabbit = [Rabbit]::new()
+                $rabbit.Feed(20)
+                $rabbit.HungerLevel
+            }
+
+            __ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        It 'can override members in a child class' {
+            $script = {
+                class Pet {
+                    [string] $Diet        = 'Herbivore'
+                    [int]    $HungerLevel = 100
+
+                    [Void] Feed() {
+                        $this.HungerLevel = 0
+                    }
+                }
+
+                class Dog : Pet {
+                    # This property automatically overrides the Diet property defined by the parent class.
+                    [string] $Diet = 'Carnivore'
+                }
+
+                $dog = [Dog]::new()
+                $dog.Feed()
+                $dog.HungerLevel
+            }
+
+            __ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        It 'can use constructors from the parent class' {
+            <#
+                The methods and properties of a parent class are accessed using the $this variable.
+
+                Constructors are also inherited.
+
+                If a child class needs to perform additional actions when a constructor is executed it
+                may use the base keyword.
+            #>
+
+            $script = {
+                class Pet {
+                    [string] $Diet        = 'Herbivore'
+                    [int]    $HungerLevel
+
+                    Pet() {
+                        $this.HungerLevel = Get-Random -Minimum 0 -Maximum 101
+                    }
+                }
+
+                class Dog : Pet {
+                    Dog() : base() {
+                        # The code here runs after the code in the constructor in the parent class.
+                        $this.Diet = 'Carnivore'
+                    }
+                }
+
+                $dog = [Dog]::new()
+                $dog.Diet
+            }
+
+            '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        It 'can pass arguments to a constructor from a parent class' {
+            $script = {
+                class Pet {
+                    [string] $Diet        = 'Herbivore'
+                    [int]    $HungerLevel
+
+                    Pet() {
+                        $this.Diet = 'Herbivore'
+                    }
+
+                    Pet(
+                        [string] $diet,
+                        [int]    $hungerLevel
+                    ) {
+                        $this.Diet = $diet
+                        $this.HungerLevel = $hungerLevel
+                    }
+                }
+
+                class Dog : Pet {
+                    <#
+                        Arguments passed to a constructor on the parent can be variable, hard-coded or a mix
+                        of the two.
+                    #>
+                    Dog(
+                        [int] $hungerLevel
+                    ) : base(
+                        'Carnivore',
+                        $hungerLevel
+                    ) {
+                        <#
+                            This constructor does not implement any extra logic. It is only used to pass a default
+                            value for one of the arguments.
+                        #>
+                    }
+                }
+
+                $dog = [Dog]::new(20)
+                $dog.Diet
+            }
+
+            '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
     }
 
     Context 'Comparison and Equality' {
+        <#
+            An instance of a type can be compared to another instance of a type by implementing
+            a number of different methods. The methods are defined by interfaces.
 
+                IComparable - Provides support for -gt, -lt, -ge, and -le.
+                IEquatable - Provides support for -eq, and -ne.
+
+            A class might support IEquatable but not IComparable for example.
+
+            Interfaces are added using inheritance syntax. A class may inherit one other class, but can
+            inherit multiple interfaces.
+        #>
+
+        It 'can support comparison' {
+            $script = {
+                class VideoGame : IComparable {
+                    [string] $Name
+                    [string] $Publisher
+                    [int]    $Rating
+
+                    <#
+                        The generic IComparable interface makes implementation of the CompareTo method mandatory.
+
+                        The CompareTo method must accept an argument with type [object], and must return 1, 0, or -1.
+
+                            -1: The current instance precedes the object specified.
+                            0: The current instance is in the same position as the object specified.
+                            1: The current object follows the object specified.
+                    #>
+                    [int] CompareTo([Object] $object) {
+                        if ($this.Rating -eq $object.Rating) {
+                            return 0
+                        } elseif ($this.Rating -gt $object.Rating) {
+                            return 1
+                        } else {
+                            return -1
+                        }
+                    }
+                }
+
+                $game1 = [VideoGame]@{
+                    Name      = 'Grim Fandango'
+                    Publisher = 'LucasArts'
+                    Rating    = 94
+                }
+                $game2 = [VideoGame]@{
+                    Name      = 'Day of the Tentacle'
+                    Publisher = 'Double Fine Productions'
+                    Rating    = 86
+                }
+
+                <#
+                    If the Rating properties are made equal, both -ge and -le will return true. However, -eq
+                    will return false because the class is not IEquatable.
+                #>
+                $game1 -gt $game2
+            }
+
+            $____ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        It 'can support equality' {
+            $script = {
+                <#
+                    The IEquatable interface requires a type, and that should be the same type name as the class
+                    it is comparing. However, PowerShell will not agree that type exists at the point it needs to
+                    be used.
+
+                    To work around this problem, the equatable type can be set to Object and the test for object
+                    type can be moved into the method.
+                #>
+
+                class VideoGame : IEquatable[object] {
+                    [string] $Name
+                    [string] $Publisher
+                    [int]    $Rating
+
+                    <#
+                        The IEquatable interface makes implementation of the Equals method mandatory.
+
+                        The Equals method must accept an argument with a type equal to the type in the inheritance
+                        statement. The method must return a boolean; true or false.
+                    #>
+                    [bool] Equals([object] $object) {
+                        # If the object is not a VideoGame, immediately return false.
+                        if ($object -isnot [VideoGame]) {
+                            return $false
+                        }
+
+                        # Objects are considered equal if the expression below returns true.
+                        return $this.Name -eq $object.Name -and $this.Publisher -eq $object.Publisher
+                    }
+                }
+
+                $game1 = [VideoGame]@{
+                    Name      = 'Grim Fandango'
+                    Publisher = 'LucasArts'
+                    Rating    = 94
+                }
+                $game2 = [VideoGame]@{
+                    Name      = 'Day of the Tentacle'
+                    Publisher = 'Double Fine Productions'
+                    Rating    = 86
+                }
+
+                $game1 -eq $game2
+            }
+
+            $____ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        It 'can support both equality and comparison' {
+            $script = {
+                class VideoGame : IComparable, IEquatable[Object] {
+                    [string] $Name
+                    [string] $Publisher
+                    [int]    $Rating
+
+                    [int] CompareTo([Object] $object) {
+                        if ($this.Rating -eq $object.Rating) {
+                            return 0
+                        } elseif ($this.Rating -gt $object.Rating) {
+                            return 1
+                        } else {
+                            return -1
+                        }
+                    }
+
+                    [bool] Equals([Object] $object) {
+                        if ($object -isnot [VideoGame]) {
+                            return $false
+                        }
+                        <#
+                            If equality is based on the same comparison as IComparable, that is CompareTo being 0,
+                            the following expression might be used:
+
+                                return $this.CompareTo($object) -eq 0
+                        #>
+                        return $this.Name -eq $object.Name -and $this.Publisher -eq $object.Publisher
+                    }
+                }
+
+                $game1 = [VideoGame]@{
+                    Name      = 'Grim Fandango'
+                    Publisher = 'LucasArts'
+                    Rating    = 94
+                }
+                $game2 = [VideoGame]@{
+                    Name      = 'Day of the Tentacle'
+                    Publisher = 'Double Fine Productions'
+                    Rating    = 86
+                }
+
+                $game1 -eq $game2
+            }
+
+            $____ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
     }
 
     Context 'Casting' {
+        <#
+            Casting a value to an instance of a PowerShell class might be supported by implementing a constructor for
+            that type.
+        #>
 
+        It 'can use a constructor to support casting' {
+            $script = {
+                class Number {
+                    [string] $Name
+                    [int]    $Value
+
+                    Number(
+                        [int] $number
+                    ) {
+                        $this.Value = $number
+                        $this.Name = switch ($number) {
+                            1       { 'one' }
+                            2       { 'two' }
+                            3       { 'three' }
+                            default { throw 'Sorry, I can only count to 3' }
+                        }
+                    }
+                }
+
+                $number = [Number]2
+                $number.Name
+            }
+
+            '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        <#
+            PowerShell classes can be cast to another type by implementing a method named op_Implicit in a class.
+
+            The syntax for op_Implicit is as follows:
+
+                static <TargetType> op_Implicit(<TypeToConvert>) { <Implementation> }
+        #>
+
+        It 'allows an instance of a class to be cast to another value using op_Implicit' {
+            $script = {
+                class Number {
+                    [string] $Name
+                    [int]    $Value
+
+                    # The op_Implicit method will be triggered when an attempt is made to cast to [int]
+                    hidden static [int] op_Implicit(
+                        [Number] $number
+                    ) {
+                        return $number.Value
+                    }
+                }
+
+                $number = [Number]@{
+                    Name = 'three'
+                    Value = 3
+                }
+                [int]$number
+            }
+
+            __ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
     }
 }
