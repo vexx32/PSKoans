@@ -40,12 +40,16 @@ Describe 'Basic Number Types' {
     Context 'Integers' {
 
         It 'has to be a whole number' {
+            function Get-Number {
+                param(
+                    [Parameter(Mandatory)]
+                    [int]
+                    $Number
+                )
+                $Number
+            }
 
             $Pi = [Math]::PI
-            function Get-Number() {
-                param([parameter(mandatory = $true)][Int]$Int)
-                $Int
-            }
 
             'System.____' | Should -be $Pi.GetType().Fullname
             # What number will return if you pass Pi into an int function?
@@ -59,11 +63,11 @@ Describe "Banker's Rounding" {
     It 'rounds to nearest even number on .5' {
 
         # Try and guess how PowerShell will round these numbers
-        ____ | Should -Be ([Int32]2.5)
-        ____ | Should -Be ([Int32]3.34)
-        ____ | Should -Be ([Int32]10.61)
-        ____ | Should -Be ([Int32]12.7)
-        ____ | Should -Be ([Int32]5.5)
+        ____ | Should -Be ([int]2.5)
+        ____ | Should -Be ([int]3.34)
+        ____ | Should -Be ([int]10.61)
+        ____ | Should -Be ([int]12.7)
+        ____ | Should -Be ([int]5.5)
 
     }
 }

@@ -24,7 +24,7 @@ Describe 'Equality' {
 
     It 'is a simple comparison' {
         # Some truths are absolute.
-        '__' | Should -Be 'True!'
+        $____ | Should -Be $true
     }
 
     It 'expects you to fill in values' {
