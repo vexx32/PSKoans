@@ -498,7 +498,7 @@ Describe 'About Classes' {
                 [DateTime] | Get-Member -Static
         #>
 
-        It 'can use the Static keyword for a method' {
+        It 'can use the Static keyword to create static methods' {
             $script = {
                 class Path {
                     static [string] GetHomePath() {
