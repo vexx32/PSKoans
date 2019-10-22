@@ -136,7 +136,7 @@ Describe 'About Classes' {
 
     Context 'Methods' {
         <#
-            Methods are to change things. This change can be to a property of the object itself, or a change to the
+            Methods are used to execute predefined actions. This may be changing a property of the object itself, or a change to the
             the thing the object represents, or it might be used to generate something new from the object.
         #>
 
