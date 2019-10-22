@@ -953,7 +953,6 @@ Describe 'About Classes' {
 
         <#
             PowerShell classes can be cast to another type by implementing a method named op_Implicit in a class.
-
             The syntax for op_Implicit is as follows:
 
                 static <TargetType> op_Implicit(<TypeToConvert>) { <Implementation> }
