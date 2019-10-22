@@ -793,7 +793,8 @@ Describe 'About Classes' {
                         }
                         elseif ($this.Rating -gt $object.Rating) {
                             return 1
-                        } else {
+                        }
+                        else {
                             return -1
                         }
                     }
