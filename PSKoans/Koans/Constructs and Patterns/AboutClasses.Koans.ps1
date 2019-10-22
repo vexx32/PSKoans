@@ -636,7 +636,8 @@ Describe 'About Classes' {
                     [Void] Feed([int] $amount) {
                         if ($amount -gt (100 - $this.HungerLevel)) {
                             $this.HungerLevel = 0
-                        } else {
+                        }
+                        else {
                             $this.HungerLevel -= $amount
                         }
                     }
