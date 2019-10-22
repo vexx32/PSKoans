@@ -881,7 +881,8 @@ Describe 'About Classes' {
                             return 0
                         } elseif ($this.Rating -gt $object.Rating) {
                             return 1
-                        } else {
+                        }
+                        else {
                             return -1
                         }
                     }
