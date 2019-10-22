@@ -442,7 +442,7 @@ Describe 'About Classes' {
                 [Employee]::new($using:Argument)
             }
 
-            $Argument = '___'
+            $Argument = '____'
 
             $Employee = Start-Job -ScriptBlock $script | Receive-Job -Wait
             $Employee.SelectedConstructor | Should -Be 'String'
