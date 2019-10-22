@@ -492,7 +492,7 @@ Describe 'About Classes' {
 
             Static properties and methods can be called without first creating an instance of the type.
 
-            .NET includes many state properties and methods. For example, the DateTime has several of both.
+            .NET includes many static properties and methods. For example, the DateTime type has several of both.
             Static members can be shown using Get-Member:
 
                 [DateTime] | Get-Member -Static
