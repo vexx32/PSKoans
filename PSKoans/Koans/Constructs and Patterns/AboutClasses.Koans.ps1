@@ -881,7 +881,8 @@ Describe 'About Classes' {
                     [int] CompareTo([Object] $object) {
                         if ($this.Rating -eq $object.Rating) {
                             return 0
-                        } elseif ($this.Rating -gt $object.Rating) {
+                        }
+                        elseif ($this.Rating -gt $object.Rating) {
                             return 1
                         }
                         else {
