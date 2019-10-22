@@ -841,7 +841,7 @@ Describe 'About Classes' {
                         The IEquatable interface makes implementation of the Equals method mandatory.
 
                         The Equals method must accept an argument with a type equal to the type in the inheritance
-                        statement. The method must return a boolean; true or false.
+                        statement. The method must return a boolean; $true or $false.
                     #>
                     [bool] Equals([object] $object) {
                         # If the object is not a VideoGame, immediately return false.
