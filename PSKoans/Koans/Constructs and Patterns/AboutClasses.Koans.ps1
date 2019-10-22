@@ -31,15 +31,19 @@ Describe 'About Classes' {
 
                 # An instance of the Car class can be created using ::new().
 
-                [____]::new()
+                [Car]::new()
 
-                # The New-Object command can also be used.
+                <#
+                    The New-Object command can also be used.
 
-                New-Object '____'
+                    New-Object '____'
+                #>
             }
 
-            { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
-                Should -Not -Throw
+            $expectedTypeName = '____'
+
+            $car = Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop
+            $car.PSTypeNames[0] | Should -Match $expectedTypeName
         }
 
         It 'can declare properties' {
@@ -195,7 +199,7 @@ Describe 'About Classes' {
                 }
 
                 $file = [File]@{
-                    Path = Join-Path -Path $using:TestDrive -ChildPath $using:FileName
+                    Path = Join-Path -Path $using:TestDrive -ChildPath 'file.txt'
                 }
 
                 $file.Create()
@@ -210,9 +214,7 @@ Describe 'About Classes' {
                 class File {
                     [string] $Path
 
-                    [void] Create(
-                        [String] $content
-                    ) {
+                    [void] Create([String] $content) {
                         New-Item -Path $this.Path -ItemType File -Value $content -Force
                     }
                 }
@@ -230,7 +232,7 @@ Describe 'About Classes' {
             Start-Job -ScriptBlock $script | Receive-Job -Wait
 
             $Path | Should -Exist
-            $Path | Should -Contain $Content
+            $Path | Should -FileContentMatch $Content
         }
 
         It 'can describe methods which return objects' {
@@ -238,9 +240,7 @@ Describe 'About Classes' {
                 class File {
                     [string] $Path
 
-                    [void] Create(
-                        [String] $content
-                    ) {
+                    [void] Create([String] $content) {
                         New-Item -Path $this.Path -ItemType File -Value $Content -Force
                     }
 
@@ -290,9 +290,7 @@ Describe 'About Classes' {
                     }
 
                     # This method will be used if a single string is passed as an argument.
-                    Create(
-                        [String] $content
-                    ) {
+                    Create([String] $content) {
                         if ($content -ne '____') {
                             $this.SelectedMethod = 'With content'
                             New-Item -Path $this.Path -ItemType File -Value $Content -Force
@@ -323,8 +321,12 @@ Describe 'About Classes' {
 
         It 'can describe common methods such as ToString' {
             <#
-                By default the ToString method will return the name of the class. The ToString can be overridden
-                with a more specific implementation.
+                All objects and types have a method called ToString. By default the method returns the name of the
+                type only.
+
+                The default method can be overridden by adding it to the clas as shown below.
+
+                The ToString method will also be used when the class is cast to a string.
             #>
 
             $script = {
@@ -339,7 +341,6 @@ Describe 'About Classes' {
                 $file = [File]@{
                     Path = 'C:\Path'
                 }
-                # Providing a method implementation for ToString also provides support for casting to a string.
                 $file.ToString()
             }
 
@@ -349,14 +350,14 @@ Describe 'About Classes' {
 
     Context 'Constructors' {
         <#
-            The constructor can be used to perform actions when an instance of a type is created. A constructor
-            can also be used to accept arguments when creating the type.
+            The constructor can be used to perform actions when an instance of a type is created. It can also be used
+            to accept arguments when creating the type.
 
-            A constructor is a specialised method which is named after the class. A constructor does not use the
-            "return" keyword. The constructor implicitly returns an instance of the type.
+            A constructor is a specialised method which is named after the class. It does not use the
+            "return" keyword, it implicitly returns an instance of the type.
 
-            Classes which do not explicitly declare a constructor have a default constructor. The default constructor
-            does not require any arguments and does not perform any actions.
+            Classes which do not explicitly declare a constructor have a default constructor. This does not require any
+            arguments and does not perform any actions.
         #>
 
         It 'uses the same name as the class to describe a constructor' {
@@ -390,9 +391,7 @@ Describe 'About Classes' {
                     [string] $JobTitle
                     [int]    $EmployeeNumber
 
-                    Employee(
-                        [string] $name
-                    ) {
+                    Employee([string] $name) {
                         $this.Name = $name
                     }
                 }
@@ -419,9 +418,7 @@ Describe 'About Classes' {
                     [string] $SelectedConstructor
 
                     # This constructor is selected when the argument is a String.
-                    Employee(
-                        [string] $name
-                    ) {
+                    Employee([string] $name) {
                         $this.Name = $name
 
                         # Avoid marking the default value as the correct answer!
@@ -431,9 +428,7 @@ Describe 'About Classes' {
                     }
 
                     # This constructor is selected when the argument is an Int32.
-                    Employee(
-                        [int] $employeeNumber
-                    ) {
+                    Employee([int] $employeeNumber) {
                         $this.EmployeeNumber = $employeeNumber
                         $this.SelectedConstructor = 'Int'
                     }
@@ -468,9 +463,7 @@ Describe 'About Classes' {
                         $this.SelectedConstructor = 'Default'
                     }
 
-                    Employee(
-                        [string] $name
-                    ) {
+                    Employee([string] $name) {
                         $this.Name = $name
                         $this.SelectedConstructor = 'String'
                     }
@@ -543,11 +536,9 @@ Describe 'About Classes' {
                     [string] $Parent
                     [bool]   $IsHomePath
 
-                    Path(
-                        [string] $Path
-                    ) {
-                        if (Test-Path $Path) {
-                            $Path = Resolve-Path $Path
+                    Path([string] $Path) {
+                        if (Test-Path -Path $Path) {
+                            $Path = Resolve-Path -Path $Path
                         }
 
                         $this.Name = Split-Path -Path $Path -Leaf
@@ -722,10 +713,7 @@ Describe 'About Classes' {
                         $this.Diet = 'Herbivore'
                     }
 
-                    Pet(
-                        [string] $diet,
-                        [int]    $hungerLevel
-                    ) {
+                    Pet([string] $diet, [int] $hungerLevel) {
                         $this.Diet = $diet
                         $this.HungerLevel = $hungerLevel
                     }
@@ -736,12 +724,7 @@ Describe 'About Classes' {
                         Arguments passed to a constructor on the parent can be variable, hard-coded or a mix
                         of the two.
                     #>
-                    Dog(
-                        [int] $hungerLevel
-                    ) : base(
-                        'Carnivore',
-                        $hungerLevel
-                    ) {
+                    Dog([int] $hungerLevel) : base('Carnivore', $hungerLevel) {
                         <#
                             This constructor does not implement any extra logic. It is only used to pass a default
                             value for one of the arguments.
@@ -924,8 +907,8 @@ Describe 'About Classes' {
 
     Context 'Casting' {
         <#
-            Casting a value to an instance of a PowerShell class might be supported by implementing a constructor for
-            that type.
+            Casting a value to a PowerShell class type can be supported by adding a constructor which takes an
+            object of the value's type as an argument.
         #>
 
         It 'can use a constructor to support casting' {
@@ -934,9 +917,7 @@ Describe 'About Classes' {
                     [string] $Name
                     [int]    $Value
 
-                    Number(
-                        [int] $number
-                    ) {
+                    Number([int] $number) {
                         $this.Value = $number
                         $this.Name = switch ($number) {
                             1       { 'one' }
@@ -968,9 +949,7 @@ Describe 'About Classes' {
                     [int]    $Value
 
                     # The op_Implicit method will be triggered when an attempt is made to cast to [int]
-                    hidden static [int] op_Implicit(
-                        [Number] $number
-                    ) {
+                    hidden static [int] op_Implicit([Number] $number) {
                         return $number.Value
                     }
                 }
@@ -983,6 +962,37 @@ Describe 'About Classes' {
             }
 
             __ | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
+        }
+
+        <#
+            The op_Implicit method is able to convert both from a type to the class, and from the class to a
+            type.
+        #>
+
+        It 'can use op_Implicit to convert from another value type' {
+            $script = {
+                class Number {
+                    [string] $Name
+                    [int]    $Value
+
+                    # Allows casting from an Int to Number.
+                    hidden static [Number] op_Implicit([int] $value) {
+                        return [Number]@{
+                            Value = $value
+                            Name = switch ($value) {
+                                1       { 'one' }
+                                2       { 'two' }
+                                3       { 'three' }
+                                default { throw 'Sorry, I can only count to 3' }
+                            }
+                        }
+                    }
+                }
+
+                ([Number]2).Name
+            }
+
+            '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
         }
     }
 }
