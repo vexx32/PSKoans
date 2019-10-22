@@ -83,7 +83,6 @@ Describe 'About Classes' {
 
                 <#
                     A hashtable can be used to fill the properties of an object when the object is created.
-
                     The limitations of this approach will be explored along with constructors later in this topic.
                 #>
 
