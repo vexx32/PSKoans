@@ -517,7 +517,7 @@ Describe 'About Classes' {
         It 'can use the Static keyword for a property' {
             <#
                 Static properties can have a fixed value, or a value based on the result of executing
-                a, normally, simple PowerShell statement.
+                a PowerShell statement.
             #>
             $script = {
                 class Path {
