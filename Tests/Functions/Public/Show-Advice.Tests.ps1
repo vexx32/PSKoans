@@ -5,7 +5,6 @@ InModuleScope 'PSKoans' {
 
         BeforeAll{
             Mock Write-ConsoleLine { } 
-            $Backup = @()
             # Exporting incorrect advices to the folder
             $AdviceFolder = $script:ModuleRoot | Join-Path -ChildPath 'Data/Advice'
             $AdviceObject = Get-ChildItem -Path $AdviceFolder -Recurse -File -Filter "*.Advice.json"
