@@ -273,7 +273,7 @@ Describe 'About Classes' {
                 Each variation of the method is given the same name, but each variation needs to
                 accept a unique set of argument types.
 
-                Each method has a Signature derived from the number and types of its arguments.
+                Each method overload must have a unique signature, derived from the number and types of its arguments.
             #>
             $script = {
                 class File {
