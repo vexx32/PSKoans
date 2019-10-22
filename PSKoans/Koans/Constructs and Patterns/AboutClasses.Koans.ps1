@@ -98,7 +98,7 @@ Describe 'About Classes' {
             '____' | Should -Be $car.Model
         }
 
-        It 'can define a type name for a property' {
+        It 'can define a type for each property' {
             $script = {
                 class Car {
                     $Make
