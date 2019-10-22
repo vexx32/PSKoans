@@ -30,6 +30,9 @@ Describe 'Functions' {
             Write-Output 20
             Write-Output 42
         }
+
+        __ | Should -Be (Get-Number)
+
         function Get-ReturnedNumber {
             <#
                 Use of the return statement causes all output previously declared
@@ -39,6 +42,9 @@ Describe 'Functions' {
             return __
             Write-Output "Does not return anything."
         }
+
+        Get-ReturnedNumber | Should -Be 13
+
         function Get-DroppedNumber {
             <#
                 Leaving a value, or a statement that returns a value on a line
@@ -49,8 +55,6 @@ Describe 'Functions' {
             12
         }
 
-        __ | Should -Be (Get-Number)
-        Get-ReturnedNumber | Should -Be 13
         __ | Should -Be (Get-DroppedNumber)
     }
 

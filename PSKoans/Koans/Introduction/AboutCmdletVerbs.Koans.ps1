@@ -25,7 +25,7 @@ Describe "Basic Verbs" {
         <#
             Cmdlets with the Get verb are used for retrieving data.
 
-            So for example "Get-Process" will retrieve all the processes running on 
+            So for example "Get-Process" will retrieve all the processes running on
             your current machine.
         #>
 
@@ -35,12 +35,11 @@ Describe "Basic Verbs" {
                 find 5 new Get-* commands you haven't previously used.
             #>
 
-            # Replace each __ with the name of a Get cmdlet
+            # Replace each ____ with the name of a Get cmdlet
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Get).Name
 
-            $UniqueCheck = $Answers | Get-Unique
-            $UniqueCheck.Count -eq 5 | Should -BeTrue -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
         }
     }
 
@@ -56,7 +55,7 @@ Describe "Basic Verbs" {
                 $Path = "YOUR PATH.txt"
                 New-Item -Path $ItemPath -ItemType file
 
-            This will create a new text file, in the location you specify. 
+            This will create a new text file, in the location you specify.
         #>
 
         It 'is for commands that create data' {
@@ -65,30 +64,29 @@ Describe "Basic Verbs" {
                 find 5 New-* new commands you haven't previously used.
             #>
 
-            # Replace each __ with the name of a New cmdlet
+            # Replace each ____ with the name of a New cmdlet
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb New).Name
 
-            $UniqueCheck = $Answers | Get-Unique
-            $UniqueCheck.Count -eq 5 | Should -BeTrue -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
         }
     }
 
     Context "Add" {
         <#
-            Cmdlets with the Add verb append data to an existing object or data source.      
+            Cmdlets with the Add verb append data to an existing object or data source.
 
             If you followed the example in the 'new' test, you can use Add-Content to add some
             text to your newly created text file:
-            
+
                 $Path = "YOUR PATH.txt"
                 Add-Content -Path $Path -Value "Sgt. Bash is the best house robot because... fire."
-            
+
             Before continuing, run this command several times. See what happens; is it the
             result you expected?
 
             You'll see that several lines of text were added to the file. This cmdlet only appends
-            information, it does not overwrite. 
+            information, it does not overwrite.
 
             Basically, if it doesn't exist then a cmdlet with the add verb can probably be used
             to make it so.
@@ -103,25 +101,24 @@ Describe "Basic Verbs" {
                 find 5 new add commands you haven't previously used.
             #>
 
-            # Replace each __ with the name of a Add cmdlet
+            # Replace each ____ with the name of a Add cmdlet
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Add).Name
 
-            $UniqueCheck = $Answers | Get-Unique
-            $UniqueCheck.Count -eq 5 | Should -BeTrue -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
         }
     }
 
     Context "Set" {
         <#
-            Cmdlets with the Set verb will overwrite information that already exists.  
+            Cmdlets with the Set verb will overwrite information that already exists.
 
             If you followed the example in the 'New' and 'Add' tests, you can use set to do
             something to your text file:
-            
+
                 $Path = "YOUR PATH.txt"
                 Set-Content -Path $ItemPath -Value "Sir Kill-A-Lot is the best house robot because of reasons."
-            
+
             Before continuing, run this command several times. See what happens, is it the
             result you expected?
 
@@ -129,12 +126,12 @@ Describe "Basic Verbs" {
             will overwrite information that's already there.
 
             Some Set-* cmdlets require the instance to already be present for you to change it;
-            you'll need to use a New-* cmdlet first to create an instance before you can 
+            you'll need to use a New-* cmdlet first to create an instance before you can
             overwrite information within it.
 
-            A common example one may see working with Office 365 is with calendar permissions. 
+            A common example one may see working with Office 365 is with calendar permissions.
             If a user already has some permissions configured, you can use you use "Set-MailboxFolderPermission"
-            to change the user's permissions. However, attempting to use an Add cmdlet will fail; 
+            to change the user's permissions. However, attempting to use an Add cmdlet will fail;
             Set-* commands overwrite data, but often can only do so if it already exists.
 
         #>
@@ -145,12 +142,11 @@ Describe "Basic Verbs" {
                 find 5 new set commands you haven't previously used.
             #>
 
-            # Replace each __ with the name of a Set cmdlet
+            # Replace each ____ with the name of a Set cmdlet
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Set).Name
 
-            $UniqueCheck = $Answers | Get-Unique
-            $UniqueCheck.Count -eq 5 | Should -BeTrue -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
         }
     }
 
@@ -158,12 +154,12 @@ Describe "Basic Verbs" {
          <#
             Cmdlets with the Remove verb will delete data from an object or data source.
 
-            If you followed the example in the 'New','Add' and 'Set' tests, you can use Remove-Item to 
+            If you followed the example in the 'New','Add' and 'Set' tests, you can use Remove-Item to
             delete your text file:
-            
+
                 $Path = "YOUR PATH.txt"
                 Remove-Item -Path $Path
-            
+
             Before continuing, run this command a few times. What happens when you try to run it
             once the instance has been deleted?
 
@@ -181,12 +177,11 @@ Describe "Basic Verbs" {
                 find 5 new remove commands you haven't previously used.
             #>
 
-            # Replace each __ with the name of a Remove cmdlet
+            # Replace each ____ with the name of a Remove cmdlet
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Remove).Name
 
-            $UniqueCheck = $Answers | Get-Unique
-            $UniqueCheck.Count -eq 5 | Should -BeTrue -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
         }
     }
 }

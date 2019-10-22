@@ -17,7 +17,7 @@ Set-PSKoanLocation [-Path] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Sets the module-scoped PSKoanLocation variable in order to modify where the module looks for and stores its koans lesson files.
+Sets the KoanLocation configuration setting in order to modify where the module looks for and stores its koans lesson files.
 
 ## EXAMPLES
 
@@ -31,6 +31,20 @@ Measure-Karma
 Sets the koan folder location to 'C:\PSKoans' and then invokes Measure-Karma to examine that location for koan files.
 
 ## PARAMETERS
+
+### -PassThru
+Whether the function should pass the provided `-Path` value down the pipe when the configuration has been changed.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Path
 Specify the path to set the koan location to.

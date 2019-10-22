@@ -150,10 +150,13 @@ A man sits atop a hundred-foot pole; how can he go further up?
 A pupil in such a great hurry learns slowly.
 '@
         @'
-The wind does not move, the banner does not move; your mind moves.
+The wind does not move,
+The banner does not move;
+Only your mind moves.
 '@
         @'
-Truth can be expressed without speaking, nor remaining silent.
+Without speaking, without silence,
+How can you express the truth?
 '@
         @'
 Sickness and medicine correspond to each other.
@@ -163,6 +166,69 @@ What is the self?
         @'
 Choosing to raise a goose in a bottle,
 How will you get it out once it is grown?
+'@
+        @'
+Nothing is exactly as it seems, nor is it otherwise.
+'@
+        @'
+To a mind that is still, the whole universe surrenders.
+'@
+        @'
+To create is to see what all can see but think what none have thought.
+'@
+        @'
+If you understand, things are just as they are.
+If you do not understand, things are just as they are.
+'@
+        @'
+Maybe you are searching among the branches,
+For what only appears in the roots.
+'@
+        @'
+The giver should be thankful.
+'@
+        @'
+As the light of a small candle will spread from one to another in succession,
+So the light of the Buddha's compassion will pass from one mind to another endlessly.
+'@
+        @'
+To doubt the walking of the mountains means
+That one does not yet know one's own walking.
+'@
+        @'
+Grasping nothing, discarding nothing.
+In every place there's no hindrance, no conflict.
+My supernatural power and marvelous activity:
+Drawing water and chopping wood.
+'@
+        @'
+There's doing nothing,
+And then there's doing nothing.
+One blade releases
+The energies of the Earth,
+The other rusts in a stump.
+'@
+        @'
+The Path of Excess
+Is the exact opposite
+Of the Eightfold Path.
+Right View, Right Speech, Right Action...
+All simple matters of scale.
+'@
+        @'
+The oceans may rage,
+But underneath the waters
+The Leviathans
+Frisk and frolick together
+In the Land of Tranquil Light.
+'@
+        @'
+The coin lost in the river
+Is found in the river.
+'@
+        @'
+Without speaking, without silence,
+How can you express the truth?
 '@
     )
 }

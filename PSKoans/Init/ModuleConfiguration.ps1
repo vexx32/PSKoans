@@ -1,14 +1,16 @@
 Write-Verbose 'Configuring PSKoans module'
 Write-Verbose 'Importing data strings'
+
 $ShowMeditationPromptData = Import-PowerShellDataFile -Path "$script:ModuleRoot/Data/Show-MeditationPrompt.Data.psd1"
 $script:MeditationStrings = $ShowMeditationPromptData['Koans']
 $script:MeditationPrompts = $ShowMeditationPromptData['Prompts']
 Remove-Variable -Name 'ShowMeditationPromptData'
 
-$script:LibraryFolder = '~/PSKoans'
-Write-Verbose "Koans folder set to $script:LibraryFolder"
+$Settings = Get-PSKoanSetting
 
-if (-not (Test-Path -Path $script:LibraryFolder)) {
-    Write-Verbose 'Koans folder does not exist; populating the folder'
+Write-Information "Koans folder set to $($Settings.KoanLocation)"
+
+if (-not (Test-Path -Path $Settings.KoanLocation)) {
+    Write-Information "Koans folder '$($Settings.KoanLocation)' was not found; creating koans directory."
     Update-PSKoan -Confirm:$false
 }

@@ -14,6 +14,11 @@
 #>
 
 $script:ModuleRoot = $PSScriptRoot
+$script:ConfigPath = '~/.config/PSKoans/config.json'
+$script:DefaultSettings = @{
+    KoanLocation = Resolve-Path -Path '~' | Join-Path -ChildPath 'PSKoans'
+    Editor       = 'code'
+}
 
 #region SupportingClasses
 
