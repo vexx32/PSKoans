@@ -268,7 +268,7 @@ Describe 'About Classes' {
         It 'can overload methods' {
             <#
                 Sometimes it is desirable for a method to behave differently if different arguments
-                is passed.
+                are passed.
 
                 Each variation of the method is given the same name, but each variation needs to
                 accept a unique set of argument types.
