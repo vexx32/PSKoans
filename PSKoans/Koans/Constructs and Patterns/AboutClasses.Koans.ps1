@@ -61,7 +61,7 @@ Describe 'About Classes' {
             }
 
             <#
-                PowerShell jobs run in a separate process, values returned by a job a serialized, that is
+                PowerShell jobs run in a separate process, so values returned by a job are serialized,
                 changed into a format which can be sent between two processes. Outside of the job the copy
                 of the object is a PSCustomObject which includes the Properties only.
 
