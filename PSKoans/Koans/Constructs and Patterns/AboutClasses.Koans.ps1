@@ -11,7 +11,7 @@ param()
     PowerShell gained the ability to create classes in PowerShell 5.0, and this support
     continues into PowerShell Core.
 
-    Like the "About Enumerations" topic, jobs are used to isolate example code. Preventing it
+    Like the "About Enumerations" topic, jobs are used to isolate example code, preventing it
     from affecting the current PowerShell session. The classes created in Start-Job cannot be
     directly used outside of the Start-Job script.
 #>
