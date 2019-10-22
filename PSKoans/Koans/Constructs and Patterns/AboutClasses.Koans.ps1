@@ -407,7 +407,7 @@ Describe 'About Classes' {
         }
 
         It 'can declare more than one constructor' {
-            # More than one constructor can be created. Each constructor must have a unique signature.
+            # Just like methods, constructors can be overloaded. Each constructor overload must have a unique signature.
 
             $script = {
                 class Employee {
