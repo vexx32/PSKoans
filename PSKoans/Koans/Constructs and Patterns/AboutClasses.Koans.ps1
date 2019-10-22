@@ -8,7 +8,7 @@ param()
     is a representation of something, anything. Types in .NET and PowerShell are used
     to describe everything from strings and numbers to Files, Folders, and Processes.
 
-    PowerShell gained the ability to create classes in PowerShell 5.0, this support
+    PowerShell gained the ability to create classes in PowerShell 5.0, and this support
     continues into PowerShell Core.
 
     Like the "About Enumerations" topic, jobs are used to isolate example code. Preventing it
