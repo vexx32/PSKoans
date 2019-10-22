@@ -5,6 +5,11 @@ InModuleScope 'PSKoans' {
 
         BeforeAll{
             Mock Write-ConsoleLine { } 
+            # Exporting incorrect advices to the folder
+            $AdviceFolder = $script:ModuleRoot | Join-Path -ChildPath 'Data/Advice'
+            $AdviceObject = Get-ChildItem -Path $AdviceFolder -Recurse -File -Filter "*.Advice.json"
+            $RandomAdvicesFilePaths = ($AdviceObject | Get-Random -Count 3).FullName
+            $Backup = $RandomAdvicesFilePaths | ForEach-Object {Get-Content $_ | ConvertFrom-Json}
         }
 
         Context "Behaviour of Parameter-less Calls" {
@@ -36,9 +41,40 @@ InModuleScope 'PSKoans' {
             }
 
             It "should throw an error if the requested file cannot be found" {
-                $message = "Cannot validate argument on parameter 'InputString'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
-                
-                { Show-Advice -Name "ThisDoesntExist" -ErrorAction Stop } | Should -Throw -ExpectedMessage $message
+                $message = "Could not find any Advice files matching the specified Name: ThisDoesntExist"
+                { Show-Advice -Name "ThisDoesntExist" -ErrorAction Stop } | Should -Throw -ExpectedMessage $Message
+            }
+
+            # Creating incorrect Advice
+            $IncorrectObjectsData = @(
+                @{
+                    NotTitle = "Fake title"
+                    NotContent = @(1..4 | ForEach-Object {"Fake line $_"})
+                },
+                @{
+                    Content = @(1..4 | ForEach-Object {"Fake line $_"})
+                },
+                @{
+                    Title = "Fake title"
+                }
+            )
+            for ($i = 0; $i -lt 3; $i++) {
+                $IncorrectObjectsData[$i] | ConvertTo-Json | Out-File $RandomAdvicesFilePaths[$i]
+            }
+            
+            It "should throw an error if the requested file's format is not correct" {
+                for ($i = 0; $i -lt 3; $i++) {
+                    $AdviceName = (Get-Item $RandomAdvicesFilePaths[$i]).BaseName -replace('^(.*)(?:.Advice)','$1')
+                    $Message = "Could not find Title and/or Content elements for Advice file: {0}" -f $AdviceName
+                    { Show-Advice -Name $AdviceName -ErrorAction Stop } | Should -Throw -ExpectedMessage $Message
+                }
+            }
+
+        }
+
+        AfterAll{
+            for ($i = 0; $i -lt 3; $i++) {
+                Set-Content -Path ((Get-Item $RandomAdvicesFilePaths[$i]).FullName) -Value ($Backup[$i] | ConvertTo-Json)
             }
         }
     }   
