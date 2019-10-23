@@ -35,7 +35,7 @@ Describe 'About Classes' {
                 [Car]::new()
 
                 <#
-                    The New-Object command can also be used.
+                    The New-Object command can also create an instance.
 
                     New-Object '____'
                 #>
