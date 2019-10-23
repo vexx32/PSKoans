@@ -34,8 +34,9 @@ Describe 'Working With Regular Expressions' {
         }
 
         It 'returns $false if a match is not found' {
-        $falseValue = '____'
-        $falseValue -match 'climb' | Should -BeFalse
+            $falseValue = '____'
+            $falseValue -match 'climb' | Should -BeFalse
+        }
     }
     
     Context 'Using the -replace Operator' {
@@ -49,8 +50,8 @@ Describe 'Working With Regular Expressions' {
             #>
     
             $replacePattern = 'simple string'
-            $____ = 'string that got something replaced'
-            $newString = 'Here is a simple string.' -replace $replacePattern, $replaceWith
+            $replaceWith = 'string that got something replaced'
+            $newString = 'Here is a simple string.' -replace $replacePattern, $____
             $newString | Should -Be 'Here is a string that got something replaced.'
         }
 
@@ -94,6 +95,9 @@ Describe 'Working With Regular Expressions' {
                 Since you have access to all kinds of .NET goodness, you can start taking advantage
                 of those now that you are learning how regular expressions work! The following
                 example looks at the Matches() method that's a part of the [Regex] class.
+
+                The Matches() method takes two arguments. In order, they are the string that is
+                being examined, followed by the regular expression being searched for.
             #>
     
             $regexMatch = [Regex]::Matches('Running through a forest', 'through')
@@ -105,11 +109,11 @@ Describe 'Working With Regular Expressions' {
             # The Matches() method has a number of overloads, including one that takes options
             $overloadString = 'REGEX IS CASE SENSITIVE'
 
-            $standardMatch = @([regex]::Matches($overloadString, 'case'))
+            $standardMatch = [regex]::Matches($overloadString, 'case')
             __ | Should -Be $standardMatch.Count
 
             $ignoreCase = [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
-            $optionsMatch = @([regex]::Matches($overloadString, 'case', $ignoreCase))
+            $optionsMatch = [regex]::Matches($overloadString, 'case', $ignoreCase)
             __ | Should -Be $optionsMatch.Count
         }
         
@@ -210,11 +214,11 @@ Describe 'Quantifiers' {
 
         It 'specifies 0 or 1 of something' {
             # The ? matches "zero or one" of something.
-            $____ | Should -Be ('flying through the sky' -match 'f+lying')
+            $____ | Should -Be ('flying through the sky' -match 'f?lying')
         }
         
         It 'does not mind matching 0 of something' {
-            $____ | Should -Be ('floating away' -match 'b+oat')
+            $____ | Should -Be ('floating away' -match 'b?oat')
         }
     }
 
@@ -222,10 +226,10 @@ Describe 'Quantifiers' {
 
         It 'matches a little or matches a lot' {
             <#
-            A number of the quantifiers have two versions: A greedy version which tries to match an
-            element as many times as possible, and a non-greedy (or lazy) version which tries to
-            match an element as few times as possible. You can turn a greedy quantifier into a lazy
-            quantifier by simply adding a ?.
+                A number of the quantifiers have two versions: A greedy version which tries to match an
+                element as many times as possible, and a non-greedy (or lazy) version which tries to
+                match an element as few times as possible. You can turn a greedy quantifier into a lazy
+                quantifier by simply adding a ?.
             #>
 
             $lazyPattern = 'p+?'
@@ -300,15 +304,14 @@ a domestic cat
     }
 
     Context '\d and \D' {
+        <#
+            The \d symbol matches digits (the numbers 0 - 9 inclusive), while the symbol \D
+            matches anything OTHER THAN a digit. Yes, regular expressions are case sensitive.
+            This "lower case for affirmative, upper case for negative" pattern is common among
+            regex symbols as you'll discover as you carry on.
+        #>
 
         It 'matches digits' {
-            <#
-                The \d symbol matches digits (the numbers 0 - 9 inclusive), while the symbol \D
-                matches anything OTHER THAN a digit. Yes, regular expressions are case sensitive.
-                This "lower case for affirmative, upper case for negative" pattern is common among
-                regex symbols as you'll discover as you carry on.
-            #>
-    
             '__' -match '\d' | Should -BeTrue
         }
 
@@ -339,13 +342,13 @@ a domestic cat
     Context '^ (caret) and $ (dollar sign)' {
 
         It 'matches the start of lines with ^' {   
-            $startAndEnd = '____'
-            $startAndEnd -match '^a' | Should -BeTrue
+            $caretMatch = '____'
+            $caretMatch -match '^a' | Should -BeTrue
         }
 
         It 'matches the end of lines with $' {
-            $startAndEnd = '____'
-            $startAndEnd -match 'z$' | Should -BeTrue
+            $dollarMatch = '____'
+            $dollarMatch -match 'z$' | Should -BeTrue
         }
     }
 
@@ -487,7 +490,7 @@ Describe 'Brackets and Braces' {
 
         It 'does not find just one badger' {    
             $badgers = 'BadgerBadgerBadger'
-            $groupingPattern = '(____)__'
+            $groupingPattern = '(____){__}'
             [regex]::Matches($badgers, $groupingPattern).Value | Should -Be 'BadgerBadgerBadger'
             $groupingPattern.Contains(')') | Should -BeTrue    # Use a group!
         }
@@ -533,9 +536,7 @@ Describe 'Brackets and Braces' {
 }
 
 Describe 'Meditative Examples' {
-    <#
-        Here are some challenges for you to put your new skills to work on.
-    #>
+    # Here are some challenges for you to put your new skills to work on.
     
     Context 'Isolate a Username From a domain\username String Using Just One Regex Pattern' {
 
