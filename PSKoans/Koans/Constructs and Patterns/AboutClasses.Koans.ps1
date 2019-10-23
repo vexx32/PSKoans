@@ -763,7 +763,7 @@ Describe 'About Classes' {
                     [int]    $Rating
 
                     <#
-                        The generic IComparable interface makes implementation of the CompareTo method mandatory.
+                        The IComparable interface makes implementation of the CompareTo method mandatory.
 
                         The CompareTo method must accept an argument with type [object], and must return 1, 0, or -1.
 
