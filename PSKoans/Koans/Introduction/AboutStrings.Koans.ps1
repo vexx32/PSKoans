@@ -56,6 +56,39 @@ Describe 'Strings' {
             '____' | Should -Be $String
         }
 
+        It 'will expand variables that do not exist' {
+            <#
+                If a string contains a variable that has not been created, PowerShell will still try and expand the
+                value.
+
+                This could be a typing mistake.
+            #>
+            $String = "PowerShell's home folder is: $SPHome"
+            '____' | Should -Be $String
+        }
+
+        It 'can get a bit confused about :' {
+            <#
+                In PowerShell, : is used to define a scope or a provider for a variable. For example, the Environment
+                variable provider uses the $env:SomeVariableName.
+
+                When : is part of a string, PowerShell will try and expand a variable in that scope or from that
+                provider.
+            #>
+
+            $Number = 1
+            $String = "$Number:Get shopping"
+            '____' | Should -Be $String
+        }
+
+        It 'can use curly braces to define the variable name in a string' {
+            # Variables followed by : can be included in an expanding string if curly braces are used.
+
+            $Number = 1
+            $String = "${Number}:Get shopping"
+            '____' | Should -Be $String
+        }
+
         It 'can escape special characters with backticks' {
             $LetterA = 'Apple'
             $String = "`$LetterA contains $LetterA."
@@ -112,7 +145,7 @@ Describe 'Strings' {
             $String1 + ' ' + $String2 | Should -Be 'This string is cool.'
         }
 
-        It 'can be done simpler' {
+        It 'can be done more easily' {
             # Water mixes seamlessly with itself.
             $String1 = 'This string'
             $String2 = 'is cool.'
