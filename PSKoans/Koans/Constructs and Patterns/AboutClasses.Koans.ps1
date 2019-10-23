@@ -956,7 +956,7 @@ Describe 'About Classes' {
                 }
 
                 $number = [Number]@{
-                    Name = 'three'
+                    Name  = 'three'
                     Value = 3
                 }
                 [int]$number
