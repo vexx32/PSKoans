@@ -37,7 +37,7 @@ Describe 'About Classes' {
                 <#
                     The New-Object command can also create an instance.
 
-                    New-Object '____'
+                    New-Object -TypeName 'Car'
                 #>
             }
 
