@@ -330,12 +330,15 @@ a domestic cat
             <#
                 \w matches word characters which are letters, numbers, and underscores. The \W
                 symbol matches anything else.
+
+                For these challenges, make sure you're using either \w or \W in your regular
+                expression. Otherwise, you're just cheating yourself!
             #>
             '***' -match '__' | Should -BeTrue
         }
 
         It 'sees no funky characters in here'
-            'warmth' -match '____' | Should -BeTrue
+            'warmth' -match '__' | Should -BeTrue
         }
     }
 
@@ -361,12 +364,12 @@ a domestic cat
             #>
     
             # Enter either \s or \S - which do you think will work?
-            'Room to grow' -match '____' | Should -BeTrue
+            'Room to grow' -match '__' | Should -BeTrue
         }
 
         It 'matches what you cannot see' {
             # Careful to only fill in a value for the '____', not the '    '
-            '    ' -match '____' | Should -BeFalse
+            '    ' -match '__' | Should -BeFalse
         }
 
         It 'is hard to see, but not that hard' {
