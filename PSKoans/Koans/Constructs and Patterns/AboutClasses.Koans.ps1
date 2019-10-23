@@ -141,8 +141,9 @@ Describe 'About Classes' {
 
     Context 'Methods' {
         <#
-            Methods are used to execute predefined actions. This may be changing a property of the object itself, or a change to the
-            the thing the object represents, or it might be used to generate something new from the object.
+            Methods are used to execute predefined actions. This may be changing a property of the object itself, or
+            a change to the the thing the object represents, or it might be used to generate something new from the
+            object.
         #>
 
         It 'can describe methods which do not return anything' {
@@ -156,6 +157,8 @@ Describe 'About Classes' {
                             The special variable $this is used to refer to the properties created in the class.
 
                             In PowerShell $this must be used when getting or setting values for a property in a method.
+
+                            Please do not change the value below!
                         #>
                         if ($this.Path -like '*____') {
                             throw 'Invalid path!'
@@ -192,9 +195,6 @@ Describe 'About Classes' {
 
                     # The type Void can optionally be used to explicitly state that a method does not return a value.
                     [void] Create() {
-                        if ($this.Path -like '*____') {
-                            throw 'Invalid path!'
-                        }
                         New-Item -Path $this.Path -ItemType File -Value 'FileContent' -Force
                     }
                 }
@@ -292,6 +292,7 @@ Describe 'About Classes' {
 
                     # This method will be used if a single string is passed as an argument.
                     Create([String] $content) {
+                        # Please do not change the value below!
                         if ($content -ne '____') {
                             $this.SelectedMethod = 'With content'
                             New-Item -Path $this.Path -ItemType File -Value $Content -Force
@@ -300,10 +301,14 @@ Describe 'About Classes' {
                 }
 
                 $file = [File]@{
-                    Path = $using:Path
+                    Path = Join-Path -Path $using:TestDrive -ChildPath 'File.txt'
                 }
 
-                $file.Create($using:Argument)
+                if ($using:Argument) {
+                    $file.Create($using:Argument)
+                } else {
+                    $file.Create()
+                }
                 $file
             }
 
@@ -424,7 +429,7 @@ Describe 'About Classes' {
 
                         # Avoid marking the default value as the correct answer!
                         if ($name -ne '____') {
-                            $this.SelectedContructor = 'String'
+                            $this.SelectedConstructor = 'String'
                         }
                     }
 
@@ -599,7 +604,7 @@ Describe 'About Classes' {
                     Value = 'hunter2'
                 }
 
-                $secret.Password
+                $secret.Value
             }
 
             '____' | Should -Be (Start-Job -ScriptBlock $script | Receive-Job -Wait)
@@ -626,11 +631,9 @@ Describe 'About Classes' {
                     [int]    $HungerLevel = 100
 
                     [Void] Feed([int] $amount) {
-                        if ($amount -gt (100 - $this.HungerLevel)) {
+                        $this.HungerLevel -= $amount
+                        if ($this.HungerLevel -lt 0) {
                             $this.HungerLevel = 0
-                        }
-                        else {
-                            $this.HungerLevel -= $amount
                         }
                     }
                 }
