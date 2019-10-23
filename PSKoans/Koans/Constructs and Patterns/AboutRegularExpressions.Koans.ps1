@@ -22,7 +22,7 @@ Describe 'Working With Regular Expressions' {
                 pattern (regex) on the right side is found within the string on the left side. Yes,
                 in this case 'string' is a regular expression!
 
-                Regex is case sensitive, but the -match, and many other PowerShell operators perform
+                Regex is case sensitive, but -match, along with many other PowerShell operators, perform
                 case-insensitive matching.
             #>
     
@@ -86,7 +86,7 @@ Describe 'Working With Regular Expressions' {
         }
     }
 
-    Context 'Using the [regex] Class Methods' {
+    Context 'Using the [Regex] Class Methods' {
 
         It 'returns RegularExpressions.Match objects' {
             <#
@@ -106,18 +106,18 @@ Describe 'Working With Regular Expressions' {
             $overloadString = 'REGEX IS CASE SENSITIVE'
 
             $standardMatch = @([regex]::Matches($overloadString, 'case'))
-            $standardMatch.Count -eq '__' | Should -BeTrue
+            __ | Should -Be $standardMatch.Count
 
             $ignoreCase = [System.Text.RegularExpressions.RegexOptions]::IgnoreCase
             $optionsMatch = @([regex]::Matches($overloadString, 'case', $ignoreCase))
-            $optionsMatch.Count -eq '__' | Should -BeTrue
+            __ | Should -Be $optionsMatch.Count
         }
         
         It 'can split up strings' {
             <#
                 The [regex] class has a whole lot more in it than just the ::Matches() method. It
                 also has methods for splitting, replacing, and performing boolean matches. Check out
-                https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.8#methods
+                https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netcore-3.0#methods
                 for more information.
             #>
 
@@ -129,7 +129,8 @@ Describe 'Working With Regular Expressions' {
         It 'can return a boolean result' {
             $catString = 'Cats can make about 100 different sounds'
             $catMatch = 'have bees inside them'
-            $____ | Should -Be [regex]::IsMatch($catString, $catMatch)
+            $result = [regex]::IsMatch($catString, $catMatch)
+            $____ | Should -Be $result
         }
     }
 }
@@ -232,13 +233,13 @@ Describe 'Quantifiers' {
             __ | Should -Be $lazyMatch.Length
         }
 
-        It 'is a hungry bugger' {
+        It 'is greedy by default' {
             $greedyPattern = 'a+'
             $greedyMatch = [regex]::Matches('aardvark', $greedyPattern)[0].Value
             __ | Should -Be $greedyMatch.Length
         }
 
-        It 'needs to decide which is lazy and which is greedy' {
+        It 'behaves differently depending on whether or not qualifiers are greedy' {
             $greedy = 'o+'
             $lazy = 'o+?'
             @([regex]::Matches('helloooooo', $____).Value)[0] | Should -Be 'o'
@@ -262,7 +263,7 @@ Describe 'Special Symbols' {
         It 'matches any character' {
             # The . (period) matches literally any character
     
-            $____ | Should -Be 'Lazy Sunday mornings' -match 'S.nday'
+            $____ | Should -Be ('Lazy Sunday mornings' -match 'S.nday')
         }
 
         It 'starts looking kind of weird now' {    
@@ -327,7 +328,7 @@ a domestic cat
                 \w matches word characters which are letters, numbers, and underscores. The \W
                 symbol matches anything else.
             #>
-            '***' -match '____' | Should -BeTrue
+            '***' -match '__' | Should -BeTrue
         }
 
         It 'sees no funky characters in here'
@@ -337,12 +338,12 @@ a domestic cat
 
     Context '^ (caret) and $ (dollar sign)' {
 
-        It 'matches the start of lines' {   
+        It 'matches the start of lines with ^' {   
             $startAndEnd = '____'
             $startAndEnd -match '^a' | Should -BeTrue
         }
 
-        It 'matches the end of lines' {
+        It 'matches the end of lines with $' {
             $startAndEnd = '____'
             $startAndEnd -match 'z$' | Should -BeTrue
         }
@@ -463,11 +464,11 @@ Describe 'Brackets and Braces' {
             $plusGrassPattern = 'e+'
             $plusGrassMatch = [regex]::Matches($grass, $plusGrassPattern).Value[0]
 
-            $customGrassPattern = 'e____'
+            $customGrassPattern = 'e{__}'
             $customGrassMatch = [regex]::Matches($grass, $customGrassPattern).Value[0]
 
             $customGrassMatch | Should -Be $plusGrassMatch
-            $customGrassPattern.Contains('}') | Should -BeTrue  # Use the curly braces!
+            $customGrassPattern.Contains('}') | Should -BeTrue # Use the curly braces!
         }
     }
 
@@ -484,9 +485,9 @@ Describe 'Brackets and Braces' {
             '____' | Should -Be [regex]::Matches('Bears Beat Bongos', '(B.+){3}').Value
         }
 
-        It 'does not just one one badger' {    
+        It 'does not find just one badger' {    
             $badgers = 'BadgerBadgerBadger'
-            $groupingPattern = '____'
+            $groupingPattern = '(____)__'
             [regex]::Matches($badgers, $groupingPattern).Value | Should -Be 'BadgerBadgerBadger'
             $groupingPattern.Contains(')') | Should -BeTrue    # Use a group!
         }
@@ -496,7 +497,7 @@ Describe 'Brackets and Braces' {
 
         It 'defines a set' {
             <#
-                Square brackets denote a set, or array/collection, of symbols within a regular
+                Square brackets denote a set or collection of symbols within a regular
                 expression. Imagine a pattern that might read "a or b or c or d". You may use square
                 brackets to create that regex. The set contained within the square brackets
                 represent one charactermwithin the string being searched.
@@ -526,7 +527,7 @@ Describe 'Brackets and Braces' {
             #>
             $caretMatch = '[____]'
             '^&*' -match $caretMatch | Should -BeTrue
-            $caretMatch.Contains('^') | Should -BeTrue      # Use the caret symbol!
+            $caretMatch.Contains('^') | Should -BeTrue # Use the caret symbol!
         }
     }
 }
