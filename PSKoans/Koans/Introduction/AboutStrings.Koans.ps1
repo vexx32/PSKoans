@@ -67,7 +67,7 @@ Describe 'Strings' {
             '____' | Should -Be $String
         }
 
-        It 'can get a bit confused about :' {
+        It 'can get confused about :' {
             <#
                 In PowerShell, : is used to define a scope or a provider for a variable. For example, the Environment
                 variable provider uses the $env:SomeVariableName.
@@ -81,7 +81,7 @@ Describe 'Strings' {
             '____' | Should -Be $String
         }
 
-        It 'can use curly braces to define the variable name in a string' {
+        It 'can use curly braces to define the variable name in a string with :' {
             # Variables followed by : can be included in an expanding string if curly braces are used.
 
             $Number = 1
