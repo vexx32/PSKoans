@@ -325,7 +325,7 @@ Describe 'About Classes' {
                 All objects and types have a method called ToString. By default the method returns the name of the
                 type only.
 
-                The default method can be overridden by adding it to the clas as shown below.
+                The default method can be overridden by adding it to the class as shown below.
 
                 The ToString method will also be used when the class is cast to a string.
             #>
