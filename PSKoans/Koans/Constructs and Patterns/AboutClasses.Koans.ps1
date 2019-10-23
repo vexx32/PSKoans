@@ -560,7 +560,7 @@ Describe 'About Classes' {
 
     Context 'About Hidden' {
         <#
-            Hidden stops a property or method from being offered by tab completion. It also hides the property
+            The hidden keyword stops a property or method from being offered by tab completion. It also hides the property
             from Get-Member, except when the Force parameter is used.
         #>
 
