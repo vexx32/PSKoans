@@ -306,7 +306,8 @@ Describe 'About Classes' {
 
                 if ($using:Argument) {
                     $file.Create($using:Argument)
-                } else {
+                }
+                else {
                     $file.Create()
                 }
                 $file
