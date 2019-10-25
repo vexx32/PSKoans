@@ -337,7 +337,7 @@ a domestic cat
             '***' -match '__' | Should -BeTrue
         }
 
-        It 'sees no funky characters in here'
+        It 'sees only word characters in here' {
             'warmth' -match '__' | Should -BeTrue
         }
     }
@@ -559,11 +559,11 @@ Describe 'Meditative Examples' {
         #>
 
         $phoneNumbers = @(
-            '1 425 555 1234',
-            '1-425-555-4321',
-            '1.425.555.6789',
+            '1 425 555 1234'
+            '1-425-555-4321'
+            '1.425.555.6789'
             '01234'
-            '+14255556789'`
+            '+14255556789'
         )
 
         It 'sanitizes user input' {
