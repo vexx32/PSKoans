@@ -52,6 +52,7 @@ When adding or updating koan topics, please keep this file up to date.
 | Constructs and Patterns | [AboutBitwiseOperators][AboutBitwiseOperators]                 |   309    |
 | Constructs and Patterns | [AboutEnumerations][AboutEnumerations]                         |   310    |
 | Constructs and Patterns | [AboutClasses][AboutClasses]                                   |   311    |
+| Constructs and Patterns | [AboutRegularExpressions][AboutRegularExpressions]             |   320    |
 | Cmdlets 2               | [AboutOutCmdlets][AboutOutCmdlets]                             |   401    |
 
 ## Module Topics
@@ -104,6 +105,7 @@ When adding or updating koan topics, please keep this file up to date.
 [AboutErrorHandling]: PSKoans/Koans/Constructs%20and%20Patterns/AboutErrorHandling.Koans.ps1
 [AboutBitwiseOperators]: PSKoans/Koans/Constructs%20and%20Patterns/AboutBitwiseOperators.Koans.ps1
 [AboutEnumerations]: PSKoans/Koans/Constructs%20and%20Patterns/AboutEnumerations.Koans.ps1
+[AboutRegularExpressions]: PSKoans/Koans/Constructs%20and%20Patterns/AboutRegularExpressions.Koans.ps1
 [AboutOutCmdlets]: PSKoans/Koans/Cmdlets%202/AboutOutCmdlets.Koans.ps1
 [AboutClasses]: PSKoans/Koans/Constructs%20and%20Patterns/AboutClasses.Koans.ps1
 
