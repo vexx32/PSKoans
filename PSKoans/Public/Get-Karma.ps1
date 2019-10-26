@@ -51,13 +51,16 @@
 
             if ($TotalKoans -eq 0) {
                 if ($Topic) {
-                    $Message = 'Could not find any PSKoans topics that match requested Topic(s): {0}'
+                    $Message = @(
+                        'Could not find any PSKoans topics matching Topic(s): {0}.'
+                        'Use Update-PSKoan to ensure your koan library is up to date.'
+                    ) -join ' '
                     $TopicList = $Topic -join ','
 
                     $ErrorDetails = @{
                         ExceptionType    = 'System.IO.FileNotFoundException'
                         ExceptionMessage = $Message -f $TopicList
-                        ErrorId          = 'PSKoans.NoMatchingKoansFound'
+                        ErrorId          = 'PSKoans.TopicNotFound'
                         ErrorCategory    = 'ObjectNotFound'
                         TargetObject     = $TopicList
                     }
