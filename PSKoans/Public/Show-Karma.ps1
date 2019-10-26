@@ -85,14 +85,14 @@ function Show-Karma {
                 Clear-Host
             }
 
+            Show-MeditationPrompt -Greeting
+
             try {
                 $Results = Get-Karma @GetParams
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
-
-            Show-MeditationPrompt -Greeting
 
             if ($Results.Complete) {
                 $Params = @{
