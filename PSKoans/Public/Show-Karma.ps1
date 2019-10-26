@@ -48,10 +48,10 @@ function Show-Karma {
     )
 
     $GetParams = @{ }
-    switch ($pscmdlet.ParameterSetName) {
+    switch ($PSCmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
         'ModuleOnly' { $GetParams['Module'] = $Module }
-        { $Topic } { $GetParams['Topic'] = $Topic }
+        { $PSBoundParameters.ContainsKey('Topic') } { $GetParams['Topic'] = $Topic }
     }
 
     switch ($PSCmdlet.ParameterSetName) {
@@ -85,8 +85,14 @@ function Show-Karma {
                 Clear-Host
             }
 
+            try {
+                $Results = Get-Karma @GetParams
+            }
+            catch {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+
             Show-MeditationPrompt -Greeting
-            $Results = Get-Karma @GetParams
 
             if ($Results.Complete) {
                 $Params = @{
