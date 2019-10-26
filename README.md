@@ -14,7 +14,7 @@
 
 ## Synopsis
 
-Inspired by Chris Marinos's **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
+Inspired by Chris Marinos' **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
 Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test.
 Your goal is to make those tests pass by filling out the correct answer, or writing the correct code.
 The koans start very simple to get you familiar with the basic concepts and progress towards more difficult.
@@ -102,27 +102,23 @@ Describing 'Equality' has damaged your karma.
 
     The answers you seek...
 
-Expected strings to be the same, but they were different.
-Expected length: 5
-Actual length:   2
-Strings differ at index 0.
-Expected: 'True!'
-But was:  '__'
+Expected $true, but got $null.
 
     Please meditate on the following code:
 
 × It is a simple comparison
 at <ScriptBlock>, C:\Users\Joel\PSKoans\Introduction\AboutAssertions.Koans.ps1: line 27
-27:         '__' | Should -Be 'True!'
+27:         $____ | Should -Be $true
 
-    ▌ Mountains are merely mountains.
+    ▌ When you smash the citadel of doubt,
+    ▌ Then the Buddha is simply yourself.
 
     You examine the path beneath your feet...
 
- [AboutAssertions]: [――――――――――――――――――――――] 0/4
+ [AboutAssertions]: [――――――――――――――――――――――――――] 0/4
 
 
- [Total]: [―――――――――――――――――――――――――――――――――――――――――――――] 0/535
+ [Total]: [――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/635
 
 Run 'Show-Karma -Meditate' to begin your meditations.
 ```
@@ -148,7 +144,7 @@ To pass this koan you need to replace `__` with `True!`, like this: `'True!' | S
 #### 3. Run `Show-Karma` again to see how you did
 
 You passed your first koan!
-You'll notice that your overall progress updated to `1/535` and you are presented with the next challenge.
+You'll notice that your overall progress updated to `1/635` and you are presented with the next challenge.
 
 ```code
     Welcome, seeker of enlightenment.
@@ -168,14 +164,17 @@ Expected 3, but got .
 at <ScriptBlock>, C:\Users\Joel\PSKoans\Introduction\AboutAssertions.Koans.ps1: line 32
 32:         __ | Should -Be (1 + 2)
 
-    ▌ Make the mountains dance.
+    ▌ Grasping nothing, discarding nothing.
+    ▌ In every place there's no hindrance, no conflict.
+    ▌ My supernatural power and marvelous activity:
+    ▌ Drawing water and chopping wood.
 
     You examine the path beneath your feet...
 
- [AboutAssertions]: [■■■■■■――――――――――――――――] 1/4
+ [AboutAssertions]: [■■■■■■――――――――――――――――――――] 1/4
 
 
- [Total]: [―――――――――――――――――――――――――――――――――――――――――――――] 1/535
+ [Total]: [――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/635
 
 Run 'Show-Karma -Meditate' to begin your meditations.
 ```
