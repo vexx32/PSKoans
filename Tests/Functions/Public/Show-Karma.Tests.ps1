@@ -124,7 +124,7 @@ Describe 'Show-Karma' {
             }
 
             It 'throws an error if a Topic is specified that matches nothing' {
-                { Show-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ExpectedMessage 'Could not find any koans'
+                { Show-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ErrorId 'PSKoans.TopicNotFound'
             }
         }
 
