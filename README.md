@@ -134,12 +134,12 @@ Navigate to `Introduction\AboutAssertions.Koans.ps1`. Near the top you'll see:
 ```powershell
 It 'is a simple comparison' {
     # Some truths are absolute.
-    '__' | Should -Be 'True!'
+    $____ | Should -Be $true
 }
 ```
 
-The `__` represents a blank for you to fill, and `| Should -Be 'True!'` shows the expected result.
-To pass this koan you need to replace `__` with `True!`, like this: `'True!' | Should -Be 'True!'`.
+The `$___` represents a blank for you to fill, and `| Should -Be $true` shows the expected result.
+To pass this koan you need to replace `$____` with `$true` to fulfil the assertion: `$true | Should -Be $true`
 
 #### 3. Run `Show-Karma` again to see how you did
 
