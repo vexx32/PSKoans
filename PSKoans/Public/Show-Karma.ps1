@@ -66,15 +66,12 @@ function Show-Karma {
                 Update-PSKoan -Confirm:$false
             }
 
-            # This can only throw if we were unable to create the path.
-            $KoanLocation = Resolve-Path -Path $KoanLocation
-
             Write-Verbose "Opening koans folder"
             $Editor = Get-PSKoanSetting -Name Editor
             if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
                 $EditorSplat = @{
                     FilePath     = $Editor
-                    ArgumentList = '"{0}"' -f $KoanLocation
+                    ArgumentList = '"{0}"' -f (Resolve-Path $KoanLocation)
                     NoNewWindow  = $true
                 }
                 Start-Process @EditorSplat
