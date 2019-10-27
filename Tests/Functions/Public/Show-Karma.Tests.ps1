@@ -207,11 +207,11 @@ Describe 'Show-Karma' {
                 }
 
                 It 'should pass a resolved path using quotes' {
-                    $Result.Path | Should -MatchExactly '"[^"]"'
+                    $Result.Path | Should -MatchExactly '"[^"]+"'
 
                     # Resolve-Path doesn't like embedded quotes
                     $Path = $Result.Path -replace '"'
-                    $Path | Should -BeExactly (Resolve-Path -Path $Path)
+                    $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
                 }
             }
 
