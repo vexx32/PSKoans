@@ -206,12 +206,14 @@ Describe 'Show-Karma' {
                     Assert-MockCalled Start-Process -Times 1
                 }
 
-                It 'should pass a resolved path using quotes' {
-                    $Result.Path | Should -MatchExactly '"[^"]+"'
-
+                It 'should pass a resolved path' {
                     # Resolve-Path doesn't like embedded quotes
                     $Path = $Result.Path -replace '"'
                     $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
+                }
+
+                It 'should enclose the path in quotes' {
+                    $Result.Path | Should -MatchExactly '"[^"]+"'
                 }
             }
 
