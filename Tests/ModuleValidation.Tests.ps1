@@ -3,17 +3,21 @@ $ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot/*/*.psm1")
 $ModuleName = Split-Path $ModuleRoot -Leaf
 
 Describe "General project validation: $ModuleName" {
-    $FileSearch = @{
-        Path    = $ProjectRoot
-        Include = '*.ps1', '*.psm1', '*.psd1'
-        Recurse = $true
-        Exclude = '*.Koans.ps1'
-    }
-    $Scripts = Get-ChildItem @FileSearch
 
-    # TestCases are splatted to the script so we need hashtables
-    $TestCases = $Scripts | ForEach-Object { @{File = $_} }
-    It "<File> should be valid powershell" -TestCases $TestCases {
+    BeforeAll {
+        $FileSearch = @{
+            Path    = $ProjectRoot
+            Include = '*.ps1', '*.psm1', '*.psd1'
+            Recurse = $true
+            Exclude = '*.Koans.ps1'
+        }
+        $Scripts = Get-ChildItem @FileSearch
+
+        # TestCases are splatted to the script so we need hashtables
+        $TestCases = $Scripts | ForEach-Object { @{File = $_ } }
+    }
+
+    It '<File> should be valid powershell' -TestCases $TestCases {
         param($File)
 
         $File.FullName | Should -Exist
@@ -24,13 +28,22 @@ Describe "General project validation: $ModuleName" {
         $Errors.Count | Should -Be 0
     }
 
-    It "<File> should include one (and only one) line feed at end of file" -TestCases $TestCases {
+    It '<File> should include one (and only one) line feed at end of file' -TestCases $TestCases {
         param($File)
         $crlf = [Regex]::Match(($File | Get-Content -Raw), '(\r?(?<lf>\n))+\Z')
         $crlf.Groups['lf'].Captures.Count | Should -Be 1
     }
 
-    It "'$ModuleName' can import cleanly" {
-        {Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force} | Should -Not -Throw
+    It 'can cleanly import the module' {
+        { Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force } | Should -Not -Throw
+    }
+
+    It 'can remove and re-import the module without errors' {
+        $Script = {
+            Remove-Module $ModuleName
+            Import-Module (Join-Path -Path $ModuleRoot -ChildPath "$ModuleName.psm1")
+        }
+
+        $Script | Should -Not -Throw
     }
 }
