@@ -94,7 +94,21 @@ Describe 'About XML' {
             The Select-Xml command can work with a path to an XML file, a path, or an XML document object.
         #>
 
+        It 'can select an XML element from a string' {
+            $xmlContent = @'
+<root>
+    <someElement>
+        <aNestedElement>value</aNestedElement>
+    </someElement>
+</root>
+'@
 
+            # In an XPath expression, //Name can be used to find all elements called Name, anywhere in the document
+            $result = Select-Xml -Content $xmlContent -XPath '//aNestedElement'
+
+            #
+            '____' | Should -Be $result.Node.'#text'
+        }
     }
 
     Context 'About SelectSingleNode and SelectNodes' {
