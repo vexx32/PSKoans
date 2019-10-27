@@ -59,9 +59,9 @@ function Show-Karma {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
-            $PSKoanLocationFullPath = $pscmdlet.GetUnresolvedProviderPathFromPSPath((Get-PSKoanLocation))
+            $KoanLocation = Get-PSKoanLocation
             Write-Verbose "Checking existence of koans folder"
-            if (-not (Test-Path $PSKoanLocationFullPath)) {
+            if (-not (Test-Path $KoanLocation)) {
                 Write-Verbose "Koans folder does not exist. Initiating full reset..."
                 Update-PSKoan -Confirm:$false
             }
@@ -71,13 +71,13 @@ function Show-Karma {
             if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
                 $EditorSplat = @{
                     FilePath     = $Editor
-                    ArgumentList = $PSKoanLocationFullPath
+                    ArgumentList = '"{0}"' -f (Resolve-Path $KoanLocation)
                     NoNewWindow  = $true
                 }
                 Start-Process @EditorSplat
             }
             else {
-                $PSKoanLocationFullPath | Invoke-Item
+                $KoanLocation | Invoke-Item
             }
         }
         default {
