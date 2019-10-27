@@ -186,20 +186,29 @@ Describe 'Show-Karma' {
             }
         }
 
-        Context 'With -Contemplate Switch' {
+        Context 'With -Meditate Switch' {
 
             Context 'With "code" Set as the Editor' {
                 BeforeAll {
                     Mock Get-Command { $true }
-                    Mock Start-Process { $FilePath }
-                    Set-PSKoanSetting -Name Editor -Value "code"
+                    Mock Start-Process {
+                        @{ Editor = $FilePath; Path = $ArgumentList }
+                    }
+                    Set-PSKoanSetting -Name Editor -Value 'code'
+
+                    $Result = Show-Karma -Contemplate
                 }
 
                 It 'should start VS Code with Start-Process' {
-                    Show-Karma -Contemplate | Should -Be 'code'
+                    $Result.Editor | Should -Be 'code'
 
                     Assert-MockCalled Get-Command -Times 1
                     Assert-MockCalled Start-Process -Times 1
+                }
+
+                It 'should pass a resolved path using quotes' {
+                    $Result.Path | Should -BeExactly (Resolve-Path $Result.Path)
+                    $Result.Path | Should -MatchExactly '"[^"]"'
                 }
             }
 
@@ -213,16 +222,14 @@ Describe 'Show-Karma' {
                 It 'should not produce output' {
                     Show-Karma -Meditate | Should -BeNullOrEmpty
                 }
+
                 It 'should open the koans directory with Invoke-Item' {
                     Assert-MockCalled Get-Command -Times 1 -ParameterFilter { $Name -eq "ascsadsa" }
                     Assert-MockCalled Invoke-Item -Times 1
                 }
             }
-        }
 
-        Context 'With -Meditate Switch' {
-
-            Context 'PSKoans directory does not exist' {
+            Context 'With Nonexistent KoanLocation' {
                 BeforeAll {
                     Mock Test-Path { $false }
                     Mock Update-PSKoan
