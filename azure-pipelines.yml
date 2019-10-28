@@ -66,18 +66,31 @@ jobs:
     displayName: 'Deploy to FileSystem'
     inputs:
       targetType: 'filePath'
-      arguments: -Key 'filesystem' -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
       filePath: ./Deploy/Publish.ps1
+      arguments: -Key 'filesystem' -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
 
       errorActionPreference: 'stop'
       failOnStderr: true
       pwsh: true
+
+  - task: PowerShell@2
+    displayName: 'Create Changelog'
+    inputs:
+      targetType: 'filepath'
+      filePath: ./Build/New-Changelog.ps1
+      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey)
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Module Nupkg'
     inputs:
       path: '$(NupkgPath)'
       artifact: PSKoans.nupkg
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Changelog'
+    inputs:
+      path: '$(System.DefaultWorkingDirectory)/CommitLog.md'
+      artifact: Changelog.md
 
   - task: PowerShell@2
     displayName: 'Deploy to PowerShell Gallery'
