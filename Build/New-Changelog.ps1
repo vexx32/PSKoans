@@ -59,7 +59,7 @@ process {
                 )
             } |
             ConvertTo-Csv -Delimiter '|'
-    ) -replace '"'
+    ) -replace '"' -replace '^|$', '|'
 
     $MarkdownTable = @(
         # Header Row Only
