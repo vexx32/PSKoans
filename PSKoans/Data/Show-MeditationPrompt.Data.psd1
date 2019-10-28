@@ -230,5 +230,13 @@ Is found in the river.
 Without speaking, without silence,
 How can you express the truth?
 '@
+        @'
+If you perceive something as not beautiful,
+you're not looking long enough.
+'@
+        @'
+In order to write good code,
+you must become the code.
+'@
     )
 }

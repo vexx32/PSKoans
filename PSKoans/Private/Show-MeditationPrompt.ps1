@@ -128,9 +128,9 @@ function Show-MeditationPrompt {
                         $CurrentTopic.Name
                     )
                     Write-Host $ProgressBar @Blue
+                    Write-Host
                 }
                 #endregion TopicProgressBar
-                Write-Host
 
                 if ($PSBoundParameters.ContainsKey('Results')) {
                     foreach ($KoanResult in $Results) {
@@ -145,7 +145,6 @@ function Show-MeditationPrompt {
                     }
                 }
 
-                Write-Host
                 #region TotalProgressBar
                 [int] $PortionDone = ($KoansPassed / $TotalKoans) * $ProgressWidth
 
