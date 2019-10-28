@@ -102,7 +102,6 @@ jobs:
   pool:
     vmImage: ubuntu-latest
 
-
   steps:
   - task: PowerShell@2
     displayName: 'Create Changelog'
