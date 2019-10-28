@@ -31,5 +31,27 @@ InModuleScope PSKoans {
 
             $ast.UsingStatements | Should -BeNullOrEmpty
         }
+
+        It 'When reading and modifying the source, position data is consistent' {
+            $tokens = $errors = @()
+            $originalAst = [System.Management.Automation.Language.Parser]::ParseFile(
+                $path,
+                [Ref]$tokens,
+                [Ref]$errors
+            )
+            $originalItBlock = $originalAst.Find( {
+                $args[0] -is [System.Management.Automation.Language.CommandAst] -and
+                $args[0].GetCommandName() -eq 'It'
+            }, $true)
+
+            $modifiedAst = Get-KoanAst -Path $path
+            $modifiedItBlock = $modifiedAst.Find( {
+                $args[0] -is [System.Management.Automation.Language.CommandAst] -and
+                $args[0].GetCommandName() -eq 'It'
+            }, $true)
+
+            $modifiedItBlock.Extent.StartOffset | Should -Be $originalItBlock.Extent.StartOffset
+            $modifiedItBlock.Extent.EndOffset | Should -Be $originalItBlock.Extent.EndOffset
+        }
     }
 }
