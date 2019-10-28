@@ -104,14 +104,25 @@ InModuleScope PSKoans {
 
         Context 'User file does not exist' {
             BeforeAll {
+                New-Item "$TestDrive/DoesNotExist.Koans.ps1" -ItemType File > $null
                 Mock Get-PSKoan -ParameterFilter { $Scope -eq 'User' }
-                Mock Update-PSKoan -ParameterFilter { $Topic -eq 'DoesNotExist' }
+                Mock Get-PSKoan -ParameterFilter { $Scope -eq 'Module' } {
+                    [PSCustomObject]@{
+                        Topic        = $Topic
+                        Module       = '_powershell'
+                        Position     = 101
+                        Path         = "$TestDrive/DoesNotExist.Koans.ps1"
+                        RelativePath = 'DoesNotExist.Koans.ps1'
+                        PSTypeName   = 'PSKoans.KoanInfo'
+                    }
+                }
+                Mock Update-PSKoan
             }
 
             It 'When the topic does not exist in the user location, call Update-PSKoan' {
                 Reset-PSKoan -Topic DoesNotExist -ErrorAction Stop @defaultParams
 
-                Assert-MockCalled Update-PSKoan -ParameterFilter { $Topic -eq 'DoesNotExist' }
+                Assert-MockCalled Update-PSKoan -Times 1
             }
         }
 
