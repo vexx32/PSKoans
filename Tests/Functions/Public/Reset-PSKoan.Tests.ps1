@@ -17,11 +17,11 @@ InModuleScope PSKoans {
                 Join-Path -Path $TestDrive -ChildPath 'PSKoans'
             }
             Mock Get-PSKoan -ParameterFilter { $Scope -eq 'Module' } -MockWith {
-                 [PSCustomObject]@{
-                     Topic        = 'AboutSomething'
-                     Path         = Join-Path -Path $TestDrive -ChildPath 'Module\Group\AboutSomething.Koans.ps1'
-                     RelativePath = 'Group\AboutSomething.Koans.ps1'
-                 }
+                [PSCustomObject]@{
+                    Topic        = 'AboutSomething'
+                    Path         = Join-Path -Path $TestDrive -ChildPath 'Module\Group\AboutSomething.Koans.ps1'
+                    RelativePath = 'Group\AboutSomething.Koans.ps1'
+                }
             }
             New-Item -Path (Join-Path -Path $TestDrive -ChildPath 'Module\Group') -ItemType Directory
             New-Item -Path (Join-Path -Path $TestDrive -ChildPath 'PSKoans\Group') -ItemType Directory
@@ -105,10 +105,13 @@ InModuleScope PSKoans {
         Context 'User file does not exist' {
             BeforeAll {
                 Mock Get-PSKoan -ParameterFilter { $Scope -eq 'User' }
+                Mock Update-PSKoan -ParameterFilter { $Topic -eq 'DoesNotExist' }
             }
 
-            It 'When the topic does not exist in the user location, write an error' {
-                { Reset-PSKoan -Topic DoesNotExist -ErrorAction Stop @defaultParams } | Should -Throw -ErrorId PSKoans.UserTopicNotFound
+            It 'When the topic does not exist in the user location, call Update-PSKoan' {
+                Reset-PSKoan -Topic DoesNotExist -ErrorAction Stop @defaultParams
+
+                Assert-MockCalled Update-PSKoan -ParameterFilter { $Topic -eq 'DoesNotExist' }
             }
         }
 
