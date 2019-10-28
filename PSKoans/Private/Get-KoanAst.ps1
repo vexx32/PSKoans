@@ -34,11 +34,11 @@ function Get-KoanAst {
             $content = Get-Content -Path $Path -Raw
             foreach ($match in [Regex]::Matches($content, 'using module \S+')) {
                 $content = $content.Remove(
-                    $_.Index,
-                    $_.Length
+                    $match.Index,
+                    $match.Length
                 ).Insert(
-                    $_.Index,
-                    ' ' * $_.Length
+                    $match.Index,
+                    ' ' * $match.Length
                 )
             }
 
