@@ -67,10 +67,7 @@ jobs:
     inputs:
       targetType: 'filePath'
       filePath: ./Deploy/Publish.ps1
-      arguments: |
-        -Key 'filesystem'
-        -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
-        -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
+      arguments: -Key 'filesystem' -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
 
       errorActionPreference: 'stop'
       failOnStderr: true
