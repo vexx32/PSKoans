@@ -36,7 +36,7 @@
     usable without authentication. Authenticated requests have a
     substantially higher limit on requests per minute.
 #>
-[CmdletBinding(DefaultParameterSetName = 'Credential')]
+[CmdletBinding()]
 param(
     [Parameter(Mandatory, Position = 0)]
     [ValidateScript( { Test-Path $_ -IsValid })]
@@ -56,11 +56,11 @@ param(
 
 begin {
     if ($ApiKey) {
-        $RequestParams = @(
+        $RequestParams = @{
             SessionVariable = 'AuthSession'
-            Uri = 'https://api.github.com/'
-            Headers = @{ Authorization = "token $ApiKey" }
-        )
+            Uri             = 'https://api.github.com/'
+            Headers         = @{ Authorization = "token $ApiKey" }
+        }
         Invoke-RestMethod @RequestParams | Out-String | Write-Verbose
     }
 }
