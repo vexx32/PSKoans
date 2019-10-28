@@ -78,7 +78,7 @@ jobs:
     inputs:
       targetType: 'filepath'
       filePath: ./Build/New-Changelog.ps1
-      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey)
+      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey) -Verbose
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Module Nupkg'
