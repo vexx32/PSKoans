@@ -90,7 +90,7 @@ jobs:
     displayName: 'Publish Changelog'
     inputs:
       path: '$(System.DefaultWorkingDirectory)/Changelog.md'
-      artifact: Changelog.md
+      artifact: Changelog
 
   - task: PowerShell@2
     displayName: 'Deploy to PowerShell Gallery'
