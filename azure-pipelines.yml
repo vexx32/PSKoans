@@ -67,30 +67,20 @@ jobs:
     inputs:
       targetType: 'filePath'
       filePath: ./Deploy/Publish.ps1
-      arguments: -Key 'filesystem' -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
+      arguments: |
+        -Key 'filesystem'
+        -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
+        -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
 
       errorActionPreference: 'stop'
       failOnStderr: true
       pwsh: true
-
-  - task: PowerShell@2
-    displayName: 'Create Changelog'
-    inputs:
-      targetType: 'filepath'
-      filePath: ./Build/New-Changelog.ps1
-      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey) -Verbose
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Module Nupkg'
     inputs:
       path: '$(NupkgPath)'
       artifact: PSKoans.nupkg
-
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Changelog'
-    inputs:
-      path: '$(System.DefaultWorkingDirectory)/Changelog.md'
-      artifact: Changelog
 
   - task: PowerShell@2
     displayName: 'Deploy to PowerShell Gallery'
@@ -104,3 +94,28 @@ jobs:
       errorActionPreference: 'stop'
       failOnStderr: true
       pwsh: true
+
+- job: GenerateChangelog
+  displayName: "Publish Changelog"
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn:
+    - Linux
+    - Windows
+    - MacOS
+  pool:
+    vmImage: ubuntu-latest
+
+
+  steps:
+  - task: PowerShell@2
+    displayName: 'Create Changelog'
+    inputs:
+      targetType: 'filepath'
+      filePath: ./Build/New-Changelog.ps1
+      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey) -Verbose
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Changelog'
+    inputs:
+      path: '$(System.DefaultWorkingDirectory)/Changelog.md'
+      artifact: Changelog
