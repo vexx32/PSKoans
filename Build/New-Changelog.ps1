@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory, Position = 0)]
-    [ValidateScript( { Test-Path $_ })]
+    [ValidateScript( { Test-Path $_ -IsValid })]
     [string]
     $Path = "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/Changelog.md",
 
