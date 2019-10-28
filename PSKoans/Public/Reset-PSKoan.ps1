@@ -37,8 +37,8 @@ function Reset-PSKoan {
     }
     switch ($pscmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly'    { $GetParams['Module'] = $Module }
-        { $Topic }      { $GetParams['Topic'] = $Topic }
+        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $Topic } { $GetParams['Topic'] = $Topic }
     }
     $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
@@ -46,7 +46,7 @@ function Reset-PSKoan {
     $UserKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
     if (-not $UserKoanList) {
-        $UserKoanList = @{}
+        $UserKoanList = @{ }
     }
 
     if (-not $ModuleKoanList) {
@@ -62,14 +62,19 @@ function Reset-PSKoan {
 
     foreach ($moduleTopic in $ModuleKoanList.Keys) {
         if (-not $UserKoanList.ContainsKey($moduleTopic)) {
-            $ErrorDetails = @{
-                ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
-                ExceptionMessage = 'No matching topic {0} in the user Koan location' -f $moduleTopic
-                ErrorId          = 'PSKoans.UserTopicNotFound'
-                ErrorCategory    = 'ObjectNotFound'
-                TargetObject     = $moduleTopic
+            if ($PSCmdlet.ShouldProcess($moduleTopic, 'Add new topic to PSKoans library')) {
+                Update-PSKoan -Topic $moduleTopic -Confirm:$false
             }
-            Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
+            else {
+                $ErrorDetails = @{
+                    ExceptionType    = 'System.Management.Automation.ItemNotFoundException'
+                    ExceptionMessage = 'No matching topic {0} in the user Koan location' -f $moduleTopic
+                    ErrorId          = 'PSKoans.UserTopicNotFound'
+                    ErrorCategory    = 'ObjectNotFound'
+                    TargetObject     = $moduleTopic
+                }
+                Write-Error -ErrorRecord (New-PSKoanErrorRecord @ErrorDetails)
+            }
 
             continue
         }
