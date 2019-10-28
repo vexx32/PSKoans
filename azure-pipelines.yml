@@ -89,7 +89,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Changelog'
     inputs:
-      path: '$(System.DefaultWorkingDirectory)/CommitLog.md'
+      path: '$(System.DefaultWorkingDirectory)/Changelog.md'
       artifact: Changelog.md
 
   - task: PowerShell@2
