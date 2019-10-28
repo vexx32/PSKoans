@@ -94,7 +94,7 @@ jobs:
 
 - job: GenerateChangelog
   displayName: "Publish Changelog"
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+  #condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn:
     - Linux
     - Windows
