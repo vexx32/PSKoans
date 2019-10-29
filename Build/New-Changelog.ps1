@@ -76,41 +76,46 @@ process {
         '.'
         '":(exclude)*.md"'
     )
-    $Commits = & git @args |
-        ConvertFrom-Csv -Delimiter '~' -Header Hash, Name, Email, Subject |
-        Group-Object -Property Name
+    $Commits = & git @args | ConvertFrom-Csv -Delimiter '~' -Header Hash, Name, Email, Subject
 
-    $CsvString = $(
-        $Commits |
-            ForEach-Object {
-                $RequestParams['Uri'] = "https://api.github.com/search/users?q=$($_.Group[0].Email)+in:email"
-                $result = Invoke-RestMethod @RequestParams
-                $Name = if ($result.total_count -ne 0) { $result.items[0].login }
+    $NameTable = @{ }
+    foreach ($Item in ($Commits | Sort-Object -Property Email -Unique)) {
+        $RequestParams['Uri'] = "https://api.github.com/search/users?q=$($Item.Email)+in:email"
 
-                $_.Group | Select-Object -Property @(
-                    @{ Name = 'Hash'; Expression = { $_.Hash.Substring(0, 7) } }
-                    @{
-                        Name       = 'Name'
-                        Expression = {
-                            $(
-                                $_.Name
-                                if ($Name) { "(@$Name)" }
-                            ) -join ' '
-                        }
-                    }
-                    'Subject'
-                )
-            } |
-            ConvertTo-Csv -Delimiter '|'
-    ) -replace '"' -replace '^|$', '|'
+        do {
+            $result = $null
+            $attempt = 0
+            try {
+                $result = Invoke-RestMethod @RequestParams -ErrorAction Stop
+            }
+            catch {
+                # If this errors, we have probably hit Github's per-minute API restriction,
+                # so wait at least 30 seconds before retry.
+                Start-Sleep -Seconds 30
+                $attempt++
+            }
+        } while ($attempt -lt 3 -and -not $result)
+
+        $NameTable[$Item.Email] = if ($result.total_count) { $result.items[0].login } else { $Item.Name }
+    }
+
+    $CsvString = $Commits |
+        Select-Object -Property @(
+            @{ Name = 'Hash'; Expression = { $_.Hash.Substring(0, 7) } }
+            @{ Name = 'Name'; Expression = { $NameTable[$_.Email] } }
+            'Subject'
+        ) |
+        ConvertTo-Csv -Delimiter '|'
+
+    $TableRows = $CsvString -replace '"', ' ' -replace '^|$', '|'
 
     $MarkdownTable = @(
         # Header Row Only
-        $CsvString | Select-Object -First 1
+        $TableRows | Select-Object -First 1
         # Adding Markdown table column alignments
         "| :--: | :--- | :--- |"
         # Data Rows
-        $CsvString | Select-Object -Skip 1
+        $TableRows | Select-Object -Skip 1
     )
 
     $MarkdownTable | Set-Content -Path $Path
