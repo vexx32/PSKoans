@@ -30,7 +30,7 @@ Describe 'Equality' {
     It 'expects you to fill in values' {
         # Initiative will be rewarded.
         __ | Should -Be (1 + 2)
-        __ + 5 -eq 10 | Should -BeTrue
+        __ + 5 | Should -Be 10
     }
 
     It 'sets the expectations' {
@@ -45,6 +45,6 @@ Describe 'Equality' {
 
     It 'demands balance' {
         # Both sides of the scale must be of equal measure.
-        __ + 2 -eq 3 | Should -BeTrue
+        __ + 2 | Should -Be 3
     }
 }
