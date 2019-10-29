@@ -14,11 +14,11 @@ param()
     This is where the fun begins! Each koan contains an example designed
     to teach you a lesson about PowerShell. If you execute the program
     defined in this project, you will get a message that the koan below
-    has failed. Your job is to fill in the blanks (the __, $__, FILL_ME_IN,
-    or $FILL_ME_IN symbols) to make it pass. Once you make the change,
-    re-run the program to make sure the koan passes, and continue on to the
-    next failing koan. With each passing koan, you'll learn more about
-    PowerShell, and add another weapon to your PowerShell scripting arsenal.
+    has failed. Your job is to fill in the blanks (the __ or ____ symbols)
+    to make it pass. Once you make the change, call Show-Karma to make sure
+    the koan passes, and continue on to the next failing koan.
+    With each passing koan, you'll learn more about PowerShell, and add
+    another tool to your PowerShell scripting belt.
 #>
 Describe 'Equality' {
 
