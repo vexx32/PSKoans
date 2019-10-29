@@ -34,6 +34,11 @@ function Show-Karma {
         [switch]
         $Contemplate,
 
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
+        [Alias('Continue')]
+        [switch]
+        $OpenFile,
+
         [Parameter()]
         [Alias()]
         [switch]
@@ -78,6 +83,30 @@ function Show-Karma {
             }
             else {
                 $KoanLocation | Invoke-Item
+            }
+        }
+        'OpenFile' {
+            try {
+                $Results = Get-Karma @GetParams
+            }
+            catch {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            $UnformatedPath     = $Results.Meditation
+            $PSKoansFilePath = $UnformatedPath.Substring($UnformatedPath.IndexOf(', ')+2,$UnformatedPath.IndexOf(': ')-($UnformatedPath.IndexOf(', ')+2))
+            $PSKoansLine = $UnformatedPath.Substring($UnformatedPath.IndexOf(': line ')+7,$UnformatedPath.LastIndexOf(("`n"))-($UnformatedPath.IndexOf(': line ')+7))    
+            $FullArgument = "-g ${PSKoansFilePath}:${PSKoansLine}"
+            $Editor = Get-PSKoanSetting -Name Editor
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
+                $EditorSplat = @{
+                    FilePath     = $Editor
+                    ArgumentList = $FullArgument
+                    NoNewWindow  = $true
+                }
+                Start-Process @EditorSplat
+            }
+            else {
+                $PSKoanLocationFullPath | Invoke-Item
             }
         }
         default {
