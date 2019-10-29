@@ -1,8 +1,8 @@
 # PowerShell Koans
 
-| [![PSKoans Logo](./logo-128px.png)](./logo.svg)                                                 |
-| :---------------------------------------------------------------------------------------------: |
-| [![Build Status][build-badge]][build-link]<br/>[![Coverage Status][coverage-badge]][build-link] |
+|                                                |                                                                                                 |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [![PSKoans Logo](./logo-64px.png)](./logo.svg) | [![Build Status][build-badge]][build-link]<br/>[![Coverage Status][coverage-badge]][build-link] |
 
 - [PowerShell Koans](#powershell-koans)
   - [About the Author](#about-the-author)
