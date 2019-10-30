@@ -26,7 +26,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Built Module Artifact'
     inputs:
-      path: '$(System.DefaultWorkingDirectory)/PSKoans'
+      path: '$(BuiltModuleFolder)/PSKoans'
       artifact: PSKoans
 
 - job: Windows
