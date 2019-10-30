@@ -39,7 +39,7 @@ Describe "Basic Verbs" {
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Get).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
@@ -67,7 +67,7 @@ Describe "Basic Verbs" {
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb New).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
@@ -103,7 +103,7 @@ Describe "Basic Verbs" {
             $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Add).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
@@ -143,7 +143,7 @@ Describe "Basic Verbs" {
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Set).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
@@ -177,7 +177,7 @@ Describe "Basic Verbs" {
             $Answers = "____","____","____","____","____"
             $Answers | Should -BeIn (Get-Command -Verb Remove).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 }
