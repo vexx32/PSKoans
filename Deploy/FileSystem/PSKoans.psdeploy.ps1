@@ -3,7 +3,7 @@ Deploy Module {
         FromSource "$PSScriptRoot/PSKoans"
         To FileSystem
         WithOptions @{
-            ApiKey = $ENV:NugetApiKey
+            ApiKey = 'FileSystem'
         }
     }
 }
