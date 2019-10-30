@@ -60,7 +60,7 @@ jobs:
     displayName: 'Download Built Module Artifact'
     inputs:
       artifact: PSKoans
-      path: '$(System.DefaultWorkingDirectory)/Deploy/FileSystem/PSKoans'
+      path: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
 
   - task: PowerShell@2
     displayName: 'Deploy to FileSystem'
