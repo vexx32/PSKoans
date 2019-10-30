@@ -29,14 +29,14 @@ Describe "Basic Verbs" {
             your current machine.
         #>
 
-        It 'is for commands that retrieve data'  {
+        It 'is for commands that retrieve data' {
             <#
                 Using the Get-Command cmdlet, which retrieves all available commands,
                 find 5 commands with the Get verb.
 
                 Replace each ____ with the name of a Get-* command.
             #>
-            $Answers = "____","____","____","____","____"
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Get).Name
 
             $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
@@ -44,7 +44,7 @@ Describe "Basic Verbs" {
     }
 
     Context "New" {
-         <#
+        <#
             Cmdlets with the New verb are used to create data.
 
             So for example 'New-GUID' will create a new GUID, or 'New-LocalUser' will create a local
@@ -64,7 +64,7 @@ Describe "Basic Verbs" {
 
                 Replace each ____ with the name of a New-* command.
             #>
-            $Answers = "____","____","____","____","____"
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb New).Name
 
             $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
@@ -140,7 +140,7 @@ Describe "Basic Verbs" {
 
                 Replace each ____ with the name of a Set-* command.
             #>
-            $Answers = "____","____","____","____","____"
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Set).Name
 
             $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
@@ -148,7 +148,7 @@ Describe "Basic Verbs" {
     }
 
     Context "Remove" {
-         <#
+        <#
             Cmdlets with the Remove verb will delete data from an object or data source.
 
             If you followed the example in the 'New','Add' and 'Set' tests, you can use Remove-Item to
@@ -174,7 +174,7 @@ Describe "Basic Verbs" {
 
                 Replace each ____ with the name of a Remove-* command.
             #>
-            $Answers = "____","____","____","____","____"
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Remove).Name
 
             $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
