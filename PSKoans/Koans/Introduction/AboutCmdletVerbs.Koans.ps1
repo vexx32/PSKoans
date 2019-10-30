@@ -12,7 +12,7 @@ param()
 
     With the verb being an action, and the noun representing the target of the command.
 
-    In this Koan, we'll cover the 5 basic verbs which'll see you through the majority of your
+    In this topic, we'll cover the 5 basic verbs which'll see you through the majority of your
     PowerShell needs. But PowerShell has more than just 5 predefined verbs! You can see them
     all by running the following cmdlet:
 
@@ -29,22 +29,22 @@ Describe "Basic Verbs" {
             your current machine.
         #>
 
-        It 'is for commands that retrieve data'  {
+        It 'is for commands that retrieve data' {
             <#
                 Using the Get-Command cmdlet, which retrieves all available commands,
-                find 5 new Get-* commands you haven't previously used.
-            #>
+                find 5 commands with the Get verb.
 
-            # Replace each ____ with the name of a Get cmdlet
-            $Answers = "____","____","____","____","____"
+                Replace each ____ with the name of a Get-* command.
+            #>
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Get).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
     Context "New" {
-         <#
+        <#
             Cmdlets with the New verb are used to create data.
 
             So for example 'New-GUID' will create a new GUID, or 'New-LocalUser' will create a local
@@ -53,22 +53,21 @@ Describe "Basic Verbs" {
             Before continuing with this exercise, try using the following code to create a file:
 
                 $Path = "YOUR PATH.txt"
-                New-Item -Path $ItemPath -ItemType file
+                New-Item -Path $Path -ItemType file
 
             This will create a new text file, in the location you specify.
         #>
 
         It 'is for commands that create data' {
             <#
-                Using the Get-Command cmdlet, which all available commands,
-                find 5 New-* new commands you haven't previously used.
-            #>
+                Using Get-Command, find 5 commands with the New verb.
 
-            # Replace each ____ with the name of a New cmdlet
-            $Answers = "____","____","____","____","____"
+                Replace each ____ with the name of a New-* command.
+            #>
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb New).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
@@ -97,15 +96,14 @@ Describe "Basic Verbs" {
 
         It 'is for commands that append data' {
             <#
-                Using the Get-Command cmdlet, which retrieves all the cmdlets currently available,
-                find 5 new add commands you haven't previously used.
-            #>
+                Using Get-Command, find 5 commands with the Add verb.
 
-            # Replace each ____ with the name of a Add cmdlet
-            $Answers = "____","____","____","____","____"
+                Replace each ____ with the name of an Add-* command.
+            #>
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Add).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
@@ -117,7 +115,7 @@ Describe "Basic Verbs" {
             something to your text file:
 
                 $Path = "YOUR PATH.txt"
-                Set-Content -Path $ItemPath -Value "Sir Kill-A-Lot is the best house robot because of reasons."
+                Set-Content -Path $Path -Value "Sir Kill-A-Lot is the best house robot because of reasons."
 
             Before continuing, run this command several times. See what happens, is it the
             result you expected?
@@ -138,20 +136,19 @@ Describe "Basic Verbs" {
 
         It 'is for commands that overwrite data' {
             <#
-                Using the Get-Command cmdlet, which retrieves all the cmdlets currently available,
-                find 5 new set commands you haven't previously used.
-            #>
+                Using Get-Command, find 5 commands with the Set verb.
 
-            # Replace each ____ with the name of a Set cmdlet
-            $Answers = "____","____","____","____","____"
+                Replace each ____ with the name of a Set-* command.
+            #>
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Set).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 
     Context "Remove" {
-         <#
+        <#
             Cmdlets with the Remove verb will delete data from an object or data source.
 
             If you followed the example in the 'New','Add' and 'Set' tests, you can use Remove-Item to
@@ -173,15 +170,14 @@ Describe "Basic Verbs" {
 
         It "is for commands that delete data" {
             <#
-                Using the Get-Command cmdlet, which retrieves all available commands,
-                find 5 new remove commands you haven't previously used.
-            #>
+                Using Get-Command, find 5 commands with the Remove verb.
 
-            # Replace each ____ with the name of a Remove cmdlet
-            $Answers = "____","____","____","____","____"
+                Replace each ____ with the name of a Remove-* command.
+            #>
+            $Answers = "____", "____", "____", "____", "____"
             $Answers | Should -BeIn (Get-Command -Verb Remove).Name
 
-            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets should be supplied"
+            $Answers | Get-Unique | Should -HaveCount 5 -Because "five unique cmdlets are required"
         }
     }
 }
