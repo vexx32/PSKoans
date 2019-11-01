@@ -238,5 +238,27 @@ you're not looking long enough.
 In order to write good code,
 you must become the code.
 '@
+        @'  
+Mind is not the Buddha,
+reason is not the Way.
+'@
+        @'
+If you want to fly,
+give up everything
+that weighs you down.
+'@
+        @'
+There are two rules in life:
+1. Never give out all of 
+the information.
+'@
+        @'
+You are the designer
+of your own catastrophe.
+'@
+        @'
+When you realise how perfect everything is,
+you will tilt your head back and laugh at the sky.
+'@
     )
 }

@@ -29,8 +29,8 @@
     }
     switch ($pscmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly'    { $GetParams['Module'] = $Module }
-        { $Topic }      { $GetParams['Topic'] = $Topic }
+        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $Topic } { $GetParams['Topic'] = $Topic }
     }
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
@@ -51,12 +51,18 @@
 
             if ($TotalKoans -eq 0) {
                 if ($Topic) {
+                    $Message = @(
+                        'Could not find any PSKoans topics matching Topic(s): {0}.'
+                        'Use Update-PSKoan to ensure your koan library is up to date.'
+                    ) -join ' '
+                    $TopicList = $Topic -join ','
+
                     $ErrorDetails = @{
                         ExceptionType    = 'System.IO.FileNotFoundException'
-                        ExceptionMessage = 'Could not find any koans that match the specified Topic(s)'
-                        ErrorId          = 'PSKoans.NoMatchingKoansFound'
+                        ExceptionMessage = $Message -f $TopicList
+                        ErrorId          = 'PSKoans.TopicNotFound'
                         ErrorCategory    = 'ObjectNotFound'
-                        TargetObject     = $Topic -join ','
+                        TargetObject     = $TopicList
                     }
                     $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
                 }

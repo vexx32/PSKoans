@@ -55,7 +55,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'throws an error if a Topic is specified that matches nothing' {
-                { Get-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ExpectedMessage 'Could not find any koans'
+                { Get-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ErrorId 'PSKoans.TopicNotFound'
             }
         }
 
@@ -115,7 +115,8 @@ InModuleScope 'PSKoans' {
 
                 try {
                     $Result = Get-Karma -Topic SelectedTopicTest
-                } catch {
+                }
+                catch {
                     # Ignore this. Error tests follow.
                 }
             }

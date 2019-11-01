@@ -31,9 +31,16 @@ function Get-KoanAst {
             $tokens = $errors = $null
 
             # Remove the "using module" line. Avoids a slow call to Get-Module -ListAvailable from "using module".
-            $content = Get-Content -Path $Path |
-                Where-Object { $_ -notmatch '^\s*using module' } |
-                Out-String
+            $content = Get-Content -Path $Path -Raw
+            foreach ($match in [Regex]::Matches($content, 'using module \S+')) {
+                $content = $content.Remove(
+                    $match.Index,
+                    $match.Length
+                ).Insert(
+                    $match.Index,
+                    ' ' * $match.Length
+                )
+            }
 
             [Parser]::ParseInput(
                 $content,
