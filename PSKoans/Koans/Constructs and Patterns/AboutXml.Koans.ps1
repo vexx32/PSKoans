@@ -6,6 +6,9 @@ param()
 
     With a number of specialised commands  and the  the .NET framework available PowerShell is very capable
     of working with XML documents and XML data in general.
+
+    PowerShell can treat an XML document as a series of nested objects. This is referred to as "XML as an object"
+    in the examples which follow, distinguishing the approach from reliance on XPath.
 #>
 Describe 'About XML' {
 
@@ -210,15 +213,12 @@ Describe 'About XML' {
 <drives>
     <drive fileSystem="NTFS">
         <letter>C:</letter>
-        <size>100</size>
     </drive>
     <drive fileSystem="NTFS">
         <letter>D:</letter>
-        <size>50</size>
     </drive>
     <drive fileSystem="FAT32">
         <letter>G:</letter>
-        <size>50</size>
     </drive>
 </drives>
 '@
@@ -234,11 +234,9 @@ Describe 'About XML' {
 <drives>
     <drive fileSystem="NTFS">
         <letter>C:</letter>
-        <size>100</size>
     </drive>
     <drive fileSystem="FAT32">
         <letter>G:</letter>
-        <size>50</size>
     </drive>
 </drives>
 '@
@@ -355,23 +353,254 @@ Describe 'About XML' {
     }
 
     Context 'Modifying XML documents' {
+        It 'can remove selected elements from a document' {
+            <#
+                Individual elements can be removed from a document once they are selected.
+            #>
 
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+    </drive>
+    <drive>
+        <letter>D:</letter>
+    </drive>
+</drives>
+'@
+
+            $element = $xml.SelectSingleNode('/drives/drive[letter="D:"]')
+
+            <#
+                The RemoveAll method will remove the current element.
+
+                When working with file content, the change will be held in memory until the
+                Save method is called.
+            #>
+            $element.RemoveAll()
+
+            '____' | Should -Be $xml.drives.drive.letter
+        }
+
+        It 'can remove a node with children using RemoveAll and XML as an object' {
+            <#
+                Using XML
+            #>
+
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+    </drive>
+    <drive>
+        <letter>D:</letter>
+    </drive>
+</drives>
+'@
+
+            $element = $xml.drives.drive | Where-Object letter -eq 'C:'
+
+            # Removes the drive node where the letter is C:
+            $element.RemoveAll()
+
+            '____' | Should -Be $xml.drives.drive.letter
+        }
+
+        It 'can modify values in an existing node using XML as an object' {
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+        <size>1</size>
+    </drive>
+</drives>
+'@
+
+            <#
+                New values can be assigned directly to leaf value. That is, an element or an attribute which
+                does not have children.
+            #>
+
+            $xml.drives.drive.size = '5'
+
+            '____' | Should -Be $xml.drives.drive.size
+        }
+
+        It 'can assign new values to #text when searching' {
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+        <size>100</size>
+    </drive>
+    <drive>
+        <letter>D:</letter>
+        <size>0</size>
+    </drive>
+</drives>
+'@
+
+            <#
+                When searching for a node using SelectSingleNode or SelectNodes, new values must be assigned using the
+                #text property.
+            #>
+
+            $xml.SelectSingleNode('/drives/drive[letter="D:"]/size').'#text' = '50'
+
+            '____' | Should -Be $xml.SelectSingleNode('/drives/drive[letter="D:"]/size').'#text'
+        }
+
+        <#
+            There are several different ways to add new elements to an XML document. The easiest method should be used
+            depending on the situation.
+        #>
+
+        It 'can create new elements using the CreateElement method' {
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+    </drive>
+</drives>
+'@
+
+            # The CreateElement method is executed on the document.
+            $newNode = $xml.CreateElement('size')
+            # A new value can be set using the InnerText property.
+            $newNode.InnerText = '50'
+            # The new element can added to the document using the AppendChild method the parent element.
+            $xml.drives.drive.AppendChild($newNode)
+
+            '____' | Should -Be $xml.drives.drive.size
+        }
+
+        It 'can create new elements using CreateDocumentFragment' {
+            # A document fragment is an empty XML document which can be added to the current document.
+
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+    </drive>
+</drives>
+'@
+
+            # The CreateDocumentFragment is executed on the document.
+            $newNode = $xml.CreateDocumentFragment()
+            # The desired XML content is assigned to the InnerXml property.
+            $newNode.InnerXml = '<drive><letter>D:</letter></drive>'
+            # The new element can added to the document using the AppendChild method the parent element.
+            $xml.drives.AppendChild($newNode)
+
+            @('____', '____') | Should -Be $xml.drives.drive.letter
+        }
+
+        It 'can import elements from a different XML file' {
+            # Elements from other XML documents can be copied but those elements must be imported first.
+
+            $existingXml = [Xml]'<root><localNode>Existing Value</localNode></root>'
+            $otherXml = [Xml]'<root><otherNode>New Value</otherNode></root>'
+
+            # A child of another document can be selected to import.
+            $nodeToCopy = $otherXml.SelectSingleNode('/root/otherNode')
+            # The node can be imported either as a shallow or a deep copy.
+            $importedNode = $existingXml.ImportNode($nodeToCopy, $true)
+            # Once imported, the node can be added to the existing document.
+            $existingXml.root.AppendChild($importedNode)
+
+            '____' | Should -Be $existingXml.root.otherNode
+        }
+
+        It 'can add elements before or after a specific element' {
+            <#
+                The order elements appear in an XML document is often important. An XmlDocument has tweo
+                methods which can be used to add content in a specific place.
+
+                    * InsertBefore
+                    * InsertAfter
+            #>
+
+            $xml = [Xml]@'
+<list>
+    <item>1</item>
+    <item>2</item>
+    <item>4</item>
+    <item>5</item>
+</list>
+'@
+
+            <#
+                First select the which appears before or after the desired position.
+
+                The XPath expression below uses . to refer to the value of the current element.
+            #>
+            $previousElement = $xml.SelectSingleNode('/list/item[.="2"]')
+            # The new element must be created and given a value.
+            $newElement = $xml.CreateElement('item')
+            $newElement.InnerText = '3'
+
+            # Then the element can be inserted into the document
+            $xml.list.InsertAfter($newElement, $previousElement)
+
+            @('____', '____', '____', '____', '____') | Should -Be $xml.list.item
+        }
+
+        It 'can add attributes to an existing element' {
+            <#
+                New attributes may be added using the SetAttribute method of an XML Element.
+
+                The SetAttribute method may also be used to modify existing attributes.
+            #>
+
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+    </drive>
+</drives>
+'@
+
+            $xml.drives.drive.SetAttribute('fileSystem', 'NTFS')
+
+            '____' | Should -Be $xml.SelectSingleNode('/drives/drive/@fileSystem').'#text'
+        }
     }
 
     Context 'Working with namespaces' {
+        <#
+            Namespaces can make working with XML documents very hard work. A namespace changes how individual
+            elements must be addressed in many of the cases used so far.
+
+            Namespaces do not affect XML as an object, but do affect XPath queries.
+        #>
 
     }
 
     Context 'Working with an XML schema' {
+        # Testing a document against a schema.
+
+        # Inferring a schema.
 
     }
 
     Context 'About CLI XML' {
+        <#
+            CLI XML is a specific format of XML document which can be used to represent objects in PowerShell.
 
-    }
+            It is frequently used to store data on the file system for retrieval at a later date.
+        #>
 
-    Context 'About System.Xml.Linq' {
+        It 'will attempt to rebuild the original object' {
 
+        }
+
+        It 'does not work so well with enumeration values' {
+
+        }
+
+        It 'it will automatically encrypt secure strings' {
+
+        }
     }
 }
 
