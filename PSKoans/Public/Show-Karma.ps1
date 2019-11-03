@@ -93,8 +93,8 @@ function Show-Karma {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
             $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
-            $LineNumber = $Results.Meditation | Select-String -Pattern '\d+(?=:  +)' 
-            $FullArgument = '-g "{0}":{1}' -f $FilePath, $LineNumber.Matches.Value
+            $LineNumber = ($Results.Meditation -split '\r?\n')[1] -replace ':.+' #Grabs the line number from the second line of the Meditation.Result
+            $FullArgument = '-g "{0}":{1}' -f $FilePath, $LineNumber
             $Editor = Get-PSKoanSetting -Name Editor
             if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
                 $EditorSplat = @{
