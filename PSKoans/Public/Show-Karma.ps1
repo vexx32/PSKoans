@@ -92,10 +92,9 @@ function Show-Karma {
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
-            $UnformatedPath     = $Results.Meditation
-            $PSKoansFilePath = $UnformatedPath.Substring($UnformatedPath.IndexOf(', ')+2,$UnformatedPath.IndexOf(': ')-($UnformatedPath.IndexOf(', ')+2))
-            $PSKoansLine = $UnformatedPath.Substring($UnformatedPath.IndexOf(': line ')+7,$UnformatedPath.LastIndexOf(("`n"))-($UnformatedPath.IndexOf(': line ')+7))    
-            $FullArgument = "-g ${FilePath}:${LineNumber}"
+            $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
+            $LineNumber = $Results.Meditation | Select-String -Pattern '\d+(?=:  +)' 
+            $FullArgument = '-g "{0}":{1}' -f $FilePath, $LineNumber.Matches.Value
             $Editor = Get-PSKoanSetting -Name Editor
             if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
                 $EditorSplat = @{
