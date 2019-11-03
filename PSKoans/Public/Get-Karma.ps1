@@ -102,17 +102,18 @@
                     Select-Object -First 1
 
                 [PSCustomObject]@{
-                    PSTypeName     = 'PSKoans.Result'
-                    Describe       = $NextKoanFailed.Describe
-                    It             = $NextKoanFailed.Name
-                    Expectation    = $NextKoanFailed.ErrorRecord
-                    Meditation     = $NextKoanFailed.StackTrace
-                    KoansPassed    = $KoansPassed
-                    TotalKoans     = $TotalKoans
-                    CurrentTopic   = [PSCustomObject]@{
-                        Name      = $KoanFile.Topic
-                        Completed = $PesterTests.PassedCount
-                        Total     = $PesterTests.TotalCount
+                    PSTypeName              = 'PSKoans.Result'
+                    Describe                = $NextKoanFailed.Describe
+                    It                      = $NextKoanFailed.Name
+                    Expectation             = $NextKoanFailed.ErrorRecord
+                    Meditation              = $NextKoanFailed.StackTrace
+                    KoansPassed             = $KoansPassed
+                    TotalKoans              = $TotalKoans
+                    CurrentTopic            = [PSCustomObject]@{
+                            Name                = $KoanFile.Topic
+                            Completed           = $PesterTests.PassedCount
+                            Total               = $PesterTests.TotalCount
+                            FailedLineNumber    = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+' #Grabs the line number of the failed test from the second line of the StackTrace
                     }
                     Results        = $PesterTests.TestResult
                     RequestedTopic = $Topic
