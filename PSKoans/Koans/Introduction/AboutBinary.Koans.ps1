@@ -14,7 +14,7 @@ param()
     the knowledge is applicable to networking, programming, data science, databases, and essentially every
     other area of computing.
 
-    What is represents is a base 2 number.
+    What it represents is a base 2 number.
 
     For example, the below binary represents a "byte" of data, which contains 8 "bits".
     Each bit will be either 1 or 0, as mentioned earlier.
