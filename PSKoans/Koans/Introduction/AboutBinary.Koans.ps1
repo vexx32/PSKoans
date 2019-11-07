@@ -126,7 +126,7 @@ Describe "Binary conversion" {
 
         # Replace __ with the binary value of 14
         $Binary = "__"
-        $Value = 7
+        $Value = 14
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 103
