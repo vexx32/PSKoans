@@ -106,7 +106,10 @@ function Show-Karma {
                         $FullArgument = '"{0}":{1}' -f $FilePath, $LineNumber
                         Start-Process $Editor -ArgumentList $FullArgument
                     }
-                    powershell_ise {$FullArgument = "{0}" -f $FilePath; Start-Process $Editor -ArgumentList $FullArgument}
+                    {$_ -in 'powershell_ise', 'isep' } {
+                        $FullArgument = "{0}" -f $FilePath
+                        Start-Process -FilePath $Editor -ArgumentList $FullArgument
+                    }
                     Default {Invoke-Item $FilePath}
                 }
             } 
