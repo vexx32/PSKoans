@@ -10,7 +10,7 @@ param(
     $OutputDirectory
 )
 
-$ENV:NugetApiKey = $Key
+$env:NugetApiKey = $Key
 
 if ($OutputDirectory) {
     $Params = @{
@@ -21,7 +21,7 @@ if ($OutputDirectory) {
     }
     Register-PSRepository @Params
 
-    Import-Module "$PSScriptRoot/FileSystem/PSKoans"
+    Import-Module "$PSScriptRoot/PSKoans"
     $Module = Get-Module -Name PSKoans
     $Dependencies = @(
         $Module.RequiredModules.Name
@@ -31,6 +31,21 @@ if ($OutputDirectory) {
     foreach ($Module in $Dependencies) {
         Publish-Module -Name $Module -Repository FileSystem -NugetApiKey "Test-Publish"
     }
+}
+
+$HelpFile = Get-ChildItem -Path "$PSScriptRoot/PSKoans" -File -Recurse -Filter '*-help.xml'
+
+if ($HelpFile.Directory -notmatch 'en-us|\w{1,2}-\w{1,2}') {
+    $PSCmdlet.WriteError(
+        [System.Management.Automation.ErrorRecord]::new(
+            [IO.FileNotFoundException]::new("Help files are missing!"),
+            'Build.HelpXmlMissing',
+            'ObjectNotFound',
+            $null
+        )
+    )
+
+    exit 404
 }
 
 $DeploymentParams = @{

@@ -90,7 +90,7 @@ $Lines
     # Bump the module version if we didn't already
     try {
         $GalleryVersion = Get-NextNugetPackageVersion -Name $env:BHProjectName -ErrorAction Stop
-        $GithubVersion = Get-MetaData -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -ErrorAction Stop
+        $GithubVersion = Get-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -ErrorAction Stop
         if ($GalleryVersion -ge $GithubVersion) {
             Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $GalleryVersion -ErrorAction stop
         }
@@ -104,4 +104,9 @@ Continuing with existing version.
 
     # Build external help files from Platyps MD files
     New-ExternalHelp -Path "$ProjectRoot/docs/" -OutputPath "$ProjectRoot/PSKoans/en-us"
+
+    $BuiltModuleFolder = "$ProjectRoot/BuiltModule/"
+    Write-Host "##vso[task.setvariable variable=BuiltModuleFolder]$BuiltModuleFolder"
+    New-Item -Path $BuiltModuleFolder -ItemType Directory
+    Copy-Item -Path "$ProjectRoot/PSKoans" -Destination $BuiltModuleFolder -Recurse -PassThru
 }
