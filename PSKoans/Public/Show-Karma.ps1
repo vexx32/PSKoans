@@ -102,7 +102,10 @@ function Show-Karma {
                         $FullArgument = '--goto "{0}":{1} --reuse-window' -f $FilePath, $LineNumber
                         Start-Process $Editor -ArgumentList $FullArgument
                     }
-                    atom {$FullArgument = '"{0}":{1}' -f $FilePath, $LineNumber; Start-Process $Editor -ArgumentList $FullArgument}
+                    atom {
+                        $FullArgument = '"{0}":{1}' -f $FilePath, $LineNumber
+                        Start-Process $Editor -ArgumentList $FullArgument
+                    }
                     powershell_ise {$FullArgument = "{0}" -f $FilePath; Start-Process $Editor -ArgumentList $FullArgument}
                     Default {Invoke-Item $FilePath}
                 }
