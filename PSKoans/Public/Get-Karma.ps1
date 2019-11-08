@@ -113,7 +113,8 @@
                             Name                = $KoanFile.Topic
                             Completed           = $PesterTests.PassedCount
                             Total               = $PesterTests.TotalCount
-                            FailedLineNumber    = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+' #Grabs the line number of the failed test from the second line of the StackTrace
+                            #Grabs the line number of the failed test from the second line of the StackTrace
+                            FailedLineNumber    = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+'
                     }
                     Results        = $PesterTests.TestResult
                     RequestedTopic = $Topic
