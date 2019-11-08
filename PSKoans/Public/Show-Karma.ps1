@@ -94,7 +94,7 @@ function Show-Karma {
             }
             $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
             $LineNumber = $Results.CurrentTopic.FailedLineNumber
-            if ($PSVersionTable.Platform -eq "win32nt") {
+            if (($PSVersionTable.PSVersion.Major -le 5) -or ($PSVersionTable.Platform -eq "win32nt")) {
                 $Editor = (Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ps1\UserChoice').ProgId
                 $Editor =  [regex]::matches($DefaultProgram,'(?<=\\).+(?=.exe)').value
                 switch ($Editor) {
