@@ -94,18 +94,18 @@ function Show-Karma {
             }
             $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
             $LineNumber = $Results.CurrentTopic.FailedLineNumber
-            $FullArgument = '-g "{0}":{1}' -f $FilePath, $LineNumber
-            $Editor = Get-PSKoanSetting -Name Editor
-            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
-                $EditorSplat = @{
-                    FilePath     = $Editor
-                    ArgumentList = $FullArgument
-                    NoNewWindow  = $true
+            if ($PSVersionTable.Platform -eq "win32nt") {
+                $Editor = (Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ps1\UserChoice').ProgId
+                $Editor =  [regex]::matches($DefaultProgram,'(?<=\\).+(?=.exe)').value
+                switch ($Editor) {
+                    {($_ -eq "code") -or ($_ -eq "code-insiders")} {$FullArgument = '-g "{0}":{1}' -f $FilePath, $LineNumber; Start-Process $Editor -ArgumentList $FullArgument}
+                    atom {$FullArgument = '"{0}":{1}' -f $FilePath, $LineNumber; Start-Process $Editor -ArgumentList $FullArgument}
+                    powershell_ise {$FullArgument = "{0}" -f $FilePath; Start-Process $Editor -ArgumentList $FullArgument}
+                    Default {Invoke-Item $FilePath}
                 }
-                Start-Process @EditorSplat
-            }
+            } 
             else {
-                $PSKoanLocationFullPath | Invoke-Item
+                Invoke-Item $FilePath
             }
         }
         default {
