@@ -11,9 +11,6 @@ param()
 
     There are many filters and options for backing up a database. dbatools helps you to take a backup
     with the Backup-DbaDatabase command.
-
-    At it's lowest level, Backup-DbaDatabase can backup every database on the SQL Instance to the default
-    backup directory.
 #>
 Describe "Backup-DbaDatabase" {
     <#
@@ -27,6 +24,7 @@ Describe "Backup-DbaDatabase" {
             $RestoreEnd = $StartDate.AddSeconds(10)
 
             [PSCustomObject]@{
+                ComputerName = 'localhost'
                 SqlInstance = $ENV:COMPUTERNAME
                 Database = ('Database_{0:d2}' -f $_)
                 Type = 'Full'
@@ -39,4 +37,12 @@ Describe "Backup-DbaDatabase" {
             $StartDate = $RestoreEnd
         }
     }
+    <#
+        By default, Backup-DbaDatabase will backup every database on the SQL Instance.
+        These backups will get saved to the default backup directory.
+        Complete the below command to backup all the databases on the localhost instance.
+    #>
+    $AllBackups = Backup-DbaDatabase -SqlInstance '____'
+    $AllBackups.ComputerName | Should -Be 'localhost'
+
 }
