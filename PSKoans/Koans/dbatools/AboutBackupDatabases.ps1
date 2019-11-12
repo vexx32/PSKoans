@@ -28,7 +28,7 @@ Describe "Backup-DbaDatabase" {
                 SqlInstance = $ENV:COMPUTERNAME
                 Database = ('Database_{0:d2}' -f $_)
                 Type = 'Full'
-                TotalSize = ({0} -f ([Math]::PI * $_))
+                TotalSize = ('{0}' -f ([Math]::PI * $_))
                 DeviceType = 'Disk'
                 Start = $RestoreStart
                 Duration = $RestoreEnd - $RestoreStart
@@ -37,6 +37,30 @@ Describe "Backup-DbaDatabase" {
             $StartDate = $RestoreEnd
         }
     }
+    Mock -CommandName Backup-DbaDatabase -MockWith {
+        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+        1..2 | ForEach-Object -Process {
+            $RestoreStart = $StartDate
+            $RestoreEnd = $StartDate.AddSeconds(15)
+
+            [PSCustomObject]@{
+                ComputerName = 'localhost'
+                SqlInstance = $ENV:COMPUTERNAME
+                Database = ('Database_{0:d2}' -f $_)
+                Type = 'Full'
+                TotalSize = ('{0}' -f ([Math]::PI * $_))
+                DeviceType = 'Disk'
+                Start = $RestoreStart
+                Duration = $RestoreEnd - $RestoreStart
+                End = $RestoreEnd
+            }
+
+            $StartDate = $RestoreEnd
+        }
+    } -ParameterFilter {
+        $_.Database -contains ('Database_01', 'Database_02')
+    }
+
     <#
         By default, Backup-DbaDatabase will backup every database on the SQL Instance.
         These backups will get saved to the default backup directory.
