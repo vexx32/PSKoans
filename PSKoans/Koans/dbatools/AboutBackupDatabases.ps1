@@ -45,4 +45,9 @@ Describe "Backup-DbaDatabase" {
     $AllBackups = Backup-DbaDatabase -SqlInstance '____'
     $AllBackups.ComputerName | Should -Be 'localhost'
 
+    <#
+        By using the -Database parameter, you can backup a single or many databases.
+        Complete the below command to backup the databases Database_01 and Database_02
+    #>
+
 }
