@@ -29,15 +29,14 @@ function Show-Karma {
         [switch]
         $List,
 
-        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
 
-        [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
-        [Alias('Continue')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
         [switch]
-        $OpenFile,
+        $OpenFolder,
 
         [Parameter()]
         [Alias()]
@@ -92,29 +91,23 @@ function Show-Karma {
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
+            $Editor = Get-PSKoanSetting -Name Editor
             $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
             $LineNumber = $Results.CurrentTopic.FailedLineNumber
-            if (($PSVersionTable.PSVersion.Major -le 5) -or ($PSVersionTable.Platform -eq "win32nt")) {
-                $Editor = (Get-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.ps1\UserChoice').ProgId
-                $Editor =  [regex]::matches($DefaultProgram,'(?<=\\).+(?=.exe)').value
-                switch ($Editor) {
-                    { $_ -in 'code', 'code-insiders' } {
-                        $FullArgument = '--goto "{0}":{1} --reuse-window' -f $FilePath, $LineNumber
-                        Start-Process $Editor -ArgumentList $FullArgument
-                    }
-                    atom {
-                        $FullArgument = '"{0}":{1}' -f $FilePath, $LineNumber
-                        Start-Process $Editor -ArgumentList $FullArgument
-                    }
-                    {$_ -in 'powershell_ise', 'isep' } {
-                        $FullArgument = "{0}" -f $FilePath
-                        Start-Process -FilePath $Editor -ArgumentList $FullArgument
-                    }
-                    Default {Invoke-Item $FilePath}
+            switch ($Editor) {
+                { $_ -in 'code', 'code-insiders' } {
+                    $FullArgument = '--goto "{0}":{1} --reuse-window' -f $FilePath, $LineNumber
+                    Start-Process $Editor -ArgumentList $FullArgument
                 }
-            } 
-            else {
-                Invoke-Item $FilePath
+                atom {
+                    $FullArgument = '"{0}":{1}' -f $FilePath, $LineNumber
+                    Start-Process $Editor -ArgumentList $FullArgument
+                }
+                {$_ -in 'powershell_ise', 'isep' } {
+                    $FullArgument = "{0}" -f $FilePath
+                    Start-Process -FilePath $Editor -ArgumentList $FullArgument
+                }
+                Default {Invoke-Item $FilePath}
             }
         }
         default {
