@@ -107,7 +107,15 @@ function Show-Karma {
                     $FullArgument = "{0}" -f $FilePath
                     Start-Process -FilePath $Editor -ArgumentList $FullArgument
                 }
-                Default {Invoke-Item $FilePath}
+                default {
+                    if ($Editor) {
+                        $FullArgument = "{0}" -f $FilePath
+                        & $Editor $FullArgument
+                    }
+                    else {
+                        Invoke-Item $FilePath
+                    }
+                }
             }
         }
         default {
