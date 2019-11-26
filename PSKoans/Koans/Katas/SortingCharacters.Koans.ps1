@@ -16,10 +16,25 @@ param()
 Describe 'Kata - Sorting Characters' {
     BeforeAll {
         $Verification = {
-            [string[]]$AllowedCommands = @()
-            [string[]]$AllowedVariables = @("*")
-            $Function = Get-Item -Path 'Function:Get-SortedString'
-            $Function.ScriptBlock.CheckRestrictedLanguage($AllowedCommands, $AllowedVariables, $false)
+            $Functions = [Hashset[string]]::new([StringComparer]::OrdinalIgnoreCase)
+            $Ast = (Get-Command 'Get-GreatestVarianceDate' -CommandType Function).ScriptBlock.Ast
+            $Ast.FindAll(
+                {
+                    param($node)
+                    if ($node -is [CommandAst] -and ($name = $node.GetCommandName()) -and !$Functions.Contains($name)) {
+                        throw 'Usage of external cmdlets and functions is not permitted.'
+                    }
+
+                    if ($node -is [FunctionDefinitionAst]) {
+                        $Functions.Add($node.Name) > $null
+                        return
+                    }
+
+                    if ($node.Left -is [VariableExpressionAst] -and $node.Left.VariablePath.DriveName -eq 'Function') {
+                        $Functions.Add($node.Left.VariablePath.UserPath -replace '^function:') > $null
+                    }
+                }, $true
+            )
         }
 
         function Get-SortedString {

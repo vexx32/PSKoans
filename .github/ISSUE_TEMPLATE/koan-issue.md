@@ -1,6 +1,7 @@
 ---
 name: "⚠️ Koan Issue or Bug"
 about: Report an issue or bug, or request help with a koan file.
+labels: Category-Koans, Issue-Discussion
 ---
 
 # Describe "Koan Bug, Issue, or Help Request"
