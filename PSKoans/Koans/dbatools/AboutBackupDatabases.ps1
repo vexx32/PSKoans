@@ -73,5 +73,7 @@ Describe "Backup-DbaDatabase" {
         By using the -Database parameter, you can backup a single or many databases.
         Complete the below command to backup the databases Database_01 and Database_02
     #>
+    $SpecificBackups = Backup-DbaDatabase -SqlInstance localhost -Database '____','____'
+    $SpecificBackups.Database | Should -Contain 'Database_01', 'Database_02'
 
 }
