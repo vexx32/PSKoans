@@ -353,9 +353,11 @@ Describe 'About XML' {
     }
 
     Context 'Modifying XML documents' {
-        It 'can remove selected elements from a document' {
+        It 'can remove the content of selected elements from a document' {
             <#
-                Individual elements can be removed from a document once they are selected.
+                The content of an element can be removed from a document once they are selected.
+
+                The RemoveAll method used below removes content only, not the element itself.
             #>
 
             $xml = [Xml]@'
@@ -372,7 +374,7 @@ Describe 'About XML' {
             $element = $xml.SelectSingleNode('/drives/drive[letter="D:"]')
 
             <#
-                The RemoveAll method will remove the current element.
+                The RemoveAll method will remove the content of the current element.
 
                 When working with file content, the change will be held in memory until the
                 Save method is called.
@@ -383,9 +385,7 @@ Describe 'About XML' {
         }
 
         It 'can remove a node with children using RemoveAll and XML as an object' {
-            <#
-                Using XML
-            #>
+            # The RemoveAll method can also be used when using XML as an object.
 
             $xml = [Xml]@'
 <drives>
@@ -404,6 +404,41 @@ Describe 'About XML' {
             $element.RemoveAll()
 
             '____' | Should -Be $xml.drives.drive.letter
+
+            # The content has been removed, but the element remains.
+
+            __ | Should -Be $xml.drives.drive.Count
+        }
+
+        It 'can use the RemoveChild method to completely remove an element from a document' {
+            $xml = [Xml]@'
+<drives>
+    <drive>
+        <letter>C:</letter>
+    </drive>
+    <drive>
+        <letter>D:</letter>
+    </drive>
+</drives>
+'@
+
+            <#
+                The child to be removed element must be selected before it can be removed.
+
+                The element to remove can be selected using either the SelectSingleNode method or by using
+                XML as an object.
+            #>
+
+            $child = $xml.drives.drive | Where-Object letter -eq 'D:'
+
+            # The RemoveChild method is called on the parent node.
+            $xml.drives.RemoveChild($child)
+
+            '____' | Should -Be $xml.drives.drive.letter
+
+            # The element has been completely removed.
+
+            __ | Should -Be $xml.SelectNodes('/drives/drive').Count
         }
 
         It 'can modify values in an existing node using XML as an object' {
@@ -568,8 +603,9 @@ Describe 'About XML' {
 
     Context 'Working with namespaces' {
         <#
-            Namespaces can make working with XML documents very hard work. A namespace changes how individual
-            elements must be addressed in many of the cases used so far.
+            Namespaces are most often used when a document is written to conform to an XML schema.
+
+            When using XML as an object namespaces can be ignored.
 
             Namespaces do not affect XML as an object, but do affect XPath queries.
         #>
