@@ -1,4 +1,6 @@
 using module PSKoans
+using namespace System.Collections.Generic
+using namespace System.Management.Automation.Language
 [Koan(Position = 151)]
 param()
 
