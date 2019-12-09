@@ -19,7 +19,7 @@ Describe 'Kata - Sorting Characters' {
     BeforeAll {
         $Verification = {
             $Functions = [Hashset[string]]::new([StringComparer]::OrdinalIgnoreCase)
-            $Ast = (Get-Command 'Get-GreatestVarianceDate' -CommandType Function).ScriptBlock.Ast
+            $Ast = (Get-Command 'Get-SortedString' -CommandType Function).ScriptBlock.Ast
             $Ast.FindAll(
                 {
                     param($node)
