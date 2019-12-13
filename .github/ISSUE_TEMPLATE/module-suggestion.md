@@ -1,7 +1,7 @@
 ---
 name: "✨ Module Suggestion"
 about: Suggest new module functionality, or enhancements to existing functionality.
-labels: Category-Module, Issue-Suggestion
+labels: Category-Module :gear:, Issue-Suggestion :sparkles:
 ---
 
 # Describe "Functionality"
