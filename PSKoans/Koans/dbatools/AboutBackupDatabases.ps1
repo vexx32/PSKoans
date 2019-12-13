@@ -60,6 +60,14 @@ Describe "Backup-DbaDatabase" {
     } -ParameterFilter {
         $_.Database -contains ('Database_01', 'Database_02')
     }
+    Mock -CommandName Backup-DbaDatabase -MockWith {
+        [PSCustomObject]@{
+            ComputerName = 'localhost'
+            SqlInstance = 
+        }
+        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+
+    }
 
     <#
         By default, Backup-DbaDatabase will backup every database on the SQL Instance.
@@ -75,5 +83,15 @@ Describe "Backup-DbaDatabase" {
     #>
     $SpecificBackups = Backup-DbaDatabase -SqlInstance localhost -Database '____','____'
     $SpecificBackups.Database | Should -Contain 'Database_01', 'Database_02'
+
+    <#
+        There are different types of backups that can be taken i.e. Full, Differential, and
+        Transaction Log.
+        Backup-DbaDatabase can take each of these backup types by using the -Type parameter
+        and specifying Full, Diff, or Log for each respective type.
+        Complete the below command to take a Transaction Log of the Database_01 database.
+    #>
+    $SpecificTypeOfBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database_01 -Type '____'
+    $SpecificTypeOfBackup.Type | Should -be 'Log'
 
 }
