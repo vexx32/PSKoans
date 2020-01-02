@@ -605,37 +605,136 @@ Describe 'About XML' {
         <#
             Namespaces are most often used when a document is written to conform to an XML schema.
 
-            When using XML as an object namespaces can be ignored.
+            The URI used for a namespace is often made-up, it does not have to exist on the Internet. The namespace
+            must be unique within the document.
 
-            Namespaces do not affect XML as an object, but do affect XPath queries.
+            The default namespace for a document is described using an xmlns attribute on the root node. For example:
+
+                <root xmlns="http://someuri/default.xsd">
+                    ...
+                </root>
+
+            XML documents may declare more than one namespace. Additional namespaces are declared with a prefix.
+
+                <root xmlns="http://someuri/default.xsd" xmlns:prefix="http://someuri/prefix.xsd">
+                    ...
+                </root>
+
+            The prefix name is arbitrary but must be consistent within a document.
         #>
 
-    }
+        It 'does not change how XML as an object finds values' {
+            # The document below does not use a default namespace.
 
-    Context 'Working with an XML schema' {
-        # Testing a document against a schema.
+            $xml = [Xml]@'
+<drives xmlns:prefix="http://someuri/prefix.xsd">
+    <prefix:drive>
+        <prefix:letter>C:</prefix:letter>
+    </prefix:drive>
+</drives>
+'@
 
-        # Inferring a schema.
-
-    }
-
-    Context 'About CLI XML' {
-        <#
-            CLI XML is a specific format of XML document which can be used to represent objects in PowerShell.
-
-            It is frequently used to store data on the file system for retrieval at a later date.
-        #>
-
-        It 'will attempt to rebuild the original object' {
-
+            '____' | Should -Be $xml.drives.drive.letter
         }
 
-        It 'does not work so well with enumeration values' {
+        It 'must be listed in the Namespace parameter when using Select-Xml' {
+            # The document below uses a default namespace.
 
+            $xml = [Xml]@'
+<drives xmlns="http://someuri/id.xsd">
+    <drive>
+        <letter>C:</letter>
+    </drive>
+</drives>
+'@
+
+            <#
+                Select-Xml uses a hashtable to describe the namespaces used in a document.
+
+                The default namespace must be listed, and must be given a prefix. The name used for the prefix is
+                made up.
+            #>
+
+            $result = Select-Xml -Xml $xml -XPath '//anything:letter' -Namespace @{
+                'anything' = 'http://someuri/id.xsd'
+            }
+            '____' | Should -Be $result.Node.'#text'
         }
 
-        It 'it will automatically encrypt secure strings' {
+        It 'must use an XmlNamespaceManager when using SelectNodes or SelectSingleNode' {
+            <#
+                The document below uses both a default and an additional namespace.
 
+                The drives element belongs to the default namespace. Each drive element to the additional namespace.
+            #>
+
+            $xml = [Xml]@'
+<drives xmlns="http://someuri/default.xsd" xmlns:named="http://someuri/named.xsd">
+    <named:drive>
+        <named:letter>C:</named:letter>
+    </named:drive>
+</drives>
+'@
+
+            <#
+                The SelectSingleNode (and SelectNodes) methods include overloads which accept an XmlNamespaceManager
+                as an argument as shown below:
+
+                    System.Xml.XmlNode SelectSingleNode(string xpath, System.Xml.XmlNamespaceManager nsmgr)
+                    System.Xml.XmlNodeList SelectNodes(string xpath, System.Xml.XmlNamespaceManager nsmgr)
+
+                The namespace manager requires a NameTable. The nametable property of the XML document can be used.
+
+                The namespaces used by the document must still be added to the namespace manager.
+            #>
+
+            $xmlNamespaceManager = [System.Xml.XmlNamespaceManager]::new($xml.NameTable)
+
+            <#
+                Each namespace used, including the default, must be added to the namespace manager.
+
+                The prefix names do not have to match the names used in the original document.
+            #>
+
+            $xmlNamespaceManager.AddNamespace('d', 'http://someuri/default.xsd')
+            $xmlNamespaceManager.AddNamespace('n', 'http://someuri/named.xsd')
+
+            # Elements in the default namespace must be given the made-up prefix names
+
+            $result = $xml.SelectSingleNode('/d:drives/n:drive/n:letter', $xmlNamespaceManager)
+
+            '____' | Should -Be $result.'#text'
+        }
+
+        It 'should use appropriate namespace references when modifying a document' {
+            <#
+                If a document is
+            #>
+
+            $xml = [Xml]@'
+<drives xmlns="http://someuri/default.xsd" xmlns:named="http://someuri/named.xsd">
+    <named:drive>
+        <named:letter>C:</named:letter>
+    </named:drive>
+</drives>
+'@
+
+            <#
+                The name of the prefix must match the name used in the original document. If a different value is
+                used, a new xmlns attribute will be created in the document on the newly created "size" element.
+
+                The overload for CreateElement expects the prefix name, the element name, and the namespace URI.
+            #>
+            $newNode = $xml.CreateElement('named', 'size', 'http://someuri/named.xsd')
+            $newNode.InnerText = '50'
+            $xml.drives.drive.AppendChild($newNode)
+
+            $xmlNamespaceManager = [System.Xml.XmlNamespaceManager]::new($xml.NameTable)
+            $xmlNamespaceManager.AddNamespace('d', 'http://someuri/default.xsd')
+            $xmlNamespaceManager.AddNamespace('n', 'http://someuri/named.xsd')
+            $result = $xml.SelectNodes('/d:drives/n:drive/n:size', $xmlNamespaceManager)
+
+            '____' | Should -Be $result.'#text'
         }
     }
 }
