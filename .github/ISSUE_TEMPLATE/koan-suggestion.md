@@ -1,6 +1,7 @@
 ---
 name: "💡 Koan Suggestion"
 about: Suggest a koan, or a list of koans that you feel would add value to the project.
+labels: Category-Koans, Issue-Suggestion
 ---
 
 # Describe "Koan(s) You Suggest"

@@ -180,13 +180,13 @@ Describe 'Assignment/Arithmetic Combination Operators' {
     It 'is a bit unwieldy to assign and increment without combination operators' {
         $Value = 5
         $Value = $Value + 5
-        $Value | Should -Be 10
+        __ | Should -Be $Value
     }
 
     It 'is possible to combine assignment and addition' {
         $Value = 12
         $Value += 7
-        $Value | Should -Be 19
+        __ | Should -Be $Value
     }
 
     It 'is also possible to combine subtraction with assignment' {
