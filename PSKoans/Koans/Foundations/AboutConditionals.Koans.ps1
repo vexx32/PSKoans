@@ -156,8 +156,8 @@ Describe 'Switch' {
 
         It 'will process each element of arrays' {
             $Array = @(
-                __
                 4
+                __
             )
 
             $Result = switch ($Array) {
