@@ -105,7 +105,7 @@ Describe 'About XML' {
     Context 'About Select-Xml' {
         <#
             Treating XML as any other object makes XML documents easy to work with, and offers tremendous convenience.
-            For larger documents the approach can be slow and XPath, a query language for XML becomes important.
+            For larger documents the above approach can be slow. This is where XPath, a query language for XML, becomes important.
 
             The Select-Xml command can work with a path to an XML file, a path, or an XML document object.
         #>
