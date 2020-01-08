@@ -90,7 +90,7 @@ Describe 'About XML' {
         }
 
         It 'does not differentiate between elements and attributes' {
-            # The value of an element can be retrieved using dot-notation.
+            # The value of an attribute can also be retrieved using dot-notation.
 
             $xml = [Xml]@'
 <documentRoot>
