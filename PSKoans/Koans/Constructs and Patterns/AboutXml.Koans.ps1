@@ -61,6 +61,11 @@ Describe 'About XML' {
             <#
                 .NET methods need a fully-qualified path. A relative PowerShell path will resolve to a path relative to
                 the working directory for the PowerShell process; often the System32 directory.
+
+                The commands Get-Item, Join-Path, and Resolve-Path can all be used to get the full path to a file using
+                the FullName property. For example:
+
+                    $path = (Get-Item file.xml).FullName
             #>
             $xml.Load($path)
 
@@ -177,7 +182,7 @@ Describe 'About XML' {
 
                 Clearly defined XPath queries will execute faster.
             #>
-            $result = Select-Xml -Path $path -XPath '/root/element/aNestedElement'
+            $result = Select-Xml -Path $path -XPath '/drives/drive'
 
             __ | Should -Be $result.Count
         }
@@ -299,7 +304,9 @@ Describe 'About XML' {
 
             $content = Get-Content $path
 
-            __ | Should -Be $content.Count
+            '____' | Should -Be $content[0]
+            '____' | Should -Be $content[1]
+            '____' | Should -be $content[2]
         }
 
         It 'can create an XmlWriter using a StringBuilder' {
