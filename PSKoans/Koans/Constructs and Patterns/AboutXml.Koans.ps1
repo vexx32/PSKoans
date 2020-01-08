@@ -32,7 +32,7 @@ Describe 'About XML' {
             <#
                 It is often desirable to read an XML file to work with in PowerShell.
 
-                Get-Content is widely used to draw XML content in.
+                Get-Content is often used to read XML content in as text.
             #>
 
             $path = Join-Path -Path $TestDrive -ChildPath document.xml
