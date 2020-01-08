@@ -57,6 +57,12 @@ When adding or updating koan topics, please keep this file up to date.
 
 ## Module Topics
 
+### ActiveDirectory
+
+| Folder                  | Topic                                                          | Position |
+| ----------------------- | :------------------------------------------------------------- | :------: |
+| Introduction            | [AboutFiltering][ActiveDirectory\AboutFiltering]               |   101    |
+
 ### Dbatools
 
 > TBD
@@ -110,3 +116,5 @@ When adding or updating koan topics, please keep this file up to date.
 [AboutClasses]: PSKoans/Koans/Constructs%20and%20Patterns/AboutClasses.Koans.ps1
 
 <!-- Add links for koans from other modules below this line -->
+
+[ActiveDirectory\AboutFiltering]: PSKoans/Koans/Modules/ActiveDirectory/Introduction/AboutFiltering.Koans.ps1
