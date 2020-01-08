@@ -50,7 +50,7 @@ Describe 'About XML' {
             $xml.$rootElement.Element | Should -Be 'A short XML file'
         }
 
-        It 'for larger files, the Load method of XmlDocument is faster' {
+        It 'is much faster to use the Load method of XmlDocument for large files' {
             Set-Content -Path $path -Value @'
 <documentRoot>
     <element>This is still a short XML file</element>
