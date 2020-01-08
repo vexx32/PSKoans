@@ -224,7 +224,7 @@ Describe 'About XML' {
 </drives>
 '@
 
-            # The @ character is added in front of a label when testing the value of an attribute.
+            # The @ character is required in front of a label when testing the value of an attribute.
             $elements = $xml.SelectNodes('/drives/drive[@fileSystem="NTFS"]/letter')
 
             @('____', '____') | Should -Be $elements.'#text'
