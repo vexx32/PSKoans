@@ -21,19 +21,20 @@ jobs:
     vmImage: ubuntu-latest
 
   steps:
+  - template: templates/environment-setup.yml
   - template: templates/build-steps.yml
   - task: PublishPipelineArtifact@1
-    displayName: 'Publish External Help Artifacts'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    displayName: 'Publish Built Module Artifact'
     inputs:
-      path: '$(System.DefaultWorkingDirectory)/PSKoans/en-us'
-      artifact: ExternalHelp
+      path: '$(BuiltModuleFolder)/PSKoans'
+      artifact: PSKoans
 
 - job: Windows
   pool:
     vmImage: windows-latest
 
   steps:
+  - template: templates/environment-setup.yml
   - template: templates/build-steps.yml
 
 - job: MacOS
@@ -41,10 +42,11 @@ jobs:
     vmImage: macOS-latest
 
   steps:
+  - template: templates/environment-setup.yml
   - template: templates/build-steps.yml
 
-- job: PublishModule
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+- job: Publish
+  displayName: "Publish Build"
   dependsOn:
     - Linux
     - Windows
@@ -53,20 +55,63 @@ jobs:
     vmImage: ubuntu-latest
 
   steps:
+  - template: templates/environment-setup.yml
   - task: DownloadPipelineArtifact@2
-    displayName: 'Download External Help Artifact'
+    displayName: 'Download Built Module Artifact'
     inputs:
-      artifact: ExternalHelp
-      path: '$(System.DefaultWorkingDirectory)/PSKoans/'
+      artifact: PSKoans
+      path: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
 
   - task: PowerShell@2
-    displayName: 'Deploy to Gallery'
-
+    displayName: 'Deploy to FileSystem'
     inputs:
       targetType: 'filePath'
-      arguments: $(PSApiKey)
-      filePath: ./Build/Publish.ps1
+      filePath: ./Deploy/Publish.ps1
+      arguments: -Key 'filesystem' -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
 
       errorActionPreference: 'stop'
       failOnStderr: true
       pwsh: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Module Nupkg'
+    inputs:
+      path: '$(NupkgPath)'
+      artifact: PSKoans.nupkg
+
+  - task: PowerShell@2
+    displayName: 'Deploy to PowerShell Gallery'
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+
+    inputs:
+      targetType: 'filePath'
+      arguments: -Key $(PSApiKey) -Path '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
+      filePath: ./Deploy/Publish.ps1
+
+      errorActionPreference: 'stop'
+      failOnStderr: true
+      pwsh: true
+
+- job: GenerateChangelog
+  displayName: "Publish Changelog"
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn:
+    - Linux
+    - Windows
+    - MacOS
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - task: PowerShell@2
+    displayName: 'Create Changelog'
+    inputs:
+      targetType: 'filepath'
+      filePath: ./Build/New-Changelog.ps1
+      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey) -Verbose
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Changelog'
+    inputs:
+      path: '$(System.DefaultWorkingDirectory)/Changelog.md'
+      artifact: Changelog

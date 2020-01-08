@@ -14,23 +14,23 @@ param()
     This is where the fun begins! Each koan contains an example designed
     to teach you a lesson about PowerShell. If you execute the program
     defined in this project, you will get a message that the koan below
-    has failed. Your job is to fill in the blanks (the __, $__, FILL_ME_IN,
-    or $FILL_ME_IN symbols) to make it pass. Once you make the change,
-    re-run the program to make sure the koan passes, and continue on to the
-    next failing koan. With each  passing koan, you'll learn more about
-    PowerShell, and add another weapon to your PowerShell scripting arsenal.
+    has failed. Your job is to fill in the blanks (the __ or ____ symbols)
+    to make it pass. Once you make the change, call Show-Karma to make sure
+    the koan passes, and continue on to the next failing koan.
+    With each passing koan, you'll learn more about PowerShell, and add
+    another tool to your PowerShell scripting belt.
 #>
 Describe 'Equality' {
 
     It 'is a simple comparison' {
         # Some truths are absolute.
-        '__' | Should -Be 'True!'
+        $____ | Should -Be $true
     }
 
     It 'expects you to fill in values' {
         # Initiative will be rewarded.
         __ | Should -Be (1 + 2)
-        __ + 5 -eq 10 | Should -BeTrue
+        __ + 5 | Should -Be 10
     }
 
     It 'sets the expectations' {
@@ -45,6 +45,6 @@ Describe 'Equality' {
 
     It 'demands balance' {
         # Both sides of the scale must be of equal measure.
-        __ + 2 -eq 3 | Should -BeTrue
+        __ + 2 | Should -Be 3
     }
 }

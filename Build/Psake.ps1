@@ -9,6 +9,11 @@ Properties {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
     $PSVersion = $PSVersionTable.PSVersion
     $TestFile = "PS${PSVersion}_${TimeStamp}_PSKoans.TestResults.xml"
+    $CodeCoverageFile = "PS${PSVersion}_${TimeStamp}_PSKoans.CodeCoverage.xml"
+    $ModuleFolders = @(
+        Get-ChildItem -Path "$ProjectRoot/PSKoans" -Directory -Recurse |
+            Where-Object { 'Koans' -notin $_.Parent.Name, $_.Parent.Parent.Name }
+    ).FullName -join ';'
     $Lines = '-' * 70
 
     $Continue = @{
@@ -48,16 +53,20 @@ STATUS: Testing with PowerShell $PSVersion
     $env:PSModulePath = '{0}{1}{2}' -f $ProjectRoot, ([System.IO.Path]::PathSeparator), $env:PSModulePath
     Import-Module 'PSKoans'
 
-    # Tell Azure where the test results file will be
+    # Tell Azure where the test results & code coverage files will be
     Write-Host "##vso[task.setvariable variable=TestResults]$TestFile"
+    Write-Host "##vso[task.setvariable variable=CodeCoverageFile]$CodeCoverageFile"
+    Write-Host "##vso[task.setvariable variable=SourceFolders]$ProjectRoot/PSKoans;$ModuleFolders"
 
     # Gather test results. Store them in a variable and file
     $PesterParams = @{
-        Path         = "$ProjectRoot/Tests"
-        PassThru     = $true
-        OutputFormat = 'NUnitXml'
-        OutputFile   = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
-        Show         = "Header", "Failed", "Summary"
+        Path                   = "$ProjectRoot/Tests"
+        PassThru               = $true
+        OutputFormat           = 'NUnitXml'
+        OutputFile             = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
+        Show                   = "Header", "Failed", "Summary"
+        CodeCoverage           = (Get-ChildItem -Recurse -Path "$ProjectRoot/PSKoans" -Filter '*.ps*1' -Exclude '*.Koans.ps1').FullName
+        CodeCoverageOutputFile = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$CodeCoverageFile"
     }
     $TestResults = Invoke-Pester @PesterParams
 
@@ -81,7 +90,7 @@ $Lines
     # Bump the module version if we didn't already
     try {
         $GalleryVersion = Get-NextNugetPackageVersion -Name $env:BHProjectName -ErrorAction Stop
-        $GithubVersion = Get-MetaData -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -ErrorAction Stop
+        $GithubVersion = Get-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -ErrorAction Stop
         if ($GalleryVersion -ge $GithubVersion) {
             Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $GalleryVersion -ErrorAction stop
         }
@@ -95,4 +104,9 @@ Continuing with existing version.
 
     # Build external help files from Platyps MD files
     New-ExternalHelp -Path "$ProjectRoot/docs/" -OutputPath "$ProjectRoot/PSKoans/en-us"
+
+    $BuiltModuleFolder = "$ProjectRoot/BuiltModule/"
+    Write-Host "##vso[task.setvariable variable=BuiltModuleFolder]$BuiltModuleFolder"
+    New-Item -Path $BuiltModuleFolder -ItemType Directory
+    Copy-Item -Path "$ProjectRoot/PSKoans" -Destination $BuiltModuleFolder -Recurse -PassThru
 }

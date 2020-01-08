@@ -47,11 +47,11 @@ function Show-Karma {
         $Detailed
     )
 
-    $GetParams = @{}
-    switch ($pscmdlet.ParameterSetName) {
+    $GetParams = @{ }
+    switch ($PSCmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly'    { $GetParams['Module'] = $Module }
-        { $Topic }      { $GetParams['Topic'] = $Topic }
+        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $PSBoundParameters.ContainsKey('Topic') } { $GetParams['Topic'] = $Topic }
     }
 
     switch ($PSCmdlet.ParameterSetName) {
@@ -59,25 +59,25 @@ function Show-Karma {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
-            Write-Verbose "Opening koans folder"
-            if ( $env:PSKoans_EditorPreference -eq 'code-insiders' -and (Get-Command -Name 'code-insiders' -ErrorAction SilentlyContinue) ) {
-                $VSCodeSplat = @{
-                    FilePath     = 'code-insiders'
-                    ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
-                    NoNewWindow  = $true
-                }
-                Start-Process @VSCodeSplat
+            $KoanLocation = Get-PSKoanLocation
+            Write-Verbose "Checking existence of koans folder"
+            if (-not (Test-Path $KoanLocation)) {
+                Write-Verbose "Koans folder does not exist. Initiating full reset..."
+                Update-PSKoan -Confirm:$false
             }
-            elseif (Get-Command -Name 'code' -ErrorAction SilentlyContinue) {
-                $VSCodeSplat = @{
-                    FilePath     = 'code'
-                    ArgumentList = '"{0}"' -f (Get-PSKoanLocation)
+
+            Write-Verbose "Opening koans folder"
+            $Editor = Get-PSKoanSetting -Name Editor
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
+                $EditorSplat = @{
+                    FilePath     = $Editor
+                    ArgumentList = '"{0}"' -f (Resolve-Path $KoanLocation)
                     NoNewWindow  = $true
                 }
-                Start-Process @VSCodeSplat
+                Start-Process @EditorSplat
             }
             else {
-                Get-PSKoanLocation | Invoke-Item
+                $KoanLocation | Invoke-Item
             }
         }
         default {
@@ -86,7 +86,13 @@ function Show-Karma {
             }
 
             Show-MeditationPrompt -Greeting
-            $Results = Get-Karma @GetParams
+
+            try {
+                $Results = Get-Karma @GetParams
+            }
+            catch {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
 
             if ($Results.Complete) {
                 $Params = @{
@@ -109,7 +115,7 @@ function Show-Karma {
                 }
 
                 if ($Detailed) {
-                    $Params.Add('Results', $PesterTests.TestResult)
+                    $Params.Add('Results', $Results.Results)
                 }
             }
 
