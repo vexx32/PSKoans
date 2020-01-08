@@ -45,7 +45,7 @@ Describe 'About Filtering' {
                 Should -Be $env:USERNAME
         }
 
-        It 'expands variables in in literal strings' {
+        It 'expands variables in literal strings' {
             <#
                 Variable expansion in filters is a feature the of the ActiveDirectory module.
 
