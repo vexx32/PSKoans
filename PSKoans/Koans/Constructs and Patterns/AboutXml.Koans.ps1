@@ -151,7 +151,7 @@ Describe 'About XML' {
             $ExpectedType = [____]
 
             <#
-                Queries using // do not have a defined depth, they are slow on large documents as every element must be
+                Queries using // do not have a defined depth. They are slow on large documents as every element must be
                 tested.
             #>
             $result = Select-Xml -Content $xmlContent -XPath '//aNestedElement'
