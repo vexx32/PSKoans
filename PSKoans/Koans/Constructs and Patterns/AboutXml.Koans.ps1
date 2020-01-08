@@ -67,7 +67,7 @@ Describe 'About XML' {
             $xml.____.____ | Should -Be 'This is still a short XML file'
         }
 
-        It 'is all text' {
+        It 'can only contain text' {
             # All values in XML documents are strings. Values which represent other types must be converted.
             $xml = [Xml]'<root><element>1</element></root>'
 
