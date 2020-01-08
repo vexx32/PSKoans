@@ -251,7 +251,7 @@ Describe 'About XML' {
     }
 
     Context 'Writing XML documents in PowerShell' {
-        # .NET offers the XmlWriter types to create XML content from scratch.
+        # .NET offers the XmlWriter type to create XML content from scratch.
 
         It 'can create an XML file' {
             $path = Join-Path -Path $TestDrive -ChildPath 'document.xml'
