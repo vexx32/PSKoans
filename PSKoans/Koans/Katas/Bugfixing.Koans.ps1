@@ -3,10 +3,9 @@ using module PSKoans
 param()
 
 <#
-    Kata: Debugging
+    Kata: Bug fixing
 
-    The debugging challenges below are based on some real world examples. Debugging is a critical skill and not one
-    which is confined break points.
+    The bug fixing challenges below are based on some real world examples.
 #>
 Describe 'Debugging' {
     Context 'The sticky one' {
