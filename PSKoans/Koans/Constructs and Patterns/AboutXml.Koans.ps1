@@ -47,7 +47,7 @@ Describe 'About XML' {
 
             $rootElement = '____'
 
-            $xml.$rootElement.Element | Should -Be 'A short XML file'
+            $xml.$rootElement.Element | Should -BeExactly 'A short XML file'
         }
 
         It 'is much faster to use the Load method of XmlDocument for large files' {
