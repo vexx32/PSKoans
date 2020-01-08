@@ -53,7 +53,7 @@ Describe 'Basic Number Types' {
 
             'System.____' | Should -be $Pi.GetType().Fullname
             # What number will return if you pass Pi into an int function?
-            ___ | Should -Be (Get-Number -Int $Pi)
+            ___ | Should -Be (Get-Number -Number $Pi)
         }
     }
 }

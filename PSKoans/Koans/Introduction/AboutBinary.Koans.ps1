@@ -14,7 +14,7 @@ param()
     the knowledge is applicable to networking, programming, data science, databases, and essentially every
     other area of computing.
 
-    What is represents is a base 2 number.
+    What it represents is a base 2 number.
 
     For example, the below binary represents a "byte" of data, which contains 8 "bits".
     Each bit will be either 1 or 0, as mentioned earlier.
@@ -126,7 +126,7 @@ Describe "Binary conversion" {
 
         # Replace __ with the binary value of 14
         $Binary = "__"
-        $Value = 7
+        $Value = 14
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 103
