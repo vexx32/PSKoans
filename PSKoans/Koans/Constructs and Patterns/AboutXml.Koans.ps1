@@ -13,6 +13,7 @@ param()
 Describe 'About XML' {
 
     Context 'XML as an object' {
+
         It 'can cast a string to an XML document' {
             <#
                 Perhaps the most widely used way of working with XML is to treat an XML document as a object.
