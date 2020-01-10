@@ -585,7 +585,7 @@ Describe 'About XML' {
             # Then the element can be inserted into the document
             $xml.list.InsertAfter($newElement, $previousElement)
 
-            @('____', '____', '____', '____', '____') | Should -Be $xml.list.item
+            @('__', '__', '__', '__', '__') | Should -Be $xml.list.item
         }
 
         It 'can add attributes to an existing element' {
