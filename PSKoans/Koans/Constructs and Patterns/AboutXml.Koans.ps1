@@ -605,7 +605,7 @@ Describe 'About XML' {
 
             $xml.drives.drive.SetAttribute('fileSystem', 'NTFS')
 
-            '____' | Should -Be $xml.SelectSingleNode('/drives/drive/@fileSystem').'#text'
+            '<drive fileSystem="____"><letter>C:</letter></drive>' | Should -Be $xml.drives.InnerXml
         }
     }
 
@@ -614,7 +614,8 @@ Describe 'About XML' {
             Namespaces are most often used when a document is written to conform to an XML schema.
 
             The URI used for a namespace is often made-up, it does not have to exist on the Internet. The namespace
-            must be unique within the document.
+            must be unique within the document. XML parsers require namespace URIs to be unique, but do not use the
+            value to retrieve information.
 
             The default namespace for a document is described using an xmlns attribute on the root node. For example:
 
@@ -716,7 +717,8 @@ Describe 'About XML' {
 
         It 'should use appropriate namespace references when modifying a document' {
             <#
-                If a document is
+                Namespaces must be consistently used when updating a document. Methods such as CreateElement
+                must be told about the namespace any elements it creates.
             #>
 
             $xml = [Xml]@'
@@ -737,6 +739,7 @@ Describe 'About XML' {
             $newNode.InnerText = '50'
             $xml.drives.drive.AppendChild($newNode)
 
+            # Now to test the value has been set.
             $xmlNamespaceManager = [System.Xml.XmlNamespaceManager]::new($xml.NameTable)
             $xmlNamespaceManager.AddNamespace('d', 'http://someuri/default.xsd')
             $xmlNamespaceManager.AddNamespace('n', 'http://someuri/named.xsd')
