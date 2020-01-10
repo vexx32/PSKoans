@@ -288,7 +288,7 @@ Describe 'About XML' {
 
             $path = Join-Path -Path $TestDrive -ChildPath 'document.xml'
 
-            # If Indent is et to $true, line breaks will be added. By default two-spaces are used to indent content.
+            # If Indent is set to $true, line breaks will be added. By default two-spaces are used to indent content.
             $settings = [System.Xml.XmlWriterSettings]@{
                 OmitXmlDeclaration = $true
                 Indent             = $true
