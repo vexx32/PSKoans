@@ -26,7 +26,6 @@
 
 - [Blog](https://vexx32.github.io)
 - [Twitter](https://twitter.com/vexx32)
-- [HireJoel.dev](https://hirejoel.dev)
 
 ## Synopsis
 
