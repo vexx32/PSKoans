@@ -57,7 +57,7 @@ Describe 'About Filtering' {
             #>
 
             $username = '____'
-            Get-ADUser -Filter 'samAccountMame -eq $username' |
+            Get-ADUser -Filter 'samAccountName -eq $username' |
                 Select-Object -ExpandProperty SamAccountName |
                 Should -Be $env:USERNAME
         }
@@ -100,7 +100,7 @@ Describe 'About Filtering' {
             #>
 
             $homeDirectory = Get-Item -Path '____'
-            Get-ADUser -Filter 'samAccountMame -eq $homeDirectory.Name' |
+            Get-ADUser -Filter 'samAccountName -eq $homeDirectory.Name' |
                 Select-Object -ExpandProperty SamAccountName |
                 Should -Be $env:USERNAME
         }
@@ -114,7 +114,7 @@ Describe 'About Filtering' {
             #>
 
             $username = '____'
-            Get-ADUser -Filter "samAccountMame -eq '$username'" |
+            Get-ADUser -Filter "samAccountName -eq '$username'" |
                 Select-Object -ExpandProperty SamAccountName |
                 Should -Be $env:USERNAME
         }
@@ -139,14 +139,14 @@ Describe 'About Filtering' {
             #>
 
 
-            Get-ADUser -Filter 'samAccountMame -eq $username -and -not userAccountControl -band 2' |
+            Get-ADUser -Filter 'samAccountName -eq $username -and -not userAccountControl -band 2' |
                 Select-Object -ExpandProperty SamAccountName |
                 Should -Be $env:USERNAME
 
             <#
                 In both cases, the filter is converted to the following LDAP filter.
 
-                    (&(samAccountMame=<Username>)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))
+                    (&(samAccountName=<Username>)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))
 
                 Other common aliases include LastLogonDate, an alias for lastLogonTimestamp.
 
