@@ -91,8 +91,9 @@ Describe 'Debugging' {
         BeforeAll {
             function Debug-Me {
                 $process = Get—Process -Id $PID
-                if ($process -and $process.Name -eq 'powershell') {
-                    Write-Host 'you must be using PowerShell'
+                if ($process -and $process.Name -notin 'powershell', 'pwsh') {
+                    Write-Warning 'you must be using PowerShell'
+                    return
                 }
             }
         }
