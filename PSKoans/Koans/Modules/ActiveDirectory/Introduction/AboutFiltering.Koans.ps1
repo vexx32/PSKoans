@@ -47,7 +47,7 @@ Describe 'About Filtering' {
 
         It 'expands variables in literal strings' {
             <#
-                Variable expansion in filters is a feature the of the ActiveDirectory module.
+                Variable expansion in filters is a feature of the ActiveDirectory module.
 
                 Sub-expressions are not supported. Values from providers, such as the Environment provider, for example
                 $env:USERNAME, are not supported.
