@@ -34,7 +34,7 @@ Describe 'About Filtering' {
         #>
 
         It 'often uses script blocks in examples' {
-            # Providing your username to show that both filters return the same result.
+            # Fill in your username to show that both filters return the same result.
 
             Get-ADUser -Filter { samAccountName -eq '____' } |
                 Select-Object -ExpandProperty SamAccountName |
