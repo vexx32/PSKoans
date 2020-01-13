@@ -32,7 +32,7 @@ Describe 'Debugging' {
         }
 
         It 'should return true' {
-            Debug-Me | Should -BeExactly $true
+            Debug-Me -ObjectData 'Value' | Should -BeExactly $true
         }
     }
 
@@ -108,6 +108,23 @@ Describe 'Debugging' {
             function Debug-Me {
 
             }
+        }
+    }
+
+    Context 'The little things matter' {
+        BeforeAll {
+            function Debug-Me {
+                $items = 1..10
+                foreach ($item in $items) {
+                    if ($item % 2) {
+                        Write-Output $items
+                    }
+                }
+            }
+        }
+
+        It 'should return odd numbers only' {
+            Debug-Me | Should -Be 1, 3, 5, 7, 9
         }
     }
 }
