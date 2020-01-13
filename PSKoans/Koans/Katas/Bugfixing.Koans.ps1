@@ -24,7 +24,8 @@ Describe 'Debugging' {
 
                 if ($ObjectData.Name -eq 'Value') {
                     $true
-                } else {
+                }
+                else {
                     $ObjectData
                 }
             }
