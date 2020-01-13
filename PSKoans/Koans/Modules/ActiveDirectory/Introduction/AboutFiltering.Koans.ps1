@@ -30,7 +30,7 @@ Describe 'About Filtering' {
 
                 Get-ADUser -Filter 'name -eq "Dave"'
 
-            Using a script block can be misleading. It implies support for more complex expressions.
+            Using a script block can be misleading. It implies support for more complex expressions which is not present.
         #>
 
         It 'often uses script blocks in examples' {
