@@ -1,4 +1,4 @@
-#Requires -Module ActiveDirectory
+#Requires -Modules ActiveDirectory
 using module PSKoans
 [Koan(Position = 101, Module = 'ActiveDirectory')]
 param()
