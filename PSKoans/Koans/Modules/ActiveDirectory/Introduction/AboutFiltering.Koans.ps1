@@ -25,7 +25,7 @@ Describe 'About Filtering' {
 
                 Get-ADUser -Filter { name -eq "Dave" }
 
-            The filter above can be written using single quotes, a literal or non-expanding string. The two filters
+            The filter above can also be written using single quotes, a literal or non-expanding string. The two filters
             are identical except in appearance
 
                 Get-ADUser -Filter 'name -eq "Dave"'
