@@ -63,7 +63,7 @@ Describe 'Debugging' {
         }
     }
 
-    Context 'Pay attention to your surroudings' {
+    Context 'Pay attention to your surroundings' {
         BeforeAll {
             function Debug-Me {
                 [CmdletBinding()]
@@ -104,6 +104,10 @@ Describe 'Debugging' {
     }
 
     Context 'Something is leaking' {
+        BeforeAll {
+            function Debug-Me {
 
+            }
+        }
     }
 }
