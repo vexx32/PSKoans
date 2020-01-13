@@ -128,7 +128,7 @@ Describe 'About Filtering' {
             #>
 
             $username = '____'
-            Get-ADUser -Filter 'samAccountMame -eq $username -and Enabled -eq $true' |
+            Get-ADUser -Filter 'samAccountName -eq $username -and Enabled -eq $true' |
                 Select-Object -ExpandProperty SamAccountName |
                 Should -Be $env:USERNAME
 
