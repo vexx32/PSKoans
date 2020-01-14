@@ -163,4 +163,3 @@ function Show-Karma {
         Show-MeditationPrompt @Params
     }
 }
-}
