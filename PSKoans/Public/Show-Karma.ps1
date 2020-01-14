@@ -109,7 +109,7 @@ function Show-Karma {
                     $Arguments = '"{0}":{1}' -f $FilePath, $LineNumber
                 }
                 default {
-                    $Arguments = "{0}" -f $FilePath
+                    $Arguments = '"{0}"' -f $FilePath
                 }
             }
 
