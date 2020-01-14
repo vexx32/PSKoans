@@ -110,9 +110,10 @@
                     KoansPassed    = $KoansPassed
                     TotalKoans     = $TotalKoans
                     CurrentTopic   = [PSCustomObject]@{
-                        Name      = $KoanFile.Topic
-                        Completed = $PesterTests.PassedCount
-                        Total     = $PesterTests.TotalCount
+                        Name        = $KoanFile.Topic
+                        Completed   = $PesterTests.PassedCount
+                        Total       = $PesterTests.TotalCount
+                        CurrentLine = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+'
                     }
                     Results        = $PesterTests.TestResult
                     RequestedTopic = $Topic
