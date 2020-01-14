@@ -120,46 +120,47 @@ function Show-Karma {
                 Invoke-Item -Path $FilePath
             }
         }
-    }
-    default {
-        if ($ClearScreen) {
-            Clear-Host
-        }
 
-        Show-MeditationPrompt -Greeting
-
-        try {
-            $Results = Get-Karma @GetParams
-        }
-        catch {
-            $PSCmdlet.ThrowTerminatingError($_)
-        }
-
-        if ($Results.Complete) {
-            $Params = @{
-                KoansPassed    = $Results.KoansPassed
-                TotalKoans     = $Results.TotalKoans
-                RequestedTopic = $Topic
-                Complete       = $Results.Complete
-            }
-        }
-        else {
-            $Params = @{
-                DescribeName   = $Results.Describe
-                ItName         = $Results.It
-                Expectation    = $Results.Expectation
-                Meditation     = $Results.Meditation
-                KoansPassed    = $Results.KoansPassed
-                TotalKoans     = $Results.TotalKoans
-                CurrentTopic   = $Results.CurrentTopic
-                RequestedTopic = $Topic
+        default {
+            if ($ClearScreen) {
+                Clear-Host
             }
 
-            if ($Detailed) {
-                $Params.Add('Results', $Results.Results)
-            }
-        }
+            Show-MeditationPrompt -Greeting
 
-        Show-MeditationPrompt @Params
+            try {
+                $Results = Get-Karma @GetParams
+            }
+            catch {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+
+            if ($Results.Complete) {
+                $Params = @{
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    RequestedTopic = $Topic
+                    Complete       = $Results.Complete
+                }
+            }
+            else {
+                $Params = @{
+                    DescribeName   = $Results.Describe
+                    ItName         = $Results.It
+                    Expectation    = $Results.Expectation
+                    Meditation     = $Results.Meditation
+                    KoansPassed    = $Results.KoansPassed
+                    TotalKoans     = $Results.TotalKoans
+                    CurrentTopic   = $Results.CurrentTopic
+                    RequestedTopic = $Topic
+                }
+
+                if ($Detailed) {
+                    $Params.Add('Results', $Results.Results)
+                }
+            }
+
+            Show-MeditationPrompt @Params
+        }
     }
 }
