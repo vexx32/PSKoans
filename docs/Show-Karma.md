@@ -32,9 +32,14 @@ Show-Karma [-Topic <String[]>] -Module <String[]> [-ClearScreen] [-Detailed] [<C
 Show-Karma [-Topic <String[]>] [-Module <String[]>] [-List] [-ClearScreen] [<CommonParameters>]
 ```
 
-### OpenFolder
+### OpenFile
 ```
 Show-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
+```
+
+### OpenFolder
+```
+Show-Karma [-Library] [-ClearScreen] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -54,9 +59,10 @@ Assesses the koan lessons, and displays the meditation prompt with the results.
 Show-Karma -Contemplate
 ```
 
-Opens the user's koans folder, housed in `$home\PSKoans`.
-If VS Code is in `$env:PATH`, opens VS Code to the workspace location.
-Otherwise, the folder is opened in a file explorer.
+Opens the current koan file in the editor specified by the `Editor` setting.
+Use [`Set-PSKoanSetting`](./Set-PSKoanSetting.md) to change the editor used.
+
+If a known editor (`code`, `code-insiders`, or `atom`) is used, PSKoans will pass along line information as well.
 
 ## PARAMETERS
 
@@ -84,7 +90,7 @@ If you have VS Code Insiders installed, you can set `$env:PSKoans_EditorPreferen
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: OpenFolder
+Parameter Sets: OpenFile
 Aliases: Meditate
 
 Required: True
@@ -117,6 +123,25 @@ Show Karma for the default PowerShell Koans as well as Koans for the specified m
 Type: String[]
 Parameter Sets: IncludeModule
 Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Library
+Opens the current `KoanLocation` folder in the preferred editor.
+To set the preferred editor, use [`Set-PSKoanSetting`](./Set-PSKoanSetting.md).
+
+If the preferred editor cannot be found or the setting is cleared, the folder will be opened in the default handler.
+This should be Windows Explorer on Windows, Finder on Mac, etc.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: OpenFolder
+Aliases: OpenFolder
 
 Required: True
 Position: Named
