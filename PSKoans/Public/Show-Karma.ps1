@@ -29,10 +29,15 @@ function Show-Karma {
         [switch]
         $List,
 
-        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
+
+        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Alias('OpenFolder')]
+        [switch]
+        $Library,
 
         [Parameter()]
         [Alias()]
@@ -80,13 +85,7 @@ function Show-Karma {
                 $KoanLocation | Invoke-Item
             }
         }
-        default {
-            if ($ClearScreen) {
-                Clear-Host
-            }
-
-            Show-MeditationPrompt -Greeting
-
+        'OpenFile' {
             try {
                 $Results = Get-Karma @GetParams
             }
@@ -94,32 +93,74 @@ function Show-Karma {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
 
-            if ($Results.Complete) {
-                $Params = @{
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    RequestedTopic = $Topic
-                    Complete       = $Results.Complete
+            $Editor = Get-PSKoanSetting -Name Editor
+            $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
+            $LineNumber = $Results.CurrentTopic.CurrentLine
+
+            switch ($Editor) {
+                { $_ -in 'code', 'code-insiders' } {
+                    $Arguments = @(
+                        '--goto'
+                        '"{0}":{1}' -f $FilePath, $LineNumber
+                        '--reuse-window'
+                    )
                 }
+                atom {
+                    $Arguments = '"{0}":{1}' -f $FilePath, $LineNumber
+                }
+                default {
+                    $Arguments = "{0}" -f $FilePath
+                }
+            }
+
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
+                Start-Process -FilePath $Editor -ArgumentList $Arguments
             }
             else {
-                $Params = @{
-                    DescribeName   = $Results.Describe
-                    ItName         = $Results.It
-                    Expectation    = $Results.Expectation
-                    Meditation     = $Results.Meditation
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    CurrentTopic   = $Results.CurrentTopic
-                    RequestedTopic = $Topic
-                }
-
-                if ($Detailed) {
-                    $Params.Add('Results', $Results.Results)
-                }
+                Invoke-Item -Path $FilePath
             }
-
-            Show-MeditationPrompt @Params
         }
     }
+    default {
+        if ($ClearScreen) {
+            Clear-Host
+        }
+
+        Show-MeditationPrompt -Greeting
+
+        try {
+            $Results = Get-Karma @GetParams
+        }
+        catch {
+            $PSCmdlet.ThrowTerminatingError($_)
+        }
+
+        if ($Results.Complete) {
+            $Params = @{
+                KoansPassed    = $Results.KoansPassed
+                TotalKoans     = $Results.TotalKoans
+                RequestedTopic = $Topic
+                Complete       = $Results.Complete
+            }
+        }
+        else {
+            $Params = @{
+                DescribeName   = $Results.Describe
+                ItName         = $Results.It
+                Expectation    = $Results.Expectation
+                Meditation     = $Results.Meditation
+                KoansPassed    = $Results.KoansPassed
+                TotalKoans     = $Results.TotalKoans
+                CurrentTopic   = $Results.CurrentTopic
+                RequestedTopic = $Topic
+            }
+
+            if ($Detailed) {
+                $Params.Add('Results', $Results.Results)
+            }
+        }
+
+        Show-MeditationPrompt @Params
+    }
+}
 }
