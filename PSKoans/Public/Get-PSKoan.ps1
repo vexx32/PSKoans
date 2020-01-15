@@ -32,7 +32,16 @@ function Get-PSKoan {
     )
 
     $ParentPath = switch ($Scope) {
-        'User'   { Get-PSKoanLocation }
+        'User' {
+            $KoanLocation = Get-PSKoanLocation
+            Write-Verbose "Checking existence of koans folder"
+            if (-not (Test-Path $KoanLocation)) {
+                Write-Verbose "Koans folder does not exist. Initiating full reset..."
+                Update-PSKoan -Confirm:$false
+            }
+
+            $KoanLocation
+        }
         'Module' { Join-Path -Path $script:ModuleRoot -ChildPath 'Koans' }
     }
 

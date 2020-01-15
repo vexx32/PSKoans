@@ -94,7 +94,7 @@ function Show-Karma {
             }
 
             $Editor = Get-PSKoanSetting -Name Editor
-            $FilePath = Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User | Select-Object -ExpandProperty Path
+            $FilePath = (Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User).Path
             $LineNumber = $Results.CurrentTopic.CurrentLine
 
             switch ($Editor) {

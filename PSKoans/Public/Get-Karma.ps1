@@ -32,6 +32,7 @@
         'ModuleOnly' { $GetParams['Module'] = $Module }
         { $Topic } { $GetParams['Topic'] = $Topic }
     }
+
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
             Get-PSKoan @GetParams
