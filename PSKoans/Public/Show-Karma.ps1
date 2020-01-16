@@ -97,19 +97,17 @@ function Show-Karma {
             $FilePath = (Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User).Path
             $LineNumber = $Results.CurrentTopic.CurrentLine
 
-            switch ($Editor) {
+            $Arguments = switch ($Editor) {
                 { $_ -in 'code', 'code-insiders' } {
-                    $Arguments = @(
-                        '--goto'
-                        '"{0}":{1}' -f $FilePath, $LineNumber
-                        '--reuse-window'
-                    )
+                    '--goto'
+                    '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
+                    '--reuse-window'
                 }
                 atom {
-                    $Arguments = '"{0}":{1}' -f $FilePath, $LineNumber
+                    '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
                 }
                 default {
-                    $Arguments = '"{0}"' -f $FilePath
+                    '"{0}"' -f (Resolve-Path $FilePath)
                 }
             }
 
