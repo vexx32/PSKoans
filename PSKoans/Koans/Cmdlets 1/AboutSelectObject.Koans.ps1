@@ -18,7 +18,7 @@ Describe 'Select-Object' {
             new custom object using those properties.
         #>
 
-        $Selected = Get-Proces -Id $PID | Select-Object Name, ID, Path
+        $Selected = Get-Process -Id $PID | Select-Object Name, ID, Path
 
         @('____', '____', 'Path') | Should -Be $Selected.PSObject.Properties.Name
 
@@ -50,7 +50,7 @@ Describe 'Select-Object' {
 
         $Folder = Get-Item -Path $PSHome
 
-        $Selected.GetType().FullName | Should -BeOfType [System.IO.Directoryinfo]
+        $Folder | Should -BeOfType [____]
 
         'System.IO.Directoryinfo' | Should -BeIn $Folder.PSTypeNames
 
@@ -110,8 +110,8 @@ Describe 'Select-Object' {
         # Select-Object can be used to create a unique list.
 
         $Array = '6', '1', '4', '8', '7', '5', '3', '9', '2', '3', '2', '1', '5', '1', '6',
-            '2', '8', '4', '7', '3', '1', '2', '6', '3', '7', '1', '4', '5', '2', '1', '3',
-            '6', '2', '5', '1', '4'
+        '2', '8', '4', '7', '3', '1', '2', '6', '3', '7', '1', '4', '5', '2', '1', '3',
+        '6', '2', '5', '1', '4'
 
         $UniqueItems = $Array | Select-Object -Unique
         @('6', '__', '4', '8', '__', '__', '3', '__', '2') | Should -Be $UniqueItems
@@ -244,7 +244,7 @@ Describe 'Select-Object' {
         $Selected = Get-Process -Id $PID | Select-Object @(
             'Name'
             'Id'
-            @{ n = 'Size'; e = { (Get-Item $_.Path).Length } }
+            @{ Name = 'RunningTime'; Expression = { (Get-Date) - $_.StartTime } }
         )
 
         $Selected.____ | Should -BeOfType [TimeSpan]
@@ -294,6 +294,6 @@ Describe 'Select-Object' {
             System.Management.Automation.PSObject. It is named as it is because it creates a custom object.
         #>
 
-        [PSCustomObject] | Should -Be [System.Management.Automation.PSObject]
+        [PSCustomObject].FullName | Should -Be System.Management.Automation.PSObject
     }
 }
