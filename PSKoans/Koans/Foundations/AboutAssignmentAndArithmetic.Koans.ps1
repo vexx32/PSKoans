@@ -179,35 +179,55 @@ Describe 'Assignment/Arithmetic Combination Operators' {
 
     It 'is a bit unwieldy to assign and increment without combination operators' {
         $Value = 5
+
         $Value = $Value + 5
         __ | Should -Be $Value
     }
 
     It 'is possible to combine assignment and addition' {
         $Value = 12
+
         $Value += 7
         __ | Should -Be $Value
     }
 
     It 'is also possible to combine subtraction with assignment' {
+        $Value = 19
+
         $Value -= 3
         __ | Should -Be $Value
     }
 
     It 'works the same way with division' {
+        $Value = 16
+
         $Value /= 2
-        $Value | Should -Be 8
+        __ | Should -Be $Value
     }
 
     It 'works with multiplication as well' {
+        $Value = 8
+
         $Value *= 3
         __ | Should -Be $Value
     }
 
     It 'even works with modulus' {
-        # Modulus hasn't been left out, either.
         $Value = 12
+
         $Value %= 4
         __ | Should -Be $Value
+    }
+
+    It 'can get a bit confusing to follow' {
+        $Value = __
+
+        $Value /= 3
+        $Value %= 5
+        $Value += 4
+        $Value *= 7
+        $Value -= 7
+
+        $Value | Should -Be 42
     }
 }
