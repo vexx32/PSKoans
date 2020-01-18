@@ -31,7 +31,10 @@ Describe 'Get-Help' {
             $HelpInfo = Get-Help 'Get-Help'
             $GetHelpParams = $HelpInfo.Parameters.Parameter.Name
 
-            # Using the information from Get-Help, fill in a few of the available parameter names for the cmdlet.
+            <#
+                Using the information from Get-Help, fill in a few of the available parameter names for the cmdlet.
+                Note that the specific parameters available may depend on your version of PowerShell.
+            #>
             $ParamNames = @(
                 '____'
                 'Examples'
@@ -41,7 +44,11 @@ Describe 'Get-Help' {
                 '____'
             )
 
-            $ParamNames | Group-Object | Where-Object Count -gt 1 | Should -BeNullOrEmpty
+            $ParamNames |
+                Group-Object |
+                Where-Object Count -gt 1 |
+                Should -BeNullOrEmpty -Because 'you need to enter unique parameter names'
+
             $ParamNames | Should -BeIn $GetHelpParams
         }
 
@@ -211,6 +218,6 @@ Describe 'Get-Command' {
         $First4Commands = $KoanCommands | Select-Object -First 4
 
         __ | Should -Be $KoanCommands.Count
-        @('____', '____', '____', '____') | Should -Be $KoanCommands.Name
+        @('____', '____', '____', '____') | Should -Be $First4Commands.Name
     }
 }
