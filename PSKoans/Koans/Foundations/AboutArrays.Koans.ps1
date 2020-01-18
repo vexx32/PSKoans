@@ -27,13 +27,13 @@ Describe 'Arrays' {
         #>
         $Ages[0] | Should -Be 12
         __ | Should -Be $Ages[3]
+    }
 
+    It 'can be created with the @() operator' {
         <#
             The array subexpression operator @() is used to create an array from multiple values
-            or expressions. Within the parentheses, either commas, semicolons, or even line
-            breaks can be used to divide array elements. Although in many cases in PowerShell
-            an expression that only returns one value will not become an array, this operator
-            forces the value or object to be wrapped in an array.
+            or expressions. Within the parentheses, you can use commas, semicolons, and even line
+            breaks to divide array elements.
         #>
         $Names = @(
             'Steve'
@@ -44,6 +44,15 @@ Describe 'Arrays' {
 
         # Where is index 4 in the above array?
         __ | Should -Be $Names[4]
+
+        <#
+            Although in many cases in PowerShell, an expression that only returns one value will
+            not become an array, this operator forces the value or object to be wrapped in an array
+            if the result is not already an array; it guarantes the result will be an array.
+        #>
+        $Array = @( 10 )
+
+        $Array.GetType().FullName | Should -Be System.____
     }
 
     It 'is a fixed size collection; elements cannot be added or removed' {
@@ -235,9 +244,13 @@ Describe 'Arrays' {
             The base type of Object[], Char[], and other fixed size array types is the System.Array
             type, or [Array].
 
-            The [Array] type describes the Length property (aliased to Count), as well as other methods
-            which can be used to work with the array.
+            The [Array] type describes the Length property (which is also aliased to Count in PowerShell),
+            as well as other methods which can be used to work with the array.
+        #>
+    }
 
+    It 'allows you to check if something is contained within it' {
+        <#
             The available methods can be seen with Get-Member:
 
                 Get-Member -InputObject @()
