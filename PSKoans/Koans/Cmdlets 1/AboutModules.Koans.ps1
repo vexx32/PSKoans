@@ -39,7 +39,7 @@ Describe 'Get-Module' {
 
         @('____', '____', '____') | Should -Be $FirstThreeModules.Name
         '____' | Should -Be $VersionOfThirdModule
-        '____' | Should -Be $TypeOf6thModule
+        '____' | Should -Be $TypeOfLastModule
     }
 
     It 'can filter by module name' {
