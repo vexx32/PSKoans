@@ -33,11 +33,13 @@ Describe 'Get-Module' {
 
         $FirstThreeModules = $Modules | Select-Object -First 3
         $VersionOfThirdModule = $FirstThreeModules[2].Version
-        $TypeOf6thModule = $Modules[5].ModuleType
+        $TypeOfLastModule = $Modules |
+            Select-Object -Last 1 |
+            ForEach-Object -MemberName ModuleType
 
         @('____', '____', '____') | Should -Be $FirstThreeModules.Name
         '____' | Should -Be $VersionOfThirdModule
-        '____' | Should -Be $TypeOf6thModule
+        '____' | Should -Be $TypeOfLastModule
     }
 
     It 'can filter by module name' {
@@ -117,7 +119,7 @@ Describe 'New-Module' {
         a module in-memory without needing a file on disk.
     #>
     BeforeAll {
-        $Module = New-Module -Name 'PSKoans_TestModule' -ScriptBlock {} -ArgumentList
+        $Module = New-Module -Name 'PSKoans_TestModule' -ScriptBlock {}
     }
 
     It 'creates a dynamic module object' {
@@ -179,7 +181,7 @@ Describe 'Import-Module' {
         }
 
         It 'does not produce output' {
-            Import-Module 'TestDrive:\TestModule.psm1' | Should -Be NullOrEmpty
+            Import-Module 'TestDrive:\TestModule.psm1' | Should -BeNullOrEmpty
         }
 
         It 'imports the module into the current session' {
