@@ -183,6 +183,56 @@ Run 'Show-Karma -Meditate' to begin your meditations.
 
 Good luck!
 
+## Backing Up Your Progress
+
+You can see the current folder your copy of the koans is stored in by calling `Get-PSKoanLocation`.
+If you want to save a backup of your current progress, simple make a copy of this folder and store it in a safe location.
+
+For example:
+
+```powershell
+Get-PSKoanLocation | Copy-Item -Recurse -Destination "D:\Backups\PSKoans"
+```
+
+## Maintaining Multiple Koan Libraries
+
+Just as you can `Get-PSKoanLocation`, you can also use `Set-PSKoanLocation` to change the directory that PSKoans will look for.
+This allows you to have any number of in-progress libraries of koans on a single machine without moving any folders.
+
+However, be aware that the module does not retain any information about _previous_ locations specified, only the current location.
+To change the set location, call `Set-PSKoanLocation` with the path you would like to set.
+If the specified folder does not exist, it will be created the next time you call `Show-Karma`.
+
+```powershell
+$oldLocation = Get-PSKoanLocation
+Set-PSKoanLocation "~/New/PSKoans"
+
+# Call Show-Karma to create the directory and populate it with a fresh koan library
+Show-Karma
+
+# Restore the old location
+$newLocation = Get-PSKoanLocation
+Set-PSKoanLocation $oldLocation
+
+# Call Show-Karma again to check the progress on the old library once again
+Show-Karma
+```
+
+## Uninstallation
+
+You can uninstall the PSKoans module the usual way you uninstall PowerShell modules, with `Uninstall-Module -Name PSKoans`
+This **will not** remove your copy of the koans themselves, which are stored in your user folder, and it will also not remove the configuration file.
+
+To completely remove all of these files, call these commands _before_ you uninstall PSKoans:
+
+```powershell
+# To remove configuration settings
+Remove-Item -Path "~/.config/PSKoans" -Recurse
+
+# To remove your koan files (THIS WILL COMPLETELY DELETE YOUR PROGRESS)
+Get-PSKoanLocation | Remove-Item -Recurse
+```
+
 ## Contributing
 
 If you would like to contribute to PSKoans, please check out the [Contributing](https://github.com/vexx32/PSKoans/blob/master/CONTRIBUTING.md) document.
