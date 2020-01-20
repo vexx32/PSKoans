@@ -94,4 +94,11 @@ Describe "Backup-DbaDatabase" {
     $DifferentialBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database_01 -Type '____'
     $DifferentialBackup.Type | Should -Be 'Differential'
 
+    <#
+        Managing where you store your backups is something that is unique to each person.
+        Backup-DbaDatabase allows you to specify where you want the backups to be stored.
+        It allows this specification by using the -Path parameter.
+        Complete the below command to store the backup file in the E:\Backups\ folder.
+    #>
+
 }
