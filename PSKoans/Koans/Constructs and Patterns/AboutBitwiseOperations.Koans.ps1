@@ -49,15 +49,20 @@ Describe 'Binary Operators' {
             )
 
             process {
-                if ($To -ne 'String') {
+                if ($BinaryString -match '_') {
+                    return 'Cannot convert this value!'
+                }
+
+                if ($To -ne 'ASCIIString') {
                     $BinaryString = $BinaryString -replace ' '
                 }
 
                 switch ($To) {
                     'Byte'         { [Convert]::ToByte($BinaryString, 2) }
                     'SByte'        { [Convert]::ToSByte($BinaryString, 2) }
-                    'Int16'        { [Convert]::Int16($BinaryString, 2) }
+                    'Int16'        { [Convert]::ToInt16($BinaryString, 2) }
                     'Int32'        { [Convert]::ToInt32($BinaryString, 2) }
+                    'Int64'        { [Convert]::ToInt64($BinaryString, 2) }
                     'ASCIIString'  {
                         [Char[]]$characters = foreach ($value in $BinaryString -split ' ') {
                             [Convert]::ToByte($value, 2)
@@ -204,7 +209,23 @@ Describe 'Binary Operators' {
             $Value = '00000011' | ConvertFrom-Binary
             $Result = '________' | ConvertFrom-Binary
 
-            -bnot $Value | Should -Be $Result
+            <#
+                The binary operators will, when given smaller value return a 32-bit integer. GetType can show this:
+
+                    (-bnot $Value).GetType()
+
+                This can make the result of the operation below confusing. When written in binary, the result is
+                similar to:
+
+                    11111111 11111111 11111111 ________
+
+                -band can be used to mask the result, limiting the possible result to a single byte.
+
+                      11111111 11111111 11111111 ________
+                -band 00000000 00000000 00000000 11111111
+            #>
+
+            -bnot $Value -band 255 | Should -Be $Result
         }
     }
 
@@ -348,7 +369,7 @@ Describe 'Binary Operators' {
                 $Bytes[3]
             ) | Measure-Object -Sum
 
-            $Value.Sum | Should -Be 1652126821
+            $Value.Sum | Should -Be 1075843080
             -join $BinaryValues | ConvertFrom-Binary -To Int32 | Should -Be $Value.Sum
         }
     }
@@ -391,7 +412,7 @@ Describe 'Binary Operators' {
         It 'uses the most significant bit to describe a negative number' {
             # When the signing bit alone is set, the value is the smallest value, -128.
 
-            '1000000' | ConvertFrom-Binary -To SByte | Should -Be (-128)
+            '10000000' | ConvertFrom-Binary -To SByte | Should -Be (-128)
 
             # The opposite binary value is the maximum positive value for the number.
 
@@ -462,7 +483,7 @@ Describe 'Binary Operators' {
 
             $Date = [DateTime]::FromFileTime(($BinaryValue | ConvertFrom-Binary -To Int64))
 
-            $Date | Should -Be '01 January 1601 00:02:45'
+            $Date.ToString('dd MMMM yyyy HH:mm:ss') | Should -Be '01 January 1601 00:02:45'
         }
     }
 
@@ -474,6 +495,11 @@ Describe 'Binary Operators' {
             If a value is Big Endian, the largest value, the "big end", is first.
 
             If a value is Little Endian, the largest value is last.
+
+            The endian order returned by the .NET types used below is dependent on the processor architecture.
+            Most modern systems use Little Endian ordering.
+
+            The section below assumes the processor and operating system are Little Endian.
         #>
 
         It 'might use a different byte order' {
@@ -481,17 +507,22 @@ Describe 'Binary Operators' {
 
             $BinaryValue = '________ ________ ________ ________'
 
-            # The value below is the result if the value is Big Endian.
+            # The value below is the result if the binary string is considered to be Big Endian.
 
             $BinaryValue | ConvertFrom-Binary -To Int32 | Should -Be 1652126821
             $BinaryValue | ConvertFrom-Binary -To ASCIIString | Should -Be 'byte'
 
+            # This can be explored forindividual bytes, by setting all others to 0. For example:
+
+            '________ 00000000 00000000 00000000' | ConvertFrom-Binary -To Int32 | Should -Be 1644167168
+            '00000000 00000000 00000000 ________' | ConvertFrom-Binary -To Int32 | Should -Be 101
+
             <#
-                The Convert type used to change the value from binary expects the order
+                The Convert type used to change the value from a binary string expects the order
                 to be Big Endian.
 
-                To convert Little Endian to Big Endian the order of the values must be
-                reversed.
+                The command below takes the binary string and turns it into an array of bytes. Because the string
+                is in Big Endian order the bytes will be too.
             #>
 
             $Bytes = $BinaryValue -split ' ' | ConvertFrom-Binary
@@ -500,24 +531,26 @@ Describe 'Binary Operators' {
                 The BitConverter type has a number of static methods which can be used to create a value from a
                 series of bytes.
 
-                Like the Convert type, BitConverter expects to deal with Big Endian values.
+                BitConverter expects bytes to be in Little Endian order.
             #>
 
-            # The bytes are in reverse order. Least significant first.
-            [Array]::Reverse($Bytes)
-
-            # Convert byte sequence to Int32, starting from the first byte
             [BitConverter]::ToInt32($Bytes, 0) | Should -Be 1702132066
+
+            #  To produce the same value as the original the array of bytes must be reversed.
+
+            [Array]::Reverse($Bytes)
+            [BitConverter]::ToInt32($Bytes, 0) | Should -Be 1652126821
         }
 
         It 'The IPAddress type can be used to change the order of a byte sequence' {
             <#
-                IP Addresses in network packets are normally transmitted in Little Endian order.
+                Many values in network packets are transmitted in Big Endian order. An IP address, for example, is
+                transmitted as a single unsigned 32-bit integer.
 
-                An operating system might need to convert from Little Endian to Big Endian, or from
-                Big Endian to Little Endian.
+                An operating system might need to convert from Big Endian to Little Endian, or from
+                Little Endian to Big Endian.
 
-                The IPAddress class has two static methods available to change the Endian order of a value.
+                The IPAddress type has two static methods available to change the Endian order of a value.
 
                     [IPAddress] | Get-Member -Static
 
