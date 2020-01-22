@@ -186,7 +186,7 @@ Good luck!
 ## Backing Up Your Progress
 
 You can see the current folder your copy of the koans is stored in by calling `Get-PSKoanLocation`.
-If you want to save a backup of your current progress, simple make a copy of this folder and store it in a safe location.
+If you want to save a backup of your current progress, simply make a copy of this folder and store it in a safe location.
 
 For example:
 
