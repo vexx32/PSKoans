@@ -32,6 +32,7 @@
         'ModuleOnly' { $GetParams['Module'] = $Module }
         { $Topic } { $GetParams['Topic'] = $Topic }
     }
+
     switch ($PSCmdlet.ParameterSetName) {
         'ListKoans' {
             Get-PSKoan @GetParams
@@ -110,9 +111,10 @@
                     KoansPassed    = $KoansPassed
                     TotalKoans     = $TotalKoans
                     CurrentTopic   = [PSCustomObject]@{
-                        Name      = $KoanFile.Topic
-                        Completed = $PesterTests.PassedCount
-                        Total     = $PesterTests.TotalCount
+                        Name        = $KoanFile.Topic
+                        Completed   = $PesterTests.PassedCount
+                        Total       = $PesterTests.TotalCount
+                        CurrentLine = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+'
                     }
                     Results        = $PesterTests.TestResult
                     RequestedTopic = $Topic

@@ -29,10 +29,15 @@ function Show-Karma {
         [switch]
         $List,
 
-        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
+
+        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Alias('OpenFolder')]
+        [switch]
+        $Library,
 
         [Parameter()]
         [Alias()]
@@ -80,6 +85,40 @@ function Show-Karma {
                 $KoanLocation | Invoke-Item
             }
         }
+        'OpenFile' {
+            try {
+                $Results = Get-Karma @GetParams
+            }
+            catch {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+
+            $Editor = Get-PSKoanSetting -Name Editor
+            $FilePath = (Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User).Path
+            $LineNumber = $Results.CurrentTopic.CurrentLine
+
+            $Arguments = switch ($Editor) {
+                { $_ -in 'code', 'code-insiders' } {
+                    '--goto'
+                    '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
+                    '--reuse-window'
+                }
+                atom {
+                    '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
+                }
+                default {
+                    '"{0}"' -f (Resolve-Path $FilePath)
+                }
+            }
+
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
+                Start-Process -FilePath $Editor -ArgumentList $Arguments
+            }
+            else {
+                Invoke-Item -Path $FilePath
+            }
+        }
+
         default {
             if ($ClearScreen) {
                 Clear-Host

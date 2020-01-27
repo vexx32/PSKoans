@@ -7,6 +7,16 @@ if (-not (Get-Module PSKoans)) {
 #endregion
 
 Describe 'Show-Karma' {
+    BeforeAll {
+        $StartingLocation = Get-PSKoanLocation
+        Set-PSKoanLocation -Path "$TestDrive/Koans"
+
+        Reset-PSKoan -Confirm:$false
+    }
+
+    AfterAll {
+        Set-PSKoanLocation -Path $StartingLocation
+    }
 
     InModuleScope 'PSKoans' {
 
@@ -23,9 +33,10 @@ Describe 'Show-Karma' {
                         Expectation  = 'ExpectedTest'
                         It           = 'TestIt'
                         CurrentTopic = [PSCustomObject]@{
-                            Name      = 'TestTopic"'
-                            Completed = 0
-                            Total     = 4
+                            Name        = 'TestTopic"'
+                            Completed   = 0
+                            Total       = 4
+                            CurrentLine = 1
                         }
                     }
                 }
@@ -77,9 +88,10 @@ Describe 'Show-Karma' {
                         Expectation  = 'ExpectedTest'
                         It           = 'TestIt'
                         CurrentTopic = [PSCustomObject]@{
-                            Name      = 'TestTopic"'
-                            Completed = 0
-                            Total     = 4
+                            Name        = 'TestTopic"'
+                            Completed   = 0
+                            Total       = 4
+                            CurrentLine = 1
                         }
                     }
                 }
@@ -109,6 +121,9 @@ Describe 'Show-Karma' {
                 Mock Get-PSKoan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
+                Mock Test-Path { $false }
+                Mock Invoke-Item
+                Mock New-Item
             }
 
             It 'should attempt to populate koans and then recurse to reassess' {
@@ -125,6 +140,22 @@ Describe 'Show-Karma' {
 
             It 'throws an error if a Topic is specified that matches nothing' {
                 { Show-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ErrorId 'PSKoans.TopicNotFound'
+            }
+
+            It 'should create PSKoans directory with -Library' {
+                { Show-Karma -Library } | Should -Throw -ExpectedMessage 'Prevent recursion'
+
+                Assert-MockCalled Test-Path -Times 1
+                Assert-MockCalled Update-PSKoan -Times 1
+                Assert-MockCalled New-Item -Times 1
+            }
+
+            It 'should create PSKoans directory with -Contemplate' {
+                { Show-Karma -Contemplate } | Should -Throw -ExpectedMessage 'Prevent recursion'
+
+                Assert-MockCalled Test-Path -Times 1
+                Assert-MockCalled Update-PSKoan -Times 1
+                Assert-MockCalled New-Item -Times 1
             }
         }
 
@@ -152,9 +183,10 @@ Describe 'Show-Karma' {
                         Expectation    = 'ExpectedTest'
                         It             = 'TestIt'
                         CurrentTopic   = [PSCustomObject]@{
-                            Name      = 'TestTopic"'
-                            Completed = 0
-                            Total     = 4
+                            Name        = 'TestTopic"'
+                            Completed   = 0
+                            Total       = 4
+                            CurrentLine = 1
                         }
                         RequestedTopic = $Topic
                     }
@@ -186,73 +218,131 @@ Describe 'Show-Karma' {
             }
         }
 
-        Context 'With -Meditate Switch' {
+        Context 'With -Contemplate Switch' {
+            BeforeAll {
+                $TestFile = New-TemporaryFile
 
-            Context 'With "code" Set as the Editor' {
-                BeforeAll {
-                    Mock Get-Command { $true }
-                    Mock Start-Process {
-                        @{ Editor = $FilePath; Path = $ArgumentList }
+                Mock Invoke-Item { $Path }
+                Mock Get-Command { $true } -ParameterFilter { $Name -ne "missing_editor" }
+                Mock Get-Command { $false } -ParameterFilter { $Name -eq "missing_editor" }
+                Mock Start-Process {
+                    @{ Editor = $FilePath; Arguments = $ArgumentList }
+                }
+                Mock Get-Karma -ModuleName 'PSKoans' {
+                    [PSCustomObject]@{
+                        PSTypeName   = 'PSKoans.Result'
+                        Meditation   = 'TestMeditation'
+                        KoansPassed  = 0
+                        TotalKoans   = 400
+                        Describe     = 'TestDescribe'
+                        Expectation  = 'ExpectedTest'
+                        It           = 'TestIt'
+                        CurrentTopic = [PSCustomObject]@{
+                            Name        = 'TestTopic"'
+                            Completed   = 0
+                            Total       = 4
+                            CurrentLine = 1
+                        }
                     }
-                    Set-PSKoanSetting -Name Editor -Value 'code'
-
-                    $Result = Show-Karma -Contemplate
                 }
-
-                It 'should start VS Code with Start-Process' {
-                    $Result.Editor | Should -Be 'code'
-
-                    Assert-MockCalled Get-Command -Times 1
-                    Assert-MockCalled Start-Process -Times 1
-                }
-
-                It 'should pass a resolved path' {
-                    # Resolve-Path doesn't like embedded quotes
-                    $Path = $Result.Path -replace '"'
-                    $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
-                }
-
-                It 'should enclose the path in quotes' {
-                    $Result.Path | Should -MatchExactly '"[^"]+"'
+                Mock Get-PSKoan {
+                    [PSCustomObject]@{ Path = $TestFile.FullName }
                 }
             }
 
-            Context 'With Editor Not Found' {
-                BeforeAll {
-                    Mock Get-Command { $false }
-                    Mock Invoke-Item
-                    Set-PSKoanSetting -Name Editor -Value "ascsadsa"
-                }
-
-                It 'should not produce output' {
-                    Show-Karma -Meditate | Should -BeNullOrEmpty
-                }
-
-                It 'should open the koans directory with Invoke-Item' {
-                    Assert-MockCalled Get-Command -Times 1 -ParameterFilter { $Name -eq "ascsadsa" }
-                    Assert-MockCalled Invoke-Item -Times 1
-                }
+            AfterAll {
+                $TestFile | Remove-Item
             }
 
-            Context 'With Nonexistent KoanLocation' {
-                BeforeAll {
-                    Mock Test-Path { $false }
-                    Mock Update-PSKoan
-                    Mock Get-Command { $false }
-                    Mock Invoke-Item
-                    Mock New-Item
-                }
+            It 'invokes VS Code with "code" set as Editor with proper arguments' {
+                Set-PSKoanSetting -Name Editor -Value 'code'
+                $Result = Show-Karma -Contemplate
 
-                It 'should create PSKoans directory' {
-                    Show-Karma -Meditate
+                $Result.Editor | Should -BeExactly 'code'
+                $Result.Arguments[0] | Should -BeExactly '--goto'
+                $Result.Arguments[1] | Should -MatchExactly '"[^"]+":\d+'
+                $Result.Arguments[2] | Should -BeExactly '--reuse-window'
 
-                    Assert-MockCalled Test-Path -Times 1
-                    Assert-MockCalled Update-PSKoan -Times 1
-                    Assert-MockCalled Get-Command -Times 1
-                    Assert-MockCalled New-Item -Times 1
-                    Assert-MockCalled Invoke-Item -Times 1
-                }
+                # Resolve-Path doesn't like embedded quotes
+                $Path = ($Result.Arguments[1] -split '(?<="):')[0] -replace '"'
+                $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Start-Process -Times 1
+            }
+
+            It 'invokes the set editor with unknown editor chosen' {
+                Set-PSKoanSetting -Name Editor -Value 'vim'
+
+                $Result = Show-Karma -Contemplate
+                $Result.Editor | Should -BeExactly 'vim'
+                $Result.Arguments | Should -MatchExactly '"[^"]+"'
+
+                # Resolve-Path doesn't like embedded quotes
+                $Path = $Result.Arguments -replace '"'
+                $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Start-Process -Times 1
+            }
+
+            It 'opens the file directly when selected editor is unavailable' {
+                Set-PSKoanSetting -Name Editor -Value "missing_editor"
+
+                Show-Karma -Contemplate | Should -BeExactly $TestFile.FullName
+
+                Assert-MockCalled Get-Command -Times 1 -ParameterFilter { $Name -eq "missing_editor" }
+                Assert-MockCalled Invoke-Item -Times 1
             }
         }
+
+        Context 'With -Library Switch' {
+            BeforeAll {
+                Mock Get-Command { $true } -ParameterFilter { $Name -ne "missing_editor" }
+                Mock Get-Command { $false } -ParameterFilter { $Name -eq "missing_editor" }
+                Mock Start-Process {
+                    @{ Editor = $FilePath; Arguments = $ArgumentList }
+                }
+                Mock Invoke-Item { $Path }
+            }
+
+            It 'invokes VS Code with "code" set as Editor with proper arguments' {
+                Set-PSKoanSetting -Name Editor -Value 'code'
+                $Result = Show-Karma -Library
+
+                $Result.Editor | Should -BeExactly 'code'
+
+                # Resolve-Path doesn't like embedded quotes
+                $Path = $Result.Arguments -replace '"'
+                $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Start-Process -Times 1
+            }
+
+            It 'invokes the set editor with unknown editor chosen' {
+                Set-PSKoanSetting -Name Editor -Value 'vim'
+
+                $Result = Show-Karma -Library
+                $Result.Editor | Should -BeExactly 'vim'
+
+                # Resolve-Path doesn't like embedded quotes
+                $Path = $Result.Arguments -replace '"'
+                $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Start-Process -Times 1
+            }
+
+            It 'opens the file directly when selected editor is unavailable' {
+                Set-PSKoanSetting -Name Editor -Value "missing_editor"
+
+                Show-Karma -Library | Should -BeExactly (Get-PSKoanLocation)
+
+                Assert-MockCalled Get-Command -Times 1 -ParameterFilter { $Name -eq "missing_editor" }
+                Assert-MockCalled Invoke-Item -Times 1
+            }
+        }
+
     }
 }
