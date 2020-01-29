@@ -24,13 +24,13 @@
 
 ### Joel Sallow
 
-- [Blog](https://vexx32.github.io)
-- [Twitter](https://twitter.com/vexx32)
+- [Blog][blog]
+- [Twitter][twitter]
 
 ## Synopsis
 
-Inspired by Chris Marinos' **fantastic** [F# koans](https://github.com/ChrisMarinos/FSharpKoans), the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
-Each [kōan](https://en.wikipedia.org/wiki/K%C5%8Dan) (each question) is represented by a failing Pester test.
+Inspired by Chris Marinos' **fantastic** [F# koans][fsharp-koans], the goal of the PowerShell koans is to teach you PowerShell by presenting you with a set of questions.
+Each [kōan][define-koan] (each question) is represented by a failing Pester test.
 Your goal is to make those tests pass by filling out the correct answer, or writing the correct code.
 The koans start very simple to get you familiar with the basic concepts and progress towards more difficult.
 Teaching you multiple beginner, intermediate and advanced aspects of PowerShell in the process.
@@ -39,7 +39,7 @@ To get started please navigate to [prerequisites](#prerequisites) and [getting s
 
 ## Command Reference
 
-View the PSKoans [Command Reference Documentation](docs/PSKoans.md).
+View the PSKoans [Command Reference Documentation][reference-docs].
 
 ## Prerequisites
 
@@ -115,18 +115,18 @@ You'll notice that your overall progress updated to `1/635` and you are presente
  You are on your own from here, but the progression should be fairly smooth.
  If you need help, you can always ask around in the PowerShell communities:
 
-- [Slack](https://j.mp/psslack)
-- [Discord](https://j.mp/psdiscord)
-- [Reddit](https://www.reddit.com/r/PowerShell/)
-- [Twitter](https://twitter.com/hashtag/powershell)
-- [PowerShell.org Forums](https://powershell.org/forums/forum/windows-powershell-qa/)
+- [Slack][ps-slack]
+- [Discord][ps-discord]
+- [Reddit][ps-reddit]
+- [Twitter][ps-twitter]
+- [PowerShell.org Forums][ps-forum]
 
 Good luck!
 
 ## Backing Up Your Progress
 
 You can see the current folder your copy of the koans is stored in by calling `Get-PSKoanLocation`.
-If you want to save a backup of your current progress, simple make a copy of this folder and store it in a safe location.
+If you want to save a backup of your current progress, simply make a copy of this folder and store it in a safe location.
 
 For example:
 
@@ -175,7 +175,7 @@ Get-PSKoanLocation | Remove-Item -Recurse
 
 ## Contributing
 
-If you would like to contribute to PSKoans, please check out the [Contributing](https://github.com/vexx32/PSKoans/blob/master/CONTRIBUTING.md) document.
+If you would like to contribute to PSKoans, please check out the [Contributing][contributing] document.
 
 ## Support the Project
 
@@ -185,15 +185,26 @@ If you would like to support the project, you can:
 - [Become a Patreon Patron][patreon]
 - [Donate with Ko-fi][ko-fi]
 
+[blog]: https://vexx32.github.io
 [build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
 [build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
+[contributing]: CONTRIBUTING.md
 [coverage-badge]: https://img.shields.io/azure-devops/coverage/SallowCode/PSKoans/1
+[define-koan]: https://en.wikipedia.org/wiki/K%C5%8Dan
+[fsharp-koans]: https://github.com/ChrisMarinos/FSharpKoans
 [github-sponsor]: https://github.com/sponsors/vexx32
-[patreon]: https://patreon.com/PSKoans
 [ko-fi]: https://ko-fi.com/joelsallow
-[show-karma-1]: images/Show-Karma_1.png
-[show-karma-2]: images/Show-Karma_2.png
 [logo-64]: images/logo-64px.png
 [logo-128]: images/logo-128px.png
 [logo-full]: images/logo.png
 [logo-svg]: images/logo.svg
+[patreon]: https://patreon.com/PSKoans
+[ps-discord]: https://j.mp/psdiscord
+[ps-forum]: https://powershell.org/forums/forum/windows-powershell-qa/
+[ps-reddit]: https://www.reddit.com/r/PowerShell/
+[ps-slack]: https://j.mp/psslack
+[ps-twitter]: https://twitter.com/hashtag/powershell
+[reference-docs]: docs/PSKoans.md
+[show-karma-1]: images/Show-Karma_1.png
+[show-karma-2]: images/Show-Karma_2.png
+[twitter]: https://twitter.com/vexx32
