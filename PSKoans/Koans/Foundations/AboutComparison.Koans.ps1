@@ -101,11 +101,14 @@ Describe 'Comparison Operators' {
         }
 
         It 'will often return more than one item from arrays' {
-            $Array = '1', '5', '10', '15', '20', '25', '30'
+            $Array = 1, 5, 10, 15, 20, 25, 30
 
+            $NewArray = @(
+                __
+                __
+            )
+            $NewArray | Should -Be ($Array -lt 10)
             __ | Should -Be ($Array -gt 25)
-            @('__', '__') | Should -Be ($Array -lt 10)
-
         }
     }
 
