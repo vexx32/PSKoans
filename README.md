@@ -85,42 +85,13 @@ Install-Module PSKoans -Scope CurrentUser
 
 You will be presented with a page describing your goal:
 
-```code
-    Welcome, seeker of enlightenment.
-    Please wait a moment while we examine your karma...
-
-Describing 'Equality' has damaged your karma.
-
-    You have not yet reached enlightenment.
-
-    The answers you seek...
-
-Expected $true, but got $null.
-
-    Please meditate on the following code:
-
-× It is a simple comparison
-at <ScriptBlock>, C:\Users\Joel\PSKoans\Introduction\AboutAssertions.Koans.ps1: line 27
-27:         $____ | Should -Be $true
-
-    ▌ When you smash the citadel of doubt,
-    ▌ Then the Buddha is simply yourself.
-
-    You examine the path beneath your feet...
-
- [AboutAssertions]: [――――――――――――――――――――――――――] 0/4
-
-
- [Total]: [――――――――――――――――――――――――――――――――――――――――――――――――――――] 0/635
-
-Run 'Show-Karma -Meditate' to begin your meditations.
-```
+![Show-Karma result screen, showing zero completed koans](images/Show-Karma_1.png)
 
 Inspect the red messages carefully, most importantly the last one.
 The error message contains path to the file that you need to edit in order to progress forward.
 In this case, you'll need to examine `Introduction\AboutAssertions.Koans.ps1`.
 
-### 2. Run `Show-Karma -Meditate` to open your Koans folder
+### 2. Run `Show-Karma -Contemplate` to open your Koans folder
 
 Navigate to `Introduction\AboutAssertions.Koans.ps1`. Near the top you'll see:
 
@@ -139,38 +110,7 @@ To pass this koan you need to replace `$____` with `$true` to fulfil the asserti
 You passed your first koan!
 You'll notice that your overall progress updated to `1/635` and you are presented with the next challenge.
 
-```code
-    Welcome, seeker of enlightenment.
-    Please wait a moment while we examine your karma...
-
-Describing 'Equality' has damaged your karma.
-
-    You have not yet reached enlightenment.
-
-    The answers you seek...
-
-Expected 3, but got .
-
-    Please meditate on the following code:
-
-× It expects you to fill in values
-at <ScriptBlock>, C:\Users\Joel\PSKoans\Introduction\AboutAssertions.Koans.ps1: line 32
-32:         __ | Should -Be (1 + 2)
-
-    ▌ Grasping nothing, discarding nothing.
-    ▌ In every place there's no hindrance, no conflict.
-    ▌ My supernatural power and marvelous activity:
-    ▌ Drawing water and chopping wood.
-
-    You examine the path beneath your feet...
-
- [AboutAssertions]: [■■■■■■――――――――――――――――――――] 1/4
-
-
- [Total]: [――――――――――――――――――――――――――――――――――――――――――――――――――――] 1/635
-
-Run 'Show-Karma -Meditate' to begin your meditations.
-```
+![Show-Karma result screen after completing a single koan, showing one completed koan](images/Show-Karma_2.png)
 
  You are on your own from here, but the progression should be fairly smooth.
  If you need help, you can always ask around in the PowerShell communities:
@@ -186,7 +126,7 @@ Good luck!
 ## Backing Up Your Progress
 
 You can see the current folder your copy of the koans is stored in by calling `Get-PSKoanLocation`.
-If you want to save a backup of your current progress, simply make a copy of this folder and store it in a safe location.
+If you want to save a backup of your current progress, simple make a copy of this folder and store it in a safe location.
 
 For example:
 
