@@ -85,7 +85,7 @@ Install-Module PSKoans -Scope CurrentUser
 
 You will be presented with a page describing your goal:
 
-![Show-Karma result screen, showing zero completed koans](images/Show-Karma_1.png)
+![Show-Karma result screen, showing zero completed koans][show-karma-1]
 
 Inspect the red messages carefully, most importantly the last one.
 The error message contains path to the file that you need to edit in order to progress forward.
@@ -110,7 +110,7 @@ To pass this koan you need to replace `$____` with `$true` to fulfil the asserti
 You passed your first koan!
 You'll notice that your overall progress updated to `1/635` and you are presented with the next challenge.
 
-![Show-Karma result screen after completing a single koan, showing one completed koan](images/Show-Karma_2.png)
+![Show-Karma result screen after completing a single koan, showing one completed koan][show-karma-2]
 
  You are on your own from here, but the progression should be fairly smooth.
  If you need help, you can always ask around in the PowerShell communities:
@@ -191,3 +191,5 @@ If you would like to support the project, you can:
 [github-sponsor]: https://github.com/sponsors/vexx32
 [patreon]: https://patreon.com/PSKoans
 [ko-fi]: https://ko-fi.com/joelsallow
+[show-karma-1]: images/Show-Karma_1.png
+[show-karma-2]: images/Show-Karma_2.png
