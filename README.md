@@ -1,8 +1,8 @@
 # PowerShell Koans
 
-|                                                | Build Status                                                                                    |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| [![PSKoans Logo](./logo-64px.png)](./logo.svg) | [![Build Status][build-badge]][build-link]<br/>[![Coverage Status][coverage-badge]][build-link] |
+|                                      | Build Status                                                                                    |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| [![PSKoans Logo][logo-64]][logo-svg] | [![Build Status][build-badge]][build-link]<br/>[![Coverage Status][coverage-badge]][build-link] |
 
 - [PowerShell Koans](#powershell-koans)
   - [About the Author](#about-the-author)
@@ -193,3 +193,7 @@ If you would like to support the project, you can:
 [ko-fi]: https://ko-fi.com/joelsallow
 [show-karma-1]: images/Show-Karma_1.png
 [show-karma-2]: images/Show-Karma_2.png
+[logo-64]: images/logo-64px.png
+[logo-128]: images/logo-128px.png
+[logo-full]: images/logo.png
+[logo-svg]: images/logo.svg
