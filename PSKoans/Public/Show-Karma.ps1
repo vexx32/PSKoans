@@ -86,16 +86,20 @@ function Show-Karma {
             }
         }
         'OpenFile' {
-            try {
-                $Results = Get-Karma @GetParams
-            }
-            catch {
-                $PSCmdlet.ThrowTerminatingError($_)
+            # If there is no cached data, we need to call Get-Karma to populate it
+            if (-not $script:CurrentTopic) {
+                try {
+                    # We can discard this; the results we need are saved in $script:CurrentTopic
+                    $null = Get-Karma @GetParams
+                }
+                catch {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
             }
 
             $Editor = Get-PSKoanSetting -Name Editor
-            $FilePath = (Get-PSKoan -Topic $Results.CurrentTopic.Name -Scope User).Path
-            $LineNumber = $Results.CurrentTopic.CurrentLine
+            $FilePath = (Get-PSKoan -Topic $script:CurrentTopic.Name -Scope User).Path
+            $LineNumber = $script:CurrentTopic.CurrentLine
 
             $Arguments = switch ($Editor) {
                 { $_ -in 'code', 'code-insiders' } {
@@ -117,6 +121,9 @@ function Show-Karma {
             else {
                 Invoke-Item -Path $FilePath
             }
+
+            # Discard the results so we avoid accidentally returning the same result multiple times
+            $script:CurrentTopic = $null
         }
 
         default {

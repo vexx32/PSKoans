@@ -102,6 +102,13 @@
                     Where-Object Result -eq 'Failed' |
                     Select-Object -First 1
 
+                $script:CurrentTopic = @{
+                    Name        = $KoanFile.Topic
+                    Completed   = $PesterTests.PassedCount
+                    Total       = $PesterTests.TotalCount
+                    CurrentLine = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+'
+                }
+
                 [PSCustomObject]@{
                     PSTypeName     = 'PSKoans.Result'
                     Describe       = $NextKoanFailed.Describe
@@ -110,12 +117,7 @@
                     Meditation     = $NextKoanFailed.StackTrace
                     KoansPassed    = $KoansPassed
                     TotalKoans     = $TotalKoans
-                    CurrentTopic   = [PSCustomObject]@{
-                        Name        = $KoanFile.Topic
-                        Completed   = $PesterTests.PassedCount
-                        Total       = $PesterTests.TotalCount
-                        CurrentLine = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+'
-                    }
+                    CurrentTopic   = [PSCustomObject]$script:CurrentTopic
                     Results        = $PesterTests.TestResult
                     RequestedTopic = $Topic
                 }

@@ -11,11 +11,14 @@ Describe 'Show-Karma' {
         $StartingLocation = Get-PSKoanLocation
         Set-PSKoanLocation -Path "$TestDrive/Koans"
 
+        $EditorSetting = Get-PSKoanSetting -Name Editor
+
         Reset-PSKoan -Confirm:$false
     }
 
     AfterAll {
         Set-PSKoanLocation -Path $StartingLocation
+        Set-PSKoanSetting -Name Editor -Value $EditorSetting
     }
 
     InModuleScope 'PSKoans' {
@@ -117,13 +120,16 @@ Describe 'Show-Karma' {
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
                 Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
-                Mock Measure-Koan -ModuleName 'PSKoans' { }
                 Mock Get-PSKoan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
                 Mock Test-Path { $false }
                 Mock Invoke-Item
                 Mock New-Item
+            }
+
+            BeforeEach {
+                $script:CurrentTopic = $null
             }
 
             It 'should attempt to populate koans and then recurse to reassess' {
@@ -229,6 +235,13 @@ Describe 'Show-Karma' {
                     @{ Editor = $FilePath; Arguments = $ArgumentList }
                 }
                 Mock Get-Karma -ModuleName 'PSKoans' {
+                    $script:CurrentTopic = @{
+                        Name        = 'TestTopic'
+                        Completed   = 0
+                        Total       = 4
+                        CurrentLine = 1
+                    }
+
                     [PSCustomObject]@{
                         PSTypeName   = 'PSKoans.Result'
                         Meditation   = 'TestMeditation'
@@ -237,17 +250,12 @@ Describe 'Show-Karma' {
                         Describe     = 'TestDescribe'
                         Expectation  = 'ExpectedTest'
                         It           = 'TestIt'
-                        CurrentTopic = [PSCustomObject]@{
-                            Name        = 'TestTopic"'
-                            Completed   = 0
-                            Total       = 4
-                            CurrentLine = 1
-                        }
+                        CurrentTopic = [PSCustomObject]$script:CurrentTopic
                     }
                 }
                 Mock Get-PSKoan {
                     [PSCustomObject]@{ Path = $TestFile.FullName }
-                }
+                } -ParameterFilter { $Topic -eq 'TestTopic' }
             }
 
             AfterAll {
@@ -269,6 +277,8 @@ Describe 'Show-Karma' {
 
                 Assert-MockCalled Get-Command -Times 1
                 Assert-MockCalled Start-Process -Times 1
+
+                $script:CurrentTopic | Should -BeNullOrEmpty
             }
 
             It 'invokes the set editor with unknown editor chosen' {
@@ -284,6 +294,8 @@ Describe 'Show-Karma' {
 
                 Assert-MockCalled Get-Command -Times 1
                 Assert-MockCalled Start-Process -Times 1
+
+                $script:CurrentTopic | Should -BeNullOrEmpty
             }
 
             It 'opens the file directly when selected editor is unavailable' {
@@ -293,6 +305,8 @@ Describe 'Show-Karma' {
 
                 Assert-MockCalled Get-Command -Times 1 -ParameterFilter { $Name -eq "missing_editor" }
                 Assert-MockCalled Invoke-Item -Times 1
+
+                $script:CurrentTopic | Should -BeNullOrEmpty
             }
         }
 
