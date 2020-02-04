@@ -62,12 +62,10 @@ Describe "Banker's Rounding" {
 
     It 'rounds to nearest even number on .5' {
         <#
-            Rounding
-
-            The rounding used in powershell is called "Rounding to Even" or "Banker's Rounding".
+            The rounding used in PowerShell is called "Rounding to Even" or "Banker's Rounding".
             Numbers will be rounded to the nearest _even_ Integer.
 
-            This Method stems from the underlying .NET libraries and can be found in more detail here:
+            This behaviour stems from the underlying library method [math]::Round() which is documented in more detail here:
             https://docs.microsoft.com/en-us/dotnet/api/system.math.round#midpoint-values-and-rounding-conventions
         #>
 
