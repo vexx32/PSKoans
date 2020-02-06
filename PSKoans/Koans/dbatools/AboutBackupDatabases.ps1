@@ -61,12 +61,21 @@ Describe "Backup-DbaDatabase" {
         $_.Database -contains ('Database_01', 'Database_02')
     }
     Mock -CommandName Backup-DbaDatabase -MockWith {
+        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+        $RestoreEnd = $StartDate.AddSeconds(5)
         [PSCustomObject]@{
             ComputerName = 'localhost'
-            SqlInstance = 
+            SqlInstance = $ENV:COMPUTERNAME
+            Database = 'Database_01'
+            Type = 'Differential'
+            TotalSize = ('{0}' -f ([Math]::PI))
+            DeviceType = 'Disk'
+            Start = $StartDate
+            Duration = $RestoreEnd - $StartDate
+            End = $RestoreEnd
         }
-        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
-
+    } -ParameterFilter {
+        $_.Type -eq 'Differential'
     }
 
     <#
