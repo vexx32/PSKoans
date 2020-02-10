@@ -85,6 +85,10 @@ function New-PSKoanErrorRecord {
             $Exception = $ExceptionType::new( $ExceptionMessage )
         }
 
+        if ($ErrorId -notmatch '^PSKoans\.') {
+            $ErrorId = "PSKoans.$($ErrorId)"
+        }
+
         [ErrorRecord]::new(
             $Exception,
             $ErrorId,

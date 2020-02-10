@@ -76,17 +76,24 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport     = @(
         'Get-Blank'
+        'Get-Karma'
+        'Get-PSKoan'
+        'Get-PSKoanLocation'
+        'Get-PSKoanSetting'
+
+        'Set-PSKoanLocation'
+        'Set-PSKoanSetting'
+
+        'Move-PSKoanLibrary'
+
+        'Reset-PSKoan'
+
+        'Register-Advice'
+
         'Show-Advice'
         'Show-Karma'
-        'Register-Advice'
-        'Get-PSKoanLocation'
-        'Set-PSKoanLocation'
-        'Get-PSKoanSetting'
-        'Set-PSKoanSetting'
-        'Reset-PSKoan'
+
         'Update-PSKoan'
-        'Get-PSKoan'
-        'Get-Karma'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
