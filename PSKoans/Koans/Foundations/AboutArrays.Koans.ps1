@@ -257,7 +257,7 @@ Describe 'Arrays' {
 
             For example, each array has a Contains method.
         #>
-
+        $Numbers = 1, 2, 3, 4
         $____ -eq $Numbers.Contains(3) | Should -BeTrue
 
         # The Contains method is case sensitive for arrays containing strings.
@@ -266,7 +266,7 @@ Describe 'Arrays' {
         $____ -eq $Strings.Contains('First') | Should -BeTrue
 
         # PowerShell's -contains operator is not case sensitive.
-
+        $Strings = 'first', 'second', 'third'
         $Strings -contains '____' | Should -BeTrue
         $Strings -contains '____' | Should -BeTrue
     }
