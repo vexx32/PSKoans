@@ -266,7 +266,6 @@ Describe 'Arrays' {
         $____ -eq $Strings.Contains('First') | Should -BeTrue
         
         # PowerShell's -contains operator is not case sensitive.
-        
         $Strings -contains '____' | Should -BeTrue
         $Strings -contains '____' | Should -BeTrue
     }
