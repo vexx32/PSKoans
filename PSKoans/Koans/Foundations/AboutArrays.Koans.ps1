@@ -261,12 +261,12 @@ Describe 'Arrays' {
         $____ -eq $Numbers.Contains(3) | Should -BeTrue
 
         # The Contains method is case sensitive for arrays containing strings.
-
+        $Strings = 'first', 'second', 'third'
         $____ -eq $Strings.Contains('first') | Should -BeTrue
         $____ -eq $Strings.Contains('First') | Should -BeTrue
-
+        
         # PowerShell's -contains operator is not case sensitive.
-        $Strings = 'first', 'second', 'third'
+        
         $Strings -contains '____' | Should -BeTrue
         $Strings -contains '____' | Should -BeTrue
     }
