@@ -140,11 +140,11 @@ stages:
 - stage: CreateChangelog
   displayName: 'Upload Changelog'
   dependsOn: []
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
 
   jobs:
   - job: GenerateChangelog
     displayName: "Generate Changelog"
-    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:
       vmImage: ubuntu-latest
     variables:
