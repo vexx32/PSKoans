@@ -22,6 +22,7 @@ stages:
   jobs:
   - job: Linux
     displayName: 'Pester Tests'
+
     pool:
       vmImage: ubuntu-latest
 
@@ -36,6 +37,7 @@ stages:
   jobs:
   - job: Windows
     displayName: 'Pester Tests'
+
     pool:
       vmImage: windows-latest
 
@@ -50,6 +52,7 @@ stages:
   jobs:
   - job: MacOS
     displayName: 'Pester Tests'
+
     pool:
       vmImage: macOS-latest
 
@@ -58,7 +61,7 @@ stages:
     - template: templates/test-steps.yml
 
 - stage: PublishModule
-  displayName: 'Publish Module'
+  displayName: 'Create Module'
   dependsOn:
     - LinuxTests
     - WindowsTests
@@ -66,12 +69,14 @@ stages:
 
   jobs:
   - job: BuildModule
-    displayName: "Build Module"
+    displayName: "Build PSKoans"
+
     pool:
       vmImage: ubuntu-latest
 
     steps:
     - template: templates/environment-setup.yml
+
     - task: PowerShell@2
       displayName: 'Initialize Environment'
 
@@ -89,18 +94,19 @@ stages:
         path: '$(BuiltModuleFolder)/PSKoans'
         artifact: PSKoans
 
-  - job: Publish
+  - job: PublishFiles
     dependsOn: BuildModule
-    displayName: "Publish Module & Artifacts"
+    displayName: "Publish Artifacts"
+
     pool:
       vmImage: ubuntu-latest
     variables:
       builtModulePath: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
       fileSystemDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
-      galleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
 
     steps:
     - template: templates/environment-setup.yml
+
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Built Module Artifact'
       inputs:
@@ -124,9 +130,28 @@ stages:
         path: '$(NupkgPath)'
         artifact: PSKoans.nupkg
 
+  - job: PublishToGallery
+    displayName: 'Publish PSKoans to PSGallery'
+    dependsOn: PublishFiles
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      builtModulePath: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
+      galleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
+
+    steps:
+    - template: templates/environment-setup.yml
+
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Built Module Artifact'
+      inputs:
+        artifact: PSKoans
+        path: $(builtModulePath)
+
     - task: PowerShell@2
       displayName: 'Publish Module to PSGallery'
-      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
 
       inputs:
         targetType: 'filePath'
