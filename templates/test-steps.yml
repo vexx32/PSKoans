@@ -4,8 +4,7 @@ steps:
 
   inputs:
     targetType: 'filePath'
-    filePath: ./Build/Build.ps1
-    arguments: -Task Build
+    filePath: ./Build/Invoke-ModuleTests.ps1
 
     errorActionPreference: 'stop'
     failOnStderr: true

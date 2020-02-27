@@ -1,7 +1,7 @@
 # YAML spec:
 # https://aka.ms/yaml
 
-name: Build & Test - Azure
+name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
 
 trigger:
   branches:
@@ -27,12 +27,7 @@ stages:
 
     steps:
     - template: templates/environment-setup.yml
-    - template: templates/build-steps.yml
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Built Module Artifact'
-      inputs:
-        path: '$(BuiltModuleFolder)/PSKoans'
-        artifact: PSKoans
+    - template: templates/test-steps.yml
 
 - stage: WindowsTests
   displayName: 'Windows'
@@ -46,7 +41,7 @@ stages:
 
     steps:
     - template: templates/environment-setup.yml
-    - template: templates/build-steps.yml
+    - template: templates/test-steps.yml
 
 - stage: MacOSTests
   displayName: 'MacOS'
@@ -60,7 +55,7 @@ stages:
 
     steps:
     - template: templates/environment-setup.yml
-    - template: templates/build-steps.yml
+    - template: templates/test-steps.yml
 
 - stage: PublishModule
   displayName: 'Publish Module'
@@ -70,8 +65,33 @@ stages:
     - MacOSTests
 
   jobs:
+  - job: BuildModule
+    displayName: "Build Module"
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+    - template: templates/environment-setup.yml
+    - task: PowerShell@2
+      displayName: 'Initialize Environment'
+
+      inputs:
+        targetType: 'filePath'
+        filePath: ./Build/Build-Module.ps1
+
+        errorActionPreference: 'stop'
+        failOnStdErr: true
+        pwsh: true
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Built Module Artifact'
+      inputs:
+        path: '$(BuiltModuleFolder)/PSKoans'
+        artifact: PSKoans
+
   - job: Publish
-    displayName: "Create & Upload Artifacts"
+    dependsOn: BuildModule
+    displayName: "Publish Module & Artifacts"
     pool:
       vmImage: ubuntu-latest
     variables:
@@ -119,10 +139,7 @@ stages:
 
 - stage: CreateChangelog
   displayName: 'Upload Changelog'
-  dependsOn:
-  - LinuxTests
-  - MacOSTests
-  - WindowsTests
+  dependsOn: []
 
   jobs:
   - job: GenerateChangelog
