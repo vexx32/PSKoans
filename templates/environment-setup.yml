@@ -1,13 +1,24 @@
 steps:
 - task: PowerShell@2
-  displayName: 'Setup Build Environment'
+  displayName: 'Install Dependencies'
 
   inputs:
     targetType: 'inline'
     script: |
-      Install-Module -Name Psake, PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
+      Install-Module -Name PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
       Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
 
     errorActionPreference: 'stop'
     failOnStderr: true
+    pwsh: true
+
+- task: PowerShell@2
+  displayName: 'Initialize Environment'
+
+  inputs:
+    targetType: 'filePath'
+    filePath: ./Build/Initialize-Environment.ps1
+
+    errorActionPreference: 'stop'
+    failOnStdErr: true
     pwsh: true

@@ -1,7 +1,7 @@
 # YAML spec:
 # https://aka.ms/yaml
 
-name: Build & Test - Azure
+name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
 
 trigger:
   branches:
@@ -14,104 +14,177 @@ trigger:
 pr:
 - master
 
-jobs:
+stages:
+- stage: LinuxTests
+  displayName: 'Linux'
+  dependsOn: []
 
-- job: Linux
-  pool:
-    vmImage: ubuntu-latest
+  jobs:
+  - job: Linux
+    displayName: 'Pester Tests'
 
-  steps:
-  - template: templates/environment-setup.yml
-  - template: templates/build-steps.yml
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Built Module Artifact'
-    inputs:
-      path: '$(BuiltModuleFolder)/PSKoans'
-      artifact: PSKoans
+    pool:
+      vmImage: ubuntu-latest
 
-- job: Windows
-  pool:
-    vmImage: windows-latest
+    steps:
+    - template: templates/environment-setup.yml
+    - template: templates/test-steps.yml
 
-  steps:
-  - template: templates/environment-setup.yml
-  - template: templates/build-steps.yml
+- stage: WindowsTests
+  displayName: 'Windows'
+  dependsOn: []
 
-- job: MacOS
-  pool:
-    vmImage: macOS-latest
+  jobs:
+  - job: Windows
+    displayName: 'Pester Tests'
 
-  steps:
-  - template: templates/environment-setup.yml
-  - template: templates/build-steps.yml
+    pool:
+      vmImage: windows-latest
 
-- job: Publish
-  displayName: "Publish Build"
+    steps:
+    - template: templates/environment-setup.yml
+    - template: templates/test-steps.yml
+
+- stage: MacOSTests
+  displayName: 'MacOS'
+  dependsOn: []
+
+  jobs:
+  - job: MacOS
+    displayName: 'Pester Tests'
+
+    pool:
+      vmImage: macOS-latest
+
+    steps:
+    - template: templates/environment-setup.yml
+    - template: templates/test-steps.yml
+
+- stage: PublishModule
+  displayName: 'Create Module'
   dependsOn:
-    - Linux
-    - Windows
-    - MacOS
-  pool:
-    vmImage: ubuntu-latest
+    - LinuxTests
+    - WindowsTests
+    - MacOSTests
 
-  steps:
-  - template: templates/environment-setup.yml
-  - task: DownloadPipelineArtifact@2
-    displayName: 'Download Built Module Artifact'
-    inputs:
-      artifact: PSKoans
-      path: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
+  jobs:
+  - job: BuildModule
+    displayName: "Build PSKoans"
 
-  - task: PowerShell@2
-    displayName: 'Deploy to FileSystem'
-    inputs:
-      targetType: 'filePath'
-      filePath: ./Deploy/Publish.ps1
-      arguments: -Key 'filesystem' -Path '$(System.DefaultWorkingDirectory)/Deploy/FileSystem' -OutputDirectory '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
+    pool:
+      vmImage: ubuntu-latest
 
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
+    steps:
+    - template: templates/environment-setup.yml
 
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Module Nupkg'
-    inputs:
-      path: '$(NupkgPath)'
-      artifact: PSKoans.nupkg
+    - task: PowerShell@2
+      displayName: 'Initialize Environment'
 
-  - task: PowerShell@2
-    displayName: 'Deploy to PowerShell Gallery'
+      inputs:
+        targetType: 'filePath'
+        filePath: ./Build/Build-Module.ps1
+
+        errorActionPreference: 'stop'
+        failOnStdErr: true
+        pwsh: true
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Built Module Artifact'
+      inputs:
+        path: '$(BuiltModuleFolder)/PSKoans'
+        artifact: PSKoans
+
+  - job: PublishFiles
+    dependsOn: BuildModule
+    displayName: "Publish Artifacts"
+
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      builtModulePath: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
+      fileSystemDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/FileSystem'
+
+    steps:
+    - template: templates/environment-setup.yml
+
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Built Module Artifact'
+      inputs:
+        artifact: PSKoans
+        path: $(builtModulePath)
+
+    - task: PowerShell@2
+      displayName: 'Create Module Nupkg'
+      inputs:
+        targetType: 'filePath'
+        filePath: ./Deploy/Publish.ps1
+        arguments: -Key 'filesystem' -Path '$(fileSystemDeploymentPath)' -OutputDirectory '$(fileSystemDeploymentPath)'
+
+        errorActionPreference: 'stop'
+        failOnStderr: true
+        pwsh: true
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Nupkg Artifact'
+      inputs:
+        path: '$(NupkgPath)'
+        artifact: PSKoans.nupkg
+
+  - job: PublishToGallery
+    displayName: 'Publish PSKoans to PSGallery'
+    dependsOn: PublishFiles
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
 
-    inputs:
-      targetType: 'filePath'
-      arguments: -Key $(PSApiKey) -Path '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
-      filePath: ./Deploy/Publish.ps1
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      builtModulePath: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
+      galleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
 
-      errorActionPreference: 'stop'
-      failOnStderr: true
-      pwsh: true
+    steps:
+    - template: templates/environment-setup.yml
 
-- job: GenerateChangelog
-  displayName: "Publish Changelog"
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
-  dependsOn:
-    - Linux
-    - Windows
-    - MacOS
-  pool:
-    vmImage: ubuntu-latest
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Built Module Artifact'
+      inputs:
+        artifact: PSKoans
+        path: $(builtModulePath)
 
-  steps:
-  - task: PowerShell@2
-    displayName: 'Create Changelog'
-    inputs:
-      targetType: 'filepath'
-      filePath: ./Build/New-Changelog.ps1
-      arguments: -Path '$(System.DefaultWorkingDirectory)/Changelog.md' -ApiKey $(GithubApiKey) -Verbose
+    - task: PowerShell@2
+      displayName: 'Publish Module to PSGallery'
 
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Changelog'
-    inputs:
-      path: '$(System.DefaultWorkingDirectory)/Changelog.md'
-      artifact: Changelog
+      inputs:
+        targetType: 'filePath'
+        arguments: -Key $(PSApiKey) -Path '$(galleryDeploymentPath)'
+        filePath: ./Deploy/Publish.ps1
+
+        errorActionPreference: 'stop'
+        failOnStderr: true
+        pwsh: true
+
+- stage: CreateChangelog
+  displayName: 'Upload Changelog'
+  dependsOn: []
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+
+  jobs:
+  - job: GenerateChangelog
+    displayName: "Generate Changelog"
+    pool:
+      vmImage: ubuntu-latest
+    variables:
+      filePath: '$(System.DefaultWorkingDirectory)/Changelog.md'
+
+    steps:
+    - task: PowerShell@2
+      displayName: 'Create Changelog'
+      inputs:
+        targetType: 'filepath'
+        filePath: ./Build/New-Changelog.ps1
+        arguments: -Path '$(filePath)' -ApiKey $(GithubApiKey) -Verbose
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Changelog'
+      inputs:
+        path: '$(filePath)'
+        artifact: Changelog
