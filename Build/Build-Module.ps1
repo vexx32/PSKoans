@@ -1,6 +1,8 @@
 # Grab nuget bits, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
+Import-Module "$env:PROJECTROOT/PSKoans"
+
 Set-BuildEnvironment
 
 $Lines = '-' * 70
@@ -31,8 +33,5 @@ catch {
 # Build external help files from Platyps MD files
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en-us"
 
-$BuiltModuleFolder = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/Module/"
-Write-Host "##vso[task.setvariable variable=BuiltModuleFolder]$BuiltModuleFolder"
-
-New-Item -Path $BuiltModuleFolder -ItemType Directory
-Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $BuiltModuleFolder -Recurse -PassThru
+Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
+    Where-Object { -not $_.PSIsContainer }
