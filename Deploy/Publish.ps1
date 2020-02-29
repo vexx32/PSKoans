@@ -13,14 +13,6 @@ param(
 $env:NugetApiKey = $Key
 
 if ($OutputDirectory) {
-    $Params = @{
-        Name                 = 'FileSystem'
-        SourceLocation       = "$PSScriptRoot/FileSystem"
-        ScriptSourceLocation = "$PSScriptRoot/FileSystem"
-        InstallationPolicy   = 'Trusted'
-    }
-    Register-PSRepository @Params
-
     Import-Module "$PSScriptRoot/PSKoans"
     $Module = Get-Module -Name PSKoans
     $Dependencies = @(
