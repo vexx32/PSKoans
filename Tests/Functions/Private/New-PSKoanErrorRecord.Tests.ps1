@@ -21,11 +21,11 @@ Describe 'New-PSKoanErrorRecord' {
         }
 
         It 'creates output with properties matching the parameters supplied' {
-            $Output.Exception             | Should -BeOfType $Parameters.Exception.GetType().FullName
-            $Output.Exception.Message     | Should -BeExactly $Parameters.Exception.Message
-            $Output.FullyQualifiedErrorId | Should -BeExactly $Parameters.ErrorId
+            $Output.Exception | Should -BeOfType $Parameters.Exception.GetType().FullName
+            $Output.Exception.Message | Should -BeExactly $Parameters.Exception.Message
+            $Output.FullyQualifiedErrorId | Should -BeExactly "PSKoans.$($Parameters.ErrorId)"
             $Output.CategoryInfo.Category | Should -Be $Parameters.ErrorCategory
-            $Output.TargetObject	      | Should -BeNullOrEmpty
+            $Output.TargetObject | Should -BeNullOrEmpty
         }
     }
 
@@ -49,11 +49,11 @@ Describe 'New-PSKoanErrorRecord' {
         }
 
         It 'creates output with properties matching the parameters supplied' {
-            $Output.Exception             | Should -BeOfType $Parameters.ExceptionType
-            $Output.Exception.Message     | Should -BeExactly $Parameters.ExceptionMessage
-            $Output.FullyQualifiedErrorId | Should -BeExactly $Parameters.ErrorId
+            $Output.Exception | Should -BeOfType $Parameters.ExceptionType
+            $Output.Exception.Message | Should -BeExactly $Parameters.ExceptionMessage
+            $Output.FullyQualifiedErrorId | Should -BeExactly "PSKoans.$($Parameters.ErrorId)"
             $Output.CategoryInfo.Category | Should -Be $Parameters.ErrorCategory
-            $Output.TargetObject	      | Should -BeNullOrEmpty
+            $Output.TargetObject | Should -BeNullOrEmpty
         }
     }
 }
