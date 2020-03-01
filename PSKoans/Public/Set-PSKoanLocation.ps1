@@ -5,7 +5,6 @@ function Set-PSKoanLocation {
     param(
         [Parameter(Mandatory, Position = 0)]
         [Alias('PSPath', 'Folder')]
-        [FolderTransformAttribute()]
         [string]
         $Path,
 
@@ -14,13 +13,24 @@ function Set-PSKoanLocation {
         $PassThru
     )
     begin {
-        $resolvedPath = $PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($aPath)
+        $resolvedPath = $PSCmdlet.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)
 
         if ($resolvedPath.Count -gt 1 -or [WildcardPattern]::ContainsWildcardCharacters($resolvedPath)) {
             $ErrorDetails = @{
                 ExceptionType    = [System.Management.Automation.PSArgumentException]
                 ExceptionMessage = 'Wildcarded paths are not supported.'
                 ErrorId          = 'InvalidPath'
+                ErrorCategory    = 'InvalidArgument'
+                TargetObject     = $Path
+            }
+            $PSCmdlet.ThrowTerminatingError((New-PSKoanErrorRecord @ErrorDetails))
+        }
+
+        if (Test-Path $resolvedPath -PathType Leaf) {
+            $ErrorDetails = @{
+                ExceptionType    = [System.Management.Automation.PSArgumentException]
+                ExceptionMessage = 'You cannot use a file path as the location for your PSKoans library.'
+                ErrorId          = 'InvalidPathType'
                 ErrorCategory    = 'InvalidArgument'
                 TargetObject     = $Path
             }
