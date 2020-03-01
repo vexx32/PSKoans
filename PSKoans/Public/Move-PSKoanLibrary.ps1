@@ -3,8 +3,8 @@ function Move-PSKoanLibrary {
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Move-PSKoanLibrary.md')]
     [OutputType([void])]
     param(
-        [Parameter(Mandatory, Position = 0)]
-        [Alias('PSPath', 'Folder')]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [Alias('PSPath', 'Folder', 'Destination', 'TargetPath')]
         [string]
         $Path
     )
@@ -13,9 +13,11 @@ function Move-PSKoanLibrary {
             $OriginalPath = Get-PSKoanLocation
 
             Write-Verbose "Moving library files from '$OriginalPath' to '$Path'"
-            Move-Item -Path $OriginalPath -Destination $Path -ErrorAction Stop
+            Move-Item -Path $OriginalPath -Destination $Path -ErrorAction Stop -PassThru
 
-            Set-PSKoanLocation -Path $Path
+            if ($?) {
+                Set-PSKoanLocation -Path $Path
+            }
         }
     }
 }
