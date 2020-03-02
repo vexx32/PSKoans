@@ -4,61 +4,58 @@ param()
 <#
     Binary
 
-    Binary is a base 2 number system, and only uses two numbers: 0 and 1.
+    Binary is a base 2 number system, and only uses two numerals: 0 and 1.
 
-    Binary is the basis of all computing and computational storage. It's simple & straightforward,
-    and directly represents the underlying hardware states, which can only be on (1) or off (0).
+    Binary is the basis of all computing and computational storage. All data is
+    stored both on hard drives and in memory in a series of states that can be
+    interpreted as a series of 1s and 0s, which directly represents the
+    underlying on or off hardware states.
 
-    It's useful to know binary when working with PowerShell to understand how integers are represented,
-    which is our next Koan. It's also extremely useful knowledge if you plan on delving deeper into computing;
-    the knowledge is applicable to networking, programming, data science, databases, and essentially every
-    other area of computing.
+    It's useful to know binary when working with PowerShell to understand how
+    numbers are commonly represented, which will be covered in more detail in a
+    future topic.
 
-    What it represents is a base 2 number.
+    It's also extremely useful knowledge if you plan on delving deeper into
+    computing; the knowledge is applicable to networking, programming,
+    data science, databases, and essentially every other area of computing.
 
-    For example, the below binary represents a "byte" of data, which contains 8 "bits".
-    Each bit will be either 1 or 0, as mentioned earlier.
+    For example, the below binary represents a "byte" of data, which contains
+    eight "bits," each of which will be either 1 or 0, as mentioned earlier.
 
-    So:
+    The table below demonstrates some of the structure of how this works. It's
+    very much comparable to the commonly-used base-10 number system, but since
+    binary is base 2 instead, each column is a power of 2, not of a power of 10.
 
-     2^7 | 2^6 | 2^5 | 2^4 | 2^3 | 2^2 | 2^1 | 2^0
-     128 |  64 |  32 |  16 |   8 |   4 |   2 |   1
-    -----+-----+-----+-----+-----+-----+-----+-----
-       0     0     0     0     0     0     0     1
+        | 2^7 | 2^6 | 2^5 | 2^4 | 2^3 | 2^2 | 2^1 | 2^0 |
+        | 128 |  64 |  32 |  16 |   8 |   4 |   2 |   1 |
+        +-----+-----+-----+-----+-----+-----+-----+-----+
+            0     0     0     0     0     0     0     1
 
-    Or:
+    Written in a simpler binary form: 00000001 (Actual value: 1)
 
-    00000001
+    That's simple enough. But since there are only two numerals in a binary
+    number system, you have to use extra columns to represent numbers larger
+    than 1.
 
-    Is actually 1
+    As such, 00000011 has a value of 3.
 
-    And 00000011
-
-    Is three. As both 1 and 2 are on, and 1 + 2 is equal to 3.
-
+    As both 1 and 2 columns are
+    one, and 1 + 2 is equal to 3.
 #>
 
 Describe "Binary conversion" {
 
     It "Bit conversion" {
-        <#
-            When converting from bit to a boolean try and guess what each would be
-        #>
-
         # What would 0 be if converted to be boolean?
         # Replace __ with either $true or $false
         $____ -as [int] | Should -Be 0
 
         # What would 1 be if converted to be boolean?
         # Replace __ with either $true or $false
-        $__ -as [int] | Should -Be 1
+        $____ -as [int] | Should -Be 1
     }
 
     It "Binary to integer conversion" {
-        <#
-            Convert the following binary representations into integers
-        #>
-
         # Replace __ with the decimal value of 1111
         # E.G. __ becomes 1234
         $Binary = "1111"
@@ -110,46 +107,44 @@ Describe "Binary conversion" {
 
         # Replace __ with the binary value of 7
         # E.G. "__" becomes "0100"
-        $Binary = "__"
+        $Binary = "____"
         $Value = 7
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 12
-        $Binary = "__"
+        $Binary = "____"
         $Value = 12
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 2
-        $Binary = "__"
+        $Binary = "____"
         $Value = 2
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 14
-        $Binary = "__"
+        $Binary = "____"
         $Value = 14
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 103
         # E.G. "__" becomes "01001110"
-        $Binary = "__"
+        $Binary = "____"
         $Value = 103
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 250
-        $Binary = "__"
+        $Binary = "____"
         $Value = 250
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 74
-        $Binary = "__"
+        $Binary = "____"
         $Value = 74
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
 
         # Replace __ with the binary value of 32
-        $Binary = "__"
+        $Binary = "____"
         $Value = 32
         $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
     }
-
 }
