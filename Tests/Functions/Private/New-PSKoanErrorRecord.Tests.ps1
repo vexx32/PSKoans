@@ -3,6 +3,7 @@
 Describe 'New-PSKoanErrorRecord' {
 
     Context 'With Exception Object' {
+
         BeforeAll {
             $Output, $Parameters = InModuleScope 'PSKoans' {
                 $Params = @{
@@ -20,16 +21,29 @@ Describe 'New-PSKoanErrorRecord' {
             $Output | Should -BeOfType System.Management.Automation.ErrorRecord
         }
 
-        It 'creates output with properties matching the parameters supplied' {
-            $Output.Exception             | Should -BeOfType $Parameters.Exception.GetType().FullName
-            $Output.Exception.Message     | Should -BeExactly $Parameters.Exception.Message
-            $Output.FullyQualifiedErrorId | Should -BeExactly $Parameters.ErrorId
+        It 'emits the same type of exception' {
+            $Output.Exception | Should -BeOfType $Parameters.Exception.GetType().FullName
+        }
+
+        It 'includes the input exception message' {
+            $Output.Exception.Message | Should -BeExactly $Parameters.Exception.Message
+        }
+
+        It 'emits the correct error ID with "PSKoans" prefix' {
+            $Output.FullyQualifiedErrorId | Should -BeExactly "PSKoans.$($Parameters.ErrorId)"
+        }
+
+        It 'assigns the requested error category' {
             $Output.CategoryInfo.Category | Should -Be $Parameters.ErrorCategory
-            $Output.TargetObject	      | Should -BeNullOrEmpty
+        }
+
+        It 'assigns the target object' {
+            $Output.TargetObject | Should -Be $Params.TargetObject
         }
     }
 
     Context 'With TypeName and Message' {
+
         BeforeAll {
             $Output, $Parameters = InModuleScope 'PSKoans' {
                 $Params = @{
@@ -48,12 +62,24 @@ Describe 'New-PSKoanErrorRecord' {
             $Output | Should -BeOfType System.Management.Automation.ErrorRecord
         }
 
-        It 'creates output with properties matching the parameters supplied' {
-            $Output.Exception             | Should -BeOfType $Parameters.ExceptionType
-            $Output.Exception.Message     | Should -BeExactly $Parameters.ExceptionMessage
-            $Output.FullyQualifiedErrorId | Should -BeExactly $Parameters.ErrorId
+        It 'creates the correct type of exception' {
+            $Output.Exception | Should -BeOfType $Parameters.ExceptionType
+        }
+
+        It 'applies the requested exception message' {
+            $Output.Exception.Message | Should -BeExactly $Parameters.ExceptionMessage
+        }
+
+        It 'emits the correct error ID with "PSKoans" prefix' {
+            $Output.FullyQualifiedErrorId | Should -BeExactly "PSKoans.$($Parameters.ErrorId)"
+        }
+
+        It 'assigns the requested error category' {
             $Output.CategoryInfo.Category | Should -Be $Parameters.ErrorCategory
-            $Output.TargetObject	      | Should -BeNullOrEmpty
+        }
+
+        It 'assigns the target object' {
+            $Output.TargetObject | Should -Be $Params.TargetObject
         }
     }
 }
