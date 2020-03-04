@@ -63,6 +63,16 @@ Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
 Install-Module Pester -Scope CurrentUser
 ```
 
+In Windows 10 v1809 and higher, you first need to cleanup the default Pester module and only then you can proceed with the installation of higher version of Pester module
+
+```$module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
+takeown /F $module /A /R
+icacls $module /reset
+icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
+Remove-Item -Path $module -Recurse -Force -Confirm:$false
+Install-Module -Name Pester -Force
+```
+
 ## Getting Started
 
 ### Install from Gallery
