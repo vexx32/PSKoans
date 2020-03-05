@@ -191,6 +191,8 @@ stages:
     - WindowsTests
     - MacOSTests
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  variables:
+    TagName: ''
 
   jobs:
   - job: PublishToGallery
@@ -223,3 +225,38 @@ stages:
         errorActionPreference: 'stop'
         failOnStderr: true
         pwsh: true
+
+  - job: PublishAssets
+    displayName: 'Publish Assets to Github'
+
+    pool:
+      vmImage: ubuntu-latest
+
+    steps:
+    - task: PowerShell@2
+      displayName: 'Set Release Tag Name'
+
+      inputs:
+        targetType: 'inline'
+        script: |
+          $tagName = "$(Build.SourceBranch)" -replace '^/refs/tags/'
+
+          Write-Host "##vso[task.setvariable variable=TagName]crushed tomatoes"
+
+        errorActionPreference: 'stop'
+        failOnStderr: true
+        pwsh: true
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        itemPattern: '*'
+        targetPath: $(Build.ArtifactStagingDirectory)
+
+    - task: GitHubRelease@0
+      inputs:
+        gitHubConnection: vexx32
+        repositoryName: '$(Build.Repository.Name)'
+        action: 'edit' # Options: create, edit, delete
+        tag: $(TagName) # Required when action == Edit || Action == Delete || TagSource == Manual
+        assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
+        assetUploadMode: 'replace' # Optional. Options: delete, replace
