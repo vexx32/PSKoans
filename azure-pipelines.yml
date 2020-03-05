@@ -1,7 +1,7 @@
 # YAML spec:
 # https://aka.ms/yaml
 
-name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
+name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ( $(SourceBranchName) $(System.PullRequest.PullRequestNumber) )'
 
 trigger:
   branches:
