@@ -260,7 +260,7 @@ stages:
 
     - task: GitHubRelease@0
       inputs:
-        gitHubConnection: vexx32
+        gitHubConnection: github.com_vexx32
         repositoryName: '$(Build.Repository.Name)'
         action: 'edit' # Options: create, edit, delete
         tag: $(TagName) # Required when action == Edit || Action == Delete || TagSource == Manual
