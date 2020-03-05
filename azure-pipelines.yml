@@ -206,10 +206,12 @@ stages:
       GalleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
     strategy:
       runOnce:
-        deploy:
+        preDeploy:
           steps:
           - template: templates/environment-setup.yml
 
+        deploy:
+          steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Built Module Artifact'
             inputs:
@@ -243,7 +245,7 @@ stages:
         script: |
           $tagName = "$(Build.SourceBranch)" -replace '^/refs/tags/'
 
-          Write-Host "##vso[task.setvariable variable=TagName]crushed tomatoes"
+          Write-Host "##vso[task.setvariable variable=TagName]$tagname"
 
         errorActionPreference: 'stop'
         failOnStderr: true
