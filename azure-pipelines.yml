@@ -1,7 +1,7 @@
 # YAML spec:
 # https://aka.ms/yaml
 
-name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
+name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ( $(SourceBranchName) $(System.PullRequest.PullRequestNumber) )'
 
 trigger:
   branches:
@@ -191,10 +191,14 @@ stages:
     - WindowsTests
     - MacOSTests
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  variables:
+    TagName: ''
 
   jobs:
-  - job: PublishToGallery
+  - deployment: PublishToGallery
     displayName: 'PowerShell Gallery'
+    environment:
+      name: 'pskoans-releases'
 
     pool:
       vmImage: ubuntu-latest
@@ -202,24 +206,63 @@ stages:
     variables:
       BuiltModulePath: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
       GalleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
+    strategy:
+      runOnce:
+        preDeploy:
+          steps:
+          - template: templates/environment-setup.yml
+
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Built Module Artifact'
+            inputs:
+              artifact: PSKoans
+              path: $(BuiltModulePath)
+
+          - task: PowerShell@2
+            displayName: 'Publish Module to PSGallery'
+
+            inputs:
+              targetType: 'filePath'
+              arguments: -Key $(PSApiKey) -Path '$(GalleryDeploymentPath)'
+              filePath: ./Deploy/Publish.ps1
+
+              errorActionPreference: 'stop'
+              failOnStderr: true
+              pwsh: true
+
+  - job: PublishAssets
+    displayName: 'Publish Assets to Github'
+
+    pool:
+      vmImage: ubuntu-latest
 
     steps:
-    - template: templates/environment-setup.yml
-
-    - task: DownloadPipelineArtifact@2
-      displayName: 'Download Built Module Artifact'
-      inputs:
-        artifact: PSKoans
-        path: $(BuiltModulePath)
-
     - task: PowerShell@2
-      displayName: 'Publish Module to PSGallery'
+      displayName: 'Set Release Tag Name'
 
       inputs:
-        targetType: 'filePath'
-        arguments: -Key $(PSApiKey) -Path '$(GalleryDeploymentPath)'
-        filePath: ./Deploy/Publish.ps1
+        targetType: 'inline'
+        script: |
+          $tagName = "$(Build.SourceBranch)" -replace '^/refs/tags/'
+
+          Write-Host "##vso[task.setvariable variable=TagName]$tagname"
 
         errorActionPreference: 'stop'
         failOnStderr: true
         pwsh: true
+
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        itemPattern: '*'
+        targetPath: $(Build.ArtifactStagingDirectory)
+
+    - task: GitHubRelease@0
+      inputs:
+        gitHubConnection: github.com_vexx32
+        repositoryName: '$(Build.Repository.Name)'
+        action: 'edit' # Options: create, edit, delete
+        tag: $(TagName) # Required when action == Edit || Action == Delete || TagSource == Manual
+        assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
+        assetUploadMode: 'replace' # Optional. Options: delete, replace
