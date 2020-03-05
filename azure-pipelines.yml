@@ -195,7 +195,7 @@ stages:
     TagName: ''
 
   jobs:
-  - job: PublishToGallery
+  - deployment: PublishToGallery
     displayName: 'PowerShell Gallery'
 
     pool:
@@ -204,27 +204,29 @@ stages:
     variables:
       BuiltModulePath: '$(System.DefaultWorkingDirectory)/Deploy/PSKoans'
       GalleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: templates/environment-setup.yml
 
-    steps:
-    - template: templates/environment-setup.yml
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Built Module Artifact'
+            inputs:
+              artifact: PSKoans
+              path: $(BuiltModulePath)
 
-    - task: DownloadPipelineArtifact@2
-      displayName: 'Download Built Module Artifact'
-      inputs:
-        artifact: PSKoans
-        path: $(BuiltModulePath)
+          - task: PowerShell@2
+            displayName: 'Publish Module to PSGallery'
 
-    - task: PowerShell@2
-      displayName: 'Publish Module to PSGallery'
+            inputs:
+              targetType: 'filePath'
+              arguments: -Key $(PSApiKey) -Path '$(GalleryDeploymentPath)'
+              filePath: ./Deploy/Publish.ps1
 
-      inputs:
-        targetType: 'filePath'
-        arguments: -Key $(PSApiKey) -Path '$(GalleryDeploymentPath)'
-        filePath: ./Deploy/Publish.ps1
-
-        errorActionPreference: 'stop'
-        failOnStderr: true
-        pwsh: true
+              errorActionPreference: 'stop'
+              failOnStderr: true
+              pwsh: true
 
   - job: PublishAssets
     displayName: 'Publish Assets to Github'
