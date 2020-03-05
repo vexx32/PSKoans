@@ -197,6 +197,8 @@ stages:
   jobs:
   - deployment: PublishToGallery
     displayName: 'PowerShell Gallery'
+    environment:
+      name: 'pskoans-releases'
 
     pool:
       vmImage: ubuntu-latest
