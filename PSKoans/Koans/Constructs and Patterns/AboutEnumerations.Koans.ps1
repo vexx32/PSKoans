@@ -12,74 +12,74 @@ param()
     otherwise PowerShell will return only the numeric value from the job.
 #>
 Describe 'About Enumerations' {
-        <#
+    <#
             The DayOfWeek enumeration (enum) which holds values describing the days of the week is a simple
             example of an existing .NET enumeration.
         #>
 
-        Context 'Using Enumerations' {
-            It 'exposes the values of an enumeration in a number of different ways' {
-                <#
+    Context 'Using Enumerations' {
+        It 'exposes the values of an enumeration in a number of different ways' {
+            <#
                     The most direct way to refer to enumeration values is with the static member access operator.
 
                     If Strict Mode (Set-StrictMode) has been enabled, accessing a non-existent value will raise
                     an error.
                 #>
 
-                [DayOfWeek]::____ | Should -BeOfType [DayOfWeek]
+            [DayOfWeek]::____ | Should -BeOfType [DayOfWeek]
 
-                <#
+            <#
                     We can also cast a string to the enumeration type.
 
                     Casting to a non-existent value always raises an error.
                 #>
 
-                { [DayOfWeek]'____' } | Should -Not -Throw
+            { [DayOfWeek]'____' } | Should -Not -Throw
 
-                <#
+            <#
                     We can also use the -as operator to do a "safe cast" to the enumeration type.
 
                     Using -as with a non-existent value will simply return $null.
                 #>
 
-                '____' -as [DayOfWeek] | Should -BeOfType [DayOfWeek]
-            }
+            '____' -as [DayOfWeek] | Should -BeOfType [DayOfWeek]
+        }
 
-            It 'will find a match from a partial name if it can' {
-                <#
+        It 'will find a match from a partial name if it can' {
+            <#
                     PowerShell will match an enum value based on a partial name. The named used
                     must match a unique value in the enum.
 
                     Try making Name less than the whole word.
                 #>
 
-                $Name = '____'
+            $Name = '____'
 
-                $Name | Should -Not -Be 'Monday'
-                $Name -as [DayOfWeek] | Should -Be 'Monday'
+            $Name | Should -Not -Be 'Monday'
+            $Name -as [DayOfWeek] | Should -Be 'Monday'
 
-                <#
+            <#
                     Using -as with a non-unique value will simply return $null. Casting to a non-unique
                     value will raise an error.
                 #>
 
-                $ExpectedError = '____'
+            $ExpectedError = '____'
 
-                { [DayOfWeek]'T' } | Should -Throw -ExpectedMessage $ExpectedError
-            }
+            { [DayOfWeek]'T' } | Should -Throw -ExpectedMessage $ExpectedError
+        }
 
-            It 'can retrieve all names in an enumeration with the GetEnumNames method' {
-                $daysOfWeek = @('____', '____', '____', '____', '____', '____', '____')
+        It 'can retrieve all names in an enumeration with the GetEnumNames method' {
+            $daysOfWeek = @('____', '____', '____', '____', '____', '____', '____')
 
-                $daysOfWeek | Should -Be ([DayOfWeek].GetEnumNames())
+            $daysOfWeek | Should -Be ([DayOfWeek].GetEnumNames())
 
-                # The [Enum] type provides an alternative method of getting the same information.
+            # The [Enum] type provides an alternative method of getting the same information.
 
-                [Enum]::GetNames([DayOfWeek]) | Should -Be $daysOfWeek
-            }
+            [Enum]::GetNames([DayOfWeek]) | Should -Be $daysOfWeek
+        }
 
-            It 'has a numeric value associated with each name' {
-                <#
+        It 'has a numeric value associated with each name' {
+            <#
                     In the DayOfWeek enumeration, Sunday has the value 0, and Monday has
                     the value 1, and so on.
 
@@ -95,12 +95,12 @@ Describe 'About Enumerations' {
                     directly accessing the value__ property.
                 #>
 
-                [DayOfWeek]::Sunday | Should -Be 0
-                [DayOfWeek]::____ | Should -Be 2
-            }
+            [DayOfWeek]::Sunday | Should -Be 0
+            [DayOfWeek]::____ | Should -Be 2
+        }
 
-            It 'can retrieve the list of possible values using the GetEnumValues method' {
-                <#
+        It 'can retrieve the list of possible values using the GetEnumValues method' {
+            <#
                     The values of an enumeration are displayed in much the same way as the name,
                     with one important difference:
 
@@ -108,25 +108,26 @@ Describe 'About Enumerations' {
                          - GetEnumValues returns an array of values, which will be presented as the names.
                 #>
 
-                [DayOfWeek].GetEnumValues() | Select-Object -First 1 | Should -BeOfType [DayOfWeek]
+            [DayOfWeek].GetEnumValues() | Select-Object -First 1 | Should -BeOfType [DayOfWeek]
+        }
 
-            It 'has a numeric type backing each enumeration type' {
-                <#
+        It 'has a numeric type backing each enumeration type' {
+            <#
                     Enumerations in the .NET framework, for example those created in languages such as C#,
                     can be of any numeric type.
 
                     The type can be found using the GetEnumUnderlyingType method.
                 #>
 
-                [____] | Should -Be ([DayOfWeek].GetEnumUnderlyingType())
+            [____] | Should -Be ([DayOfWeek].GetEnumUnderlyingType())
 
-                # Many enums use Int32 as the underlying type. A few use other numeric types.
+            # Many enums use Int32 as the underlying type. A few use other numeric types.
 
-                [____] | Should -Be ([System.Security.AccessControl.AceFlags].GetEnumUnderlyingType())
-            }
+            [____] | Should -Be ([System.Security.AccessControl.AceFlags].GetEnumUnderlyingType())
+        }
 
-            It 'is created using the enum keyword' {
-                <#
+        It 'is created using the enum keyword' {
+            <#
                     In PowerShell enumerations are created using the enum keyword.
 
                     All names in an enumeration have a value behind them. In some cases the value
@@ -139,27 +140,27 @@ Describe 'About Enumerations' {
                         * Cannot use other special characters.
                 #>
 
-                $enumNames = Start-Job -ScriptBlock {
-                    enum ColourOfTheRainbow {
-                        Red
-                        Yellow
-                        Pink
-                        Green
-                        Purple
-                        Orange
-                        Blue
-                    }
+            $enumNames = Start-Job -ScriptBlock {
+                enum ColourOfTheRainbow {
+                    Red
+                    Yellow
+                    Pink
+                    Green
+                    Purple
+                    Orange
+                    Blue
+                }
 
-                    [ColourOfTheRainbow].GetEnumNames()
-                } | Receive-Job -Wait
+                [ColourOfTheRainbow].GetEnumNames()
+            } | Receive-Job -Wait
 
-                $colours = @('____', '____', '____', '____', '____', '____', '____')
+            $colours = @('____', '____', '____', '____', '____', '____', '____')
 
-                $enumNames | Should -Be $colours
-            }
+            $enumNames | Should -Be $colours
+        }
 
-            It 'can assign specific numeric values to each enumeration value' {
-                <#
+        It 'can assign specific numeric values to each enumeration value' {
+            <#
                     Each value in an enumeration can be assigned an explicit value. By default values
                     are automatically assigned starting from 0.
 
@@ -167,51 +168,51 @@ Describe 'About Enumerations' {
                     Any decimal values will be rounded to an integer.
                 #>
 
-                $script = {
-                    enum Number {
-                        One = 1
-                        Two = 2
-                    }
+            $script = {
+                enum Number {
+                    One = 1
+                    Two = 2
+                }
 
-                    <#
+                <#
                         Numeric values can be cast or converted to an enumeration value.
 
                         The $using: syntax allows access to variables from the parent PowerShell session
                         when using Start-Job and Invoke-Command.
                     #>
 
-                    $using:Value -as [Number] -as [String]
-                }
+                $using:Value -as [Number] -as [String]
+            }
 
-                $Value = 2
-                $Name = Start-Job -ScriptBlock $script | Receive-Job -Wait
+            $Value = 2
+            $Name = Start-Job -ScriptBlock $script | Receive-Job -Wait
 
-                '____' | Should -Be $Name
+            '____' | Should -Be $Name
 
-                <#
+            <#
                     Automatic numbering may still be used. Automatic numbering continues incrementing
                     from the last value assigned.
                 #>
 
-                $script = {
-                    enum Number {
-                        One  = 1
-                        Two
-                        Five = 5
-                        Six
-                    }
-
-                    $using:Value -as [Number] -as [Int]
+            $script = {
+                enum Number {
+                    One = 1
+                    Two
+                    Five = 5
+                    Six
                 }
 
-                $Value = 'Six'
-                $NumericValue = Start-Job -ScriptBlock $script | Receive-Job -Wait
-
-                __ | Should -Be $NumericValue
+                $using:Value -as [Number] -as [Int]
             }
 
-            It 'can represent other integer in PowerShell Core' -Skip:($PSVersionTable.PSVersion -lt '6.2.0') {
-                <#
+            $Value = 'Six'
+            $NumericValue = Start-Job -ScriptBlock $script | Receive-Job -Wait
+
+            __ | Should -Be $NumericValue
+        }
+
+        It 'can represent other integer in PowerShell Core' -Skip:($PSVersionTable.PSVersion -lt '6.2.0') {
+            <#
                     In PowerShell Core, enumerations can be based around types other than Int32. The numeric type
                     can be SByte, Byte, Int16, UInt16, Int32 (default), UInt32, Int64, and UInt64.
 
@@ -222,44 +223,44 @@ Describe 'About Enumerations' {
                     Inheritance is explored in the AboutClasses topic.
                 #>
 
-                $script = {
-                    # This number is too large for Int32, Int64 is used instead.
+            $script = {
+                # This number is too large for Int32, Int64 is used instead.
 
-                    enum Int64Enum : Int64 {
-                        LargeValue = 9223370000000000000
-                    }
-
-                    [Int64Enum]::LargeValue -as [Int64Enum].GetEnumUnderlyingType()
+                enum Int64Enum : Int64 {
+                    LargeValue = 9223370000000000000
                 }
 
-                $ExpectedType = [____]
-
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeOfType $ExpectedType
-
-                # Smaller types such as SByte, Byte, Int16, and UInt16 can be used as well.
+                [Int64Enum]::LargeValue -as [Int64Enum].GetEnumUnderlyingType()
             }
 
-            It 'does not require explicit casting to compare values' {
-                <#
+            $ExpectedType = [____]
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeOfType $ExpectedType
+
+            # Smaller types such as SByte, Byte, Int16, and UInt16 can be used as well.
+        }
+
+        It 'does not require explicit casting to compare values' {
+            <#
                     In PowerShell the value on the right hand side of a comparison operator is coerced into the type
                     of the value on the left hand side of an operator.
                 #>
 
-                $script = {
-                    enum Number {
-                        One = 1
-                        Two = 2
-                    }
-
-                    [Number]1 -eq $using:Name
+            $script = {
+                enum Number {
+                    One = 1
+                    Two = 2
                 }
 
-                $Name = '____'
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+                [Number]1 -eq $using:Name
             }
 
-            It 'can use the enum type to test if a value exists in the enum' {
-                <#
+            $Name = '____'
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+        }
+
+        It 'can use the enum type to test if a value exists in the enum' {
+            <#
                     The Enum type includes two static methods:
 
                         Parse
@@ -278,19 +279,19 @@ Describe 'About Enumerations' {
                     Running [Enum]::TryParse without parentheses will show the arguments the method expects.
                 #>
 
-                $valueToParse = '____'
-                $enumType = [DayOfWeek]
-                $parseResult = [DayOfWeek]::Sunday
+            $valueToParse = '____'
+            $enumType = [DayOfWeek]
+            $parseResult = [DayOfWeek]::Sunday
 
-                $result = [Enum]::TryParse($enumType, $valueToParse, [Ref]$parseResult)
+            $result = [Enum]::TryParse($enumType, $valueToParse, [Ref]$parseResult)
 
-                $result | Should -BeTrue
-                $parseResult | Should -Not -Be 'Sunday'
-            }
+            $result | Should -BeTrue
+            $parseResult | Should -Not -Be 'Sunday'
         }
+    }
 
-        Context 'About Flags' {
-            <#
+    Context 'About Flags' {
+        <#
                 The flags attribute can be used to indicate that an enumeration represents a series of
                 flags.
 
@@ -300,8 +301,8 @@ Describe 'About Enumerations' {
                 to file system rights.
             #>
 
-            It 'represents each flag value with a single bit' {
-                <#
+        It 'represents each flag value with a single bit' {
+            <#
                     A name in the enumeration normally represents a single bit in a numeric value.
 
                     PowerShell enumerations use Int32 by default. PowerShell Core can use other integer types as
@@ -316,61 +317,61 @@ Describe 'About Enumerations' {
                     The example below is based on 4 different flags.
                 #>
 
-                $script = {
-                    [Flags()]
-                    enum Bit {
-                        None = 0
-                        Bit1 = 1
-                        Bit2 = 2
-                        Bit3 = 4
-                        Bit4 = 8
-                    }
-
-                    $using:Value -as [Bit] -as [String]
+            $script = {
+                [Flags()]
+                enum Bit {
+                    None = 0
+                    Bit1 = 1
+                    Bit2 = 2
+                    Bit3 = 4
+                    Bit4 = 8
                 }
 
-                $Value = 2
-                $Name = Start-Job -ScriptBlock $script | Receive-Job -Wait
-
-                '____' | Should -Be $Name
-
-                # When more than one flag is described, the value returned is a comma separated list.
-
-                $Value = 2 -bor 8 # 10
-                $Name = Start-Job -ScriptBlock $script | Receive-Job -Wait
-
-                '____' | Should -Be $Name
+                $using:Value -as [Bit] -as [String]
             }
 
-            It 'can represent multiple flag names with a single value' {
-                # A list of names can be converted to a single flag value.
+            $Value = 2
+            $Name = Start-Job -ScriptBlock $script | Receive-Job -Wait
 
-                $script = {
-                    [Flags()]
-                    enum Bit {
-                        None = 0
-                        Bit1 = 1
-                        Bit2 = 2
-                        Bit3 = 4
-                        Bit4 = 8
-                    }
+            '____' | Should -Be $Name
 
-                    $using:Names -as [Bit] -as [Int32]
+            # When more than one flag is described, the value returned is a comma separated list.
+
+            $Value = 2 -bor 8 # 10
+            $Name = Start-Job -ScriptBlock $script | Receive-Job -Wait
+
+            '____' | Should -Be $Name
+        }
+
+        It 'can represent multiple flag names with a single value' {
+            # A list of names can be converted to a single flag value.
+
+            $script = {
+                [Flags()]
+                enum Bit {
+                    None = 0
+                    Bit1 = 1
+                    Bit2 = 2
+                    Bit3 = 4
+                    Bit4 = 8
                 }
 
-                <#
+                $using:Names -as [Bit] -as [Int32]
+            }
+
+            <#
                     The names are a single string with commas separating values, not an array.
                     Spaces are discarded when converting the value.
                 #>
 
-                $Names = '____, ____'
-                $Value = Start-Job -ScriptBlock $script | Receive-Job -Wait
+            $Names = '____, ____'
+            $Value = Start-Job -ScriptBlock $script | Receive-Job -Wait
 
-                __ | Should -Be $Value
-            }
+            __ | Should -Be $Value
+        }
 
-            It 'allows you to test for the presence of a given flag' {
-                <#
+        It 'allows you to test for the presence of a given flag' {
+            <#
                     A value which has multiple flags set is provided as a single value.
 
                     The presence of individual flag can be tested in either of two ways.
@@ -378,55 +379,55 @@ Describe 'About Enumerations' {
                     One way is to call the HasFlag() method, which may be called on an enumeration value:
                #>
 
-                $script = {
-                    [Flags()]
-                    enum Bit {
-                        None = 0
-                        Bit1 = 1
-                        Bit2 = 2
-                        Bit3 = 4
-                        Bit4 = 8
-                    }
-
-                    $BitValue = [Bit]$using:Value
-
-                    $BitValue.HasFlag([Bit]$using:FlagName)
+            $script = {
+                [Flags()]
+                enum Bit {
+                    None = 0
+                    Bit1 = 1
+                    Bit2 = 2
+                    Bit3 = 4
+                    Bit4 = 8
                 }
 
-                $Value = 10
-                $FlagName = '____'
+                $BitValue = [Bit]$using:Value
 
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+                $BitValue.HasFlag([Bit]$using:FlagName)
+            }
 
-                <#
+            $Value = 10
+            $FlagName = '____'
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+
+            <#
                     The bitwise operator, -band, can also be used to test for the presence of specific flags as an
                     alternative to the HasFlag method.
                 #>
 
-                $script = {
-                    [Flags()]
-                    enum Bit {
-                        None = 0
-                        Bit1 = 1
-                        Bit2 = 2
-                        Bit3 = 4
-                        Bit4 = 8
-                    }
-
-                    $BitValue = [Bit]$using:Value
-
-                    # -band will return the result of the bitwise AND; either 0, or the same value as FlagName.
-                    ($BitValue -band $using:FlagName) -eq $using:FlagName
+            $script = {
+                [Flags()]
+                enum Bit {
+                    None = 0
+                    Bit1 = 1
+                    Bit2 = 2
+                    Bit3 = 4
+                    Bit4 = 8
                 }
 
-                $Value = 10
-                $FlagName = '____, ____'
+                $BitValue = [Bit]$using:Value
 
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+                # -band will return the result of the bitwise AND; either 0, or the same value as FlagName.
+                ($BitValue -band $using:FlagName) -eq $using:FlagName
             }
 
-            It 'can use values representing a combination of flags' {
-                <#
+            $Value = 10
+            $FlagName = '____, ____'
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+        }
+
+        It 'can use values representing a combination of flags' {
+            <#
                     The .NET enumeration System.Security.AccessControl.FileSystemRights is a Flags-based
                     enumeration used to represent NTFS access rights.
 
@@ -436,193 +437,192 @@ Describe 'About Enumerations' {
                     The enumeration below contains two different composite values.
                 #>
 
-                $script = {
-                    [Flags()]
-                    enum ObjectType {
-                        User         = 1
-                        Group        = 2
-                        UserAndGroup = 3
-                        Computer     = 4
-                    }
-
-                    $individualValues = $using:Names -as [ObjectType]
-                    $compositeValue = $using:CompositeName -as [ObjectType]
-
-                    $individualValues -eq $compositeValue
+            $script = {
+                [Flags()]
+                enum ObjectType {
+                    User = 1
+                    Group = 2
+                    UserAndGroup = 3
+                    Computer = 4
                 }
 
-                $CompositeName = '____'
-                $Names = 'User, Group'
+                $individualValues = $using:Names -as [ObjectType]
+                $compositeValue = $using:CompositeName -as [ObjectType]
 
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
-
-                # Individual values that match a composite are automatically replaced with the name of the composite value.
-
-                $script = {
-                    [Flags()]
-                    enum ObjectType {
-                        User         = 1
-                        Group        = 2
-                        UserAndGroup = 3
-                        Computer     = 4
-                    }
-
-                    $using:Names -as [ObjectType] -as [String]
-                }
-
-                $CompositeName = '____, ____'
-                $Names = 'User, Group, Computer'
-
-                Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -Be $CompositeName
+                $individualValues -eq $compositeValue
             }
-        }
 
-        Context 'Enumerations and Parameters' {
+            $CompositeName = '____'
+            $Names = 'User, Group'
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -BeTrue
+
+            # Individual values that match a composite are automatically replaced with the name of the composite value.
+
+            $script = {
+                [Flags()]
+                enum ObjectType {
+                    User = 1
+                    Group = 2
+                    UserAndGroup = 3
+                    Computer = 4
+                }
+
+                $using:Names -as [ObjectType] -as [String]
+            }
+
+            $CompositeName = '____, ____'
+            $Names = 'User, Group, Computer'
+
+            Start-Job -ScriptBlock $script | Receive-Job -Wait | Should -Be $CompositeName
+        }
+    }
+
+    Context 'Enumerations and Parameters' {
+        <#
+            An enumeration can be used to define the type for a parameter. This can be used as an
+            alternative to ValidateSet in some cases.
+        #>
+
+        It 'can be used instead of ValidateSet for a parameter' {
             <#
-                An enumeration can be used to define the type for a parameter. This can be used as an
-                alternative to ValidateSet in some cases.
+                Using the enumeration as the parameter type will offer tab-completion
+                to anyone using the function.
             #>
 
-            It 'can be used instead of ValidateSet for a parameter' {
-                <#
-                    Using the enumeration as the parameter type will offer tab-completion
-                    to anyone using the function.
-                #>
-
-                $TypeName = Start-Job -ScriptBlock {
-                    enum ObjectType {
-                        User
-                        Group
-                    }
-
-                    function Get-Object {
-                        [CmdletBinding()]
-                        param (
-                            [ObjectType]
-                            $Type
-                        )
-
-                        $Type -as [String]
-                    }
-
-                    Get-Object -Type User
-                } | Receive-Job -Wait
-
-                '____' | Should -Be $TypeName
-            }
-
-            It 'will raise an error if the parameter value is incorrect' {
-                # If an invalid value is supplied, an error will be raised stating the permitted values.
-
-                $script = {
-                    enum ObjectType {
-                        User
-                        Group
-                    }
-
-                    function Get-Object {
-                        [CmdletBinding()]
-                        param (
-                            [ObjectType]$Type
-                        )
-
-                        $Type -as [String]
-                    }
-
-                    Get-Object -Type Computer
+            $TypeName = Start-Job -ScriptBlock {
+                enum ObjectType {
+                    User
+                    Group
                 }
 
-                # The error message is long, a partial match is enough.
-                $ExpectedError = '____'
+                function Get-Object {
+                    [CmdletBinding()]
+                    param (
+                        [ObjectType]
+                        $Type
+                    )
 
-                { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
-                    Should -Throw -ExpectedMessage $ExpectedError
-            }
+                    $Type -as [String]
+                }
+
+                Get-Object -Type User
+            } | Receive-Job -Wait
+
+            '____' | Should -Be $TypeName
         }
 
-        Context 'PowerShell Enumeration Scope' {
+        It 'will raise an error if the parameter value is incorrect' {
+            # If an invalid value is supplied, an error will be raised stating the permitted values.
 
-            It 'creates PowerShell enumerations in the local scope' {
-                <#
-                    Classes and enumerations are resolvable in the scope they are created and child scopes. They
-                    are not available in parent scopes by default.
-                #>
+            $script = {
+                enum ObjectType {
+                    User
+                    Group
+                }
 
-                $Values = Start-Job -ScriptBlock {
+                function Get-Object {
+                    [CmdletBinding()]
+                    param (
+                        [ObjectType]$Type
+                    )
+
+                    $Type -as [String]
+                }
+
+                Get-Object -Type Computer
+            }
+
+            # The error message is long, a partial match is enough.
+            $ExpectedError = '____'
+
+            { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
+                Should -Throw -ExpectedMessage $ExpectedError
+        }
+    }
+
+    Context 'PowerShell Enumeration Scope' {
+
+        It 'creates PowerShell enumerations in the local scope' {
+            <#
+                Classes and enumerations are resolvable in the scope they are created and child scopes. They
+                are not available in parent scopes by default.
+            #>
+
+            $Values = Start-Job -ScriptBlock {
+                enum ObjectType {
+                    User
+                    Group
+                }
+
+                # The enumeration can be used in the current scope
+
+                'User' -as [ObjectType] -as [String]
+
+                function Get-Object {
+                    # The enumeration can be used in child scopes
+
+                    'Group' -as [ObjectType] -as [String]
+                }
+
+                Get-Object
+            } | Receive-Job -Wait
+
+            @('____', '____') | Should -Be $Values
+        }
+
+        It 'cannot access enumerations created in child scopes' {
+            $script = {
+                function New-Enumeration {
                     enum ObjectType {
                         User
                         Group
                     }
-
-                    # The enumeration can be used in the current scope
-
-                    'User' -as [ObjectType] -as [String]
-
-                    function Get-Object {
-                        # The enumeration can be used in child scopes
-
-                        'Group' -as [ObjectType] -as [String]
-                    }
-
-                    Get-Object
-                } | Receive-Job -Wait
-
-                @('____', '____') | Should -Be $Values
-            }
-
-            It 'cannot access enumerations created in child scopes' {
-                $script = {
-                    function New-Enumeration {
-                        enum ObjectType {
-                            User
-                            Group
-                        }
-                    }
-
-                    # The enum created in the function is not available in the parent scope.
-
-                    New-Enumeration
-                    [ObjectType]::User
                 }
 
-                $ErrorMessage = '____'
+                # The enum created in the function is not available in the parent scope.
 
-                { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
-                    Should -Throw $ErrorMessage
+                New-Enumeration
+                [ObjectType]::User
             }
 
-            It 'can import enumerations with using module' {
-                <#
-                    The using module statement can be used at the top of a script to make enumerations
-                    and classes within a module available in a parent scope.
-                #>
+            $ErrorMessage = '____'
 
-                $Value = Start-Job -ScriptBlock {
-                    $modulePath = Join-Path -Path $using:TestDrive -ChildPath 'EnumModule.psm1'
+            { Start-Job -ScriptBlock $script | Receive-Job -Wait -ErrorAction Stop } |
+                Should -Throw $ErrorMessage
+        }
 
-                    Set-Content -Path $modulePath -Value @'
+        It 'can import enumerations with using module' {
+            <#
+                The using module statement can be used at the top of a script to make enumerations
+                and classes within a module available in a parent scope.
+            #>
+
+            $Value = Start-Job -ScriptBlock {
+                $modulePath = Join-Path -Path $using:TestDrive -ChildPath 'EnumModule.psm1'
+
+                Set-Content -Path $modulePath -Value @'
                         enum ObjectType {
                             User
                             Group
                         }
 '@
 
-                    <#
-                        Creating a script block avoids a complaint about how using statements must appear
-                        first in a script for this example.
+                <#
+                    Creating a script block avoids a complaint about how using statements must appear
+                    first in a script for this example.
 
-                        Ordinarily the path to, or name of, the module would be a fixed value.
-                    #>
+                    Ordinarily the path to, or name of, the module would be a fixed value.
+                #>
 
-                    & ([ScriptBlock]::Create("
+                & ([ScriptBlock]::Create("
                         using module $modulePath
 
                         'User' -as [ObjectType] -as [String]
                     "))
-                } | Receive-Job -Wait
+            } | Receive-Job -Wait
 
-                '____' | Should -Be $Value
-            }
+            '____' | Should -Be $Value
         }
     }
 }
