@@ -229,7 +229,7 @@ Describe 'About Enumerations' {
 
         It 'can represent other integer in PowerShell Core' -Skip:($PSVersionTable.PSVersion -lt '6.2.0') {
             <#
-                In PowerShell Core, enumerations can be based around types other
+                In PowerShell 6.2+, enumerations can be based around types other
                 than Int32. The numeric type can be SByte, Byte, Int16, UInt16,
                 Int32 (default), UInt32, Int64, and UInt64.
 
@@ -241,7 +241,7 @@ Describe 'About Enumerations' {
                 Inheritance is explored in the AboutClasses topic.
             #>
 
-            $script = {
+            $script = '
                 # This number is too large for Int32, Int64 is used instead.
 
                 enum Int64Enum : Int64 {
@@ -249,11 +249,11 @@ Describe 'About Enumerations' {
                 }
 
                 [Int64Enum]::LargeValue -as [Int64Enum].GetEnumUnderlyingType()
-            }
+            '
 
             $ExpectedType = [____]
 
-            Start-Job -ScriptBlock $script |
+            Start-Job -ScriptBlock [scriptblock]::Create($script) |
                 Receive-Job -Wait |
                 Should -BeOfType $ExpectedType
 
