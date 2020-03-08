@@ -130,7 +130,20 @@ Describe 'Common Parameters' {
     }
 
     It 'provides the -WarningAction common parameter' {
+        function Test-WarningAction {
+            [CmdletBinding()]
+            param()
 
+            <#
+                Calling Write-Warning will generate a warning message.
+                Warnings are visible by default.
+            #>
+            Write-Warning "____"
+        }
+
+        # Warnings are written to stream 3
+        Test-WarningAction 3>&1 | Should -Be 'Something went wrong!'
+        Test-WarningAction -WarningAction SilentlyContinue 3>&1 | Should -BeNullOrEmpty
     }
 
     It 'provides the -WarningVariable common parameter' {
