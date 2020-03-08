@@ -307,7 +307,24 @@ Describe 'About Enumerations' {
             $enumType = [DayOfWeek]
             $parseResult = [DayOfWeek]::Sunday
 
-            $result = [Enum]::TryParse($enumType, $valueToParse, [Ref]$parseResult)
+            $result = if ($PSVersionTable.PSVersion.Major -gt 5) {
+                <#
+                    .NET Core's TryParse() method (available in PS v6+) can take
+                    an explicit type argument. When available, this is a more
+                    robust method to work with.
+                #>
+                [Enum]::TryParse($enumType, $valueToParse, [ref]$parseResult)
+            }
+            else {
+                <#
+                    This method still works, but it relies on the [ref] variable
+                    already containing a valid enum value from the target type.
+                    This is because the method is actually a generic method,
+                    and PS has no way to specify a target type, instead being
+                    forced to infer the target type from the result variable.
+                #>
+                [Enum]::TryParse($valueToParse, [ref]$parseResult)
+            }
 
             $result | Should -BeTrue
             $parseResult | Should -Not -Be 'Sunday'
