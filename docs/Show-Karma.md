@@ -17,6 +17,11 @@ Reflect on your progress and check your answers.
 Show-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
+### OpenFile
+```
+Show-Karma [-Topic <String[]>] [-Contemplate] [-ClearScreen] [<CommonParameters>]
+```
+
 ### IncludeModule
 ```
 Show-Karma [-Topic <String[]>] -IncludeModule <String[]> [-ClearScreen] [-Detailed] [<CommonParameters>]
@@ -30,11 +35,6 @@ Show-Karma [-Topic <String[]>] -Module <String[]> [-ClearScreen] [-Detailed] [<C
 ### ListKoans
 ```
 Show-Karma [-Topic <String[]>] [-Module <String[]>] [-List] [-ClearScreen] [<CommonParameters>]
-```
-
-### OpenFile
-```
-Show-Karma [-Contemplate] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### OpenFolder
@@ -63,6 +63,13 @@ Opens the current koan file in the editor specified by the `Editor` setting.
 Use [`Set-PSKoanSetting`](./Set-PSKoanSetting.md) to change the editor used.
 
 If a known editor (`code`, `code-insiders`, or `atom`) is used, PSKoans will pass along line information as well.
+
+### EXAMPLE 3
+```powershell
+Show-Karma -Contemplate -Topic AboutComparison
+```
+
+Opens the specified `AboutComparison` topic file in the preferred editor.
 
 ## PARAMETERS
 
@@ -195,10 +202,11 @@ Accept wildcard characters: False
 ### -Topic
 Execute koans only from the selected Topic(s).
 Wildcard patterns are permitted.
+When provided along with `-Contemplate`, the targeted topic will be respected.
 
 ```yaml
 Type: String[]
-Parameter Sets: Default, IncludeModule, ModuleOnly, ListKoans
+Parameter Sets: Default, OpenFile, IncludeModule, ModuleOnly, ListKoans
 Aliases: Koan, File
 
 Required: False
