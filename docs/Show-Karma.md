@@ -19,27 +19,27 @@ Show-Karma [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 
 ### OpenFile
 ```
-Show-Karma [-Topic <String[]>] [-Contemplate] [-ClearScreen] [<CommonParameters>]
+Show-Karma -Contemplate [-Topic <String[]>] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### IncludeModule
 ```
-Show-Karma [-Topic <String[]>] -IncludeModule <String[]> [-ClearScreen] [-Detailed] [<CommonParameters>]
+Show-Karma -IncludeModule <String[]> [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
 ### ModuleOnly
 ```
-Show-Karma [-Topic <String[]>] -Module <String[]> [-ClearScreen] [-Detailed] [<CommonParameters>]
+Show-Karma -Module <String[]> [-Topic <String[]>] [-ClearScreen] [-Detailed] [<CommonParameters>]
 ```
 
 ### ListKoans
 ```
-Show-Karma [-Topic <String[]>] [-Module <String[]>] [-List] [-ClearScreen] [<CommonParameters>]
+Show-Karma -List [-Topic <String[]>] [-Module <String[]>] [-ClearScreen] [<CommonParameters>]
 ```
 
 ### OpenFolder
 ```
-Show-Karma [-Library] [-ClearScreen] [<CommonParameters>]
+Show-Karma -Library [-ClearScreen] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
