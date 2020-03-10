@@ -281,6 +281,18 @@ Describe 'Show-Karma' {
                 $script:CurrentTopic | Should -BeNullOrEmpty
             }
 
+            It 'opens the specified -Topic in the selected editor' {
+                Set-PSKoanSetting -Name Editor -Value 'code'
+                $Result = Show-Karma -Contemplate -Topic TestTopic
+
+                $Result.Arguments[1] | Should -MatchExactly ([regex]::Escape($TestFile.FullName))
+
+                Assert-MockCalled Get-Command -Times 1
+                Assert-MockCalled Start-Process -Times 1
+
+                $script:CurrentTopic | Should -BeNullOrEmpty
+            }
+
             It 'invokes the set editor with unknown editor chosen' {
                 Set-PSKoanSetting -Name Editor -Value 'vim'
 
