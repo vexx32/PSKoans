@@ -7,6 +7,7 @@ function Show-Karma {
         [Parameter(ParameterSetName = 'ListKoans')]
         [Parameter(ParameterSetName = 'ModuleOnly')]
         [Parameter(ParameterSetName = 'IncludeModule')]
+        [Parameter(ParameterSetName = 'OpenFile')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
         [SupportsWildcards()]
@@ -87,7 +88,7 @@ function Show-Karma {
         }
         'OpenFile' {
             # If there is no cached data, we need to call Get-Karma to populate it
-            if (-not $script:CurrentTopic) {
+            if (-not $script:CurrentTopic -or ($Topic -and $script:CurrentTopic.Name -ne $Topic)) {
                 try {
                     # We can discard this; the results we need are saved in $script:CurrentTopic
                     $null = Get-Karma @GetParams
