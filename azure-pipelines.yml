@@ -1,8 +1,6 @@
 # YAML spec:
 # https://aka.ms/yaml
 
-name: '$(Date:yyyyMMdd)$(Rev:.r) (#$(BuildID)) $(TeamProject) ( $(SourceBranchName) $(System.PullRequest.PullRequestNumber) )'
-
 trigger:
   branches:
     include:
@@ -16,6 +14,12 @@ pr:
 
 variables:
   NupkgArtifactName: 'PSKoans.nupkg'
+  ${{ if eq(variables['System.PullRequest.PullRequestNumber'], null) }}:
+    BuildName: '$(Date:yyyyMMdd) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
+  ${{ if ne(variables['System.PullRequest.PullRequestNumber'], null) }}:
+    BuildName: '$(Date:yyyyMMdd) (#$(BuildID)) $(TeamProject) (PR #$(System.PullRequest.PullRequestNumber))'
+
+name: '${{ variables.BuildName }}'
 
 stages:
 - stage: UploadChangelog
