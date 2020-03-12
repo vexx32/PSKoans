@@ -208,12 +208,9 @@ stages:
       GalleryDeploymentPath: '$(System.DefaultWorkingDirectory)/Deploy/PSGallery'
     strategy:
       runOnce:
-        preDeploy:
-          steps:
-          - template: templates/environment-setup.yml
-
         deploy:
           steps:
+          - template: templates/environment-setup.yml
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Built Module Artifact'
             inputs:
