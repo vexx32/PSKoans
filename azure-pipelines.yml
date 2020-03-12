@@ -242,7 +242,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          $tagName = "$(Build.SourceBranch)" -replace '^/refs/tags/'
+          $tagName = ("$(Build.SourceBranch)" -replace '^/refs/tags/').Trim()
 
           Write-Host "##vso[task.setvariable variable=TagName]$tagname"
 
@@ -253,13 +253,13 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         itemPattern: '*'
-        targetPath: $(Build.ArtifactStagingDirectory)
+        targetPath: '$(Build.ArtifactStagingDirectory)'
 
     - task: GitHubRelease@0
       inputs:
         gitHubConnection: github.com_vexx32
         repositoryName: '$(Build.Repository.Name)'
         action: 'edit' # Options: create, edit, delete
-        tag: $(TagName) # Required when action == Edit || Action == Delete || TagSource == Manual
+        tag: '$(TagName)' # Required when action == Edit || Action == Delete || TagSource == Manual
         assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
         assetUploadMode: 'replace' # Optional. Options: delete, replace
