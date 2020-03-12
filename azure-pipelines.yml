@@ -253,8 +253,7 @@ stages:
 
     - task: DownloadPipelineArtifact@2
       inputs:
-        itemPattern: '*'
-        targetPath: '$(Build.ArtifactStagingDirectory)'
+        targetPath: '$(Build.ArtifactStagingDirectory)/'
 
     - task: GitHubRelease@0
       inputs:
@@ -262,5 +261,5 @@ stages:
         repositoryName: '$(Build.Repository.Name)'
         action: 'edit' # Options: create, edit, delete
         tag: '$(TagName)' # Required when action == Edit || Action == Delete || TagSource == Manual
-        assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
+        assets: '$(Build.ArtifactStagingDirectory)/**' # Optional
         assetUploadMode: 'replace' # Optional. Options: delete, replace
