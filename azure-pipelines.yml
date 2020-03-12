@@ -14,9 +14,9 @@ pr:
 
 variables:
   NupkgArtifactName: 'PSKoans.nupkg'
-  ${{ if eq(variables['System.PullRequest.PullRequestNumber'], null) }}:
+  ${{ if eq(variables['System.PullRequest.PullRequestNumber'], Null) }}:
     BuildName: '$(Date:yyyyMMdd) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
-  ${{ if ne(variables['System.PullRequest.PullRequestNumber'], null) }}:
+  ${{ if ne(variables['System.PullRequest.PullRequestNumber'], Null) }}:
     BuildName: '$(Date:yyyyMMdd) (#$(BuildID)) $(TeamProject) (PR #$(System.PullRequest.PullRequestNumber))'
 
 name: '${{ variables.BuildName }}'
