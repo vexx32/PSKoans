@@ -109,5 +109,6 @@ Describe "Backup-DbaDatabase" {
         It allows this specification by using the -Path parameter.
         Complete the below command to store the backup file in the E:\Backups\ folder.
     #>
-
+    $SpecificPathBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database_01 -Path '____'
+    $SpecificPathBackup.Path | Should -BeLike 'E:\Backups\'
 }
