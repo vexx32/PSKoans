@@ -146,5 +146,5 @@ Describe "Backup-DbaDatabase" {
     #>
     $KeywordBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database01 -FilePath '____-____.bak' -ReplaceInName
     $BackupFileName = Split-Path $KeywordBackup.Path -Leaf
-    $BackupFilName | Should -Be 'Database01-Full.bak'
+    $BackupFileName | Should -Be 'Database01-Full.bak'
 }
