@@ -77,7 +77,6 @@ Describe "Backup-DbaDatabase" {
     } -ParameterFilter {
         $_.Type -eq 'Differential'
     }
-
     Mock -CommandName Backup-DbaDatabase -MockWith {
         $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
         $RestoreEnd = $StartDate.AddSeconds(5)
@@ -95,6 +94,24 @@ Describe "Backup-DbaDatabase" {
         }
     } -ParameterFilter {
         $_.Path -like 'E:\Backups\*'
+    }
+    Mock -CommandName Backup-DbaDatabase -MockWith {
+        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+        $RestoreEnd = $StartDate.AddSeconds(5)
+        [PSCustomObject]@{
+            ComputerName = 'localhost'
+            SqlInstance = $ENV:COMPUTERNAME
+            Database = 'Database_01'
+            Type = 'Differential'
+            TotalSize = ('{0}' -f ([Math]::PI))
+            DeviceType = 'Disk'
+            Start = $StartDate
+            Duration = $RestoreEnd - $StartDate
+            End = $RestoreEnd
+            Path = 'E:\Backups\Database01-Full.bak'
+        }
+    } -ParameterFilter {
+        $_.FilePath -eq 'dbname-backuptype.bak'
     }
 
    
