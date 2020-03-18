@@ -16,73 +16,13 @@ Describe 'New-DbaDatabase' {
         
         Unless you want the Koans to nearly always fail, I would suggest not messing with this bit.
     #>
-    Mock -CommandName New-DbaDatabase -MockWith {
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            InstanceName = 'MSSQLSERVER'
-            SqlInstance = 'localhost'
-            Name = 'random-123456789'
-            Status = 'Normal'
-            IsAccessible = $true
-            RecoveryModel = 'Simple'
-            LogReuseWaitStatus = 'Nothing'
-            SizeMB = 16
-            Compatibility = 'Version140'
-            Collation = 'SQL_Latin1_General_CP1_CI_AS'
-            Owner = $ENV:USERNAME
-            LastFullBackup = (Get-Date '0001-01-01')
-            LastDiffBackup = (Get-Date '0001-01-01')
-            LastLogBackup = (Get-Date '0001-01-01')
-        }
-    } -ParameterFilter {$_.SqlInstance -eq 'localhost'}
-
-    Mock -CommandName New-DbaDatabase -MockWith {
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            InstanceName = 'MSSQLSERVER'
-            SqlInstance = 'localhost'
-            Name = 'RandomIsGood'
-            Status = 'Normal'
-            IsAccessible = $true
-            RecoveryModel = 'Simple'
-            LogReuseWaitStatus = 'Nothing'
-            SizeMB = 16
-            Compatibility = 'Version140'
-            Collation = 'SQL_Latin1_General_CP1_CI_AS'
-            Owner = $ENV:USERNAME
-            LastFullBackup = (Get-Date '0001-01-01')
-            LastDiffBackup = (Get-Date '0001-01-01')
-            LastLogBackup = (Get-Date '0001-01-01')
-        },
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            InstanceName = 'MSSQLSERVER'
-            SqlInstance = 'localhost'
-            Name = 'SpecificIsBetter'
-            Status = 'Normal'
-            IsAccessible = $true
-            RecoveryModel = 'Simple'
-            LogReuseWaitStatus = 'Nothing'
-            SizeMB = 16
-            Compatibility = 'Version140'
-            Collation = 'SQL_Latin1_General_CP1_CI_AS'
-            Owner = $ENV:USERNAME
-            LastFullBackup = (Get-Date '0001-01-01')
-            LastDiffBackup = (Get-Date '0001-01-01')
-            LastLogBackup = (Get-Date '0001-01-01')
-        }
-    } -ParameterFilter {
-        $_.SqlInstance -eq 'localhost' -and
-        @('RandomIsGood', 'SpecificIsBetter') -in $_.Name
-    }
-
-    Mock -CommandName New-DbaDatabase -MockWith {
-        'Val', 'Dev', 'Prod' | ForEach-Object -Process {
+    BeforeAll {
+        Mock -CommandName New-DbaDatabase -MockWith {
             [PSCustomObject]@{
-                ComputerName = $_
+                ComputerName = 'localhost'
                 InstanceName = 'MSSQLSERVER'
-                SqlInstance = $_
-                Name = 'DBScripts'
+                SqlInstance = 'localhost'
+                Name = 'random-123456789'
                 Status = 'Normal'
                 IsAccessible = $true
                 RecoveryModel = 'Simple'
@@ -95,50 +35,108 @@ Describe 'New-DbaDatabase' {
                 LastDiffBackup = (Get-Date '0001-01-01')
                 LastLogBackup = (Get-Date '0001-01-01')
             }
+        } -ParameterFilter {$_.SqlInstance -eq 'localhost'}
+        Mock -CommandName New-DbaDatabase -MockWith {
+            [PSCustomObject]@{
+                ComputerName = 'localhost'
+                InstanceName = 'MSSQLSERVER'
+                SqlInstance = 'localhost'
+                Name = 'RandomIsGood'
+                Status = 'Normal'
+                IsAccessible = $true
+                RecoveryModel = 'Simple'
+                LogReuseWaitStatus = 'Nothing'
+                SizeMB = 16
+                Compatibility = 'Version140'
+                Collation = 'SQL_Latin1_General_CP1_CI_AS'
+                Owner = $ENV:USERNAME
+                LastFullBackup = (Get-Date '0001-01-01')
+                LastDiffBackup = (Get-Date '0001-01-01')
+                LastLogBackup = (Get-Date '0001-01-01')
+            },
+            [PSCustomObject]@{
+                ComputerName = 'localhost'
+                InstanceName = 'MSSQLSERVER'
+                SqlInstance = 'localhost'
+                Name = 'SpecificIsBetter'
+                Status = 'Normal'
+                IsAccessible = $true
+                RecoveryModel = 'Simple'
+                LogReuseWaitStatus = 'Nothing'
+                SizeMB = 16
+                Compatibility = 'Version140'
+                Collation = 'SQL_Latin1_General_CP1_CI_AS'
+                Owner = $ENV:USERNAME
+                LastFullBackup = (Get-Date '0001-01-01')
+                LastDiffBackup = (Get-Date '0001-01-01')
+                LastLogBackup = (Get-Date '0001-01-01')
+            }
+        } -ParameterFilter {
+            $_.SqlInstance -eq 'localhost' -and
+            @('RandomIsGood', 'SpecificIsBetter') -in $_.Name
         }
-    } -ParameterFilter {
-        $_.Name -eq 'DBScripts' -and
-        @('Val', 'Dev', 'Prod') -in $_.SqlInstance
-    }
-
-    Mock -CommandName New-DbaDatabase -MockWith {
-        [PSCustomObject]@{
-            FileGroups = @{
-                Files = @{
-                    FileName = 'E:\DATA\TestDataLogFile_PRIMARY.mdf'
+        Mock -CommandName New-DbaDatabase -MockWith {
+            'Val', 'Dev', 'Prod' | ForEach-Object -Process {
+                [PSCustomObject]@{
+                    ComputerName = $_
+                    InstanceName = 'MSSQLSERVER'
+                    SqlInstance = $_
+                    Name = 'DBScripts'
+                    Status = 'Normal'
+                    IsAccessible = $true
+                    RecoveryModel = 'Simple'
+                    LogReuseWaitStatus = 'Nothing'
+                    SizeMB = 16
+                    Compatibility = 'Version140'
+                    Collation = 'SQL_Latin1_General_CP1_CI_AS'
+                    Owner = $ENV:USERNAME
+                    LastFullBackup = (Get-Date '0001-01-01')
+                    LastDiffBackup = (Get-Date '0001-01-01')
+                    LastLogBackup = (Get-Date '0001-01-01')
                 }
             }
-            LogFiles = @{
-                FileName = 'E:\LOG\TestDataLogFile_Log.ldf'
+        } -ParameterFilter {
+            $_.Name -eq 'DBScripts' -and
+            @('Val', 'Dev', 'Prod') -in $_.SqlInstance
+        }
+        Mock -CommandName New-DbaDatabase -MockWith {
+            [PSCustomObject]@{
+                FileGroups = @{
+                    Files = @{
+                        FileName = 'E:\DATA\TestDataLogFile_PRIMARY.mdf'
+                    }
+                }
+                LogFiles = @{
+                    FileName = 'E:\LOG\TestDataLogFile_Log.ldf'
+                }
             }
+        } -ParameterFilter {
+            $_.DataFilePath -eq 'E:\DATA' -and
+            $_.LogFilePath -eq 'E:\LOG'
         }
-    } -ParameterFilter {
-        $_.DataFilePath -eq 'E:\DATA' -and
-        $_.LogFilePath -eq 'E:\LOG'
-    }
-
-    Mock -CommandName New-DbaDatabase -MockWith {
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            InstanceName = 'MSSQLSERVER'
-            SqlInstance = 'localhost'
-            Name = 'DBScripts'
-            Status = 'Normal'
-            IsAccessible = $true
-            RecoveryModel = 'FULL'
-            LogReuseWaitStatus = 'Nothing'
-            SizeMB = 16
-            Compatibility = 'Version140'
-            Collation = 'SQL_Latin1_General_CP1_CI_AS'
-            Owner = $ENV:USERNAME
-            LastFullBackup = (Get-Date '0001-01-01')
-            LastDiffBackup = (Get-Date '0001-01-01')
-            LastLogBackup = (Get-Date '0001-01-01')
+        Mock -CommandName New-DbaDatabase -MockWith {
+            [PSCustomObject]@{
+                ComputerName = 'localhost'
+                InstanceName = 'MSSQLSERVER'
+                SqlInstance = 'localhost'
+                Name = 'DBScripts'
+                Status = 'Normal'
+                IsAccessible = $true
+                RecoveryModel = 'FULL'
+                LogReuseWaitStatus = 'Nothing'
+                SizeMB = 16
+                Compatibility = 'Version140'
+                Collation = 'SQL_Latin1_General_CP1_CI_AS'
+                Owner = $ENV:USERNAME
+                LastFullBackup = (Get-Date '0001-01-01')
+                LastDiffBackup = (Get-Date '0001-01-01')
+                LastLogBackup = (Get-Date '0001-01-01')
+            }
+        } -ParameterFilter {
+            $_.SqlInstance -eq 'localhost' -and
+            $_.RecoveryModel -eq 'Full'
         }
-    } -ParameterFilter {
-        $_.SqlInstance -eq 'localhost' -and
-        $_.RecoveryModel -eq 'Full'
-    }
+    }   
     #endregion
 
     <#

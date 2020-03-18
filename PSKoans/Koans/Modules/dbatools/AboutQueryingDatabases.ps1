@@ -17,29 +17,31 @@ Describe "Invoke-DbaQuery" {
         Let's setup the environment for you. Unless you want the Koans to nearly always fail, I would
         suggest not messing with this bit.
     #>
-    Mock -CommandName Invoke-DbaQuery -MockWith {
-        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\BasicInvokeDbaQuery.xml
-    } -ParameterFilter { $_.Query -eq "SELECT DB_NAME() AS database_name;" }
-    Mock -CommandName Invoke-DbaQuery -MockWith {
-        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTable.xml
-    } -ParameterFilter { $_.Query -eq "SELECT PersonName FROM Student" }
-    Mock -CommandName Invoke-DbaQuery -MockWith {
-        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\SqlParamInvokeDbaQueryBob.xml
-    } -ParameterFilter { $_.Query -eq 'SELECT PersonName FROM Student WHERE PersonName = @name' -and $_.SqlParameters.name -eq 'Bob' }
-    Mock -CommandName Invoke-DbaQuery -MockWith {
-        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\SqlParamInvokeDbaQueryFrank.xml
-    } -ParameterFilter { $_.Query -eq 'SELECT PersonName FROM Student WHERE PersonName = @name' -and $_.SqlParameters.name -eq 'Robert' }
-    Mock -CommandName Invoke-DbaQuery -MockWith {
-        Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTableBobbySafe.xml
-    } -ParameterFilter {
-        $_.Query -eq 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;' -and
-        $_.SqlParameters.name -eq "Robert'); DROP TABLE Student;--"
-    }
-    Mock -CommandName Invoke-DbaQuery -MockWith {
-        $null
-    } -ParameterFilter {
-        $_.Query -eq "INSERT INTO Student (PersonName) VALUES ('$name')" -and
-        $name -eq "ROBERT'); DROP TABLE Student;--"
+    BeforeAll {
+        Mock -CommandName Invoke-DbaQuery -MockWith {
+            Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\BasicInvokeDbaQuery.xml
+        } -ParameterFilter { $_.Query -eq "SELECT DB_NAME() AS database_name;" }
+        Mock -CommandName Invoke-DbaQuery -MockWith {
+            Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTable.xml
+        } -ParameterFilter { $_.Query -eq "SELECT PersonName FROM Student" }
+        Mock -CommandName Invoke-DbaQuery -MockWith {
+            Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\SqlParamInvokeDbaQueryBob.xml
+        } -ParameterFilter { $_.Query -eq 'SELECT PersonName FROM Student WHERE PersonName = @name' -and $_.SqlParameters.name -eq 'Bob' }
+        Mock -CommandName Invoke-DbaQuery -MockWith {
+            Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\SqlParamInvokeDbaQueryFrank.xml
+        } -ParameterFilter { $_.Query -eq 'SELECT PersonName FROM Student WHERE PersonName = @name' -and $_.SqlParameters.name -eq 'Robert' }
+        Mock -CommandName Invoke-DbaQuery -MockWith {
+            Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\StudentTableBobbySafe.xml
+        } -ParameterFilter {
+            $_.Query -eq 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;' -and
+            $_.SqlParameters.name -eq "Robert'); DROP TABLE Student;--"
+        }
+        Mock -CommandName Invoke-DbaQuery -MockWith {
+            $null
+        } -ParameterFilter {
+            $_.Query -eq "INSERT INTO Student (PersonName) VALUES ('$name')" -and
+            $name -eq "ROBERT'); DROP TABLE Student;--"
+        }
     }
     #endregion
     

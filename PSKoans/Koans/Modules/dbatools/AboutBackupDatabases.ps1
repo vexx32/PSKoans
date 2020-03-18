@@ -18,101 +18,103 @@ Describe "Backup-DbaDatabase" {
         Let's setup the environment for you. Unless you want the Koans to nearly always fail, I would
         suggest not messing with this bit.
     #>
-    Mock -CommandName Backup-DbaDatabase -MockWith {
-        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
-        1..10 | ForEach-Object -Process {
-            $RestoreStart = $StartDate
-            $RestoreEnd = $StartDate.AddSeconds(10)
+    BeforeAll {
+        Mock -CommandName Backup-DbaDatabase -MockWith {
+            $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+            1..10 | ForEach-Object -Process {
+                $RestoreStart = $StartDate
+                $RestoreEnd = $StartDate.AddSeconds(10)
 
+                [PSCustomObject]@{
+                    ComputerName = 'localhost'
+                    SqlInstance = $ENV:COMPUTERNAME
+                    Database = ('Database_{0:d2}' -f $_)
+                    Type = 'Full'
+                    TotalSize = ('{0}' -f ([Math]::PI * $_))
+                    DeviceType = 'Disk'
+                    Start = $RestoreStart
+                    Duration = $RestoreEnd - $RestoreStart
+                    End = $RestoreEnd
+                }
+                $StartDate = $RestoreEnd
+            }
+        }
+        Mock -CommandName Backup-DbaDatabase -MockWith {
+            $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+            1..2 | ForEach-Object -Process {
+                $RestoreStart = $StartDate
+                $RestoreEnd = $StartDate.AddSeconds(15)
+
+                [PSCustomObject]@{
+                    ComputerName = 'localhost'
+                    SqlInstance = $ENV:COMPUTERNAME
+                    Database = ('Database_{0:d2}' -f $_)
+                    Type = 'Full'
+                    TotalSize = ('{0}' -f ([Math]::PI * $_))
+                    DeviceType = 'Disk'
+                    Start = $RestoreStart
+                    Duration = $RestoreEnd - $RestoreStart
+                    End = $RestoreEnd
+                }
+
+                $StartDate = $RestoreEnd
+            }
+        } -ParameterFilter {
+            $_.Database -contains ('Database_01', 'Database_02')
+        }
+        Mock -CommandName Backup-DbaDatabase -MockWith {
+            $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+            $RestoreEnd = $StartDate.AddSeconds(5)
             [PSCustomObject]@{
                 ComputerName = 'localhost'
                 SqlInstance = $ENV:COMPUTERNAME
-                Database = ('Database_{0:d2}' -f $_)
-                Type = 'Full'
-                TotalSize = ('{0}' -f ([Math]::PI * $_))
+                Database = 'Database_01'
+                Type = 'Differential'
+                TotalSize = ('{0}' -f ([Math]::PI))
                 DeviceType = 'Disk'
-                Start = $RestoreStart
-                Duration = $RestoreEnd - $RestoreStart
+                Start = $StartDate
+                Duration = $RestoreEnd - $StartDate
                 End = $RestoreEnd
             }
-            $StartDate = $RestoreEnd
+        } -ParameterFilter {
+            $_.Type -eq 'Differential'
         }
-    }
-    Mock -CommandName Backup-DbaDatabase -MockWith {
-        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
-        1..2 | ForEach-Object -Process {
-            $RestoreStart = $StartDate
-            $RestoreEnd = $StartDate.AddSeconds(15)
-
+        Mock -CommandName Backup-DbaDatabase -MockWith {
+            $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+            $RestoreEnd = $StartDate.AddSeconds(5)
             [PSCustomObject]@{
                 ComputerName = 'localhost'
                 SqlInstance = $ENV:COMPUTERNAME
-                Database = ('Database_{0:d2}' -f $_)
-                Type = 'Full'
-                TotalSize = ('{0}' -f ([Math]::PI * $_))
+                Database = 'Database_01'
+                Type = 'Differential'
+                TotalSize = ('{0}' -f ([Math]::PI))
                 DeviceType = 'Disk'
-                Start = $RestoreStart
-                Duration = $RestoreEnd - $RestoreStart
+                Start = $StartDate
+                Duration = $RestoreEnd - $StartDate
                 End = $RestoreEnd
+                Path = 'E:\Backups\Database_01_201901011200.bak'
             }
-
-            $StartDate = $RestoreEnd
+        } -ParameterFilter {
+            $_.Path -like 'E:\Backups\*'
         }
-    } -ParameterFilter {
-        $_.Database -contains ('Database_01', 'Database_02')
-    }
-    Mock -CommandName Backup-DbaDatabase -MockWith {
-        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
-        $RestoreEnd = $StartDate.AddSeconds(5)
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            SqlInstance = $ENV:COMPUTERNAME
-            Database = 'Database_01'
-            Type = 'Differential'
-            TotalSize = ('{0}' -f ([Math]::PI))
-            DeviceType = 'Disk'
-            Start = $StartDate
-            Duration = $RestoreEnd - $StartDate
-            End = $RestoreEnd
+        Mock -CommandName Backup-DbaDatabase -MockWith {
+            $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
+            $RestoreEnd = $StartDate.AddSeconds(5)
+            [PSCustomObject]@{
+                ComputerName = 'localhost'
+                SqlInstance = $ENV:COMPUTERNAME
+                Database = 'Database_01'
+                Type = 'Differential'
+                TotalSize = ('{0}' -f ([Math]::PI))
+                DeviceType = 'Disk'
+                Start = $StartDate
+                Duration = $RestoreEnd - $StartDate
+                End = $RestoreEnd
+                Path = 'E:\Backups\Database01-Full.bak'
+            }
+        } -ParameterFilter {
+            $_.FilePath -eq 'dbname-backuptype.bak'
         }
-    } -ParameterFilter {
-        $_.Type -eq 'Differential'
-    }
-    Mock -CommandName Backup-DbaDatabase -MockWith {
-        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
-        $RestoreEnd = $StartDate.AddSeconds(5)
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            SqlInstance = $ENV:COMPUTERNAME
-            Database = 'Database_01'
-            Type = 'Differential'
-            TotalSize = ('{0}' -f ([Math]::PI))
-            DeviceType = 'Disk'
-            Start = $StartDate
-            Duration = $RestoreEnd - $StartDate
-            End = $RestoreEnd
-            Path = 'E:\Backups\Database_01_201901011200.bak'
-        }
-    } -ParameterFilter {
-        $_.Path -like 'E:\Backups\*'
-    }
-    Mock -CommandName Backup-DbaDatabase -MockWith {
-        $StartDate = [Datetime]::new(2019, 01, 01, 12, 00, 00)
-        $RestoreEnd = $StartDate.AddSeconds(5)
-        [PSCustomObject]@{
-            ComputerName = 'localhost'
-            SqlInstance = $ENV:COMPUTERNAME
-            Database = 'Database_01'
-            Type = 'Differential'
-            TotalSize = ('{0}' -f ([Math]::PI))
-            DeviceType = 'Disk'
-            Start = $StartDate
-            Duration = $RestoreEnd - $StartDate
-            End = $RestoreEnd
-            Path = 'E:\Backups\Database01-Full.bak'
-        }
-    } -ParameterFilter {
-        $_.FilePath -eq 'dbname-backuptype.bak'
     }
     #endregion
 
