@@ -158,4 +158,3 @@ Describe "Invoke-DbaQuery" {
         We use the switch -EnableException to return an error since the table "Student" no longer exists.
     #>
 }
-

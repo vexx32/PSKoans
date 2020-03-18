@@ -84,4 +84,3 @@ Describe 'Get-DbaDatabase' {
     $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
     $FullRecoveryDbs.RecoveryModel | Should -Be 'Full'
 }
-
