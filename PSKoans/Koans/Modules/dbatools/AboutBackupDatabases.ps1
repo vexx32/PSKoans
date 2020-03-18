@@ -1,6 +1,5 @@
-#Requires -Modules dbatools
 using module PSKoans
-[Koan(Position = 1004)]
+[Koan(Position = 1004, Module = 'dbatools')]
 param()
 <#
     Backup-DbaDatabase
@@ -113,8 +112,6 @@ Describe "Backup-DbaDatabase" {
     } -ParameterFilter {
         $_.FilePath -eq 'dbname-backuptype.bak'
     }
-
-   
 
     <#
         By default, Backup-DbaDatabase will backup every database on the SQL Instance.

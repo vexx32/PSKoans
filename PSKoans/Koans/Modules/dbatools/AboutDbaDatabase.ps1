@@ -1,6 +1,5 @@
-#Requires -Modules dbatools
 using module PSKoans
-[Koan(Position = 1001)]
+[Koan(Position = 1001, Module = 'dbatools')]
 param()
 <#
     Get-DbaDatabase

@@ -1,6 +1,5 @@
-#Requires -Modules dbatools
 using module PSKoans
-[Koan(Position = 1003)]
+[Koan(Position = 1003, Module = 'dbatools')]
 param()
 <#
     New-DbaDatabase
