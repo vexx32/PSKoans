@@ -12,6 +12,7 @@ param()
 #>
 Describe "Invoke-DbaQuery" {
 
+    #region Mocks
     <#
         Let's setup the environment for you. Unless you want the Koans to nearly always fail, I would
         suggest not messing with this bit.
@@ -40,6 +41,7 @@ Describe "Invoke-DbaQuery" {
         $_.Query -eq "INSERT INTO Student (PersonName) VALUES ('$name')" -and
         $name -eq "ROBERT'); DROP TABLE Student;--"
     }
+    #endregion
     
     <#
         Invoke-DbaQuery can be used to connect to the SQL Server, in much the same way that Get-DbaDatabase

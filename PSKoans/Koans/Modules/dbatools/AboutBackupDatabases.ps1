@@ -12,6 +12,8 @@ param()
     with the Backup-DbaDatabase command.
 #>
 Describe "Backup-DbaDatabase" {
+    
+    #region Mocks
     <#
         Let's setup the environment for you. Unless you want the Koans to nearly always fail, I would
         suggest not messing with this bit.
@@ -112,6 +114,7 @@ Describe "Backup-DbaDatabase" {
     } -ParameterFilter {
         $_.FilePath -eq 'dbname-backuptype.bak'
     }
+    #endregion
 
     <#
         By default, Backup-DbaDatabase will backup every database on the SQL Instance.

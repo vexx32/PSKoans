@@ -10,6 +10,7 @@ param()
 #>
 Describe 'New-DbaDatabase' {
 
+    #region Mocks
     <#
         Let's set up the environment for you.
         
@@ -138,6 +139,7 @@ Describe 'New-DbaDatabase' {
         $_.SqlInstance -eq 'localhost' -and
         $_.RecoveryModel -eq 'Full'
     }
+    #endregion
 
     <#
         New-DbaDatabase, while having a few different parameters, requires only that you have an instance
