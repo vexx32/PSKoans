@@ -33,5 +33,7 @@ catch {
 # Build external help files from Platyps MD files
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en-us"
 
+& "$PSScriptRoot/PSKoans.ezformat.ps1"
+
 Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
     Where-Object { -not $_.PSIsContainer }

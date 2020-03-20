@@ -5,7 +5,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      Install-Module -Name PSDeploy, BuildHelpers, Platyps -Force -Scope CurrentUser
+      Install-Module -Name PSDeploy, BuildHelpers, Platyps, EZOut -Force -Scope CurrentUser
       Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
 
     errorActionPreference: 'stop'
