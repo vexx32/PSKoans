@@ -2,7 +2,7 @@
 Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
 # Create format.ps1xml file
-& "$PSScriptRoot/PSKoans.ezformat.ps1"
+& "$PSScriptRoot/../PSKoans.ezformat.ps1"
 
 Import-Module "$env:PROJECTROOT/PSKoans"
 

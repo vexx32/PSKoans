@@ -25,7 +25,7 @@ Describe 'Show-Karma' {
 
         Context 'Default Behaviour' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Write-Host { }
                 Mock Get-Karma -ModuleName 'PSKoans' {
                     [PSCustomObject]@{
                         PSTypeName   = 'PSKoans.Result'
@@ -49,8 +49,8 @@ Describe 'Show-Karma' {
                 Show-Karma | Should -BeNullOrEmpty
             }
 
-            It 'should write the meditation prompts' {
-                Assert-MockCalled Show-MeditationPrompt -Times 2
+            It 'should write the formatted output to host' {
+                Assert-MockCalled Write-Host
             }
 
             It 'should call Get-Karma to examine the koans' {
@@ -136,10 +136,6 @@ Describe 'Show-Karma' {
                 { Show-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
             }
 
-            It 'should display only the greeting prompt' {
-                Assert-MockCalled Show-MeditationPrompt -Times 1
-            }
-
             It 'should display a warning before initiating a reset' {
                 Assert-MockCalled Write-Warning
             }
@@ -178,7 +174,7 @@ Describe 'Show-Karma' {
 
         Context 'With -Topic Parameter' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Write-Host { }
                 Mock Get-Karma -MockWith {
                     [PSCustomObject]@{
                         PSTypeName     = 'PSKoans.Result'
@@ -207,7 +203,8 @@ Describe 'Show-Karma' {
 
         Context 'With All Koans in a Single Topic Completed' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { $Complete }
+                Mock Format-Custom { $InputObject.Complete }
+                Mock Write-Host { $Object }
                 Mock Get-Karma -ModuleName 'PSKoans' {
                     [PSCustomObject]@{
                         PSTypeName     = 'PSKoans.CompleteResult'
@@ -369,6 +366,5 @@ Describe 'Show-Karma' {
                 Assert-MockCalled Invoke-Item -Times 1
             }
         }
-
     }
 }
