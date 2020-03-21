@@ -131,7 +131,7 @@
 
             Meditation = @{
                 Text     = "#7AAFCA"
-                Koan     = "#DACF60"
+                Emphasis = "#DACF60"
                 Passed   = "#30DF60"
                 Error    = '#E02020'
                 Progress = '#CACEFA'

@@ -60,7 +60,7 @@ Write-FormatCustomView -AsControl -Name Prompt.Koan -Action {
             $ReplacementPattern = '$1    {0} ' -f [char]0x258c
             (Get-Random -InputObject $script:MeditationStrings) -replace '^|(\r?\n)', $ReplacementPattern
         }
-    } -ForegroundColor 'PSKoans.Meditation.Koan'
+    } -ForegroundColor 'PSKoans.Meditation.Emphasis'
 
     Write-FormatViewExpression -Newline
     Write-FormatViewExpression -Newline
@@ -84,16 +84,16 @@ Write-FormatCustomView -AsControl -Name Prompt.ProgressPreamble -Action {
     Write-FormatViewExpression -Text @"
     You examine the path beneath your feet...
 "@ -ForegroundColor 'PSKoans.Meditation.Text'
-
-    Write-FormatViewExpression -Newline
-    Write-FormatViewExpression -Newline
 }
 
 Write-FormatCustomView -AsControl -Name ProgressBar -Action {
+    Write-FormatViewExpression -Newline -If { $_.Newline }
+    Write-FormatViewExpression -Newline -If { $_.Newline }
+
     Write-FormatViewExpression -ScriptBlock {
         $ConsoleWidth = ($host.UI.RawUI.WindowSize.Width, $host.UI.RawUI.BufferSize.Width, 80).Where{ $_ -ge 30 }[0]
-        $ProgressWidth = $ConsoleWidth * $_.Width
         $TopicProgressAmount = "{0}/{1}" -f $_.Completed, $_.Total
+        $ProgressWidth = $ConsoleWidth * $_.Width - ($_.Name.Length + $TopicProgressAmount.Length + 7)
 
         [int] $PortionDone = ($_.Completed / $_.Total) * $ProgressWidth
 
@@ -106,24 +106,28 @@ Write-FormatCustomView -AsControl -Name ProgressBar -Action {
             $_.Name
         )
     } -ForegroundColor 'PSKoans.Meditation.Progress'
-
-    Write-FormatViewExpression -Newline
-    Write-FormatViewExpression -Newline
 }
 
 Write-FormatCustomView -AsControl -Name Prompt.End -Action {
+    Write-FormatViewExpression -Newline
+    Write-FormatViewExpression -Newline
+
     Write-FormatViewExpression -Text @"
 Run 'Show-Karma -Meditate' to begin your meditations.
 "@ -ForegroundColor 'PSKoans.Meditation.Text'
 }
 
 Write-FormatView -TypeName PSKoans.Result -AsControl -Name Prompt.Details -Action {
+    Write-FormatViewExpression -Newline
+
     Write-FormatViewExpression -If {
         $_.Describe -and
         $_.Describe -ne $global:_Koan_Describe
     } -ScriptBlock {
         $global:_Koan_Describe = $_.Describe
-        '    Describing {0}{1}' -f $_.Describe, [Environment]::NewLine
+        $Indent = " " * 4
+
+        '{0}Describing {1}{2}' -f $Indent, $_.Describe, [Environment]::NewLine
     } -ForegroundColor 'PSKoans.Meditation.Text'
 
     Write-FormatViewExpression -If {
@@ -131,18 +135,28 @@ Write-FormatView -TypeName PSKoans.Result -AsControl -Name Prompt.Details -Actio
         $_.Context -ne $global:_Koan_Context
     } -ScriptBlock {
         $global:_Koan_Context = $_.Context
-        '    In Context {0}{1}' -f $_.Context, [Environment]::NewLine
-    } -ForegroundColor 'PSKoans.Meditation.Text'
+        $IndentSpaces = 4
+        if ($_.Context) { $IndentSpaces += 2 }
+        $Indent = " " * $IndentSpaces
+
+        '{0}{1}{2}' -f $Indent, $_.Context, [Environment]::NewLine
+    } -ForegroundColor 'PSKoans.Meditation.Emphasis'
 
     Write-FormatViewExpression -If { $_.Passed } -ScriptBlock {
-        '[{0}] It {1}' -f [char]0x25b8, $_.Name
+        $IndentSpaces = 4
+        if ($_.Context) { $IndentSpaces += 4 } elseif ($_.Describe) { $Indent += 2 }
+        $Indent = " " * $IndentSpaces
+
+        '{0}[{1}] It {2}' -f $Indent, [char]0x25b8, $_.Name
     } -ForegroundColor 'PSKoans.Meditation.Passed'
 
     Write-FormatViewExpression -If { -not $_.Passed } -ScriptBlock {
-        '[{0}] It {1}' -f [char]0xd7, $_.Name
-    } -ForegroundColor 'PSKoans.Meditation.Error'
+        $IndentSpaces = 4
+        if ($_.Context) { $IndentSpaces += 4 } elseif ($_.Describe) { $Indent += 2 }
+        $Indent = " " * $IndentSpaces
 
-    Write-FormatViewExpression -Newline
+        '{0}[{1}] It {2}' -f $Indent, [char]0xd7, $_.Name
+    } -ForegroundColor 'PSKoans.Meditation.Error'
 }
 
 Write-FormatView -TypeName PSKoans.Result -Name MeditationView -Action {
@@ -170,7 +184,15 @@ Write-FormatView -TypeName PSKoans.Result -Name MeditationView -Action {
         }
     }
 
-    Write-FormatViewExpression -ControlName ProgressBar -ScriptBlock {
+    Write-FormatViewExpression -If { $_.RequestedTopic.Count -eq 1 } -ControlName ProgressBar -ScriptBlock { @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.8
+        }
+    }
+
+    Write-FormatViewExpression -If { -not $_.RequestedTopic -or $_.RequestedTopic.Count -gt 1 } -ControlName ProgressBar -ScriptBlock {
         @{
             Completed = $_.KoansPassed
             Total     = $_.TotalKoans
@@ -194,12 +216,12 @@ Write-FormatView -TypeName PSKoans.Result -Name DetailedView -Action {
 
     Write-FormatViewExpression -ScriptBlock { 1 } -ControlName Prompt.ProgressPreamble
 
+    Write-FormatViewExpression -Newline
+
     Write-FormatViewExpression -ScriptBlock { $_.Results } -ControlName Prompt.Details -Enumerate
 
-    $ExecutionContext.SessionState.PSVariable.Remove("_Koan_Describe")
-    $ExecutionContext.SessionState.PSVariable.Remove("_Koan_Context")
-
-    Write-FormatViewExpression -Newline
+    $ExecutionContext.SessionState.PSVariable.Remove("Global:_Koan_Describe")
+    $ExecutionContext.SessionState.PSVariable.Remove("Global:_Koan_Context")
 
     Write-FormatViewExpression -If { $_.RequestedTopic.Count -ne 1 } -ControlName ProgressBar -ScriptBlock {
         @{
@@ -207,10 +229,20 @@ Write-FormatView -TypeName PSKoans.Result -Name DetailedView -Action {
             Total     = $_.CurrentTopic.Total
             Name      = $_.CurrentTopic.Name
             Width     = 0.5
+            Newline   = $true
         }
     }
 
-    Write-FormatViewExpression -ControlName ProgressBar -ScriptBlock {
+    Write-FormatViewExpression -If { $_.RequestedTopic.Count -eq 1 } -ControlName ProgressBar -ScriptBlock {
+        @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.8
+        }
+    }
+
+    Write-FormatViewExpression -If { -not $_.RequestedTopic -or $_.RequestedTopic.Count -gt 1 } -ControlName ProgressBar -ScriptBlock {
         @{
             Completed = $_.KoansPassed
             Total     = $_.TotalKoans
