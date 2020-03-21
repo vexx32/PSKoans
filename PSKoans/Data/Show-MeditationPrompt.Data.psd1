@@ -1,72 +1,5 @@
 ﻿@{
-    Prompts = @{
-        Welcome        = @"
-    Welcome, seeker of enlightenment.
-    Please wait a moment while we examine your karma...
-
-"@
-        DetailEntry    = @"
-{0} It {1}
-"@
-        Describe       = @"
-Describing '{0}' has damaged your karma.
-"@
-        TestFailed     = @"
-
-    You have not yet reached enlightenment.
-
-    The answers you seek...
-
-"@
-        Meditate       = @"
-
-    Please meditate on the following code:
-
-"@
-        Subject        = @"
-{0} It {1}
-{2}
-"@
-        Koan           = @"
-
-{0}
-
-"@
-        Path           = @"
-    You examine the path beneath your feet...
-
-"@
-        Topic          = @"
-    You must meditate further on your selected topic{0}:
-        - {1}
-
-"@
-        OpenFolder     = @"
-
-Run 'Show-Karma -Meditate' to begin your meditations.
-
-"@
-        Completed      = @"
-    Congratulations! You have taken the first steps towards enlightenment.
-
-    You cast your gaze back upon the path that you have walked:
-
-"@
-        CompletedTopic = @"
-    Congratulations! You have taken the first steps towards enlightenment.
-
-    You have completed: {0}
-
-    You cast your gaze back upon the path that you have walked...
-
-"@
-        BookSuggestion = @"
-
-    If you would like to further your studies in this manner, consider investing in
-    'PowerShell by Mistake' by Don Jones - https://leanpub.com/powershell-by-mistake
-"@
-    }
-    Koans   = @(
+    Koans = @(
         @'
 The whole moon and the entire sky
 Are reflected in one dewdrop on the grass.
@@ -238,7 +171,7 @@ you're not looking long enough.
 In order to write good code,
 you must become the code.
 '@
-        @'  
+        @'
 Mind is not the Buddha,
 reason is not the Way.
 '@
@@ -249,7 +182,7 @@ that weighs you down.
 '@
         @'
 There are two rules in life:
-1. Never give out all of 
+1. Never give out all of
 the information.
 '@
         @'
