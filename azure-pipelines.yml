@@ -15,11 +15,11 @@ pr:
 variables:
   NupkgArtifactName: 'PSKoans.nupkg'
   ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-    BuildName: '$(Date:yyyy-MM-dd) (#$(BuildID)) $(TeamProject) ($(SourceBranchName))'
+    Trigger: '$(SourceBranchName)'
   ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-    BuildName: '$(Date:yyyy-MM-dd) (#$(BuildID)) $(TeamProject) (PR #$(System.PullRequest.PullRequestId))'
+    Trigger: 'PR #$(System.PullRequest.PullRequestNumber)'
 
-name: '${{ variables.BuildName }}'
+name: '$(BuildID)-$(Date:yyyy-MM-dd)$(Rev:.r) $(TeamProject) (${{ variables.Trigger }})'
 
 stages:
 - stage: UploadChangelog
