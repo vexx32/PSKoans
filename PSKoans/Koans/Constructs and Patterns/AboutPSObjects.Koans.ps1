@@ -36,7 +36,7 @@ Describe 'PSObject' {
             'Methods'
             '____'
             '____'
-        ) | Should -Be $PSObjectProperties
+        ) | Sort-Object | Should -Be $PSObjectProperties
     }
 
     It "details the base object's properties and methods" {
@@ -49,8 +49,9 @@ Describe 'PSObject' {
             'LongLength'
             '____'
             'SyncRoot'
-        )
-        $PropertyNames | Should -Be $Object.PSObject.Properties.Name | Sort-Object
+        ) | Sort-Object
+        $ExpectedProperties = $Object.PSObject.Properties.Name | Sort-Object
+        $PropertyNames | Should -Be $ExpectedProperties
 
         $Methods = $Object.PSObject.Methods
         __ | Should -Be $Methods.ForEach{$_}.Count
@@ -73,7 +74,7 @@ Describe 'PSObject' {
             '____',
             '____',
             '____'
-        ) | Should -Be $PropertyNames
+        ) | Sort-Object | Should -Be $PropertyNames
         __ | Should -Be $Empty.IsReadOnly
     }
 
@@ -109,7 +110,7 @@ Describe 'PSObject' {
             Sort-Object
 
         # There may be varying property types depending on your PowerShell version
-        @( '____', '____', '____' ) | Should -Be $PropertyTypes
+        @( '____', '____', '____' ) | Sort-Object | Should -Be $PropertyTypes
     }
 
     It "can find derivative properties" {
@@ -127,6 +128,6 @@ Describe 'PSObject' {
             ForEach-Object -MemberName Name |
             Sort-Object
 
-        @( '____', '____', '____', '____') | Should -Be $PropertyTypes
+        @( '____', '____', '____', '____') | Sort-Object | Should -Be $PropertyTypes
     }
 }
