@@ -1,14 +1,14 @@
 #Requires -Modules EZOut
-# Install-Module EZOut or https://github.com/StartAutomating/EZOut
+# Install-Module EZOut
+# or https://github.com/StartAutomating/EZOut
 
-$ModuleName = $($PSCommandPath | Split-Path -Leaf) -replace '\.ezformat\.ps1', ''
+$ModuleName = $MyInvocation.MyCommand.Name -replace '\.ezformat\.ps1', ''
+$ModuleFolder = "$PSScriptRoot/PSKoans"
 
 try {
     Push-Location $PSScriptRoot
 
     $formatting = @(
-        # Add your own Write-FormatView here, or put them in a Formatting or Views directory
-
         foreach ($potentialDirectory in 'Formatting', 'Views') {
             $path = Join-Path $PSScriptRoot -ChildPath $potentialDirectory
             if (Test-Path $path) {
@@ -17,10 +17,9 @@ try {
         }
     )
 
-    $ModuleFolder = "$PSScriptRoot/PSKoans"
     if ($formatting) {
-        $FormatFile = Join-Path $ModuleFolder -ChildPath "$ModuleName.format.ps1xml"
-        $formatting | Out-FormatData -Module $ModuleName | Set-Content $FormatFile -Encoding UTF8
+        $formatFilePath = Join-Path $ModuleFolder -ChildPath "$ModuleName.format.ps1xml"
+        $formatting | Out-FormatData -Module $ModuleName | Set-Content $formatFilePath -Encoding UTF8
     }
 
     $types = @(
