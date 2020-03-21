@@ -1,3 +1,4 @@
+#Requires -Modules dbatools
 using module PSKoans
 [Koan(Position = 1002, Module = 'dbatools')]
 param()
