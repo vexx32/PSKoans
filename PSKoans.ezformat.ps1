@@ -9,37 +9,30 @@ $ModuleFolder = Get-Item -Path "$PSScriptRoot/PSKoans" | Select-Object -ExpandPr
 
 Write-Verbose "Building format file for '$ModuleName' in '$ModuleFolder'"
 
-try {
-    Push-Location $PSScriptRoot
-
-    $formatting = @(
-        foreach ($potentialDirectory in 'Formatting', 'Views') {
-            $path = Join-Path $PSScriptRoot -ChildPath $potentialDirectory
-            if (Test-Path $path) {
-                Get-ChildItem -Path $path | ForEach-Object {
-                    Write-Verbose "Processing file '$($_.FullName)'"
-                    Import-FormatView -FilePath $_.FullName
-                }
+$formatting = @(
+    foreach ($potentialDirectory in 'formatting', 'views') {
+        $path = Join-Path $PSScriptRoot -ChildPath $potentialDirectory
+        if (Test-Path $path) {
+            Get-ChildItem -Path $path | ForEach-Object {
+                Write-Verbose "Processing file '$($_.FullName)'"
+                Import-FormatView -FilePath $_.FullName
             }
         }
-    )
-
-    if ($formatting) {
-        $formatFilePath = Join-Path $ModuleFolder -ChildPath "$ModuleName.format.ps1xml"
-        Write-Verbose "Writing format file to '$formatFilePath'"
-        $formatting | Out-FormatData -Module $ModuleName | Set-Content $formatFilePath -Encoding UTF8
     }
+)
 
-    $types = @(
-        # Add your own Write-TypeView statements here
-    )
-
-    if ($types) {
-        $TypesFile = Join-Path $PSScriptRoot "$ModuleName.types.ps1xml"
-        Write-Verbose "Writing types file to '$TypesFile'"
-        $types | Out-TypeData | Set-Content $TypesFile -Encoding UTF8
-    }
+if ($formatting) {
+    $formatFilePath = Join-Path $ModuleFolder -ChildPath "$ModuleName.format.ps1xml"
+    Write-Verbose "Writing format file to '$formatFilePath'"
+    $formatting | Out-FormatData -Module $ModuleName | Set-Content $formatFilePath -Encoding UTF8
 }
-finally {
-    Pop-Location
+
+$types = @(
+    # Add your own Write-TypeView statements here
+)
+
+if ($types) {
+    $TypesFile = Join-Path $PSScriptRoot "$ModuleName.types.ps1xml"
+    Write-Verbose "Writing types file to '$TypesFile'"
+    $types | Out-TypeData | Set-Content $TypesFile -Encoding UTF8
 }
