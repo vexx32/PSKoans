@@ -119,7 +119,7 @@ Describe "Backup-DbaDatabase" {
     }
     #endregion
 
-    It 'takes a database backup of all databases on a SQL Server' {
+    It 'takes a database backup of all SQL Server databases' {
         <#
             By default, Backup-DbaDatabase will backup every database on the SQL Instance.
             These backups will get saved to the default backup directory.
@@ -129,22 +129,26 @@ Describe "Backup-DbaDatabase" {
         $AllBackups.ComputerName | Should -Be 'localhost'
     }
 
-    <#
-        By using the -Database parameter, you can backup a single or many databases.
-        Complete the below command to backup the databases Database_01 and Database_02
-    #>
-    $SpecificBackups = Backup-DbaDatabase -SqlInstance localhost -Database '____','____'
-    $SpecificBackups.Database | Should -Contain 'Database_01', 'Database_02'
+    It 'takes a database backup of specific SQL Server databases' {
+        <#
+            By using the -Database parameter, you can backup a single or many databases.
+            Complete the below command to backup the databases Database_01 and Database_02
+        #>
+        $SpecificBackups = Backup-DbaDatabase -SqlInstance localhost -Database '____','____'
+        $SpecificBackups.Database | Should -Contain 'Database_01', 'Database_02'
+    }
 
-    <#
-        There are different types of database backups that can be taken. The 3 main ones
-        are a Full backup (Full/Database), a Differential backup (Diff/Differential), and
-        a Transaction Log backup (Log).
-        Backup-DbaDatabase can take each of these types of backups.
-        Complete the below command to take a differential backup of the Database_01 database.
-    #>
-    $DifferentialBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database_01 -Type '____'
-    $DifferentialBackup.Type | Should -Be 'Differential'
+    It 'takes different types of SQL Server backups' {
+        <#
+            There are different types of database backups that can be taken. The 3 main ones
+            are a Full backup (Full/Database), a Differential backup (Diff/Differential), and
+            a Transaction Log backup (Log).
+            Backup-DbaDatabase can take each of these types of backups.
+            Complete the below command to take a differential backup of the Database_01 database.
+        #>
+        $DifferentialBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database_01 -Type '____'
+        $DifferentialBackup.Type | Should -Be 'Differential'
+    }
 
     <#
         Managing where you store your backups is something that is unique to each person.
