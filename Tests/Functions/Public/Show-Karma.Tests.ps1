@@ -60,7 +60,7 @@ Describe 'Show-Karma' {
 
         Context 'With All Koans Completed' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { $Complete }
+                Mock Write-Host { }
                 Mock Get-Karma -ModuleName 'PSKoans' {
                     [PSCustomObject]@{
                         PSTypeName     = 'PSKoans.CompleteResult'
@@ -80,7 +80,7 @@ Describe 'Show-Karma' {
         Context 'With -ClearScreen Switch' {
             BeforeAll {
                 Mock Clear-Host { }
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Write-Host { }
                 Mock Get-Karma -ModuleName 'PSKoans' {
                     [PSCustomObject]@{
                         PSTypeName   = 'PSKoans.Result'
@@ -108,8 +108,8 @@ Describe 'Show-Karma' {
                 Assert-MockCalled Clear-Host -Times 1
             }
 
-            It 'should write the meditation prompts' {
-                Assert-MockCalled Show-MeditationPrompt -Times 2
+            It 'should display the rendered output' {
+                Assert-MockCalled Write-Host
             }
 
             It 'should Invoke-Pester on each of the koans' {
@@ -119,7 +119,7 @@ Describe 'Show-Karma' {
 
         Context 'With Nonexistent Koans Folder / No Koans Found' {
             BeforeAll {
-                Mock Show-MeditationPrompt -ModuleName 'PSKoans' { }
+                Mock Write-Host { }
                 Mock Get-PSKoan -ModuleName 'PSKoans' { }
                 Mock Update-PSKoan -ModuleName 'PSKoans' { throw 'Prevent recursion' }
                 Mock Write-Warning
@@ -204,7 +204,7 @@ Describe 'Show-Karma' {
         Context 'With All Koans in a Single Topic Completed' {
             BeforeAll {
                 Mock Format-Custom { $InputObject.Complete }
-                Mock Write-Host { $Object }
+                Mock Write-Host { }
                 Mock Get-Karma -ModuleName 'PSKoans' {
                     [PSCustomObject]@{
                         PSTypeName     = 'PSKoans.CompleteResult'
@@ -250,7 +250,7 @@ Describe 'Show-Karma' {
                         CurrentTopic = [PSCustomObject]$script:CurrentTopic
                     }
                 }
-                Mock Get-PSKoan {
+                Mock Get-PSKoan -ModuleName 'PSKoans' {
                     [PSCustomObject]@{ Path = $TestFile.FullName }
                 } -ParameterFilter { $Topic -eq 'TestTopic' }
             }
