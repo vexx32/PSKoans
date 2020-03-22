@@ -2,8 +2,12 @@
 # Install-Module EZOut
 # or https://github.com/StartAutomating/EZOut
 
+$VerbosePreference = 'Continue'
+
 $ModuleName = $MyInvocation.MyCommand.Name -replace '\.ezformat\.ps1', ''
-$ModuleFolder = "$PSScriptRoot/PSKoans"
+$ModuleFolder = Get-Item -Path "$PSScriptRoot/PSKoans" | Select-Object -ExpandProperty FullName
+
+Write-Verbose "Building format file for '$ModuleName' in '$ModuleFolder'"
 
 try {
     Push-Location $PSScriptRoot
