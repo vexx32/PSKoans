@@ -119,13 +119,15 @@ Describe "Backup-DbaDatabase" {
     }
     #endregion
 
-    <#
-        By default, Backup-DbaDatabase will backup every database on the SQL Instance.
-        These backups will get saved to the default backup directory.
-        Complete the below command to backup all the databases on the localhost instance.
-    #>
-    $AllBackups = Backup-DbaDatabase -SqlInstance '____'
-    $AllBackups.ComputerName | Should -Be 'localhost'
+    It 'takes a database backup of all databases on a SQL Server' {
+        <#
+            By default, Backup-DbaDatabase will backup every database on the SQL Instance.
+            These backups will get saved to the default backup directory.
+            Complete the below command to backup all the databases on the localhost instance.
+        #>
+        $AllBackups = Backup-DbaDatabase -SqlInstance '____'
+        $AllBackups.ComputerName | Should -Be 'localhost'
+    }
 
     <#
         By using the -Database parameter, you can backup a single or many databases.
