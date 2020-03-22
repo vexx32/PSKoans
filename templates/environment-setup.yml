@@ -5,8 +5,26 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      Install-Module -Name PSDeploy, BuildHelpers, Platyps, EZOut -Force -Scope CurrentUser
-      Install-Module -Name Pester -Force -SkipPublisherCheck -Scope CurrentUser
+      $Params = @{
+          Scope = 'CurrentUser'
+          Force = $true
+      }
+
+      Write-Host "Installing Modules"
+      $Params.Name = @( 'PSDeploy', 'BuildHelpers', 'PlatyPS' )
+      $Params | Out-String | Write-Host
+      Install-Module @Params
+
+      $Params.Name = 'Pester'
+      $Params.SkipPublisherCheck = $true
+      $Params | Out-String | Write-Host
+      Install-Module @Params
+      $Params.Remove('SkipPublisherCheck')
+
+      $Params.Name = 'EZOut'
+      $Params.AllowClobber = $true
+      $Params | Out-String | Write-Host
+      Install-Module @Params
 
     errorActionPreference: 'stop'
     failOnStderr: true
