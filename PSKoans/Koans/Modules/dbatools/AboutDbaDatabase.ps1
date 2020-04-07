@@ -75,16 +75,18 @@ Describe 'Get-DbaDatabase' {
         $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
     }
 
-    <#
-        The same can be done to exclude system databases by providing the
-        -ExcludeSystem parameter switch.
-    #>
-    $SystemDbParams = @{
-        SqlInstance = 'localhost'
-        ExludeSystem = ____
+    It 'Excludes system databases if specified...' {
+        <#
+            The same can be done to exclude system databases by providing the
+            -ExcludeSystem parameter switch.
+        #>
+        $SystemDbParams = @{
+            SqlInstance = 'localhost'
+            ExludeSystem = ____
+        }
+        $SystemDbsExluded = Get-DbaDatabase @SystemDbParams
+        $SystemDbsExluded.Name | Should -Be 'testdb'
     }
-    $SystemDbsExluded = Get-DbaDatabase @SystemDbParams
-    $SystemDbsExluded.Name | Should -Be 'testdb'
 
     <#
         Some common questions that people who work with databases
