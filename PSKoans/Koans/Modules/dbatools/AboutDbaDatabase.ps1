@@ -88,11 +88,13 @@ Describe 'Get-DbaDatabase' {
         $SystemDbsExluded.Name | Should -Be 'testdb'
     }
 
-    <#
-        Some common questions that people who work with databases
-        may have getting databases that are in the 'Full', 'Simple', or
-        'BulkLogged' recovery models.
-    #>
-    $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
-    $FullRecoveryDbs.RecoveryModel | Should -Be 'Full'
+    It 'Gathers databases based on their recovery model...' {
+        <#
+            Some common questions that people who work with databases
+            may have getting databases that are in the 'Full', 'Simple', or
+            'BulkLogged' recovery models.
+        #>
+        $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
+        $FullRecoveryDbs.RecoveryModel | Should -Be 'Full'
+    }
 }
