@@ -35,16 +35,18 @@ Describe 'Get-DbaDatabase' {
     }
     #endregion
 
-    <#
-        Get-DbaDatabase requires one thing; A SQL Server instance name.
-        You can pass in "localhost" for the default name for a SQL Server
-        instance.
-        The simplest usage of Get-DbaDatabase is to run it and passing in the
-        name of the SQL Server instance. This will get information about all
-        the databases on the instance.
-    #>
-    $AllDatabases = Get-DbaDatabase -SqlInstance ____
-    $AllDatabases.Count | Should -Be 5
+    It 'Gathers databases by SQL Server instance...' {
+        <#
+            Get-DbaDatabase requires one thing; A SQL Server instance name.
+            You can pass in "localhost" for the default name for a SQL Server
+            instance.
+            The simplest usage of Get-DbaDatabase is to run it and passing in the
+            name of the SQL Server instance. This will get information about all
+            the databases on the instance.
+        #>
+        $AllDatabases = Get-DbaDatabase -SqlInstance ____
+        $AllDatabases.Count | Should -Be 5
+    }
 
     <#
         By passing in the SQL Server instance and the name of a specific
