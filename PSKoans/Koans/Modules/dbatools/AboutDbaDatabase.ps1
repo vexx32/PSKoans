@@ -58,20 +58,22 @@ Describe 'Get-DbaDatabase' {
         $MasterDatabase.Name | Should -Be 'testdb'
     }
 
-    <#
-        You may want to get only the system databases on an instance.
-        While you can pass in the specific names of the system databases, it
-        would be easier if there was a parameter you could add that would
-        return the system databases.
+    It 'Gathers system databases only if specified...' {
+        <#
+            You may want to get only the system databases on an instance.
+            While you can pass in the specific names of the system databases, it
+            would be easier if there was a parameter you could add that would
+            return the system databases.
 
-        A switch parameter like -ExcludeUser.
-    #>
-    $UserDbParams = @{
-        SqlInstance = 'localhost'
-        ExcludeUser = ____
+            A switch parameter like -ExcludeUser.
+        #>
+        $UserDbParams = @{
+            SqlInstance = 'localhost'
+            ExcludeUser = ____
+        }
+        $UserDbsExcluded = Get-DbaDatabase @UserDbParams
+        $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
     }
-    $UserDbsExcluded = Get-DbaDatabase @UserDbParams
-    $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
     <#
         The same can be done to exclude system databases by providing the
