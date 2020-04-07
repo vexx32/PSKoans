@@ -48,13 +48,15 @@ Describe 'Get-DbaDatabase' {
         $AllDatabases.Count | Should -Be 5
     }
 
-    <#
-        By passing in the SQL Server instance and the name of a specific
-        database, using the -Database parameter, we can get information on
-        that single database instead.
-    #>
-    $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
-    $MasterDatabase.Name | Should -Be 'testdb'
+    It 'Gathers database by SQL Server instance and specific name...' {
+        <#
+            By passing in the SQL Server instance and the name of a specific
+            database, using the -Database parameter, we can get information on
+            that single database instead.
+        #>
+        $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
+        $MasterDatabase.Name | Should -Be 'testdb'
+    }
 
     <#
         You may want to get only the system databases on an instance.
