@@ -36,56 +36,66 @@ Describe 'Get-DbaDatabase' {
     }
     #endregion
 
-    <#
-        Get-DbaDatabase requires one thing; A SQL Server instance name.
-        You can pass in "localhost" for the default name for a SQL Server
-        instance.
-        The simplest usage of Get-DbaDatabase is to run it and passing in the
-        name of the SQL Server instance. This will get information about all
-        the databases on the instance.
-    #>
-    $AllDatabases = Get-DbaDatabase -SqlInstance ____
-    $AllDatabases.Count | Should -Be 5
-
-    <#
-        By passing in the SQL Server instance and the name of a specific
-        database, using the -Database parameter, we can get information on
-        that single database instead.
-    #>
-    $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
-    $MasterDatabase.Name | Should -Be 'testdb'
-
-    <#
-        You may want to get only the system databases on an instance.
-        While you can pass in the specific names of the system databases, it
-        would be easier if there was a parameter you could add that would
-        return the system databases.
-
-        A switch parameter like -ExcludeUser.
-    #>
-    $UserDbParams = @{
-        SqlInstance = 'localhost'
-        ExcludeUser = ____
+    It 'Gathers databases by SQL Server instance...' {
+        <#
+            Get-DbaDatabase requires one thing; A SQL Server instance name.
+            You can pass in "localhost" for the default name for a SQL Server
+            instance.
+            The simplest usage of Get-DbaDatabase is to run it and passing in the
+            name of the SQL Server instance. This will get information about all
+            the databases on the instance.
+        #>
+        $AllDatabases = Get-DbaDatabase -SqlInstance ____
+        $AllDatabases.Count | Should -Be 5
     }
-    $UserDbsExcluded = Get-DbaDatabase @UserDbParams
-    $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
 
-    <#
-        The same can be done to exclude system databases by providing the
-        -ExcludeSystem parameter switch.
-    #>
-    $SystemDbParams = @{
-        SqlInstance = 'localhost'
-        ExludeSystem = ____
+    It 'Gathers database by SQL Server instance and specific name...' {
+        <#
+            By passing in the SQL Server instance and the name of a specific
+            database, using the -Database parameter, we can get information on
+            that single database instead.
+        #>
+        $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
+        $MasterDatabase.Name | Should -Be 'testdb'
     }
-    $SystemDbsExluded = Get-DbaDatabase @SystemDbParams
-    $SystemDbsExluded.Name | Should -Be 'testdb'
 
-    <#
-        Some common questions that people who work with databases
-        may have getting databases that are in the 'Full', 'Simple', or
-        'BulkLogged' recovery models.
-    #>
-    $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
-    $FullRecoveryDbs.RecoveryModel | Should -Be 'Full'
+    It 'Gathers system databases only if specified...' {
+        <#
+            You may want to get only the system databases on an instance.
+            While you can pass in the specific names of the system databases, it
+            would be easier if there was a parameter you could add that would
+            return the system databases.
+
+            A switch parameter like -ExcludeUser.
+        #>
+        $UserDbParams = @{
+            SqlInstance = 'localhost'
+            ExcludeUser = ____
+        }
+        $UserDbsExcluded = Get-DbaDatabase @UserDbParams
+        $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
+    }
+
+    It 'Excludes system databases if specified...' {
+        <#
+            The same can be done to exclude system databases by providing the
+            -ExcludeSystem parameter switch.
+        #>
+        $SystemDbParams = @{
+            SqlInstance = 'localhost'
+            ExludeSystem = ____
+        }
+        $SystemDbsExluded = Get-DbaDatabase @SystemDbParams
+        $SystemDbsExluded.Name | Should -Be 'testdb'
+    }
+
+    It 'Gathers databases based on their recovery model...' {
+        <#
+            Some common questions that people who work with databases
+            may have getting databases that are in the 'Full', 'Simple', or
+            'BulkLogged' recovery models.
+        #>
+        $FullRecoveryDbs = Get-DbaDatabase -SqlInstance localhost -RecoveryModel ____
+        $FullRecoveryDbs.RecoveryModel | Should -Be 'Full'
+    }
 }
