@@ -32,9 +32,9 @@ Describe 'New-DbaDatabase' {
                 Compatibility = 'Version140'
                 Collation = 'SQL_Latin1_General_CP1_CI_AS'
                 Owner = $ENV:USERNAME
-                LastFullBackup = (Get-Date '0001-01-01')
-                LastDiffBackup = (Get-Date '0001-01-01')
-                LastLogBackup = (Get-Date '0001-01-01')
+                LastFullBackup = Get-Date '0001-01-01'
+                LastDiffBackup = Get-Date '0001-01-01'
+                LastLogBackup = Get-Date '0001-01-01'
             }
         } -ParameterFilter {$_.SqlInstance -eq 'localhost'}
         Mock -CommandName New-DbaDatabase -MockWith {
@@ -51,9 +51,9 @@ Describe 'New-DbaDatabase' {
                 Compatibility = 'Version140'
                 Collation = 'SQL_Latin1_General_CP1_CI_AS'
                 Owner = $ENV:USERNAME
-                LastFullBackup = (Get-Date '0001-01-01')
-                LastDiffBackup = (Get-Date '0001-01-01')
-                LastLogBackup = (Get-Date '0001-01-01')
+                LastFullBackup = Get-Date '0001-01-01'
+                LastDiffBackup = Get-Date '0001-01-01'
+                LastLogBackup = Get-Date '0001-01-01'
             },
             [PSCustomObject]@{
                 ComputerName = 'localhost'
@@ -68,9 +68,9 @@ Describe 'New-DbaDatabase' {
                 Compatibility = 'Version140'
                 Collation = 'SQL_Latin1_General_CP1_CI_AS'
                 Owner = $ENV:USERNAME
-                LastFullBackup = (Get-Date '0001-01-01')
-                LastDiffBackup = (Get-Date '0001-01-01')
-                LastLogBackup = (Get-Date '0001-01-01')
+                LastFullBackup = Get-Date '0001-01-01'
+                LastDiffBackup = Get-Date '0001-01-01'
+                LastLogBackup = Get-Date '0001-01-01'
             }
         } -ParameterFilter {
             $_.SqlInstance -eq 'localhost' -and
@@ -91,9 +91,9 @@ Describe 'New-DbaDatabase' {
                     Compatibility = 'Version140'
                     Collation = 'SQL_Latin1_General_CP1_CI_AS'
                     Owner = $ENV:USERNAME
-                    LastFullBackup = (Get-Date '0001-01-01')
-                    LastDiffBackup = (Get-Date '0001-01-01')
-                    LastLogBackup = (Get-Date '0001-01-01')
+                    LastFullBackup = Get-Date '0001-01-01'
+                    LastDiffBackup = Get-Date '0001-01-01'
+                    LastLogBackup = Get-Date '0001-01-01'
                 }
             }
         } -ParameterFilter {
@@ -129,9 +129,9 @@ Describe 'New-DbaDatabase' {
                 Compatibility = 'Version140'
                 Collation = 'SQL_Latin1_General_CP1_CI_AS'
                 Owner = $ENV:USERNAME
-                LastFullBackup = (Get-Date '0001-01-01')
-                LastDiffBackup = (Get-Date '0001-01-01')
-                LastLogBackup = (Get-Date '0001-01-01')
+                LastFullBackup = Get-Date '0001-01-01'
+                LastDiffBackup = Get-Date '0001-01-01'
+                LastLogBackup = Get-Date '0001-01-01'
             }
         } -ParameterFilter {
             $_.SqlInstance -eq 'localhost' -and
