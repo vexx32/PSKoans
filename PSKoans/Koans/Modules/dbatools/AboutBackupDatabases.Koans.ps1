@@ -161,18 +161,20 @@ Describe "Backup-DbaDatabase" {
         $SpecificPathBackup.Path | Should -BeLike 'E:\Backups\'
     }
 
-    <#
-        There are different conventions for specifying where the backup file will go to
-        and what the backup file will be called. There are different keywords that 
-        dbatools provides that can be used with the -FilePath and -ReplaceInName.
-            instancename - will be replaced with the instance name
-            servername - will be replaced with the server name
-            dbname - will be replaced with the database name
-            timestamp - will be replaced with the timestamp
-            backuptype - will be replaced with Full, Log or Differential as appropriate.
-        Complete the below command to backup the database "Database01" as "Database01-Full.bak"
-    #>
-    $KeywordBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database01 -FilePath '____-____.bak' -ReplaceInName
-    $BackupFileName = Split-Path $KeywordBackup.Path -Leaf
-    $BackupFileName | Should -Be 'Database01-Full.bak'
+    It 'takes backups and substitutes keywords such as database name and database backup type' {
+        <#
+            There are different conventions for specifying where the backup file will go to
+            and what the backup file will be called. There are different keywords that 
+            dbatools provides that can be used with the -FilePath and -ReplaceInName.
+                instancename - will be replaced with the instance name
+                servername - will be replaced with the server name
+                dbname - will be replaced with the database name
+                timestamp - will be replaced with the timestamp
+                backuptype - will be replaced with Full, Log or Differential as appropriate.
+            Complete the below command to backup the database "Database01" as "Database01-Full.bak"
+        #>
+        $KeywordBackup = Backup-DbaDatabase -SqlInstance localhost -Database Database01 -FilePath '____-____.bak' -ReplaceInName
+        $BackupFileName = Split-Path $KeywordBackup.Path -Leaf
+        $BackupFileName | Should -Be 'Database01-Full.bak'
+    }
 }
