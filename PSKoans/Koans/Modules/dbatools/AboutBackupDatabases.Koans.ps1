@@ -150,6 +150,7 @@ Describe "Backup-DbaDatabase" {
         $DifferentialBackup.Type | Should -Be 'Differential'
     }
 
+    It 'takes backups and stores them at a specific location'
     <#
         Managing where you store your backups is something that is unique to each person.
         Backup-DbaDatabase allows you to specify where you want the backups to be stored.
