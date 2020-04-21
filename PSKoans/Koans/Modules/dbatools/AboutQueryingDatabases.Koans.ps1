@@ -116,58 +116,60 @@ Describe "Invoke-DbaQuery" {
         $SqlParamResult02.PersonName | Should -Be 'Robert'
     }
 
-    <#
-        You may ask "Why would I want to use parameters? I can just pass in a variable from PowerShell!"
-        If you are familiar with Little Bobby Tables (https://xkcd.com/327/) then you are aware of the 
-        dangers of un-sanitized inputs.
-        However, an example is nearly always better than a lecture.
+    It 'shows Little Bobby Tables...' {
+        <#
+            You may ask "Why would I want to use parameters? I can just pass in a variable from PowerShell!"
+            If you are familiar with Little Bobby Tables (https://xkcd.com/327/) then you are aware of the 
+            dangers of un-sanitized inputs.
+            However, an example is nearly always better than a lecture.
 
-        Take these 3 lines of code below.
+            Take these 3 lines of code below.
 
-        The first code sample returns data from a table called Students.
-        The second code sample inserts the name "Robert'); DROP TABLE Student;--" into the table using
-        parameters and then returns the results.
-        The third code sample inserts the name "Robert'); DROP TABLE Student;--" into the table using
-        PowerShell variables and then returns the results.
-    #>
-    $InvokeDbaQueryParamStudents = @{
-        SqlInstance = 'localhost'
-        Database = 'tempdb'
-        Query = 'SELECT PersonName FROM Student;'
+            The first code sample returns data from a table called Students.
+            The second code sample inserts the name "Robert'); DROP TABLE Student;--" into the table using
+            parameters and then returns the results.
+            The third code sample inserts the name "Robert'); DROP TABLE Student;--" into the table using
+            PowerShell variables and then returns the results.
+        #>
+        $InvokeDbaQueryParamStudents = @{
+            SqlInstance = 'localhost'
+            Database = 'tempdb'
+            Query = 'SELECT PersonName FROM Student;'
+        }
+        $StudentResult01 = Invoke-DbaQuery @InvokeDbaQueryParamStudents
+        $StudentResult01 | Should -Contain 'Bob', 'Robert'
+
+        $InvokeDbaQueryInsertParamStudents = @{
+            SqlInstance = 'localhost'
+            Database = 'tempdb'
+            Query = 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;'
+            SqlParameters = @{ name = "Robert'); DROP TABLE Student--" }
+        }
+        $StudentResult02 = Invoke-DbaQuery @InvokeDbaQueryInsertParamStudents
+        $StudentResult02 | Should -Contain 'Bob', 'Robert', "Robert'); DROP TABLE Student--"
+
+        $InvokeDbaQueryInsertUnsafeParamStudents = @{
+            SqlInstance = 'localhost'
+            Database = 'tempdb'
+            Query = "INSERT INTO Student (PersonName) VALUES ('$Name'); SELECT PersonName FROM Student;"
+        }
+        $Name = "Robert'); DROP TABLE Student--"
+        { Invoke-DbaQuery @InvokeDbaQueryInsertUnsafeParamStudents -EnableException} | Should -Throw
+        <#
+            Using PowerShell variable replacement in the above query expands the statement to:
+                "INSERT INTO Student (PersonName) VALUES ('Robert'); DROP TABLE Student--'); SELECT PersonName FROM Student"
+            T-SQL uses the syntax "--" to say everything after this is a comment.
+
+            So our expected syntax
+                "INSERT INTO Student (PersonName) VALUES [...]
+                SELECT PersonName FROM Student"
+            becomes
+                "INSERT INTO Student (PersonName) VALUES ('Robert')
+                DROP TABLE Student"
+
+            dbatools by default tries to return errors as warnings so beginners to PowerShell don't
+            get overwhelmed by red error messages.
+            We use the switch -EnableException to return an error since the table "Student" no longer exists.
+        #>
     }
-    $StudentResult01 = Invoke-DbaQuery @InvokeDbaQueryParamStudents
-    $StudentResult01 | Should -Contain 'Bob', 'Robert'
-
-    $InvokeDbaQueryInsertParamStudents = @{
-        SqlInstance = 'localhost'
-        Database = 'tempdb'
-        Query = 'INSERT INTO Student (PersonName) VALUES (@name); SELECT PersonName FROM Student;'
-        SqlParameters = @{ name = "Robert'); DROP TABLE Student--" }
-    }
-    $StudentResult02 = Invoke-DbaQuery @InvokeDbaQueryInsertParamStudents
-    $StudentResult02 | Should -Contain 'Bob', 'Robert', "Robert'); DROP TABLE Student--"
-
-    $InvokeDbaQueryInsertUnsafeParamStudents = @{
-        SqlInstance = 'localhost'
-        Database = 'tempdb'
-        Query = "INSERT INTO Student (PersonName) VALUES ('$Name'); SELECT PersonName FROM Student;"
-    }
-    $Name = "Robert'); DROP TABLE Student--"
-    { Invoke-DbaQuery @InvokeDbaQueryInsertUnsafeParamStudents -EnableException} | Should -Throw
-    <#
-        Using PowerShell variable replacement in the above query expands the statement to:
-            "INSERT INTO Student (PersonName) VALUES ('Robert'); DROP TABLE Student--'); SELECT PersonName FROM Student"
-        T-SQL uses the syntax "--" to say everything after this is a comment.
-
-        So our expected syntax
-            "INSERT INTO Student (PersonName) VALUES [...]
-             SELECT PersonName FROM Student"
-        becomes
-            "INSERT INTO Student (PersonName) VALUES ('Robert')
-             DROP TABLE Student"
-
-        dbatools by default tries to return errors as warnings so beginners to PowerShell don't
-        get overwhelmed by red error messages.
-        We use the switch -EnableException to return an error since the table "Student" no longer exists.
-    #>
 }
