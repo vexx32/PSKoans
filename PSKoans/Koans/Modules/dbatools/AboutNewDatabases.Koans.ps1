@@ -162,16 +162,18 @@ Describe 'New-DbaDatabase' {
         $NewSpecifiedDatabase.Name | Should -Be 'RandomIsGood', 'SpecificIsBetter'
     }
 
-    <#
-        If you're interacting with databases regularly then you more than likely have a list of
-        scripts that you run often enough to save. You can save these scripts as files or you can
-        save them to a database on each server.
+    It 'creates a database on multiple specified instances' {
+        <#
+            If you're interacting with databases regularly then you more than likely have a list of
+            scripts that you run often enough to save. You can save these scripts as files or you can
+            save them to a database on each server.
 
-        If only there was a way to create a database on your Dev, Val, and Prod servers that you
-        can save these scripts to...
-    #>
-    $NewScriptsDatabase = New-DbaDatabase -SqlInstance '____', '____', '____' -Name DBScripts
-    $NewScriptsDatabase.SqlInstance | Should -Be 'Dev', 'Val', 'Prod'
+            If only there was a way to create a database on your Dev, Val, and Prod servers that you
+            can save these scripts to...
+        #>
+        $NewScriptsDatabase = New-DbaDatabase -SqlInstance '____', '____', '____' -Name DBScripts
+        $NewScriptsDatabase.SqlInstance | Should -Be 'Dev', 'Val', 'Prod'
+    }
 
     <#
         When new databases get created they get created with a recovery model. They take this
