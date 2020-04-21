@@ -151,14 +151,16 @@ Describe 'New-DbaDatabase' {
         $NewDatabase.ComputerName | Should -Be 'localhost'
     }
 
-    <#
-        While only specifying the server name is convenient, it is rare that we want a randomly named
-        database. Most of the time we want to specify the database name(s) to be created.
+    It 'creates databases with specific names' {
+        <#
+            While only specifying the server name is convenient, it is rare that we want a randomly named
+            database. Most of the time we want to specify the database name(s) to be created.
 
-        Luckily, New-DbaDatabase allows us to do that!
-    #>
-    $NewSpecifiedDatabase = New-DbaDatabase -SqlInstance localhost -Name '____', '____'
-    $NewSpecifiedDatabase.Name | Should -Be 'RandomIsGood', 'SpecificIsBetter'
+            Luckily, New-DbaDatabase allows us to do that!
+        #>
+        $NewSpecifiedDatabase = New-DbaDatabase -SqlInstance localhost -Name '____', '____'
+        $NewSpecifiedDatabase.Name | Should -Be 'RandomIsGood', 'SpecificIsBetter'
+    }
 
     <#
         If you're interacting with databases regularly then you more than likely have a list of
