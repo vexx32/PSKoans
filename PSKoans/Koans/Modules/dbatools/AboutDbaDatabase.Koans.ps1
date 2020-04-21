@@ -70,7 +70,7 @@ Describe 'Get-DbaDatabase' {
         #>
         $UserDbParams = @{
             SqlInstance = 'localhost'
-            ExcludeUser = ____
+            ExcludeUser = $____
         }
         $UserDbsExcluded = Get-DbaDatabase @UserDbParams
         $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
