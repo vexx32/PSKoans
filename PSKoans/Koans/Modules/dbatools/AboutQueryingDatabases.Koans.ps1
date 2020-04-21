@@ -85,34 +85,36 @@ Describe "Invoke-DbaQuery" {
         $DbResult.Origin | Should -Be 'From a File'
     }
 
-    <#
-        T-SQL may seem like a strict, rigid language. We have a script that returns a value or values.
-        If we want to get different values then we will have to change the full query. 
-        From
-            "SELECT PersonName FROM Student WHERE PersonName = 'Bob';"
-        to
-            "SELECT PersonName FROM Student WHERE PersonName = 'Robert';"
-        In the above example, we only want to change what the name is equal to. Invoke-DbaQuery allows
-        you to specify what this value is equal to by passing in a parameter.
-        All we have to do is pass in a hashtable with the name of the parameter and the value we want.
-    #>
-    $InvokeDbaQueryParam01 = @{
-        SqlInstance = 'localhost'
-        Database = 'tempdb'
-        Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
-        SqlParameters = @{ name = 'Bob' }
-    }
-    $SqlParamResult01 = Invoke-DbaQuery @InvokeDbaQueryParam01
-    $SqlParamResult01.PersonName | Should -Be 'Bob'
+    It 'queries a database with passing values to parameters' {
+        <#
+            T-SQL may seem like a strict, rigid language. We have a script that returns a value or values.
+            If we want to get different values then we will have to change the full query. 
+            From
+                "SELECT PersonName FROM Student WHERE PersonName = 'Bob';"
+            to
+                "SELECT PersonName FROM Student WHERE PersonName = 'Robert';"
+            In the above example, we only want to change what the name is equal to. Invoke-DbaQuery allows
+            you to specify what this value is equal to by passing in a parameter.
+            All we have to do is pass in a hashtable with the name of the parameter and the value we want.
+        #>
+        $InvokeDbaQueryParam01 = @{
+            SqlInstance = 'localhost'
+            Database = 'tempdb'
+            Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
+            SqlParameters = @{ name = 'Bob' }
+        }
+        $SqlParamResult01 = Invoke-DbaQuery @InvokeDbaQueryParam01
+        $SqlParamResult01.PersonName | Should -Be 'Bob'
 
-    $InvokeDbaQueryParam02 = @{
-        SqlInstance = 'localhost'
-        Database = 'tempdb'
-        Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
-        SqlParameters = @{ name = __ }
+        $InvokeDbaQueryParam02 = @{
+            SqlInstance = 'localhost'
+            Database = 'tempdb'
+            Query = 'SELECT PersonName FROM Student WHERE PersonName = @name'
+            SqlParameters = @{ name = __ }
+        }
+        $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam02
+        $SqlParamResult02.PersonName | Should -Be 'Robert'
     }
-    $SqlParamResult02 = Invoke-DbaQuery @InvokeDbaQueryParam02
-    $SqlParamResult02.PersonName | Should -Be 'Robert'
 
     <#
         You may ask "Why would I want to use parameters? I can just pass in a variable from PowerShell!"
