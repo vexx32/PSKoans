@@ -147,7 +147,7 @@ Describe 'New-DbaDatabase' {
 
             Complete the below to create a new database on localhost.
         #>
-        $NewDatabase = New-DbaDatabase -SqlInstance '__'
+        $NewDatabase = New-DbaDatabase -SqlInstance '____'
         $NewDatabase.ComputerName | Should -Be 'localhost'
     }
 
