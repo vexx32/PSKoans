@@ -189,14 +189,16 @@ Describe 'New-DbaDatabase' {
         $NewRecoveryModelDatabase.RecoveryModel | Should -Be 'Full'
     }
 
-    <#
-        There is also an option to specify where to place the database data and log files. By using the parameters
-        -DataFilePath and -LogFilePath, you can specify where to place these files.
-    #>
-    $NewFilePathDatabase = New-DbaDatabase -SqlInstance localhost -Name FilePathTese -DataFilePath '____' -LogFilePath '___'
-    $DataPath = $NewFilePathDatabase.FileGroups.Files
-    $LogPath = $NewFilePathDatabase.LogFiles
+    It 'creates a database with a specified path for data and log files' {
+        <#
+            There is also an option to specify where to place the database data and log files. By using the parameters
+            -DataFilePath and -LogFilePath, you can specify where to place these files.
+        #>
+        $NewFilePathDatabase = New-DbaDatabase -SqlInstance localhost -Name FilePathTese -DataFilePath '____' -LogFilePath '___'
+        $DataPath = $NewFilePathDatabase.FileGroups.Files
+        $LogPath = $NewFilePathDatabase.LogFiles
 
-    (Split-Path -Path $DataPath).FileName | Should -Be 'E:\DATA'
-    (Split-Path -Path $LogPath).FileName | Should -BE 'E:\LOG'
+        (Split-Path -Path $DataPath).FileName | Should -Be 'E:\DATA'
+        (Split-Path -Path $LogPath).FileName | Should -BE 'E:\LOG'
+    }
 }
