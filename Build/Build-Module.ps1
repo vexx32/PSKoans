@@ -1,6 +1,9 @@
 # Grab nuget bits, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
+# Create format.ps1xml file
+& "$PSScriptRoot/../PSKoans.ezformat.ps1"
+
 Import-Module "$env:PROJECTROOT/PSKoans"
 
 Set-BuildEnvironment

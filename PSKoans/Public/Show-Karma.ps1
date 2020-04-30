@@ -132,41 +132,20 @@ function Show-Karma {
                 Clear-Host
             }
 
-            Show-MeditationPrompt -Greeting
+            $FormatParams = @{ }
+            if ($Detailed) {
+                $FormatParams['View'] = 'Detailed'
+            }
 
             try {
-                $Results = Get-Karma @GetParams
+                Get-Karma @GetParams |
+                    Format-Custom @FormatParams |
+                    Out-String |
+                    Write-Host
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
-
-            if ($Results.Complete) {
-                $Params = @{
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    RequestedTopic = $Topic
-                    Complete       = $Results.Complete
-                }
-            }
-            else {
-                $Params = @{
-                    DescribeName   = $Results.Describe
-                    ItName         = $Results.It
-                    Expectation    = $Results.Expectation
-                    Meditation     = $Results.Meditation
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    CurrentTopic   = $Results.CurrentTopic
-                    RequestedTopic = $Topic
-                }
-
-                if ($Detailed) {
-                    $Params.Add('Results', $Results.Results)
-                }
-            }
-
-            Show-MeditationPrompt @Params
         }
     }
 }

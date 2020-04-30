@@ -6,10 +6,6 @@ Write-Host "STATUS: Testing with PowerShell v$($PSVersionTable.PSVersion)"
 Write-Host $Lines
 
 # Import the module and add temporary entry to PSModulePath for build/test purposes
-$env:PSModulePath = @(
-    $env:PROJECTROOT
-    $env:PSModulePath
-) -join [IO.Path]::PathSeparator
 
 Import-Module 'PSKoans'
 
