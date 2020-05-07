@@ -127,6 +127,6 @@ Describe "Get Member" {
 
         $cmdlet1, $cmdlet2, $cmdlet3 |
             Get-Unique |
-            Should -BeTrue -Because "three unique cmdlets should be supplied"
+            Should -HaveCount 3 -Because "three unique cmdlets should be supplied"
     }
 }
