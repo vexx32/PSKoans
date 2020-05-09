@@ -180,7 +180,7 @@ Describe 'Hashtables' {
             $Hashtable.ContainsValue('Fruit') | Should -BeTrue
 
             $Hashtable['Oranges'] | Should -Be 'Fruit'
-            $Hashtable['Carrots'] | Should -Not -Be $Hashtable['Oranges']
+            $Hashtable['Carrots'] | Should -Be $Hashtable['Oranges']
         }
 
         It 'will not implicitly convert keys and lookup values' {
