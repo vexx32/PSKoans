@@ -125,7 +125,7 @@ Describe 'Pipelines and Loops' {
                 #>
                 $i
             }
-            $Values | Should -Be @(0, 1, 2, 3, 4)
+            $Values | Should -Be __
         }
 
         It 'can loop while a condition is $true' {
