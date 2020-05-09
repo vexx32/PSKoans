@@ -177,8 +177,8 @@ Describe 'Get-Command' {
 
     It 'lists available commands' {
         # Try calling Get-Command in a PowerShell console to see the typical output!
-        $CommandCount = Get-Command | Measure-Object | Select-Object -ExpandProperty Count
-        __ | Should -Be $CommandCount
+        $Commands = Get-Command | Where-Object { $_ -like 'Write-*' }
+        __ | Should -Be $Commands.Count
         Get-Command | Select-Object -First 1 -ExpandProperty Name | Should -Be '____'
     }
 
