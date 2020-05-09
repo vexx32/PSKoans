@@ -134,7 +134,7 @@ Describe 'Environment Provider' {
 
 Describe 'FileSystem Provider' {
     BeforeAll {
-        $Path = 'TestDrive:' | Join-Path -ChildPath 'File001.tmp'
+        $Path = 'TEMP:' | Join-Path -ChildPath 'File001.tmp'
 
         $FileContent = @'
 PSKOANS!
