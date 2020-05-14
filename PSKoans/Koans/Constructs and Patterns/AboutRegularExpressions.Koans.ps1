@@ -488,7 +488,7 @@ Describe 'Brackets and Braces' {
                 iceberg.
             #>
     
-            '____' | Should -Be [regex]::Matches('Bears Beat Bongos', '(B.+){3}').Value
+            '____' | Should -Be ([regex]::Matches('Bears Beat Bongos', '(B.+){3}').Value)
         }
 
         It 'does not find just one badger' {    
@@ -511,7 +511,7 @@ Describe 'Brackets and Braces' {
                 The fancy regex name for this is a "character class".
             #>
     
-            $____ | Should -Be 'End of the line' -match '[efg]$'
+            $____ | Should -Be ('End of the line' -match '[efg]$')
         }
 
         It 'wants you to end the string a certain way' {    
@@ -565,9 +565,11 @@ Describe 'Meditative Examples' {
             '01234'
             '+14255556789'
         )
+        
+        $sanitizedNumbers = $phoneNumbers -replace '____' 
 
         It 'sanitizes user input' {
-            $sanitizedNumbers = $phoneNumbers -replace '____' 
+            
             $sanitizedNumbers | Should -Be @(
                 '14255551234'
                 '14255554321'
@@ -577,7 +579,9 @@ Describe 'Meditative Examples' {
             )
         }
 
-        It 'validates user input' {            $validPhoneNumbers = [regex]::Matches($sanitizedNumbers, '____').Value
+        It 'validates user input' {            
+        
+        	$validPhoneNumbers = [regex]::Matches($sanitizedNumbers, '____').Value
             $validPhoneNumbers | Should -Be @(
                 '14255551234'
                 '14255554321'
