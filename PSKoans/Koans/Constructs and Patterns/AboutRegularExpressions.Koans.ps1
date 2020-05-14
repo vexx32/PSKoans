@@ -557,16 +557,17 @@ Describe 'Meditative Examples' {
             Validate a bunch of phone numbers - get rid of the non-numeric characters and check
             which ones are actually the right length to be dialed.
         #>
-
-        $phoneNumbers = @(
-            '1 425 555 1234'
-            '1-425-555-4321'
-            '1.425.555.6789'
-            '01234'
-            '+14255556789'
-        )
-        
-        $sanitizedNumbers = $phoneNumbers -replace '____' 
+        BeforeAll {
+            $phoneNumbers = @(
+                '1 425 555 1234'
+                '1-425-555-4321'
+                '1.425.555.6789'
+                '01234'
+                '+14255556789'
+            )
+            
+            $sanitizedNumbers = $phoneNumbers -replace '____' 
+        }
 
         It 'sanitizes user input' {
             
