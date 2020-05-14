@@ -579,9 +579,8 @@ Describe 'Meditative Examples' {
             )
         }
 
-        It 'validates user input' {            
-        
-        	$validPhoneNumbers = [regex]::Matches($sanitizedNumbers, '____').Value
+        It 'validates user input' {
+            $validPhoneNumbers = [regex]::Matches($sanitizedNumbers, '____').Value
             $validPhoneNumbers | Should -Be @(
                 '14255551234'
                 '14255554321'
