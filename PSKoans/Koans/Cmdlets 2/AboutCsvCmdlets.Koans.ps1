@@ -56,7 +56,7 @@ Describe '*-Csv Cmdlets' {
 
         It 'stores the data accurately' {
             # Now if we read the file as text, let's see what's inside!
-            $FileContents = Get-Content -Path "$TestDrove/Data.csv"
+            $FileContents = Get-Content -Path "$TestDrive/Data.csv"
 
             <#
                 The headers (first line) will list the property names from the objects in question.
@@ -91,14 +91,11 @@ Describe '*-Csv Cmdlets' {
             All data will be imported as an array of PSCustomObjects with string properties.
         #>
         BeforeAll {
-            $Letters = 'abcdefghijklmnopqrstuvwxyz'
-
             $Objects = foreach ($number in 1..5) {
                 [bigint]$number
             }
 
             $CsvPath = "$TestDrive/Data.csv"
-            $PipeDelimitedCsvPath = "$TestDrive/Data2.csv"
 
             $Objects | Export-Csv -Path $CsvPath -NoTypeInformation
             $ImportedData = Import-Csv -Path $CsvPath
@@ -106,12 +103,12 @@ Describe '*-Csv Cmdlets' {
 
         It 'imports the stored data as PSCustomObjects' {
             # Our original data type is a .NET numeric type.
-            'System.____.____' | Should -Be $Objects[0].GetType()
+            'System.____.____' | Should -Be $Objects[0].GetType().FullName
 
-            $ImportedData | Should -NotBeNullOrEmpty
+            $ImportedData | Should -Not -BeNullOrEmpty
 
             # What comes back after the import?
-            'System.____.____.____' | Should -Be $ImportedData[0].GetType()
+            'System.____.____.____' | Should -Be $ImportedData[0].GetType().FullName
         }
 
         It 'stores properties of an object, not any inherent value' {
@@ -150,7 +147,7 @@ Describe '*-Csv Cmdlets' {
 
             $Animals = Import-Csv -Path $AnimalCsv -Delimiter $Delimiter
 
-            $Animals.Name | Should -NotBeNullOrEmpty
+            $Animals.Name | Should -Not -BeNullOrEmpty
             $Animals[0].Animal | Should -Be 'Dog'
             $Animals[1].Name | Should -Be 'Alice'
 
@@ -193,12 +190,12 @@ Describe '*-Csv Cmdlets' {
         }
 
         It 'operates on string data rather than directly with files' {
-            $CsvString = $Objects | ConvertTo-Csv
+            $CsvString = $Objects | ConvertTo-Csv -NoTypeInformation
             $CsvString -is [____] | Should -BeTrue
         }
 
         It 'works the same way as Export-Csv' {
-            $CsvString = $Objects | ConvertTo-Csv
+            $CsvString = $Objects | ConvertTo-Csv -NoTypeInformation
 
             '"____","____"' | Should -Be $CsvString[0]
             '"__","__"' | Should -Be $CsvString[1]
