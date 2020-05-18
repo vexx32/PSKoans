@@ -7,6 +7,7 @@ function Show-Karma {
         [Parameter(ParameterSetName = 'ListKoans')]
         [Parameter(ParameterSetName = 'ModuleOnly')]
         [Parameter(ParameterSetName = 'IncludeModule')]
+        [Parameter(ParameterSetName = 'OpenFile')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
         [SupportsWildcards()]
@@ -29,10 +30,15 @@ function Show-Karma {
         [switch]
         $List,
 
-        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
+
+        [Parameter(Mandatory, ParameterSetName = 'OpenFolder')]
+        [Alias('OpenFolder')]
+        [switch]
+        $Library,
 
         [Parameter()]
         [Alias()]
@@ -48,10 +54,10 @@ function Show-Karma {
     )
 
     $GetParams = @{ }
-    switch ($pscmdlet.ParameterSetName) {
+    switch ($PSCmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
         'ModuleOnly' { $GetParams['Module'] = $Module }
-        { $Topic } { $GetParams['Topic'] = $Topic }
+        { $PSBoundParameters.ContainsKey('Topic') } { $GetParams['Topic'] = $Topic }
     }
 
     switch ($PSCmdlet.ParameterSetName) {
@@ -59,9 +65,9 @@ function Show-Karma {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
-            $PSKoanLocationFullPath = $pscmdlet.GetUnresolvedProviderPathFromPSPath((Get-PSKoanLocation))
+            $KoanLocation = Get-PSKoanLocation
             Write-Verbose "Checking existence of koans folder"
-            if (-not (Test-Path $PSKoanLocationFullPath)) {
+            if (-not (Test-Path $KoanLocation)) {
                 Write-Verbose "Koans folder does not exist. Initiating full reset..."
                 Update-PSKoan -Confirm:$false
             }
@@ -71,49 +77,75 @@ function Show-Karma {
             if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
                 $EditorSplat = @{
                     FilePath     = $Editor
-                    ArgumentList = $PSKoanLocationFullPath
+                    ArgumentList = '"{0}"' -f (Resolve-Path $KoanLocation)
                     NoNewWindow  = $true
                 }
                 Start-Process @EditorSplat
             }
             else {
-                $PSKoanLocationFullPath | Invoke-Item
+                $KoanLocation | Invoke-Item
             }
         }
+        'OpenFile' {
+            # If there is no cached data, we need to call Get-Karma to populate it
+            if (-not $script:CurrentTopic -or ($Topic -and $script:CurrentTopic.Name -notlike $Topic)) {
+                try {
+                    # We can discard this; the results we need are saved in $script:CurrentTopic
+                    $null = Get-Karma @GetParams
+                }
+                catch {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+            }
+
+            $Editor = Get-PSKoanSetting -Name Editor
+            $FilePath = (Get-PSKoan -Topic $script:CurrentTopic.Name -Scope User).Path
+            $LineNumber = $script:CurrentTopic.CurrentLine
+
+            $Arguments = switch ($Editor) {
+                { $_ -in 'code', 'code-insiders' } {
+                    '--goto'
+                    '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
+                    '--reuse-window'
+                }
+                atom {
+                    '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
+                }
+                default {
+                    '"{0}"' -f (Resolve-Path $FilePath)
+                }
+            }
+
+            if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
+                Start-Process -FilePath $Editor -ArgumentList $Arguments
+            }
+            else {
+                Invoke-Item -Path $FilePath
+            }
+
+            # Discard the results so we avoid accidentally returning the same result multiple times
+            $script:CurrentTopic = $null
+        }
+
         default {
             if ($ClearScreen) {
                 Clear-Host
             }
 
-            Show-MeditationPrompt -Greeting
-            $Results = Get-Karma @GetParams
-
-            if ($Results.Complete) {
-                $Params = @{
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    RequestedTopic = $Topic
-                    Complete       = $Results.Complete
-                }
-            }
-            else {
-                $Params = @{
-                    DescribeName   = $Results.Describe
-                    ItName         = $Results.It
-                    Expectation    = $Results.Expectation
-                    Meditation     = $Results.Meditation
-                    KoansPassed    = $Results.KoansPassed
-                    TotalKoans     = $Results.TotalKoans
-                    CurrentTopic   = $Results.CurrentTopic
-                    RequestedTopic = $Topic
-                }
-
-                if ($Detailed) {
-                    $Params.Add('Results', $Results.Results)
-                }
+            $FormatParams = @{ }
+            if ($Detailed) {
+                $FormatParams['View'] = 'Detailed'
             }
 
-            Show-MeditationPrompt @Params
+            try {
+                Get-Karma @GetParams |
+                    Format-Custom @FormatParams |
+                    Out-String |
+                    Write-Host
+            }
+            catch {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
         }
     }
 }

@@ -1,10 +1,7 @@
 using namespace System.Collections.Generic
 
 function Update-PSKoan {
-    [CmdletBinding(
-        SupportsShouldProcess,
-        DefaultParameterSetName = 'TopicOnly',
-        ConfirmImpact = "High",
+    [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'TopicOnly', ConfirmImpact = "High",
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Update-PSKoan.md')]
     [OutputType([void])]
     param(
@@ -36,8 +33,8 @@ function Update-PSKoan {
     }
     switch ($pscmdlet.ParameterSetName) {
         'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly'    { $GetParams['Module'] = $Module }
-        { $Topic }      { $GetParams['Topic'] = $Topic }
+        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $Topic } { $GetParams['Topic'] = $Topic }
     }
     $ModuleKoanList = Get-PSKoan @GetParams | Group-Object Topic -AsHashtable -AsString
 
@@ -77,14 +74,16 @@ function Update-PSKoan {
         #>
         { $ModuleKoanList.ContainsKey($_) -and $UserKoanList.ContainsKey($_) } {
             if ($UserKoanList[$_].Path -ne $DestinationPath) {
-                if ($PSCmdlet.ShouldProcess($_, 'Moving Topic')) {
+                if ($PSCmdlet.ShouldProcess($_, 'Move Topic')) {
                     Write-Verbose "Moving $_"
 
                     $UserKoanList[$_].Path | Move-Item -Destination $DestinationPath
                 }
             }
 
-            Update-PSKoanFile -Topic $_
+            if ($PSCmdlet.ShouldProcess($_, 'Update Koan Topic')) {
+                Update-PSKoanFile -Topic $_
+            }
 
             continue
         }
@@ -95,7 +94,7 @@ function Update-PSKoan {
             location.
         #>
         { $ModuleKoanList.ContainsKey($_) } {
-            if ($PSCmdlet.ShouldProcess($_, 'Adding Topic')) {
+            if ($PSCmdlet.ShouldProcess($_, 'Add Topic')) {
                 Write-Verbose "Adding $_"
 
                 $ModuleKoanList[$_].Path | Copy-Item -Destination $DestinationPath -Force
@@ -110,7 +109,7 @@ function Update-PSKoan {
             or renamed and delete the file from the users koan location.
         #>
         { $UserKoanList.ContainsKey($_) } {
-            if ($PSCmdlet.ShouldProcess($_, 'Removing Topic')) {
+            if ($PSCmdlet.ShouldProcess($_, 'Remove Topic')) {
                 Write-Verbose "Removing $_"
 
                 $UserKoanList[$_].Path | Remove-Item

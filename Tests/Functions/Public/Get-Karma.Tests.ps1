@@ -37,6 +37,12 @@ InModuleScope 'PSKoans' {
             It 'should Invoke-Pester on koans until it fails a test' {
                 Assert-MockCalled Invoke-Koan -Times 1
             }
+
+            It 'should populate the $script:CurrentTopic variable' {
+                $script:CurrentTopic | Should -BeOfType [hashtable]
+                $script:CurrentTopic.Count | Should -Be 4
+                @('Name', 'Completed', 'Total', 'CurrentLine') | Should -BeIn $script:CurrentTopic.Keys
+            }
         }
 
         Context 'With Nonexistent Koans Folder / No Koans Found' {
@@ -55,7 +61,7 @@ InModuleScope 'PSKoans' {
             }
 
             It 'throws an error if a Topic is specified that matches nothing' {
-                { Get-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ExpectedMessage 'Could not find any koans'
+                { Get-Karma -Topic 'AboutAbsolutelyNothing' } | Should -Throw -ErrorId 'PSKoans.TopicNotFound'
             }
         }
 
@@ -115,7 +121,8 @@ InModuleScope 'PSKoans' {
 
                 try {
                     $Result = Get-Karma -Topic SelectedTopicTest
-                } catch {
+                }
+                catch {
                     # Ignore this. Error tests follow.
                 }
             }

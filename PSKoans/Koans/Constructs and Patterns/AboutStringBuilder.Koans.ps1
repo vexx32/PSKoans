@@ -157,7 +157,7 @@ Describe 'System.Text.StringBuilder' {
             Get-Member |
             Where-Object MemberType -eq 'Property'
 
-            $ExpectedCount = $Properties |
+            $ExpectedPropertyCount = $Properties |
             Measure-Object |
             Select-Object -ExpandProperty Count
 

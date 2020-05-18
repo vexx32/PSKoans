@@ -1,72 +1,5 @@
 ﻿@{
-    Prompts = @{
-        Welcome        = @"
-    Welcome, seeker of enlightenment.
-    Please wait a moment while we examine your karma...
-
-"@
-        DetailEntry    = @"
-{0} It {1}
-"@
-        Describe       = @"
-Describing '{0}' has damaged your karma.
-"@
-        TestFailed     = @"
-
-    You have not yet reached enlightenment.
-
-    The answers you seek...
-
-"@
-        Meditate       = @"
-
-    Please meditate on the following code:
-
-"@
-        Subject        = @"
-{0} It {1}
-{2}
-"@
-        Koan           = @"
-
-{0}
-
-"@
-        Path           = @"
-    You examine the path beneath your feet...
-
-"@
-        Topic          = @"
-    You must meditate further on your selected topic{0}:
-        - {1}
-
-"@
-        OpenFolder     = @"
-
-Run 'Show-Karma -Meditate' to begin your meditations.
-
-"@
-        Completed      = @"
-    Congratulations! You have taken the first steps towards enlightenment.
-
-    You cast your gaze back upon the path that you have walked:
-
-"@
-        CompletedTopic = @"
-    Congratulations! You have taken the first steps towards enlightenment.
-
-    You have completed: {0}
-
-    You cast your gaze back upon the path that you have walked...
-
-"@
-        BookSuggestion = @"
-
-    If you would like to further your studies in this manner, consider investing in
-    'PowerShell by Mistake' by Don Jones - https://leanpub.com/powershell-by-mistake
-"@
-    }
-    Koans   = @(
+    Koans = @(
         @'
 The whole moon and the entire sky
 Are reflected in one dewdrop on the grass.
@@ -150,10 +83,13 @@ A man sits atop a hundred-foot pole; how can he go further up?
 A pupil in such a great hurry learns slowly.
 '@
         @'
-The wind does not move, the banner does not move; your mind moves.
+The wind does not move,
+The banner does not move;
+Only your mind moves.
 '@
         @'
-Truth can be expressed without speaking, nor remaining silent.
+Without speaking, without silence,
+How can you express the truth?
 '@
         @'
 Sickness and medicine correspond to each other.
@@ -163,6 +99,99 @@ What is the self?
         @'
 Choosing to raise a goose in a bottle,
 How will you get it out once it is grown?
+'@
+        @'
+Nothing is exactly as it seems, nor is it otherwise.
+'@
+        @'
+To a mind that is still, the whole universe surrenders.
+'@
+        @'
+To create is to see what all can see but think what none have thought.
+'@
+        @'
+If you understand, things are just as they are.
+If you do not understand, things are just as they are.
+'@
+        @'
+Maybe you are searching among the branches,
+For what only appears in the roots.
+'@
+        @'
+The giver should be thankful.
+'@
+        @'
+As the light of a small candle will spread from one to another in succession,
+So the light of the Buddha's compassion will pass from one mind to another endlessly.
+'@
+        @'
+To doubt the walking of the mountains means
+That one does not yet know one's own walking.
+'@
+        @'
+Grasping nothing, discarding nothing.
+In every place there's no hindrance, no conflict.
+My supernatural power and marvelous activity:
+Drawing water and chopping wood.
+'@
+        @'
+There's doing nothing,
+And then there's doing nothing.
+One blade releases
+The energies of the Earth,
+The other rusts in a stump.
+'@
+        @'
+The Path of Excess
+Is the exact opposite
+Of the Eightfold Path.
+Right View, Right Speech, Right Action...
+All simple matters of scale.
+'@
+        @'
+The oceans may rage,
+But underneath the waters
+The Leviathans
+Frisk and frolick together
+In the Land of Tranquil Light.
+'@
+        @'
+The coin lost in the river
+Is found in the river.
+'@
+        @'
+Without speaking, without silence,
+How can you express the truth?
+'@
+        @'
+If you perceive something as not beautiful,
+you're not looking long enough.
+'@
+        @'
+In order to write good code,
+you must become the code.
+'@
+        @'
+Mind is not the Buddha,
+reason is not the Way.
+'@
+        @'
+If you want to fly,
+give up everything
+that weighs you down.
+'@
+        @'
+There are two rules in life:
+1. Never give out all of
+the information.
+'@
+        @'
+You are the designer
+of your own catastrophe.
+'@
+        @'
+When you realise how perfect everything is,
+you will tilt your head back and laugh at the sky.
 '@
     )
 }

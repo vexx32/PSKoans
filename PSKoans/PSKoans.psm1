@@ -20,6 +20,8 @@ $script:DefaultSettings = @{
     Editor       = 'code'
 }
 
+[hashtable] $script:CurrentTopic = $null
+
 #region SupportingClasses
 
 Get-ChildItem -Path "$PSScriptRoot/Classes" | ForEach-Object {

@@ -4,7 +4,7 @@ param()
 <#
 
     Get-Member
- 
+
     Following on from our last Koan about cmdlet verbs, lets cover the nouns.
     As previously stated, the noun portion indicates the target of a given command.
     If you use the "Get-Member" cmdlet on any object you'll see its type name, or data type.
@@ -47,7 +47,7 @@ Describe "Get Member" {
     It 'allows us to explore properties on an object' {
 
         # Get some properties!
-        
+
         <# EXAMPLE
 
         $Cmdlet1 = 'Get-Process'
@@ -62,6 +62,7 @@ Describe "Get Member" {
 
         $Cmdlet1 = '____'
         $PropertyName = '____'
+
         $Reason = $BecauseString -f $PropertyName, $cmdlet1
         & (Get-Command -Name $Cmdlet1) |
             Get-Member -MemberType Property -Name $PropertyName |
@@ -69,6 +70,7 @@ Describe "Get Member" {
 
         $Cmdlet2 = '____'
         $PropertyName = '____'
+
         $Reason = $BecauseString -f $PropertyName, $cmdlet2
         & (Get-Command -Name $Cmdlet2) |
             Get-Member -MemberType Property -Name $PropertyName |
@@ -76,14 +78,15 @@ Describe "Get Member" {
 
         $Cmdlet3 = '____'
         $PropertyName = '____'
+
         $Reason = $BecauseString -f $PropertyName, $cmdlet3
         & (Get-Command -Name $Cmdlet3) |
             Get-Member -MemberType Property -Name $PropertyName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
-        $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
-        $UniqueCheck = $Cmdlets | Get-Unique
-        $UniqueCheck.Count -eq 3 | Should -BeTrue -Because "three unique cmdlets should be supplied"
+        $cmdlet1, $cmdlet2, $cmdlet3 |
+            Get-Unique |
+            Should -HaveCount 3 -Because "three unique cmdlets should be supplied"
     }
 
     It 'allows us to explore methods on an object' {
@@ -122,8 +125,8 @@ Describe "Get Member" {
             Get-Member -MemberType Method -Name $MethodName |
             Should -Not -BeNullOrEmpty -Because $Reason
 
-        $Cmdlets = $cmdlet1, $cmdlet2, $cmdlet3
-        $UniqueCheck = $Cmdlets | Get-Unique
-        $UniqueCheck.Count -eq 3 | Should -BeTrue -Because "three unique cmdlets should be supplied"
+        $cmdlet1, $cmdlet2, $cmdlet3 |
+            Get-Unique |
+            Should -HaveCount 3 -Because "three unique cmdlets should be supplied"
     }
 }

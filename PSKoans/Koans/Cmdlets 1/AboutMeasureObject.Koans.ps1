@@ -17,7 +17,7 @@ Describe 'Measure-Object' {
             665, 154, 943, 35, 391, 816, 420, 229, 3, 938
         )
 
-        $Files = Get-ChildItem -Path $home -Recurse -Depth 2
+        $Files = Get-ChildItem -Path $HOME -Recurse -Depth 2
     }
 
     It 'can count objects' {
@@ -76,12 +76,26 @@ Describe 'Measure-Object' {
 
     It 'can operate on object properties' {
         $Data = $Files.BaseName | Measure-Object -Property Length -Sum -Average
+
+        # Averages can have a lot of decimal places, so we'll round to just 4 decimal places.
+        $Average = [math]::Round($Data.Average, 4)
+
         __ | Should -Be $Data.Sum
-        __ | Should -Be $Data.Average
+        __ | Should -Be $Average
     }
 
     It 'can measure text lines, characters, and words of strings' {
-        $Text = Get-Content "$(Get-PSKoanLocation)/Foundations/AboutTheStockChallenge.Koans.ps1"
+        $Text = '
+            Two monks were arguing about the temple flag waving in the wind.
+            One said, "The flag moves."
+            The other said, "The wind moves."
+            They argued back and forth but could not agree.
+
+            Hui-neng, the sixth patriarch, said:
+            "Gentlemen! It is not the flag that moves. It is not the wind that moves. It is your mind that moves."
+
+            The two monks were struck with awe.
+        '
         $Data = $Text | Measure-Object -Line -Word -Character
 
         __ | Should -Be $Data.Lines

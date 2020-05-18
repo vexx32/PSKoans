@@ -1,7 +1,7 @@
 ---
 name: "💥 Module Issue or Bug"
 about: File an issue or bug report about the module features/functions themselves.
-
+labels: Category-Module, Issue-Discussion
 ---
 
 # Describe "Module Bug or Issue"

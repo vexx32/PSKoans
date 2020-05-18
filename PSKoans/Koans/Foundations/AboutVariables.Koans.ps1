@@ -43,20 +43,20 @@ Describe 'Variable Assignment' {
         $Number | Should -BeOfType [____]
 
         $Text = 'Every worthwhile step is uphill.'
-        $ExpectedType = __
-
-        $ExpectedType | Should -Be $Text.GetType()
+        [____] | Should -Be $Text.GetType()
     }
 
     It 'allows types to be explicitly set' {
         # A well-defined container decides the shape of its contents.
         [int]$Number = '42'
 
-        # An unrestricted container may hold many different items.
-        # Its contents may choose their own kind, or it be chosen for them.
+        <#
+            An unrestricted container may hold many different items.
+            Its contents may choose their own kind, or it be chosen for them.
+        #>
         $String = [string]$true
 
-        $Number | Should -BeOfType [____]
+        [____] | Should -Be $Number.GetType()
         $String | Should -BeOfType [____]
     }
 
@@ -75,8 +75,8 @@ Describe 'Variable Assignment' {
 
     It 'allows you to declare constant variables' {
         $RemoveConstant = {
-            Set-Variable -Name 'Constant' -Value 25 -Option Constant
             # Constant variables cannot be altered.
+            Set-Variable -Name 'Constant' -Value 25 -Option Constant
 
             # So what happens if we try to modify $Constant in some way?
             $____ = 'NewValue'
@@ -86,8 +86,11 @@ Describe 'Variable Assignment' {
         $RemoveReadOnly = {
             # Contrast Read-Only variables, which can be later removed (if you do it right.)
             Set-Variable -Name 'Constant' -Value 25 -Option ReadOnly
+
             # While these variables can be Removed, they cannot be directly altered.
             Remove-Variable -Name '____' -Force -ErrorAction Stop
+
+            # Once the readonly variable is removed, we can re-create and edit it as normal.
             $Constant = 2
             $Constant++
         }

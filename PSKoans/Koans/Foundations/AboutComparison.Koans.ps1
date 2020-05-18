@@ -101,11 +101,14 @@ Describe 'Comparison Operators' {
         }
 
         It 'will often return more than one item from arrays' {
-            $Array = '1', '5', '10', '15', '20', '25', '30'
+            $Array = 1, 5, 10, 15, 20, 25, 30
 
+            $NewArray = @(
+                __
+                __
+            )
+            $NewArray | Should -Be ($Array -lt 10)
             __ | Should -Be ($Array -gt 25)
-            @('__', '__') | Should -Be ($Array -lt 10)
-
         }
     }
 
@@ -113,9 +116,13 @@ Describe 'Comparison Operators' {
 
         It 'is a combination of the above two operators' {
             $Array = 1, 2, 3, 4, 5
-
             $Array -ge 3 | Should -Be @(3, 4, 5)
-            $Array -le 2 | Should -Be @(1, 2, 3, 4)
+
+            $NewArray = @(
+                __
+                __
+            )
+            $NewArray | Should -Be ($Array -le 2)
             __ | Should -Be ($Array -ge 5)
         }
     }
@@ -228,7 +235,7 @@ Describe 'Logical Operators' {
         }
 
         It 'can be shortened to !' {
-            __ | Should -Be (!$true)
+            $____ | Should -Be (!$true)
         }
 
         It 'converts any non-boolean inputs to boolean before evaluating' {

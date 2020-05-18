@@ -22,10 +22,10 @@ Describe 'Type Operators' {
             $Value = __
 
             if ($Value -is [double]) {
-                $Value | Should -BeOfType __
+                [____] | Should -Be $Value.GetType()
             }
             else {
-                throw '$Value was of incorrect type.'
+                Should -Fail -Because '$Value was not the correct type.'
             }
         }
     }
@@ -57,9 +57,9 @@ Describe 'Type Operators' {
                 'string' -as [int]
             }
 
-            $Casting | Should -Throw -ErrorId __
+            $Casting | Should -Throw -ErrorId '____'
             $Conversion | Should -Not -Throw
-            __ | Should -Be $Conversion.Invoke()
+            __ | Should -Be $Conversion.InvokeReturnAsIs()
         }
     }
 }
