@@ -565,19 +565,19 @@ Describe 'Meditative Examples' {
                 '01234'
                 '+14255556789'
             )
-            
-            $sanitizedNumbers = $phoneNumbers -replace '____' 
-        }
 
-        It 'sanitizes user input' {
-            
-            $sanitizedNumbers | Should -Be @(
+            $sanitizedNumbers = @(
                 '14255551234'
                 '14255554321'
                 '14255556789'
                 '01234'
                 '14255556789'
             )
+        }
+
+        It 'sanitizes user input' {
+
+            $phoneNumbers -replace '____' | Should -Be $sanitizedNumbers
         }
 
         It 'validates user input' {
