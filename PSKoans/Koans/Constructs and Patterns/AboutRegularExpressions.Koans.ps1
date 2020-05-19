@@ -488,7 +488,7 @@ Describe 'Brackets and Braces' {
                 iceberg.
             #>
     
-            '____' | Should -Be [regex]::Matches('Bears Beat Bongos', '(B.+){3}').Value
+            '____' | Should -Be ([regex]::Matches('Bears Beat Bongos', '(B.+){3}').Value)
         }
 
         It 'does not find just one badger' {    
@@ -511,7 +511,7 @@ Describe 'Brackets and Braces' {
                 The fancy regex name for this is a "character class".
             #>
     
-            $____ | Should -Be 'End of the line' -match '[efg]$'
+            $____ | Should -Be ('End of the line' -match '[efg]$')
         }
 
         It 'wants you to end the string a certain way' {    
@@ -557,18 +557,16 @@ Describe 'Meditative Examples' {
             Validate a bunch of phone numbers - get rid of the non-numeric characters and check
             which ones are actually the right length to be dialed.
         #>
+        BeforeAll {
+            $phoneNumbers = @(
+                '1 425 555 1234'
+                '1-425-555-4321'
+                '1.425.555.6789'
+                '01234'
+                '+14255556789'
+            )
 
-        $phoneNumbers = @(
-            '1 425 555 1234'
-            '1-425-555-4321'
-            '1.425.555.6789'
-            '01234'
-            '+14255556789'
-        )
-
-        It 'sanitizes user input' {
-            $sanitizedNumbers = $phoneNumbers -replace '____' 
-            $sanitizedNumbers | Should -Be @(
+            $sanitizedNumbers = @(
                 '14255551234'
                 '14255554321'
                 '14255556789'
@@ -577,7 +575,13 @@ Describe 'Meditative Examples' {
             )
         }
 
-        It 'validates user input' {            $validPhoneNumbers = [regex]::Matches($sanitizedNumbers, '____').Value
+        It 'sanitizes user input' {
+
+            $phoneNumbers -replace '____' | Should -Be $sanitizedNumbers
+        }
+
+        It 'validates user input' {
+            $validPhoneNumbers = [regex]::Matches($sanitizedNumbers, '____').Value
             $validPhoneNumbers | Should -Be @(
                 '14255551234'
                 '14255554321'
