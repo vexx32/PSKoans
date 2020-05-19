@@ -1,0 +1,25 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <S N="ComputerName">Server01</S>
+      <S N="InstanceName">MSSQLSERVER</S>
+      <S N="SqlInstance">Server01</S>
+      <S N="Name">testdb</S>
+      <S N="Status">Normal</S>
+      <B N="IsAccessible">true</B>
+      <S N="RecoveryModel">Full</S>
+      <S N="LogReuseWaitStatus">LogBackup</S>
+      <Db N="SizeMB">95.275</Db>
+      <S N="Compatibility">Version120</S>
+      <S N="Collation">Latin1_General_CI_AS</S>
+      <S N="Owner">sa</S>
+      <DT N="LastFullBackup">2019-02-26T19:56:36</DT>
+      <DT N="LastDiffBackup">2019-02-26T13:00:31</DT>
+      <DT N="LastLogBackup">2019-02-26T20:00:02</DT>
+    </MS>
+  </Obj>
+</Objs>

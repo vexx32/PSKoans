@@ -1,0 +1,26 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Data.DataRow</T>
+      <T>System.Object</T>
+    </TN>
+    <ToString>System.Data.DataRow</ToString>
+    <Props>
+      <S N="PersonName">Bob</S>
+    </Props>
+  </Obj>
+  <Obj RefId="1">
+    <TNRef RefId="0" />
+    <ToString>System.Data.DataRow</ToString>
+    <Props>
+      <S N="PersonName">Robert</S>
+    </Props>
+  </Obj>
+  <Obj RefId="2">
+    <TNRef RefId="0" />
+    <ToString>System.Data.DataRow</ToString>
+    <Props>
+      <S N="PersonName">Robert'); DROP TABLE Students;--</S>
+    </Props>
+  </Obj>
+</Objs>
