@@ -45,7 +45,7 @@ View the PSKoans [Command Reference Documentation][reference-docs].
 
 - Windows PowerShell version 5.1 / PowerShell 6+
 - NuGet
-- Pester
+- Pester v4.x
 
 If you've never installed PowerShell modules before, you need to first install the NuGet PackageProvider to enable modules to be installed:
 
@@ -57,11 +57,16 @@ To install the latest version of Pester, use the appropriate command for your ve
 
 ```PowerShell
 # PS 5.1 (upgrade to latest Pester)
-Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -MaximumVersion 4.99.99
 
 # PS 6.0+ (Install Pester under current user)
-Install-Module Pester -Scope CurrentUser
+Install-Module Pester -Scope CurrentUser -MaximumVersion 4.99.99
 ```
+
+> :warning: **WARNING**
+>
+> PSKoans is not yet compatible with v5 of Pester, and I have (unwisely) neglected to set the -MaximumVersion in the PSKoans module manifest as yet.
+> I will make some fixes shortly, but in the meantime you cannot have v5 of Pester installed if you would like to use PSKoans.
 
 ## Getting Started
 
