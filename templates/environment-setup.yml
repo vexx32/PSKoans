@@ -17,9 +17,11 @@ steps:
 
       $Params.Name = 'Pester'
       $Params.SkipPublisherCheck = $true
+      $Params.MaximumVersion = '4.99.99'
       $Params | Out-String | Write-Host
       Install-Module @Params
       $Params.Remove('SkipPublisherCheck')
+      $Params.Remove('MaximumVersion')
 
       $Params.Name = 'EZOut'
       $Params.AllowClobber = $true

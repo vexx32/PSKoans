@@ -26,9 +26,17 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      $pesterParams = @{
+          Name           = 'Pester'
+          MaximumVersion = '4.99.99'
+          ProviderName   = 'NuGet'
+          Path           = '${{ parameters.repositoryPath }}'
+          Force          = $true
+          Source         = 'PSGallery'
+      }
+
       Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
-      Save-Package -Name Pester -ProviderName NuGet -Path ${{ parameters.repositoryPath }} -Force -Source PSGallery |
-          Select-Object -Property Name, Version, Status, Source
+      Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
       Install-Module PSKoans -Repository ${{ parameters.repositoryName }} -Force -Scope CurrentUser
 
     errorActionPreference: 'stop'
