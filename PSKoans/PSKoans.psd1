@@ -53,8 +53,8 @@
     # Modules that must be imported into the global environment prior to importing this module
     RequiredModules       = @(
         @{
-            ModuleName    = 'Pester'
-            ModuleVersion = '4.3.1'
+            ModuleName      = 'Pester'
+            RequiredVersion = '4.10.1'
         }
     )
 
