@@ -247,7 +247,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          $tagName = ("$(Build.SourceBranch)" -replace '^/refs/tags/').Trim()
+          $tagName = ("$(Build.SourceBranch)" -replace '^refs/tags/').Trim()
 
           Write-Host "##vso[task.setvariable variable=TagName]$tagname"
 
@@ -265,5 +265,5 @@ stages:
         repositoryName: '$(Build.Repository.Name)'
         action: 'edit' # Options: create, edit, delete
         tag: '$(TagName)' # Required when action == Edit || Action == Delete || TagSource == Manual
-        assets: '$(Build.ArtifactStagingDirectory)/**' # Optional
+        assets: '$(Build.ArtifactStagingDirectory)/**/*.nupkg' # Optional
         assetUploadMode: 'replace' # Optional. Options: delete, replace
