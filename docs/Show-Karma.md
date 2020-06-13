@@ -1,7 +1,7 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version: https://github.com/vexx32/PSKoans/tree/master/docs/Show-Karma.md
+online version: https://github.com/vexx32/PSKoans/tree/main/docs/Show-Karma.md
 schema: 2.0.0
 ---
 
@@ -231,4 +231,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans/tree/master/docs/Show-Karma.md](https://github.com/vexx32/PSKoans/tree/master/docs/Measure-Karma.md)
+[https://github.com/vexx32/PSKoans/tree/main/docs/Show-Karma.md](https://github.com/vexx32/PSKoans/tree/main/docs/Measure-Karma.md)

@@ -2,9 +2,6 @@ try {
     Add-AssertionOperator -Name Fail -Test {
         param ($ActualValue, [switch] $Negate, [string] $Because)
 
-        # look at  https://github.com/pester/Pester/blob/master/Functions/Assertions/BeTrueOrFalse.ps1
-        # for inspiration, or here https://mathieubuisson.github.io/pester-custom-assertions/
-
         if ($Negate) {
             return [PSCustomObject]@{
                 Succeeded      = $false

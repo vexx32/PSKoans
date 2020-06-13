@@ -1,6 +1,6 @@
 ﻿function Get-Karma {
     [CmdletBinding(DefaultParameterSetName = 'Default',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-Karma.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-Karma.md')]
     [OutputType([void])]
     [Alias()]
     param(

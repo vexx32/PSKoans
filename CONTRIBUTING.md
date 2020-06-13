@@ -127,14 +127,14 @@ To do so, go to [the main page of the repo][pskoans] and click the Fork button a
 1. Commit
     - Committing saved changes to current branch
         - Once you've made a change and saved it, GitHub Desktop will show the diffs
-        - Enter a Summary and Description of your commit and then hit "Commit to master"
-            - This with add the changes to a commit on your master branch of your local git copy.
+        - Enter a Summary and Description of your commit and then hit "Commit to main"
+            - This with add the changes to a commit on your main branch of your local git copy.
 1. Push Origin
     - Hit the "Push origin" button in GitHub Desktop to merge your local repository copy with the copy stored on GitHub.
 1. Pull Request
     - Option 1
         - From GitHub Desktop, click the blue "Create Pull Request" button that appears after you hit "Push origin"
-        - This will take you to the "Open a pull request" GitHub page comparing your repo / branch against the PSKoans / master branch
+        - This will take you to the "Open a pull request" GitHub page comparing your repo / branch against the PSKoans / main branch
     - Option 2
         - Go to Github and do a pull request from the PSKoans main page. the process is the same!
 1. Collaborate and have your change approved and merged into the main branch!
@@ -166,7 +166,7 @@ To do so, go to [the main page of the repo][pskoans] and click the Fork button a
     - Check what your origin is by Changing your directory to your repository and running: `git remote -v`
         - This should display `origin https://github.com/$Username/PSKoans`
     - Push
-        - Run: `git push origin master` to push your local repo commits to your Github repo.
+        - Run: `git push origin main` to push your local repo commits to your Github repo.
             - Running this command will pop up a dialog box to log into GitHub to authenticate your push.
 1. Pull Request
     - Go to Github and do a pull request from the PSKoans main page.
@@ -189,7 +189,7 @@ To do so, go to [the main page of the repo][pskoans] and click the Fork button a
     - Hit the ✔️ above the files to commit them to the local repo.
 1. Push Origin
     - In the lower left hand corner you should see 0⬇️1⬆️
-    - This will push your commits up to the master branch of your fork.
+    - This will push your commits up to the main branch of your fork.
 1. Pull Request
     - Go to Github and do a pull request from the PSKoans main page.
 1. Collaborate and have your change approved and merged into the main branch!

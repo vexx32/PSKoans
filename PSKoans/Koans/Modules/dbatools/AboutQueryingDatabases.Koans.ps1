@@ -45,7 +45,7 @@ Describe "Invoke-DbaQuery" {
         }
     }
     #endregion
-    
+
     It 'Queries a SQL Server instance...' {
         <#
             Invoke-DbaQuery can be used to connect to the SQL Server, in much the same way that Get-DbaDatabase
@@ -53,7 +53,7 @@ Describe "Invoke-DbaQuery" {
             Complete the below command to query "localhost" using Invoke-DbaQuery.
         #>
         $Bar = Invoke-DbaQuery -SqlInstance __ -Query "SELECT DB_NAME() AS database_name;"
-        $Bar.database_name | Should -Be 'master'
+        $Bar.database_name | Should -Be 'primary'
     }
 
     It 'Queries multiple SQL Server instances...' {
@@ -75,7 +75,7 @@ Describe "Invoke-DbaQuery" {
             We've created a file called SimpleTSQL.sql that contains a T-SQL statement, which we want to
             run against the tempdb database on the localhost instance.
         #>
-        Out-File - FilePath TestDrive:\SimpleTSQL.sql -InputObject "SELECT 'From a File' AS Origin;" 
+        Out-File - FilePath TestDrive:\SimpleTSQL.sql -InputObject "SELECT 'From a File' AS Origin;"
         $InvokeDbaQueryParams = @{
             SqlInstance = 'localhost'
             Database    = 'tempdb'
@@ -88,7 +88,7 @@ Describe "Invoke-DbaQuery" {
     It 'queries a database with passing values to parameters' {
         <#
             T-SQL may seem like a strict, rigid language. We have a script that returns a value or values.
-            If we want to get different values then we will have to change the full query. 
+            If we want to get different values then we will have to change the full query.
             From
                 "SELECT PersonName FROM Student WHERE PersonName = 'Bob';"
             to
@@ -119,7 +119,7 @@ Describe "Invoke-DbaQuery" {
     It 'shows Little Bobby Tables...' {
         <#
             You may ask "Why would I want to use parameters? I can just pass in a variable from PowerShell!"
-            If you are familiar with Little Bobby Tables (https://xkcd.com/327/) then you are aware of the 
+            If you are familiar with Little Bobby Tables (https://xkcd.com/327/) then you are aware of the
             dangers of un-sanitized inputs.
             However, an example is nearly always better than a lecture.
 

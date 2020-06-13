@@ -1,6 +1,6 @@
 function Reset-PSKoan {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Reset-PSKoan.md',
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Reset-PSKoan.md',
         PositionalBinding = $false,
         DefaultParameterSetName = 'NameOnly')]
     [OutputType([void])]

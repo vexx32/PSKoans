@@ -1,5 +1,5 @@
 ﻿function Show-Advice {
-    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Show-Advice.md')]
+    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Show-Advice.md')]
     [Alias('Get-Advice')]
     [OutputType([void])]
     param(

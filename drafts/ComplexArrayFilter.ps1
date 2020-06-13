@@ -1,5 +1,5 @@
 ﻿<#
-    Master Koan! The Monks of the PowerShell order have become angry, and began to complain
+    The Monks of the PowerShell order have become angry, and began to complain
     that the best chores are being given to the favored Monks. In order to prevent the dishonour of
     the angry Monks, we must fix this.
 

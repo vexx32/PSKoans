@@ -55,7 +55,7 @@
           <S N="ComputerName">Server01</S>
           <S N="InstanceName">MSSQLSERVER</S>
           <S N="SqlInstance">Server01</S>
-          <S N="Name">master</S>
+          <S N="Name">primary</S>
           <S N="Status">Normal</S>
           <B N="IsAccessible">true</B>
           <S N="RecoveryModel">Full</S>

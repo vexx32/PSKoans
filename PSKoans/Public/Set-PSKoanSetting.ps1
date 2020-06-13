@@ -1,6 +1,6 @@
 function Set-PSKoanSetting {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium', DefaultParameterSetName = 'Single',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Set-PSKoanSetting.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Set-PSKoanSetting.md')]
     [OutputType([void])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipelineByPropertyName, ParameterSetName = 'Single')]

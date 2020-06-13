@@ -1,5 +1,5 @@
 function Get-PSKoanSetting {
-    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanSetting.md')]
+    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoanSetting.md')]
     [OutputType([object], [PSCustomObject])]
     param(
         [Parameter()]

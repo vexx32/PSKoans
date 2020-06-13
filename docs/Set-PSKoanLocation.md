@@ -1,7 +1,7 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version: https://github.com/vexx32/PSKoans/tree/master/docs/Set-PSKoanLocation.md
+online version: https://github.com/vexx32/PSKoans/tree/main/docs/Set-PSKoanLocation.md
 schema: 2.0.0
 ---
 

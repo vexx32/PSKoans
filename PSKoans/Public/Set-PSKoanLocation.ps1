@@ -1,6 +1,6 @@
 function Set-PSKoanLocation {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Set-PSKoanLocation.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Set-PSKoanLocation.md')]
     [OutputType([void])]
     param(
         [Parameter(Mandatory, Position = 0)]

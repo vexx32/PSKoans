@@ -6,7 +6,7 @@
     </TN>
     <ToString>System.Data.DataRow</ToString>
     <Props>
-      <S N="master">database_name</S>
+      <S N="primary">database_name</S>
     </Props>
   </Obj>
 </Objs>

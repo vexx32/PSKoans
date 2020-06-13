@@ -1,6 +1,6 @@
 function Move-PSKoanLibrary {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Move-PSKoanLibrary.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md')]
     [OutputType([void])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]

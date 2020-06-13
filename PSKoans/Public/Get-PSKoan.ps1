@@ -1,6 +1,6 @@
 function Get-PSKoan {
     [CmdletBinding(DefaultParameterSetName = 'IncludeModule',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoan.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoan.md')]
     [OutputType('PSKoans.KoanInfo')]
     param(
         [Parameter()]

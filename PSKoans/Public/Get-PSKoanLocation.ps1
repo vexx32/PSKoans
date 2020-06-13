@@ -1,5 +1,5 @@
 function Get-PSKoanLocation {
-    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Get-PSKoanLocation.md')]
+    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoanLocation.md')]
     [OutputType([string])]
     param()
     process {

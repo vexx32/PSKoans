@@ -1,7 +1,7 @@
 ---
 external help file: PSKoans-help.xml
 Module Name: PSKoans
-online version: https://github.com/vexx32/PSKoans/tree/master/docs/Move-PSKoanLibrary.md
+online version: https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md
 schema: 2.0.0
 ---
 
@@ -100,4 +100,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans/tree/master/docs/Move-PSKoanLibrary.md](https://github.com/vexx32/PSKoans/tree/master/docs/Move-PSKoanLibrary.md)
+[https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md](https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md)

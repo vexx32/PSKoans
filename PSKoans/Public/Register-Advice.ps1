@@ -1,6 +1,6 @@
 ﻿function Register-Advice {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Register-Advice.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Register-Advice.md')]
     [OutputType([void])]
     param(
         [Parameter(Position = 0)]

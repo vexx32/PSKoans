@@ -2,7 +2,7 @@ using namespace System.Collections.Generic
 
 function Update-PSKoan {
     [CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'TopicOnly', ConfirmImpact = "High",
-        HelpUri = 'https://github.com/vexx32/PSKoans/tree/master/docs/Update-PSKoan.md')]
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Update-PSKoan.md')]
     [OutputType([void])]
     param(
         [Parameter()]

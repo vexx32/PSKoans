@@ -6,22 +6,22 @@ param()
     Get-DbaDatabase
 
     The Get-DbaDatabase command gets SQL database information for each database
-    that is present on the target instance(s) of SQL Server by default. If the 
-    name of the database is provided, the command will return only the specific 
+    that is present on the target instance(s) of SQL Server by default. If the
+    name of the database is provided, the command will return only the specific
     database.
 #>
 Describe 'Get-DbaDatabase' {
 
     #region Mocks
     <#
-        Let's setup the environment for you. Unless you want your Koans to 
+        Let's setup the environment for you. Unless you want your Koans to
         nearly always fail I'd suggest not messing with this bit.
     #>
     BeforeAll {
         Mock -CommandName Get-DbaDatabase -MockWith {
             Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_All.xml
         } -ParameterFilter { $_.SqlInstance -eq 'localhost' }
-        
+
         Mock -CommandName Get-DbaDatabase -MockWith {
             Import-Clixml -Path .\PSKoans\Koans\dbatools\Mocks\Database_TestDb.xml
         } -ParameterFilter { $_.SqlInstance -eq 'localhost' -and $_.Database -eq 'testdb' }
@@ -55,8 +55,8 @@ Describe 'Get-DbaDatabase' {
             database, using the -Database parameter, we can get information on
             that single database instead.
         #>
-        $MasterDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
-        $MasterDatabase.Name | Should -Be 'testdb'
+        $primaryDatabase = Get-DbaDatabase -SqlInstance localhost -Database ____
+        $primaryDatabase.Name | Should -Be 'testdb'
     }
 
     It 'Gathers system databases only if specified...' {
@@ -73,7 +73,7 @@ Describe 'Get-DbaDatabase' {
             ExcludeUser = $____
         }
         $UserDbsExcluded = Get-DbaDatabase @UserDbParams
-        $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'master', 'model', 'msdb'
+        $UserDbsExcluded.Name | Should -BeIn 'tempdb', 'primary', 'model', 'msdb'
     }
 
     It 'Excludes system databases if specified...' {
