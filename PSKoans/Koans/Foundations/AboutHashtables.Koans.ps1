@@ -172,8 +172,11 @@ Describe 'Hashtables' {
         }
 
         It 'can check if keys or values are present in the hashtable' {
+            # Enter keys and values in this table to make the below tests pass.
+            # You should not need to modify the `Should` assertions themselves.
             $Hashtable = @{
-                # Enter keys and values in this table to make the below tests pass
+                # Example:
+                # KeyName = Value
             }
 
             $Hashtable.ContainsKey('Carrots') | Should -BeTrue

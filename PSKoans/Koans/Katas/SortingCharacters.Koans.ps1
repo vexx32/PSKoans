@@ -16,6 +16,7 @@ param()
     sorts all characters in a string alphabetically. Punctuation and spaces should be ignored entirely.
 #>
 Describe 'Kata - Sorting Characters' {
+
     BeforeAll {
         $Verification = {
             $Functions = [Hashset[string]]::new([StringComparer]::OrdinalIgnoreCase)
