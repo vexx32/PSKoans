@@ -15,7 +15,15 @@ param()
     [double] $value           # Casts (converts) the value into numerical data
     $String -split ','        # Creates an array by splitting the string
 
-    Be sure to review AboutStrings and AboutArrays if you need to!
+    Be sure to review AboutStrings, AboutArrays and the other foundation Koans
+    you've done so far if you get stuck!
+
+    Testimonial:
+    "Can someone give me a hint on how to do this, I feel stupid."
+    -Puzzled PowerShell Newbie
+
+    "I might have to steal this for a 'testimonials' section; that's exactly what the katas are meant for :D."
+    -Joel
 #>
 Describe "The Stock Challenge" {
     BeforeAll {
