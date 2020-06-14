@@ -229,7 +229,7 @@ Describe 'Show-Karma' {
                 Mock Get-Command { $true } -ParameterFilter { $Name -ne "missing_editor" }
                 Mock Get-Command { $false } -ParameterFilter { $Name -eq "missing_editor" }
                 Mock Start-Process {
-                    @{ Editor = $FilePath; Arguments = $ArgumentList }
+                    @{ Editor = $FilePath; Arguments = $ArgumentList; NoNewWindow = $NoNewWindow }
                 }
                 Mock Get-Karma -ModuleName 'PSKoans' {
                     $script:CurrentTopic = @{
@@ -267,6 +267,7 @@ Describe 'Show-Karma' {
                 $Result.Arguments[0] | Should -BeExactly '--goto'
                 $Result.Arguments[1] | Should -MatchExactly '"[^"]+":\d+'
                 $Result.Arguments[2] | Should -BeExactly '--reuse-window'
+                $Result.NoNewWindow | Should -BeTrue
 
                 # Resolve-Path doesn't like embedded quotes
                 $Path = ($Result.Arguments[1] -split '(?<="):')[0] -replace '"'
