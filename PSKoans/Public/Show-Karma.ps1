@@ -117,7 +117,7 @@ function Show-Karma {
             }
 
             if ($Editor -and (Get-Command -Name $Editor -ErrorAction SilentlyContinue)) {
-                Start-Process -FilePath $Editor -ArgumentList $Arguments
+                Start-Process -FilePath $Editor -ArgumentList $Arguments -NoNewWindow
             }
             else {
                 Invoke-Item -Path $FilePath
