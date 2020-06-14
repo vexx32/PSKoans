@@ -54,7 +54,7 @@
     RequiredModules       = @(
         @{
             ModuleName      = 'Pester'
-            RequiredVersion = '4.10.1'
+            MinimumVersion  = '5.0.2'
         }
     )
 
@@ -68,7 +68,7 @@
     # TypesToProcess = @()
 
     # Format files (.ps1xml) to be loaded when importing this module
-    FormatsToProcess      = @('PSKoans.format.ps1xml')
+    FormatsToProcess      = @( 'PSKoans.format.ps1xml' )
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     # NestedModules = @()
@@ -86,9 +86,9 @@
 
         'Move-PSKoanLibrary'
 
-        'Reset-PSKoan'
-
         'Register-Advice'
+
+        'Reset-PSKoan'
 
         'Show-Advice'
         'Show-Karma'
@@ -106,13 +106,17 @@
     AliasesToExport       = @(
         'Invoke-PSKoans'
         'Test-Koans'
-        'Get-Enlightenment'
-        'Measure-Karma'
+
         '__'
         '____'
         'FILL_ME_IN'
+
         'Clear-Path'
+
         'Get-Advice'
+
+        'Get-Enlightenment'
+        'Measure-Karma'
     )
 
     # DSC resources to export from this module
@@ -172,5 +176,4 @@
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
-
 }

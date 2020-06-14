@@ -17,7 +17,7 @@ steps:
 
       $Params.Name = 'Pester'
       $Params.SkipPublisherCheck = $true
-      $Params.MaximumVersion = '4.99.99'
+      $Params.MinimumVersion = '5.0.2'
       $Params | Out-String | Write-Host
       Install-Module @Params
       $Params.Remove('SkipPublisherCheck')
