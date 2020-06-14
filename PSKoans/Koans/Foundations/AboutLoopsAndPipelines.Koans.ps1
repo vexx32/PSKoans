@@ -115,17 +115,22 @@ Describe 'Pipelines and Loops' {
         }
 
         It 'can loop a set number of times' {
-            $Values = for ($i = 0; $i -lt 5; $i++) {
+            $Values = for ($num = 0; $num -lt 5; $num++) {
                 <#
                     For loops are quite rare in native PowerShell code. They have their uses, but are
                     frequently too semantically obscure to have a place in PS's verbose ecosystem.
-                    Remember:
-                        1. ++ after the variable will reference the existing value then increment the variable.
-                        2. ++ before the variable will increment the variable and then reference the new value.
                 #>
-                $i
+                $num
             }
-            $Values | Should -Be __
+
+            # What will the above loop store in $Values?
+            $Values | Should -Be @(
+                __
+                __
+                __
+                __
+                __
+            )
         }
 
         It 'can loop while a condition is $true' {
