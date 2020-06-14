@@ -1,57 +1,66 @@
-#region Header
-if (-not (Get-Module PSKoans)) {
-    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+#Requires -Modules PSKoans
 
-    Import-Module $moduleBase -Force
-}
-#endregion
+Describe 'Get-KoanAst' {
 
-InModuleScope PSKoans {
-    Describe Get-KoanAst {
-        BeforeAll {
-            $path = Join-Path $TestDrive 'AboutSomething.Koans.ps1'
+    BeforeAll {
+        $path = Join-Path $TestDrive 'AboutSomething.Koans.ps1'
 
-            Set-Content -Path $path -Value @'
-                using module PSKoans
-                [Koan(Position = 1)]
-                param()
-                <#
-                    About Something
-                #>
-                Describe 'Something' {
-                    It 'Has some examples' {
-                        $true | Should -BeTrue
-                    }
+        Set-Content -Path $path -Value @'
+            using module PSKoans
+            [Koan(Position = 1)]
+            param()
+            <#
+                About Something
+            #>
+            Describe 'Something' {
+                It 'Has some examples' {
+                    $true | Should -BeTrue
                 }
+            }
 '@
+    }
+
+    It 'excludes the "using module PSKoans" statement from the AST' {
+        $ast = InModuleScope 'PSKoans' -Parameters @{ Path = $path } {
+            param($Path)
+            Get-KoanAst -Path $Path
         }
 
-        It 'Excludes the "using module PSKoans" statement from the AST'  {
-            $ast = Get-KoanAst -Path $path
+        $ast.UsingStatements | Should -BeNullOrEmpty
+    }
 
-            $ast.UsingStatements | Should -BeNullOrEmpty
-        }
+    It 'maintains consistency of position data when reading and modifying the source' {
+        $tokens = $errors = $null
+        $originalAst = [System.Management.Automation.Language.Parser]::ParseFile(
+            $path,
+            [Ref]$tokens,
+            [Ref]$errors
+        )
 
-        It 'When reading and modifying the source, position data is consistent' {
-            $tokens = $errors = @()
-            $originalAst = [System.Management.Automation.Language.Parser]::ParseFile(
-                $path,
-                [Ref]$tokens,
-                [Ref]$errors
-            )
-            $originalItBlock = $originalAst.Find( {
+        $originalItBlock = $originalAst.Find(
+            {
                 $args[0] -is [System.Management.Automation.Language.CommandAst] -and
                 $args[0].GetCommandName() -eq 'It'
-            }, $true)
+            },
+            $true
+        )
 
-            $modifiedAst = Get-KoanAst -Path $path
-            $modifiedItBlock = $modifiedAst.Find( {
+        $modifiedAst = InModuleScope 'PSKoans' -Parameters @{ Path = $path } {
+            param($Path)
+            Get-KoanAst -Path $Path
+        }
+
+        $modifiedItBlock = $modifiedAst.Find(
+            {
                 $args[0] -is [System.Management.Automation.Language.CommandAst] -and
                 $args[0].GetCommandName() -eq 'It'
-            }, $true)
+            },
+            $true
+        )
 
-            $modifiedItBlock.Extent.StartOffset | Should -Be $originalItBlock.Extent.StartOffset
-            $modifiedItBlock.Extent.EndOffset | Should -Be $originalItBlock.Extent.EndOffset
-        }
+        $modifiedItBlock.Extent.StartOffset |
+            Should -Be $originalItBlock.Extent.StartOffset -Because 'the start offsets should match'
+        $modifiedItBlock.Extent.EndOffset |
+            Should -Be $originalItBlock.Extent.EndOffset -Because 'the end offsets should match'
     }
 }

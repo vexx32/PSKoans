@@ -1,34 +1,46 @@
 ﻿#Requires -Modules PSKoans
 
-${global:Test File} = "$PSScriptRoot/ControlTests/Invoke-Koan.Control_Tests.ps1"
+Describe 'Invoke-Koan' {
 
-InModuleScope 'PSKoans' {
-    Describe 'Invoke-Koan' {
+    BeforeAll {
+        $testFile = @{ Script = "$PSScriptRoot/ControlTests/Invoke-Koan.Control_Tests.ps1" }
+    }
 
-        It 'will not error out' {
-            {
-                Invoke-Koan @{ Script = ${global:Test File} }
-            } | Should -Not -Throw
+    It 'runs the test successfully' {
+        {
+            InModuleScope 'PSKoans' -Parameters $testFile {
+                param($Script)
+                Invoke-Koan @{ Script = $Script }
+            }
+        } | Should -Not -Throw
+    }
+
+    It 'produces output with -Passthru' {
+        InModuleScope 'PSKoans' -Parameters $testFile {
+            param($Script)
+            Invoke-Koan @{ Script = $Script; PassThru = $true }
+        } | Should -Not -BeNullOrEmpty
+    }
+
+    It 'correctly reports test results' {
+        $Results = InModuleScope 'PSKoans' -Parameters $testFile {
+            param($Script)
+            Invoke-Koan @{ Script = $Script; PassThru = $true }
         }
 
-        It 'will produce output with -Passthru' {
-            Invoke-Koan @{ Script = ${global:Test File}; PassThru = $true } | Should -Not -BeNullOrEmpty
+        $Results.TotalCount | Should -Be 2
+        $Results.PassedCount | Should -Be 0
+        $Results.FailedCount | Should -Be 2
+    }
+
+    It 'reports only expected exception types' {
+        $Results = InModuleScope 'PSKoans' -Parameters $testFile {
+            param($Script)
+            Invoke-Koan @{ Script = $Script; PassThru = $true }
         }
 
-        It 'will correctly report test results' {
-            $Results = Invoke-Koan @{ Script = ${global:Test File}; PassThru = $true }
-
-            $Results.TotalCount | Should -Be 2
-            $Results.PassedCount | Should -Be 0
-            $Results.FailedCount | Should -Be 2
-        }
-
-        It 'reports only expected exception types' {
-            $Results = Invoke-Koan @{ Script = ${global:Test File}; PassThru = $true }
-
-            $Results.TestResult.ErrorRecord.Exception |
-                ForEach-Object -MemberName GetType |
-                Should -Be @([Exception], [NotImplementedException])
-        }
+        $Results.Tests.ErrorRecord.Exception |
+            ForEach-Object -MemberName GetType |
+            Should -Be @([Exception], [NotImplementedException])
     }
 }

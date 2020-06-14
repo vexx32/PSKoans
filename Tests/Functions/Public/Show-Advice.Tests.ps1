@@ -1,87 +1,82 @@
 #Requires -Modules PSKoans
 
-InModuleScope 'PSKoans' {
-    Describe "Show-Advice" {
+Describe "Show-Advice" {
+
+    BeforeAll {
+        Mock 'Write-ConsoleLine' -ModuleName 'PSKoans'
+    }
+
+    Context "Behaviour of Parameter-less Calls" {
 
         BeforeAll {
-            Mock Write-ConsoleLine { }
-            # Exporting incorrect advices to the folder
-            $AdviceFolder = $script:ModuleRoot | Join-Path -ChildPath 'Data/Advice'
-            $AdviceObject = Get-ChildItem -Path $AdviceFolder -Recurse -File -Filter "*.Advice.json"
-            $RandomAdvicesFilePaths = ($AdviceObject | Get-Random -Count 3).FullName
-            $Backup = $RandomAdvicesFilePaths | ForEach-Object { Get-Content $_ | ConvertFrom-Json }
-        }
-
-        Context "Behaviour of Parameter-less Calls" {
             $result = Show-Advice
-
-            It "calls Write-ConsoleLine with Parameter -Title" {
-                Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -eq $Title }
-            }
-
-            It "calls Write-ConsoleLine with only the display string" {
-                Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -ne $Title } -Times 1
-            }
-
-            It "outputs nothing to the pipeline" {
-                $result | Should -BeNullOrEmpty
-            }
         }
 
-        Context "Behaviour with -Name Parameter" {
-
-            It "should call Write-ConsoleLine with normal parameters" {
-                Show-Advice -Name "Profile"
-                Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -ne $Title }
-            }
-
-            It "should call Write-ConsoleLine without parameters" {
-                Show-Advice -Name "Profile"
-                Assert-MockCalled -CommandName Write-ConsoleLine -ParameterFilter { $null -eq $Title }
-            }
-
-            It "should throw an error if the requested file cannot be found" {
-                $message = "Could not find any Advice files matching the specified Name: ThisDoesntExist"
-                { Show-Advice -Name "ThisDoesntExist" -ErrorAction Stop } | Should -Throw -ExpectedMessage $Message
-            }
+        It "calls Write-ConsoleLine with Parameter -Title" {
+            Should -Invoke 'Write-ConsoleLine' -ModuleName 'PSKoans' -ParameterFilter { $null -eq $Title } -Scope Context
         }
 
-        Context 'Behaviour with malformed advice files' {
+        It "calls Write-ConsoleLine with only the display string" {
+            Should -Invoke 'Write-ConsoleLine' -ModuleName 'PSKoans' -ParameterFilter { $null -ne $Title } -Scope Context
+        }
 
-            BeforeAll {
-                $MalformedAdviceCases = @(
-                    @{
-                        Json = @{
-                            NotTitle   = "Fake title"
-                            NotContent = @(1..4 | ForEach-Object { "Fake line $_" })
-                        } | ConvertTo-Json
-                    }
-                    @{
-                        Json = @{
-                            Content = @(1..4 | ForEach-Object { "Fake line $_" })
-                        } | ConvertTo-Json
-                    }
-                    @{
-                        Json = @{
-                            Title = "Fake title"
-                        } | ConvertTo-Json
-                    }
-                )
+        It "outputs nothing to the pipeline" {
+            $result | Should -BeNullOrEmpty
+        }
+    }
 
-                $GetContentResult = [string]::Empty
+    Context "Behaviour with -Name Parameter" {
 
-                Mock Get-Content -MockWith { $GetContentResult }
-                Mock Get-ChildItem -MockWith { [PSCustomObject]@{ PSPath = "DummyPath" } }
+        BeforeAll {
+            Show-Advice -Name "Profile"
+        }
+
+        It "should call Write-ConsoleLine with normal parameters" {
+            Should -Invoke 'Write-ConsoleLine' -ParameterFilter { $null -ne $Title } -ModuleName 'PSKoans' -Scope Context
+        }
+
+        It "should call Write-ConsoleLine without parameters" {
+            Should -Invoke 'Write-ConsoleLine' -ParameterFilter { $null -eq $Title } -ModuleName 'PSKoans' -Scope Context
+        }
+
+        It "should throw an error if the requested file cannot be found" {
+            $message = "Could not find any Advice files matching the specified Name: ThisDoesntExist."
+            { Show-Advice -name "ThisDoesntExist" -ErrorAction Stop } | Should -Throw -ExpectedMessage $Message
+        }
+    }
+
+    Context 'Behaviour with malformed advice files' {
+
+        BeforeAll {
+            $GetContentResult = [string]::Empty
+
+            Mock Get-Content -MockWith { $GetContentResult } -Verifiable
+            Mock Get-ChildItem -MockWith { [PSCustomObject]@{ PSPath = "DummyPath" } } -Verifiable
+        }
+
+        It "should throw an error if the requested file's format is not correct" -TestCases @(
+            @{
+                Json = @{
+                    NotTitle   = "Fake title"
+                    NotContent = @(1..4 | ForEach-Object { "Fake line $_" })
+                } | ConvertTo-Json
             }
-
-            It "should throw an error if the requested file's format is not correct" -TestCases $MalformedAdviceCases {
-                param($Json)
-
-                $GetContentResult = $Json
-                $AdviceName = "TestAdvice"
-                $Message = "Could not find Title and/or Content elements for Advice file: {0}" -f $AdviceName
-                { Show-Advice -Name $AdviceName -ErrorAction Stop } | Should -Throw -ExpectedMessage $Message
+            @{
+                Json = @{
+                    Content = @(1..4 | ForEach-Object { "Fake line $_" })
+                } | ConvertTo-Json
             }
+            @{
+                Json = @{
+                    Title = "Fake title"
+                } | ConvertTo-Json
+            }
+        ) {
+            $GetContentResult = $Json
+            $AdviceName = "TestAdvice"
+            $Message = "Could not find Title and/or Content elements for Advice file: {0}" -f $AdviceName
+            { Show-Advice -name $AdviceName -ErrorAction Stop } | Should -Throw -ExpectedMessage $Message
+            Should -InvokeVerifiable
         }
     }
 }

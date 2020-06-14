@@ -1,59 +1,64 @@
-#region Header
-if (-not (Get-Module PSKoans)) {
-    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+#Requires -Modules PSKoans
 
-    Import-Module $moduleBase -Force
-}
-#endregion
+#region Discovery
+$SkipTests = $PSVersionTable.PSEdition -ne 'Desktop' -or $PSVersionTable.Platform -ne 'Win32NT'
+#endregion Discovery
 
-if ($PSVersionTable.PSEdition -eq 'Desktop' -or $PSVersionTable.Platform -eq 'Win32NT') {
-    InModuleScope PSKoans {
-        Describe Assert-UnblockedFile {
-            BeforeAll {
-                $defaultParams = @{
-                    FileInfo = [System.IO.FileInfo](Join-Path -Path $TestDrive -ChildPath 'AboutSomething.Koans.ps1')
-                    PassThru = $true
+Describe 'Assert-UnblockedFile' -Skip:$SkipTests {
+
+    BeforeAll {
+        $defaultParams = @{
+            FileInfo = [System.IO.FileInfo](Join-Path -Path $TestDrive -ChildPath 'AboutSomething.Koans.ps1')
+            PassThru = $true
+        }
+    }
+
+    BeforeEach {
+        Set-Content -Path $defaultParams.FileInfo.FullName -Value @'
+            using module PSKoans
+            [Koan(Position = 1)]
+            param()
+
+            Describe 'About something' {
+
+                It 'Has examples' {
+                    $true | Should -BeTrue
                 }
             }
-
-            BeforeEach {
-                Set-Content -Path $defaultParams.FileInfo.FullName -Value @'
-                    using module PSKoans
-
-                    [Koan(Position = 1)]
-                    param ( )
-
-                    Describe 'About something' {
-                        It 'Has examples' {
-                            $true | Should -BeTrue
-                        }
-                    }
 '@
-            }
+    }
 
-            AfterEach {
-                Remove-Item -Path $defaultParams.FileInfo.FullName
-            }
+    AfterEach {
+        Remove-Item -Path $defaultParams.FileInfo.FullName
+    }
 
-            Context 'File is blocked' {
-                BeforeEach {
-                    Set-Content -Path $defaultParams.FileInfo.FullName -Stream Zone.Identifier -Value @'
-                        [ZoneTransfer]
-                        ZoneId=3
-                        ReferrerUrl=C:\Downloads\File.zip
+    Context 'File With External Zone Identifier' {
+
+        BeforeEach {
+            Set-Content -Path $defaultParams.FileInfo.FullName -Stream Zone.Identifier -Value @'
+                [ZoneTransfer]
+                ZoneId=3
+                ReferrerUrl=C:\Downloads\File.zip
 '@
-                }
+        }
 
-                It 'should throw a terminating error if the file is blocked' {
-                    { Assert-UnblockedFile @defaultParams } | Should -Throw -ErrorId 'PSKoans.KoanFileIsBlocked'
+        It 'should throw a terminating error if the file is blocked' {
+            {
+                InModuleScope 'PSKoans' -Parameters @{ Params = $defaultParams } {
+                    param($Params)
+                    Assert-UnblockedFile @Params
                 }
-            }
+            } | Should -Throw -ErrorId 'PSKoans.KoanFileIsBlocked'
+        }
+    }
 
-            Context 'File is not blocked' {
-                It 'returns the original object with -PassThru if the file is not blocked' {
-                    Assert-UnblockedFile @defaultParams | Should -BeOfType [System.IO.FileInfo]
-                }
-            }
+    Context 'File Without Zone Identifier' {
+
+        It 'returns the original object with -PassThru if the file is not blocked' {
+            InModuleScope 'PSKoans' -Parameters @{ Params = $defaultParams } {
+                param($Params)
+                Assert-UnblockedFile @Params
+            } | Should -BeOfType [System.IO.FileInfo]
         }
     }
 }

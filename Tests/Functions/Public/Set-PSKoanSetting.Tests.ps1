@@ -1,6 +1,7 @@
 #Requires -Modules PSKoans
 
 Describe 'Set-PSKoanSetting' {
+
     BeforeAll {
         InModuleScope 'PSKoans' {
             $script:OldConfigPath = $script:ConfigPath
@@ -16,6 +17,7 @@ Describe 'Set-PSKoanSetting' {
     Context 'Settings file Exists' {
 
         Describe 'Setting values with -Name and -Value' {
+
             BeforeAll {
                 $NewConfigPath = InModuleScope 'PSKoans' {
                     ($script:ConfigPath = "$TestDrive/config.json")
@@ -25,28 +27,23 @@ Describe 'Set-PSKoanSetting' {
                     New-Item -ItemType File -Path "$TestDrive/config.json"
                 }
 
-                $Settings = [PSCustomObject]@{
+                [PSCustomObject]@{
                     LibraryFolder = "$TestDrive/PSKoans"
                     Editor        = 'code'
-                }
-                $Settings |
+                } |
                     ConvertTo-Json |
                     Set-Content -Path $NewConfigPath
-
-                $TestCases = @(
-                    @{ Name = 'TestSetting1'; Value = 'TestValue1' }
-                    @{ Name = 'LibraryFolder'; Value = "$TestDrive/AltLocation/PSKoans" }
-                    @{ Name = 'Editor'; Value = 'code-insiders' }
-                )
             }
 
             AfterAll {
                 Remove-Item -Path $NewConfigPath -Force
             }
 
-            It 'should add a new setting: <Name> = <Value>' -TestCases $TestCases {
-                param($Name, $Value)
-
+            It 'should add a new setting: <Name> = <Value>' -TestCases @(
+                @{ Name = 'TestSetting1'; Value = 'TestValue1' }
+                @{ Name = 'LibraryFolder'; Value = "TestDrive:/PSKoans" }
+                @{ Name = 'Editor'; Value = 'code-insiders' }
+            ) {
                 Set-PSKoanSetting -Name $Name -Value $Value
 
                 Get-PSKoanSetting -Name $Name | Should -BeExactly $Value
@@ -58,6 +55,7 @@ Describe 'Set-PSKoanSetting' {
         }
 
         Context 'Setting values with -Settings Hashtable' {
+
             BeforeAll {
                 $NewConfigPath = InModuleScope 'PSKoans' {
                     ($script:ConfigPath = "$TestDrive/config.json")
@@ -67,11 +65,10 @@ Describe 'Set-PSKoanSetting' {
                     New-Item -ItemType File -Path "$TestDrive/config.json"
                 }
 
-                $Settings = [PSCustomObject]@{
+                [PSCustomObject]@{
                     LibraryFolder = "$TestDrive/PSKoans"
                     Editor        = 'code'
-                }
-                $Settings |
+                } |
                     ConvertTo-Json |
                     Set-Content -Path $NewConfigPath
             }
@@ -85,6 +82,7 @@ Describe 'Set-PSKoanSetting' {
                     TestSetting2  = "TestValue2"
                     LibraryFolder = "$TestDrive/PSKoans"
                 }
+
                 Set-PSKoanSetting -Settings $NewSettings
                 $Settings = Get-PSKoanSetting
 
@@ -98,17 +96,13 @@ Describe 'Set-PSKoanSetting' {
     Context 'Settings file does not exist' {
 
         Describe 'Setting values with -Name and -Value' {
+
             BeforeAll {
                 $NewConfigPath = InModuleScope 'PSKoans' {
                     ($script:ConfigPath = "$TestDrive/config.json")
                 }
 
                 $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
-                $TestCases = @(
-                    @{ Name = 'TestSetting1' ; Value = 'TestValue1' }
-                    @{ Name = 'Editor'; Value = 'TestEditor' }
-                    @{ Name = 'LibraryFolder'; Value = "$TestDrive/TestFolder" }
-                )
             }
 
             BeforeEach {
@@ -117,9 +111,11 @@ Describe 'Set-PSKoanSetting' {
                 }
             }
 
-            It 'correctly adds the setting: <Name> = <Value>' -TestCases $TestCases {
-                param($Name, $Value)
-
+            It 'correctly adds the setting: <Name> = <Value>' -TestCases @(
+                @{ Name = 'TestSetting1' ; Value = 'TestValue1' }
+                @{ Name = 'Editor'; Value = 'TestEditor' }
+                @{ Name = 'LibraryFolder'; Value = "$env:TEMP/TestFolder" }
+            ) {
                 $NewConfigPath | Should -Not -Exist
                 Set-PSKoanSetting -Name $Name -Value $Value
                 $NewConfigPath | Should -Exist
@@ -135,28 +131,25 @@ Describe 'Set-PSKoanSetting' {
         }
 
         Context 'Setting values with -Settings Hashtable' {
+
             BeforeAll {
                 $NewConfigPath = InModuleScope 'PSKoans' {
                     ($script:ConfigPath = "$TestDrive/config.json")
                 }
 
                 $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
-                $TestCases = @(
-                    @{ Settings = @{ TestSetting1 = 'TestValue1'; Editor = 'TestEditor' } }
-                    @{ Settings = @{ LibraryFolder = "$TestDrive/TestFolder"; TestSetting2 = 'TestValue2' } }
-                )
             }
 
             BeforeEach {
                 if (Test-Path -Path $NewConfigPath) {
                     Remove-Item -Path $NewConfigPath
                 }
-
             }
 
-            It 'adds and replaces values: <Settings>' -TestCases $TestCases {
-                param($Settings)
-
+            It 'adds and replaces values: <Settings>' -TestCases @(
+                @{ Settings = @{ TestSetting1 = 'TestValue1'; Editor = 'TestEditor' } }
+                @{ Settings = @{ LibraryFolder = "$TestDrive/TestFolder"; TestSetting2 = 'TestValue2' } }
+            ) {
                 $NewConfigPath | Should -Not -Exist
                 Set-PSKoanSetting -Settings $Settings
                 $NewConfigPath | Should -Exist

@@ -1,50 +1,49 @@
-#region Header
-if (-not (Get-Module PSKoans)) {
-    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+#Requires -Modules PSKoans
 
-    Import-Module $moduleBase -Force
-}
-#endregion
+Describe 'Get-KoanIt' {
 
-InModuleScope PSKoans {
-    Describe Get-KoanIt {
+    BeforeAll {
+        $defaultParams = @{
+            Path = Join-Path $TestDrive 'AboutSomething.Koans.ps1'
+        }
+    }
+
+    Context 'Content has no errors' {
+
         BeforeAll {
-            $defaultParams = @{
-                Path = Join-Path $TestDrive 'AboutSomething.Koans.ps1'
-            }
-        }
+            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+                {
+                    [Koan(Position = 1)]
+                    param( )
 
-        Context 'Content has no errors' {
-            BeforeAll {
-                Mock Get-KoanAst {
-                    {
-                        [Koan(Position = 1)]
-                        param( )
-
-                        Describe 'About something' {
-                            It 'first' {
-                                $true | Should -BeTrue
-                            }
-
-                            It 'second' {
-                                $true | Should -BeTrue
-                            }
+                    Describe 'About something' {
+                        It 'first' {
+                            $true | Should -BeTrue
                         }
-                    }.Ast
-                }
-            }
 
-            It 'returns all information about all It blocks' {
-                $ItCommands = Get-KoanIt @defaultParams
-
-                $ItCommands | Should -Not -BeNullOrEmpty
-                $ItCommands.Count | Should -Be 2
+                        It 'second' {
+                            $true | Should -BeTrue
+                        }
+                    }
+                }.Ast
             }
         }
 
-        Context 'Content has errors' {
-            BeforeAll {
-                Set-Content @defaultParams -Value @'
+        It 'returns all information about all It blocks' {
+            $ItCommands = InModuleScope 'PSKoans' -Parameters $defaultParams {
+                param($Path)
+                Get-KoanIt $Path
+            }
+
+            $ItCommands | Should -Not -BeNullOrEmpty
+            $ItCommands.Count | Should -Be 2
+        }
+    }
+
+    Context 'Content has errors' {
+
+        BeforeAll {
+            Set-Content @defaultParams -Value @'
                     [Koan(Position = 1)]
                     param( )
 
@@ -58,14 +57,16 @@ InModuleScope PSKoans {
                         }
                     }
 '@
+        }
+
+        It 'Retrieves all It blocks when the file has syntax errors' {
+            $ItCommands = InModuleScope 'PSKoans' -Parameters $defaultParams {
+                param($Path)
+                Get-KoanIt $Path
             }
 
-            It 'Retrieves all It blocks when the file has syntax errors' {
-                $ItCommands = Get-KoanIt @defaultParams
-
-                $ItCommands | Should -Not -BeNullOrEmpty
-                $ItCommands.Count | Should -Be 2
-            }
+            $ItCommands | Should -Not -BeNullOrEmpty
+            $ItCommands.Count | Should -Be 2
         }
     }
 }

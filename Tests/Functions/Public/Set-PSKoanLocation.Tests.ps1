@@ -1,8 +1,9 @@
 ﻿#Requires -Modules PSKoans
 
 Describe 'Set-PSKoanLocation' {
+
     BeforeAll {
-        Mock Set-PSKoanSetting -ParameterFilter { $Name -eq 'KoanLocation' } -ModuleName PSKoans
+        Mock 'Set-PSKoanSetting' -ParameterFilter { $Name -eq 'KoanLocation' }
     }
 
     It 'outputs no data by default' {
@@ -10,7 +11,7 @@ Describe 'Set-PSKoanLocation' {
     }
 
     It 'sets the KoanLocation setting' {
-        Assert-MockCalled Set-PSKoanSetting -ModuleName PSKoans
+        Should -Invoke 'Set-PSKoanSetting' -Scope Describe
     }
 
     It 'returns the input -Path value back to the pipeline with -PassThru' {

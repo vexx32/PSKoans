@@ -1,44 +1,65 @@
 #Requires -Modules PSKoans
 
 Describe 'Get-PSKoanSetting' {
+
     BeforeAll {
-        InModuleScope PSKoans {
-            $script:ConfigPath = 'TestDrive:/config.json'
+        $configFilePath = 'TestDrive:/config.json'
+        InModuleScope 'PSKoans' -Parameters @{ Path = $configFilePath } {
+            param($Path)
+            $script:OldConfigPath = $script:ConfigPath
+            $script:ConfigPath = $Path
         }
+
         ${/} = [IO.Path]::DirectorySeparatorChar
     }
 
-    Context 'Settings file does not exist' {
-        BeforeAll {
-            Mock Set-PSKoanSetting { } -ParameterFilter { $Settings -is [hashtable] } -ModuleName PSKoans
-            $DefaultSettings = InModuleScope PSKoans { $script:DefaultSettings }
+    AfterAll {
+        InModuleScope 'PSKoans' {
+            $script:ConfigPath = $script:OldConfigPath
         }
+    }
 
+    Context 'Settings file does not exist' {
+
+        BeforeAll {
+            Mock 'Set-PSKoanSetting' -ParameterFilter { $Settings -is [hashtable] }
+            $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
+        }
+`
         It 'returns the default settings' {
-            $Result = InModuleScope PSKoans { Get-PSKoanSetting }
+            $Result = Get-PSKoanSetting
             $Result | Should -BeOfType [PSCustomObject]
             $Result.KoanLocation | Should -BeExactly "$HOME${/}PSKoans"
             $Result.Editor | Should -BeExactly 'code'
         }
 
         It 'calls Set-PSKoanSetting to set the default settings' {
-            Assert-MockCalled Set-PSKoanSetting -ModuleName PSKoans
+            Should -Invoke 'Set-PSKoanSetting' -Scope Context
         }
     }
 
     Context 'Settings file does exist' {
+
         BeforeAll {
-            '{"KoanLocation": "TestLocation","Editor": "TestEditor"}' | Set-Content -Path 'TestDrive:/config.json'
+            [PSCustomObject]@{
+                KoanLocation = "TestLocation"
+                Editor       = "TestEditor"
+            } |
+                ConvertTo-Json |
+                Set-Content -Path $configFilePath
         }
 
         It 'returns all settings if none are specified' {
-            $Result = InModuleScope PSKoans { Get-PSKoanSetting }
+            $Result = Get-PSKoanSetting
             $Result.KoanLocation | Should -BeExactly 'TestLocation'
             $Result.Editor | Should -BeExactly 'TestEditor'
         }
 
-        It 'returns only the specified setting with -Name' {
-            InModuleScope PSKoans { Get-PSKoanSetting -Name KoanLocation } | Should -BeExactly 'TestLocation'
+        It 'returns only the specified setting with -Name <Name>' -TestCases @(
+            @{ Name = 'KoanLocation'; Expected = 'TestLocation' }
+            @{ Name = 'Editor'; Expected = 'TestEditor' }
+        ) {
+            Get-PSKoanSetting -Name $Name | Should -BeExactly $Expected
         }
     }
 }

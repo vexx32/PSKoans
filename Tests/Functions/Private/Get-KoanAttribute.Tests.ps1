@@ -1,141 +1,159 @@
-#region Header
-if (-not (Get-Module PSKoans)) {
-    $moduleBase = Join-Path -Path $psscriptroot.Substring(0, $psscriptroot.IndexOf('\Tests')) -ChildPath 'PSKoans'
+#Requires -Modules PSKoans
 
-    Import-Module $moduleBase -Force
-}
-#endregion
+Describe 'Get-KoanAttribute' {
 
-InModuleScope PSKoans {
-    Describe Get-KoanAttribute {
+    BeforeAll {
+        $filePath = @{
+            Path = Join-Path $TestDrive  -ChildPath 'AboutSomething.Koans.ps1'
+        }
+    }
+
+    Context 'Content has no errors' {
+
         BeforeAll {
-            $defaultParams = @{
-                Path = Join-Path $TestDrive 'AboutSomething.Koans.ps1'
-            }
-        }
-
-        Context 'Content has no errors' {
-            BeforeAll {
-                Mock Get-KoanAst {
-                    {
-                        [Koan(Position = 1)]
-                        param( )
-
-                        Describe 'About something' {
-                            It 'Has examples' {
-                                $true | Should -BeTrue
-                            }
-                        }
-                    }.Ast
-                }
-            }
-
-            It 'Gets the position argument from the Koan attribute'  {
-                $attributeInfo = Get-KoanAttribute @defaultParams
-
-                $attributeInfo | Should -Not -BeNullOrEmpty
-                $attributeInfo.Position | Should -Be 1
-            }
-
-            It 'When Module is not set, uses a default value for Module' {
-                $attributeInfo = Get-KoanAttribute @defaultParams
-
-                $attributeInfo | Should -Not -BeNullOrEmpty
-                $attributeInfo.Module | Should -Be ([KoanAttribute]::new().Module)
-            }
-        }
-
-        Context 'Module declared' {
-            BeforeAll {
-                Mock Get-KoanAst {
-                    {
-                        [Koan(Position = 1, Module = 'Name')]
-                        param( )
-
-                        Describe 'About something' {
-                            It 'Has examples' {
-                                $true | Should -BeTrue
-                            }
-                        }
-                    }.Ast
-                }
-            }
-
-            It 'When Module is set, retrieves the value for the module' {
-                $attributeInfo = Get-KoanAttribute @defaultParams
-
-                $attributeInfo | Should -Not -BeNullOrEmpty
-                $attributeInfo.Position | Should -Be 1
-                $attributeInfo.Module | Should -Be 'Name'
-            }
-        }
-
-        Context 'Full attribute name used' {
-            BeforeAll {
-                Mock Get-KoanAst {
-                    {
-                        [KoanAttribute(Position = 1)]
-                        param( )
-
-                        Describe 'About something' {
-                            It 'Has examples' {
-                                $true | Should -BeTrue
-                            }
-                        }
-                    }.Ast
-                }
-            }
-
-            It 'Returns attribute information the full name is used'  {
-                $attributeInfo = Get-KoanAttribute @defaultParams
-
-                $attributeInfo | Should -Not -BeNullOrEmpty
-                $attributeInfo.Position | Should -Be 1
-            }
-        }
-
-        Context 'Content has errors' {
-            BeforeAll {
-                Set-Content @defaultParams -Value @'
+            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+                {
                     [Koan(Position = 1)]
+                    param()
+
+                    Describe 'About something' {
+
+                        It 'Has examples' {
+                            $true | Should -BeTrue
+                        }
+                    }
+                }.Ast
+            }
+        }
+
+        It 'gets the position argument from the Koan attribute' {
+            $attributeInfo = InModuleScope 'PSKoans' -Parameters $filePath {
+                param($Path)
+                Get-KoanAttribute $Path
+            }
+
+            $attributeInfo | Should -Not -BeNullOrEmpty
+            $attributeInfo.Position | Should -Be 1
+        }
+
+        It 'uses a default value for Module when it is not set' {
+            $attributeInfo = InModuleScope 'PSKoans' -Parameters $filePath {
+                param($Path)
+                Get-KoanAttribute $Path
+            }
+
+            $attributeInfo | Should -Not -BeNullOrEmpty
+            $attributeInfo.Module | Should -Be ([KoanAttribute]::new().Module)
+        }
+    }
+
+    Context 'Module declared' {
+
+        BeforeAll {
+            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+                {
+                    [Koan(Position = 1, Module = 'Name')]
+                    param()
+
+                    Describe 'About something' {
+
+                        It 'has examples' {
+                            $true | Should -BeTrue
+                        }
+                    }
+                }.Ast
+            }
+        }
+
+        It 'retrieves the value for the module when it is set' {
+            $attributeInfo = InModuleScope 'PSKoans' -Parameters $filePath {
+                param($Path)
+                Get-KoanAttribute $Path
+            }
+
+            $attributeInfo | Should -Not -BeNullOrEmpty
+            $attributeInfo.Position | Should -Be 1
+            $attributeInfo.Module | Should -Be 'Name'
+        }
+    }
+
+    Context 'Full attribute name used' {
+
+        BeforeAll {
+            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+                {
+                    [KoanAttribute(Position = 1)]
                     param( )
 
                     Describe 'About something' {
                         It 'Has examples' {
-                            -not ____ | Should -BeTrue
+                            $true | Should -BeTrue
                         }
                     }
-'@
-            }
-
-            It 'Retrieves the Koan attribute if the file has syntax errors' {
-                $attributeInfo = Get-KoanAttribute @defaultParams
-
-                $attributeInfo | Should -Not -BeNullOrEmpty
-                $attributeInfo.Position | Should -Be 1
+                }.Ast
             }
         }
 
-        Context 'Attribute is missing' {
-            BeforeAll {
-                Mock Get-KoanAst {
-                    {
-                        param( )
+        It 'still returns attribute information when the full name is used' {
+            $attributeInfo = InModuleScope 'PSKoans' -Parameters $filePath {
+                param($Path)
+                Get-KoanAttribute $Path
+            }
 
-                        Describe 'About something' {
-                            It 'Has examples' {
-                                $true | Should -BeTrue
-                            }
-                        }
-                    }.Ast
+            $attributeInfo | Should -Not -BeNullOrEmpty
+            $attributeInfo.Position | Should -Be 1
+        }
+    }
+
+    Context 'Content has errors' {
+
+        BeforeAll {
+            Set-Content @filePath -Value @'
+                [Koan(Position = 1)]
+                param()
+
+                Describe 'About something' {
+                    It 'has examples' {
+                        -not ____ | Should -BeTrue
+                    }
                 }
+'@
+        }
+
+        It 'retrieves the Koan attribute even if the file has syntax errors' {
+            $attributeInfo = InModuleScope 'PSKoans' -Parameters $filePath {
+                param($Path)
+                Get-KoanAttribute $Path
             }
 
-            It 'When the Koan attribute is missing, returns nothing' {
-                $attributeInfo = Get-KoanAttribute @defaultParams
+            $attributeInfo | Should -Not -BeNullOrEmpty
+            $attributeInfo.Position | Should -Be 1
+        }
+    }
 
-                $attributeInfo | Should -BeNullOrEmpty
+    Context 'Attribute is missing' {
+
+        BeforeAll {
+            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+                {
+                    param()
+
+                    Describe 'About something' {
+                        It 'Has examples' {
+                            $true | Should -BeTrue
+                        }
+                    }
+                }.Ast
             }
+        }
+
+        It 'When the Koan attribute is missing, returns nothing' {
+            $attributeInfo = InModuleScope 'PSKoans' -Parameters $filePath {
+                param($Path)
+                Get-KoanAttribute $Path
+            }
+
+            $attributeInfo | Should -BeNullOrEmpty
         }
     }
 }
