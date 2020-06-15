@@ -43,7 +43,7 @@ function Assert-UnblockedFile {
             }
         }
 
-        if (Get-Content -Path $FileInfo.FullName -Stream Zone.Identifier -ErrorAction SilentlyContinue) {
+        if (Get-Content -Path $FileInfo.FullName -Stream Zone.Identifier -ErrorAction Ignore) {
             $ErrorDetails = @{
                 ExceptionType    = 'System.IO.FileLoadException'
                 ExceptionMessage = 'Could not read the koan file "{0}". The file is blocked and may have been copied from an Internet location. Use the Unblock-File to remove the block on the file.' -f $FileInfo.FullName

@@ -59,9 +59,8 @@
 
             Write-Verbose "Koan files retrieved: $($SortedKoanList.Count)"
             Write-Verbose 'Counting koans...'
-            [int]$TotalKoans = $SortedKoanList | Measure-Koan
 
-            if ($TotalKoans -eq 0) {
+            if ($SortedKoanList.Count -eq 0) {
                 if ($Topic) {
                     $Message = @(
                         'Could not find any PSKoans topics matching Topic(s): {0}.'
@@ -102,6 +101,7 @@
                 return # Skip the rest of the function
             }
 
+            [int]$TotalKoans = Measure-Koan $SortedKoanList
             $KoansPassed = 0
 
             foreach ($KoanFile in $SortedKoanList) {
@@ -111,7 +111,7 @@
                 $PesterTests = Invoke-Koan @{
                     Script   = $KoanFile.Path
                     PassThru = $true
-                    Show     = 'None'
+                    Output   = 'None'
                 }
 
                 $KoansPassed += $PesterTests.PassedCount
@@ -124,27 +124,25 @@
             }
 
             $Meditation = if ($PesterTests.FailedCount -gt 0) {
-                $NextKoanFailed = $PesterTests.TestResult |
-                    Where-Object Result -eq 'Failed' |
-                    Select-Object -First 1
+                $NextKoanFailed = $PesterTests.Failed[0]
 
                 $script:CurrentTopic = @{
                     Name        = $KoanFile.Topic
                     Completed   = $PesterTests.PassedCount
                     Total       = $PesterTests.TotalCount
-                    CurrentLine = ($NextKoanFailed.StackTrace -split '\r?\n')[1] -replace ':.+'
+                    CurrentLine = ($NextKoanFailed.ErrorRecord.DisplayStackTrace -split '\r?\n')[1] -replace ':.+'
                 }
 
                 [PSCustomObject]@{
                     PSTypeName     = 'PSKoans.Result'
-                    Describe       = $NextKoanFailed.Describe
+                    Describe       = $NextKoanFailed.Block.Name
                     It             = $NextKoanFailed.Name
-                    Expectation    = $NextKoanFailed.ErrorRecord
-                    Meditation     = $NextKoanFailed.StackTrace
+                    Expectation    = $NextKoanFailed.ErrorRecord.DisplayErrorMessage
+                    Meditation     = $NextKoanFailed.ErrorRecord.DisplayStackTrace
                     KoansPassed    = $KoansPassed
                     TotalKoans     = $TotalKoans
                     CurrentTopic   = [PSCustomObject]$script:CurrentTopic
-                    Results        = $PesterTests.TestResult
+                    Results        = $PesterTests.Tests
                     RequestedTopic = $Topic
                 }
             }

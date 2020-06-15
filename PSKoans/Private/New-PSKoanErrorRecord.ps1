@@ -40,7 +40,7 @@ function New-PSKoanErrorRecord {
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
-    [OutputType([ErrorRecord])]
+    [OutputType([System.Management.Automation.ErrorRecord])]
     param(
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Type')]
@@ -73,8 +73,8 @@ function New-PSKoanErrorRecord {
 
         [Parameter()]
         [Alias('Category')]
-        [ErrorCategory]
-        $ErrorCategory = [ErrorCategory]::NotSpecified,
+        [System.Management.Automation.ErrorCategory]
+        $ErrorCategory = [System.Management.Automation.ErrorCategory]::NotSpecified,
 
         [Parameter()]
         [PSObject]
@@ -89,7 +89,7 @@ function New-PSKoanErrorRecord {
             $ErrorId = "PSKoans.$($ErrorId)"
         }
 
-        [ErrorRecord]::new(
+        [System.Management.Automation.ErrorRecord]::new(
             $Exception,
             $ErrorId,
             $ErrorCategory,
