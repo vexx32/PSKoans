@@ -54,7 +54,7 @@
     RequiredModules       = @(
         @{
             ModuleName      = 'Pester'
-            MinimumVersion  = '5.0.2'
+            ModuleVersion   = '5.0.2'
         }
     )
 
