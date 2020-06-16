@@ -80,7 +80,7 @@ Write-FormatView -TypeName PSKoans.Result -Name Detailed -Action {
 
     Write-FormatViewExpression -ScriptBlock { $_.Results } -ControlName Prompt.Details -Enumerate
 
-    $ExecutionContext.SessionState.PSVariable.Remove("global:_Koan_Describe")
+    $ExecutionContext.SessionState.PSVariable.Remove("global:_Koan_Block_Name")
     # $ExecutionContext.SessionState.PSVariable.Remove("global:_Koan_Context")
 
     Write-FormatViewExpression -If { $_.RequestedTopic.Count -ne 1 } -ControlName Prompt.ProgressBar -ScriptBlock {
