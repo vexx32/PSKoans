@@ -21,7 +21,7 @@ steps:
       $Params | Out-String | Write-Host
       Install-Module @Params
       $Params.Remove('SkipPublisherCheck')
-      $Params.Remove('MaximumVersion')
+      $Params.Remove('MinimumVersion')
 
       $Params.Name = 'EZOut'
       $Params.AllowClobber = $true
