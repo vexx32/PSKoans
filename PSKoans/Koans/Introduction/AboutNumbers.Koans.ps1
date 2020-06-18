@@ -26,17 +26,25 @@ Describe 'Basic Number Types' {
 
     Context 'Double' {
 
-        It 'can result from an operation involving multiple types of numbers' {
+        BeforeAll {
+            $Int = 10
+            $Double = 10.0
+        }
+
+        It 'has a specific object type for integers' {
+            'System.____' | Should -Be $Int.GetType().Fullname
+        }
+
+        It 'has a specific object type for doubles' {
+            'System.____' | Should -Be $Double.GetType().Fullname
+        }
+
+        It 'can result from mathematical operations with other number types' {
             <#
                 When doing arithmetic on different types of numbers, PowerShell
                 will automatically convert the less precise or more narrow type
                 to the other kind.
             #>
-            $Int = 10
-            $Double = 10.0
-
-            'System.____' | Should -Be $Int.GetType().Fullname
-            'System.____' | Should -Be $Double.GetType().Fullname
 
             $Result = $Int * $Double
 

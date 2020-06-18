@@ -96,6 +96,7 @@ Describe 'System.Text.StringBuilder' {
     }
 
     Context 'Constructing the Final String Object' {
+
         BeforeAll {
             $SB = [System.Text.StringBuilder]::new("Hello!")
             $SB.Append("BYE!")
@@ -115,9 +116,11 @@ Describe 'System.Text.StringBuilder' {
     }
 
     Context 'Other StringBuilder Methods' {
+
         BeforeAll {
             $StringBuilder = [System.Text.StringBuilder]::new("TEXT")
         }
+
         It 'can be cleared' {
             $StringBuilder.Clear()
             $StringBuilder.Length | Should -Be 0
@@ -143,6 +146,7 @@ Describe 'System.Text.StringBuilder' {
     }
 
     Context 'StringBuilder Properties' {
+
         BeforeAll {
             $StringBuilder = [System.Text.StringBuilder]::new()
             $StringBuilder.AppendLine('When you look into the void,')
@@ -154,12 +158,12 @@ Describe 'System.Text.StringBuilder' {
             $PropertyName = '____'
 
             $Properties = $StringBuilder |
-            Get-Member |
-            Where-Object MemberType -eq 'Property'
+                Get-Member |
+                Where-Object MemberType -EQ 'Property'
 
             $ExpectedPropertyCount = $Properties |
-            Measure-Object |
-            Select-Object -ExpandProperty Count
+                Measure-Object |
+                Select-Object -ExpandProperty Count
 
             $PropertyCount | Should -Be $ExpectedPropertyCount
             $PropertyName | Should -BeIn $Properties.Name

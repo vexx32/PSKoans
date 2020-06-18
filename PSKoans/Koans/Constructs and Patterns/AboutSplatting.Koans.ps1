@@ -15,6 +15,7 @@ param()
     'splatted' into the command by specifying the variable name with an @ symbol: @Variable
 #>
 Describe 'Splatting' {
+
     BeforeAll {
         $PSKoansFolder = Get-PSKoanLocation
     }
@@ -74,8 +75,8 @@ Describe 'Splatting' {
             }
 
             Get-ChildItem @Parameters |
-            Select-Object -First 1 |
-            Should -BeOfType 'System.IO.FileInfo'
+                Select-Object -First 1 |
+                Should -BeOfType 'System.IO.FileInfo'
         }
 
         It 'can be built from automatic hashtables' {

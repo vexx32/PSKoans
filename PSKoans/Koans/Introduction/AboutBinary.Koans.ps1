@@ -43,108 +43,155 @@ param()
     one, and 1 + 2 is equal to 3.
 #>
 
-Describe "Binary conversion" {
+Describe 'Binary Conversions' {
 
-    It "Bit conversion" {
-        # What would 0 be if converted to be boolean?
-        # Replace __ with either $true or $false
-        $____ -as [int] | Should -Be 0
+    Context 'Boolean Conversions' {
 
-        # What would 1 be if converted to be boolean?
-        # Replace __ with either $true or $false
-        $____ -as [int] | Should -Be 1
+        It 'converts $false to an integer' {
+            $ExpectedResult = $false -as [int]
+
+            # What would $false be if converted to a number?
+            __ | Should -Be $ExpectedResult
+        }
+
+        It 'converts $true to an integer' {
+            $ExpectedResult = $true -as [int]
+
+            # What would $true be if converted to a number?
+            __ | Should -Be $ExpectedResult
+        }
     }
 
-    It "Binary to integer conversion" {
-        # Replace __ with the decimal value of 1111
-        # E.G. __ becomes 1234
-        $Binary = "1111"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 1000
-        $Binary = "1000"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 0010
-        $Binary = "0010"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 1001
-        $Binary = "1001"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 11111111
-        $Binary = "11111111"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 10101010
-        $Binary = "10101010"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 11001100
-        $Binary = "11001100"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-        # Replace __ with the decimal value of 11110001
-        $Binary = "11110001"
-        $Value = __
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
-
-
-    }
-
-    It "Integer to Binary conversion" {
+    Context "Binary to Integer Conversion" {
         <#
-            Convert the following integers into their binary representation
+            Replace the blanks below with the decimal value of the binary
+            numbers in each case. For example, the binary sequence "10" is
+            represented by the number 2 in the standard decimal system.
         #>
+        It 'converts 1111 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
 
-        # Replace __ with the binary value of 7
-        # E.G. "__" becomes "0100"
-        $Binary = "____"
-        $Value = 7
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+            # Replace the __ with the decimal value of 1111
+            $Binary = "1111"
+            __ | Should -Be $ExpectedValue
+        }
 
-        # Replace __ with the binary value of 12
-        $Binary = "____"
-        $Value = 12
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+        It 'converts 1000 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
 
-        # Replace __ with the binary value of 2
-        $Binary = "____"
-        $Value = 2
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+            # Replace __ with the decimal value of 1000
+            $Binary = "1000"
+            __ | Should -Be $ExpectedValue
+        }
 
-        # Replace __ with the binary value of 14
-        $Binary = "____"
-        $Value = 14
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+        It 'converts 0010 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
 
-        # Replace __ with the binary value of 103
-        # E.G. "__" becomes "01001110"
-        $Binary = "____"
-        $Value = 103
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+            # Replace __ with the decimal value of 0010
+            $Binary = "0010"
+            __ | Should -Be $ExpectedValue
+        }
 
-        # Replace __ with the binary value of 250
-        $Binary = "____"
-        $Value = 250
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+        It 'converts 1001 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
 
-        # Replace __ with the binary value of 74
-        $Binary = "____"
-        $Value = 74
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+            # Replace __ with the decimal value of 1001
+            $Binary = "1001"
+            __ | Should -Be $ExpectedValue
+        }
 
-        # Replace __ with the binary value of 32
-        $Binary = "____"
-        $Value = 32
-        $Value | Should -Be ([Convert]::ToInt32($Binary, 2))
+        It 'converts 11111111 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
+
+            # Replace __ with the decimal value of 11111111
+            $Binary = "11111111"
+            __ | Should -Be $ExpectedValue
+        }
+
+        It 'converts 10101010 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
+
+            # Replace __ with the decimal value of 10101010
+            $Binary = "10101010"
+            __ | Should -Be $ExpectedValue
+        }
+
+        It 'converts 11001100 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
+
+            # Replace __ with the decimal value of 11001100
+            $Binary = "11001100"
+            __ | Should -Be $ExpectedValue
+        }
+
+        It 'converts 11110001 to an integer' {
+            $ExpectedValue = [Convert]::ToInt32($Binary, 2)
+
+            # Replace __ with the decimal value of 11110001
+            $Binary = "111g10001"
+            __ | Should -Be $ExpectedValue
+        }
+    }
+
+    Context "Integer to Binary Conversion" {
+        <#
+            Convert the following integers into their binary representation.
+            For example, 2 is represented in binary with the digits "10".
+        #>
+        It 'converts the integer 7 to binary' {
+            # Replace ____ with the binary value of 7
+            $Value = 7
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be $Binary
+        }
+
+        It 'converts the integer 12 to binary' {
+            # Replace __ with the binary value of 12
+            $Value = 12
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
+
+        It 'converts the integer 2 to binary' {
+            # Replace __ with the binary value of 2
+            $Value = 2
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
+
+        It 'converts the integer 14 to binary' {
+            # Replace __ with the binary value of 14
+            $Value = 14
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
+
+        It 'converts the integer 103 to binary' {
+            # Replace __ with the binary value of 103
+            $Value = 103
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
+
+        It 'converts the integer 250 to binary' {
+            # Replace __ with the binary value of 250
+            $Value = 250
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
+
+        It 'converts the integer 74 to binary' {
+            # Replace __ with the binary value of 74
+            $Value = 74
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
+
+        It 'converts the integer 32 to binary' {
+            # Replace __ with the binary value of 32
+            $Value = 32
+            $Binary = [Convert]::ToString($Value, 2)
+            '____' | Should -Be ([Convert]::ToInt32($Binary, 2))
+        }
     }
 }
