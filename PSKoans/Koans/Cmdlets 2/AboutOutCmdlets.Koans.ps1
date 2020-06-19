@@ -77,7 +77,6 @@ Context 'Out-* Cmdlets' {
             partially because in older versions of PowerShell it has a different default
             encoding than those cmdlets, frequently confusing users.
         #>
-
         It 'stores data in files' {
             $Path = 'TestDrive:\File.txt'
 
