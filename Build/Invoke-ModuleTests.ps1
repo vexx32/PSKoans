@@ -19,9 +19,16 @@ finally {
     $TestFile = "PS${PSVersion}_${TimeStamp}_PSKoans.TestResults.xml"
     $CodeCoverageFile = "PS${PSVersion}_${TimeStamp}_PSKoans.CodeCoverage.xml"
 
+    $ModuleFolders = @(
+        Get-Item -Path "$env:PROJECTROOT/PSKoans"
+        Get-ChildItem -Path "$env:PROJECTROOT/PSKoans" -Directory -Recurse |
+            Where-Object FullName -NotMatch '[\\/]Tests[\\/]|[\\/]PSKoans[\\/]Koans[\\/]'
+    ).FullName -join ';'
+
     # Tell Azure what the test results & code coverage file names will be
     Write-Host "##vso[task.setvariable variable=TestResults]$TestFile"
     Write-Host "##vso[task.setvariable variable=CodeCoverageFile]$CodeCoverageFile"
+    Write-Host "##vso[task.setvariable variable=SourceFolders]$ModuleFolders"
 
     # Move files generated from Invoke-Pester to expected location
     Move-Item -Path './testResults.xml' -Destination "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/$TestFile"
