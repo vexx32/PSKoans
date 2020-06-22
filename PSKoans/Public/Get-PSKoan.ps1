@@ -45,15 +45,19 @@ function Get-PSKoan {
         'Module' { Join-Path -Path $script:ModuleRoot -ChildPath 'Koans' }
     }
 
-    if ($pscmdlet.ParameterSetName -eq 'ListModules') {
-        $moduleList = Join-Path -Path $ParentPath -ChildPath 'Modules' |
-            Get-ChildItem -Directory |
-            Select-Object -ExpandProperty Name
+    if ($PSCmdlet.ParameterSetName -eq 'ListModules') {
+        $modulesPath = Join-Path -Path $ParentPath -ChildPath 'Modules'
 
-        return $moduleList
+        if (Test-Path $modulesPath) {
+            $modulesPath |
+                Get-ChildItem -Directory |
+                Select-Object -ExpandProperty Name
+        }
+
+        return
     }
 
-    $KoanDirectories = switch ($pscmdlet.ParameterSetName) {
+    $KoanDirectories = switch ($PSCmdlet.ParameterSetName) {
         'IncludeModule' {
             $Module = $IncludeModule
             Get-ChildItem $ParentPath -Exclude Modules -Directory
@@ -61,9 +65,11 @@ function Get-PSKoan {
         { $Module } {
             $ModuleRegex = ConvertFrom-WildcardPattern -Pattern $Module
 
-            Join-Path -Path $ParentPath -ChildPath 'Modules' |
-                Get-ChildItem -Directory |
+            $modulesPath = Join-Path -Path $ParentPath -ChildPath 'Modules'
+            if (Test-Path $modulesPath) {
+                Get-ChildItem $modulesPath -Directory |
                 Where-Object { $_.Name -match $ModuleRegex }
+            }
         }
     }
 
