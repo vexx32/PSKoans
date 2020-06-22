@@ -28,7 +28,6 @@ function Show-Karma {
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
         [Parameter(Mandatory, ParameterSetName = 'ListKoans-IncludeModule')]
         [Parameter(Mandatory, ParameterSetName = 'OpenFile-IncludeModule')]
-        [Alias('Meditate')]
         [SupportsWildcards()]
         [string[]]
         $IncludeModule,
