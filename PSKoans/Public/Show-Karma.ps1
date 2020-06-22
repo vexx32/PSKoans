@@ -5,9 +5,13 @@ function Show-Karma {
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path', 'Measure-Karma')]
     param(
         [Parameter(ParameterSetName = 'ListKoans')]
+        [Parameter(ParameterSetName = 'ListKoans-ModuleOnly')]
+        [Parameter(ParameterSetName = 'ListKoans-IncludeModule')]
         [Parameter(ParameterSetName = 'ModuleOnly')]
         [Parameter(ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'OpenFile')]
+        [Parameter(ParameterSetName = 'OpenFile-ModuleOnly')]
+        [Parameter(ParameterSetName = 'OpenFile-IncludeModule')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
         [SupportsWildcards()]
@@ -15,22 +19,30 @@ function Show-Karma {
         $Topic,
 
         [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
-        [Parameter(ParameterSetName = 'ListKoans')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-ModuleOnly')]
         [SupportsWildcards()]
         [string[]]
         $Module,
 
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-IncludeModule')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-IncludeModule')]
+        [Alias('Meditate')]
         [SupportsWildcards()]
         [string[]]
         $IncludeModule,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-IncludeModule')]
         [Alias('ListKoans', 'ListTopics')]
         [switch]
         $List,
 
         [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-IncludeModule')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
@@ -61,7 +73,7 @@ function Show-Karma {
     }
 
     switch ($PSCmdlet.ParameterSetName) {
-        'ListKoans' {
+        { $_ -match '^ListKoans' } {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
@@ -140,12 +152,12 @@ function Show-Karma {
             try {
                 Get-Karma @GetParams |
                     Format-Custom @FormatParams |
-                    Out-String |
-                    Write-Host
+                    Out-Host
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
         }
     }
+}
 }
