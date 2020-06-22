@@ -98,7 +98,7 @@ function Show-Karma {
                 $KoanLocation | Invoke-Item
             }
         }
-        'OpenFile' {
+        {$_ -match '^OpenFile'} {
             # If there is no cached data, we need to call Get-Karma to populate it
             if (-not $script:CurrentTopic -or ($Topic -and $script:CurrentTopic.Name -notlike $Topic)) {
                 try {
@@ -159,5 +159,4 @@ function Show-Karma {
             }
         }
     }
-}
 }
