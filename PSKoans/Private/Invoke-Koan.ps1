@@ -27,16 +27,26 @@
     )
     end {
         try {
+            $Requirements = (Get-Command $ParameterSplat.Script).ScriptBlock.Ast.ScriptRequirements
+
             $Script = {
-                param( $Params )
+                param( $Params, $RequiredModules )
 
                 . ([scriptblock]::Create('using module PSKoans'))
+                foreach ($module in $RequiredModules) {
+                    Import-Module $module
+                }
+
                 Invoke-Pester @Params
             }
 
             $Thread = [powershell]::Create()
             $Thread.AddScript($Script) > $null
-            $Thread.AddArgument($ParameterSplat) > $null
+            $Thread.AddParameter('Params', $ParameterSplat) > $null
+
+            if ($Requirements.RequiredModules) {
+                $Thread.AddParameter('RequiredModules', $Requirements.RequiredModules)
+            }
 
             $Status = $Thread.BeginInvoke()
 
