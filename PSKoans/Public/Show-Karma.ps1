@@ -66,8 +66,8 @@ function Show-Karma {
 
     $GetParams = @{ }
     switch ($PSCmdlet.ParameterSetName) {
-        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $_ -match 'IncludeModule$' } { $GetParams['IncludeModule'] = $IncludeModule }
+        { $_ -match 'ModuleOnly$' } { $GetParams['Module'] = $Module }
         { $PSBoundParameters.ContainsKey('Topic') } { $GetParams['Topic'] = $Topic }
     }
 
