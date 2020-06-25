@@ -12,7 +12,7 @@ Write-Host $Lines
 
 try {
     # Try/Finally required since -CI will exit with exit code on failure.
-    Invoke-Pester -Path "$env:PROJECTROOT/Tests" -CI -Output Normal
+    Invoke-Pester -Path "$env:PROJECTROOT" -CI -Output Normal
 }
 finally {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
