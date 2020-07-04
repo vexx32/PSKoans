@@ -27,12 +27,23 @@
     )
     end {
         try {
-            $Requirements = (Get-Command $ParameterSplat.Script).ScriptBlock.Ast.ScriptRequirements
+            $Requirements = [System.Management.Automation.Language.Parser]::ParseFile(
+                $ParameterSplat.Script,
+                [ref]$null,
+                [ref]$null
+            ).Ast.ScriptRequirements
 
             $Script = {
-                param( $Params, $RequiredModules )
+                param( $Params, $RequiredModules, $PSKoansPath, $PSModulePath )
 
-                . ([scriptblock]::Create('using module PSKoans'))
+                [System.Collections.Generic.HashSet[string]] $ModulePaths = @(
+                    $PSModulePath -split [System.IO.Path]::PathSeparator
+                    $env:PSModulePath -split [System.IO.Path]::PathSeparator
+                )
+
+                $env:PSModulePath = $ModulePaths -join [System.IO.Path]::PathSeparator
+
+                Import-Module $PSKoansPath
                 foreach ($module in $RequiredModules) {
                     Import-Module $module
                 }
@@ -40,22 +51,33 @@
                 Invoke-Pester @Params
             }
 
-            $Thread = [powershell]::Create()
-            $Thread.AddScript($Script) > $null
-            $Thread.AddParameter('Params', $ParameterSplat) > $null
+            $Runspace = [powershell]::Create()
+            $Runspace.AddScript($Script) > $null
+            $Runspace.AddParameter('Params', $ParameterSplat) > $null
+            $Runspace.AddParameter('PSKoansPath', $MyInvocation.MyCommand.Module.ModuleBase) > $null
+            $Runspace.AddParameter('PSModulePath', $env:PSModulePath) > $null
 
             if ($Requirements.RequiredModules) {
-                $Thread.AddParameter('RequiredModules', $Requirements.RequiredModules)
+                $Runspace.AddParameter('RequiredModules', $Requirements.RequiredModules)
             }
 
-            $Status = $Thread.BeginInvoke()
+            $Status = $Runspace.BeginInvoke()
 
             do { Start-Sleep -Milliseconds 1 } until ($Status.IsCompleted)
 
-            $Thread.EndInvoke($Status)
+            $Result = $Runspace.EndInvoke($Status)
+
+            if ($Runspace.HadErrors) {
+                # These will be errors outside the test itself; better propagate them upwards.
+                foreach ($errorItem in $Runspace.Streams.Error) {
+                    $PSCmdlet.WriteError($errorItem)
+                }
+            }
+
+            $Result
         }
         finally {
-            $Thread.Dispose()
+            $Runspace.Dispose()
         }
     }
 }
