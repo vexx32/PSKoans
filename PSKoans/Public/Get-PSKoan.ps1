@@ -68,7 +68,7 @@ function Get-PSKoan {
             $modulesPath = Join-Path -Path $ParentPath -ChildPath 'Modules'
             if (Test-Path $modulesPath) {
                 Get-ChildItem $modulesPath -Directory |
-                Where-Object { $_.Name -match $ModuleRegex }
+                    Where-Object { $_.Name -match $ModuleRegex }
             }
         }
     }
