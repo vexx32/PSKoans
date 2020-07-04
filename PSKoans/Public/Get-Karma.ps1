@@ -37,13 +37,24 @@
         'ListKoans' {
             Get-PSKoan @GetParams
         }
-        "Default" {
+        default {
             Write-Verbose 'Sorting koans...'
             try {
                 $SortedKoanList = Get-PSKoan @GetParams
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
+            }
+
+            foreach ($item in $IncludeModule) {
+                if ($SortedKoanList.Where{ $_.Module -notlike $item }.Count -eq 0) {
+                    $warningString = @(
+                        "Koans for a module name matching '$item' were not found in your user directory."
+                        "Please run Update-PSKoan -Module $item to ensure those modules are present."
+                    ) -join ' '
+
+                    Write-Warning $warningString
+                }
             }
 
             Write-Verbose "Koan files retrieved: $($SortedKoanList.Count)"
@@ -68,9 +79,24 @@
                     $PSCmdlet.ThrowTerminatingError( (New-PSKoanErrorRecord @ErrorDetails) )
                 }
 
+                if ($Module) {
+                    # No koans were found because modules aren't copied by default.
+                    Update-PSKoan -Module $Module -Confirm:$false
+                    Get-Karma @PSBoundParameters
+
+                    return
+                }
+
                 # Something's wrong; possibly a koan folder from older versions, or a folder exists but has no files
+                $Modules = if ($IncludeModule) {
+                    @{ IncludeModule = $IncludeModule }
+                }
+                else {
+                    @{ }
+                }
+
                 Write-Warning 'No koans found in your koan directory. Initiating full reset...'
-                Update-PSKoan -Confirm:$false
+                Update-PSKoan -Confirm:$false @Modules
                 Get-Karma @PSBoundParameters # Re-call ourselves with the same parameters
 
                 return # Skip the rest of the function
