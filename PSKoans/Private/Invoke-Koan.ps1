@@ -43,7 +43,7 @@
 
                 $env:PSModulePath = $ModulePaths -join [System.IO.Path]::PathSeparator
 
-                Import-Module $PSKoansPath
+                Get-Module $PSKoansPath -ListAvailable | Import-Module
                 foreach ($module in $RequiredModules) {
                     Import-Module $module
                 }
