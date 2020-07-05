@@ -31,6 +31,12 @@
     )
     begin {
         $KoanCount = 0
+        $oldModulePath = $env:PSModulePath
+
+        $env:PSModulePath = @(
+            $MyInvocation.MyCommand.Module.ModuleBase
+            $env:PSModulePath -split [System.IO.Path]::PathSeparator
+        ) -join [System.IO.Path]::PathSeparator
     }
     process {
         Write-Verbose "Discovering koans in [$($KoanInfo.Name -join '], [')]"
@@ -69,5 +75,7 @@
     end {
         Write-Verbose "Total Koans: $KoanCount"
         $KoanCount
+
+        $env:PSModulePath = $oldModulePath
     }
 }
