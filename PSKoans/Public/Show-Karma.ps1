@@ -97,7 +97,7 @@ function Show-Karma {
                 $KoanLocation | Invoke-Item
             }
         }
-        {$_ -match '^OpenFile'} {
+        { $_ -match '^OpenFile' } {
             # If there is no cached data, we need to call Get-Karma to populate it
             if (-not $script:CurrentTopic -or ($Topic -and $script:CurrentTopic.Name -notlike $Topic)) {
                 try {
@@ -110,7 +110,12 @@ function Show-Karma {
             }
 
             $Editor = Get-PSKoanSetting -Name Editor
-            $FilePath = (Get-PSKoan -Topic $script:CurrentTopic.Name -Scope User).Path
+            $KoanParams = @{
+                Topic         = $script:CurrentTopic.Name
+                IncludeModule = @( $Module; $IncludeModule )
+                Scope         = 'User'
+            }
+            $FilePath = (Get-PSKoan @KoanParams).Path
             $LineNumber = $script:CurrentTopic.CurrentLine
 
             $Arguments = switch ($Editor) {
