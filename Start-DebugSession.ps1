@@ -5,7 +5,7 @@ $env:PSModulePath = $(
     ) | Select-Object -Unique
 ) -join [System.IO.Path]::PathSeparator
 
+& $PSScriptRoot/PSKoans.ezformat.ps1
 Import-Module $PSScriptRoot/PSKoans
 
 ### Enter code to test below
-Invoke-Pester -Path $PSScriptRoot/Tests/Functions/Public/Show-Karma.Tests.ps1
