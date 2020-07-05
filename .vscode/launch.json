@@ -5,36 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "PowerShell Launch Current File",
+            "name": "PowerShell Launch Script",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "./Start-DebugSession.ps1",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "PowerShell: Launch Current File",
             "type": "PowerShell",
             "request": "launch",
             "script": "${file}",
-            "args": [],
             "cwd": "${file}"
-        },
-        {
-            "name": "PowerShell Launch Current File in Temporary Console",
-            "type": "PowerShell",
-            "request": "launch",
-            "script": "${file}",
-            "args": [],
-            "cwd": "${file}",
-            "createTemporaryIntegratedConsole": true
-        },
-        {
-            "name": "PowerShell Launch Current File w/Args Prompt",
-            "type": "PowerShell",
-            "request": "launch",
-            "script": "${file}",
-            "args": [
-                "${command:SpecifyScriptArgs}"
-            ],
-            "cwd": "${file}"
-        },
-        {
-            "name": "PowerShell Attach to Host Process",
-            "type": "PowerShell",
-            "request": "attach"
         },
         {
             "name": "PowerShell Interactive Session",
@@ -47,6 +29,12 @@
             "type": "PowerShell",
             "request": "attach",
             "processId": "current"
+        },
+        {
+            "name": "PowerShell Attach to Host Process",
+            "type": "PowerShell",
+            "request": "attach",
+            "runspaceId": 1
         }
     ]
 }

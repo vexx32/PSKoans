@@ -5,9 +5,13 @@ function Show-Karma {
     [Alias('Invoke-PSKoans', 'Test-Koans', 'Get-Enlightenment', 'Meditate', 'Clear-Path', 'Measure-Karma')]
     param(
         [Parameter(ParameterSetName = 'ListKoans')]
+        [Parameter(ParameterSetName = 'ListKoans-ModuleOnly')]
+        [Parameter(ParameterSetName = 'ListKoans-IncludeModule')]
         [Parameter(ParameterSetName = 'ModuleOnly')]
         [Parameter(ParameterSetName = 'IncludeModule')]
         [Parameter(ParameterSetName = 'OpenFile')]
+        [Parameter(ParameterSetName = 'OpenFile-ModuleOnly')]
+        [Parameter(ParameterSetName = 'OpenFile-IncludeModule')]
         [Parameter(ParameterSetName = 'Default')]
         [Alias('Koan', 'File')]
         [SupportsWildcards()]
@@ -15,22 +19,29 @@ function Show-Karma {
         $Topic,
 
         [Parameter(Mandatory, ParameterSetName = 'ModuleOnly')]
-        [Parameter(ParameterSetName = 'ListKoans')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-ModuleOnly')]
         [SupportsWildcards()]
         [string[]]
         $Module,
 
         [Parameter(Mandatory, ParameterSetName = 'IncludeModule')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-IncludeModule')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-IncludeModule')]
         [SupportsWildcards()]
         [string[]]
         $IncludeModule,
 
         [Parameter(Mandatory, ParameterSetName = 'ListKoans')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'ListKoans-IncludeModule')]
         [Alias('ListKoans', 'ListTopics')]
         [switch]
         $List,
 
         [Parameter(Mandatory, ParameterSetName = 'OpenFile')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-ModuleOnly')]
+        [Parameter(Mandatory, ParameterSetName = 'OpenFile-IncludeModule')]
         [Alias('Meditate')]
         [switch]
         $Contemplate,
@@ -55,13 +66,13 @@ function Show-Karma {
 
     $GetParams = @{ }
     switch ($PSCmdlet.ParameterSetName) {
-        'IncludeModule' { $GetParams['IncludeModule'] = $IncludeModule }
-        'ModuleOnly' { $GetParams['Module'] = $Module }
+        { $_ -match 'IncludeModule$' } { $GetParams['IncludeModule'] = $IncludeModule }
+        { $_ -match 'ModuleOnly$' } { $GetParams['Module'] = $Module }
         { $PSBoundParameters.ContainsKey('Topic') } { $GetParams['Topic'] = $Topic }
     }
 
     switch ($PSCmdlet.ParameterSetName) {
-        'ListKoans' {
+        { $_ -match '^ListKoans' } {
             Get-PSKoan @GetParams
         }
         'OpenFolder' {
@@ -86,7 +97,7 @@ function Show-Karma {
                 $KoanLocation | Invoke-Item
             }
         }
-        'OpenFile' {
+        { $_ -match '^OpenFile' } {
             # If there is no cached data, we need to call Get-Karma to populate it
             if (-not $script:CurrentTopic -or ($Topic -and $script:CurrentTopic.Name -notlike $Topic)) {
                 try {
@@ -99,7 +110,12 @@ function Show-Karma {
             }
 
             $Editor = Get-PSKoanSetting -Name Editor
-            $FilePath = (Get-PSKoan -Topic $script:CurrentTopic.Name -Scope User).Path
+            $KoanParams = @{
+                Topic         = $script:CurrentTopic.Name
+                IncludeModule = @( $Module; $IncludeModule )
+                Scope         = 'User'
+            }
+            $FilePath = (Get-PSKoan @KoanParams).Path
             $LineNumber = $script:CurrentTopic.CurrentLine
 
             $Arguments = switch ($Editor) {
@@ -140,8 +156,7 @@ function Show-Karma {
             try {
                 Get-Karma @GetParams |
                     Format-Custom @FormatParams |
-                    Out-String |
-                    Write-Host
+                    Out-Host
             }
             catch {
                 $PSCmdlet.ThrowTerminatingError($_)
