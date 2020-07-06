@@ -258,7 +258,7 @@ Describe 'Show-Karma' {
                 }
             }
 
-            Mock 'Get-PSKoan' -ParameterFilter { $Topic -eq 'TestTopic' -and $Scope -eq 'User' } {
+            Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' } {
                 [PSCustomObject]@{ Path = $TestFile.FullName }
             }
         }
@@ -283,6 +283,33 @@ Describe 'Show-Karma' {
 
             Should -Invoke 'Get-Command' -Times 1 -Exactly
             Should -Invoke 'Start-Process' -Times 1 -Exactly
+
+            InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
+        }
+
+
+        $moduleCases = @(
+            @{ ModuleName = 'ActiveDirectory' }
+            @{ ModuleName = 'dbatools' }
+        )
+        It 'opens the selected editor targeting koans for the <ModuleName> module' -TestCases $moduleCases {
+            Set-PSKoanSetting -Name Editor -Value 'code'
+            $Result = Show-Karma -Contemplate -Module $ModuleName
+
+            $Result.Editor | Should -BeExactly 'code'
+            $Result.Arguments[0] | Should -BeExactly '--goto'
+            $Result.Arguments[1] | Should -MatchExactly '"[^"]+":\d+'
+            $Result.Arguments[2] | Should -BeExactly '--reuse-window'
+            $Result.NoNewWindow | Should -BeTrue
+
+            # Resolve-Path doesn't like embedded quotes
+            $Path = ($Result.Arguments[1] -split '(?<="):')[0] -replace '"'
+            $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
+
+            Should -Invoke 'Get-Command' -Times 1 -Exactly
+            Should -Invoke 'Start-Process' -Times 1 -Exactly
+            Should -Invoke 'Get-Karma' -ParameterFilter { $Module -eq $ModuleName }
+            Should -Invoke 'Get-PSKoan' -ParameterFilter { $IncludeModule -eq $ModuleName }
 
             InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
         }
