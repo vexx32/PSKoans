@@ -191,8 +191,8 @@ If you would like to support the project, you can:
 - [Donate with Ko-fi][ko-fi]
 
 [blog]: https://vexx32.github.io
-[build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI
-[build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1
+[build-badge]: https://dev.azure.com/SallowCode/PSKoans/_apis/build/status/PSKoans%20CI?branchName=main
+[build-link]: https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1&branchName=main
 [contributing]: CONTRIBUTING.md
 [coverage-badge]: https://img.shields.io/azure-devops/coverage/SallowCode/PSKoans/1
 [define-koan]: https://en.wikipedia.org/wiki/K%C5%8Dan
