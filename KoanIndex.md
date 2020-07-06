@@ -60,13 +60,18 @@ When adding or updating koan topics, please keep this file up to date.
 
 ### ActiveDirectory
 
-| Folder                  | Topic                                                          | Position |
-| ----------------------- | :------------------------------------------------------------- | :------: |
-| Introduction            | [AboutFiltering][ActiveDirectory\AboutFiltering]               |   101    |
+| Folder       | Topic                                            | Position |
+| ------------ | :----------------------------------------------- | :------: |
+| Introduction | [AboutFiltering][ActiveDirectory\AboutFiltering] |   101    |
 
 ### Dbatools
 
-> TBD
+| Folder   | Topic                                                     | Position |
+| -------- | :-------------------------------------------------------- | :------: |
+| dbatools | [AboutDbaDatabase][dbatools\AboutDbaDatabase]             |   1001   |
+| dbatools | [AboutQueryingDatabases][dbatools\AboutQueryingDatabases] |   1002   |
+| dbatools | [AboutNewDatabases][dbatools\AboutNewDatabases]           |   1003   |
+| dbatools | [AboutBackupDatabases][dbatools\AboutBackupDatabases]     |   1004   |
 
 <!-- Links for default koan topics -->
 
@@ -120,3 +125,8 @@ When adding or updating koan topics, please keep this file up to date.
 <!-- Add links for koans from other modules below this line -->
 
 [ActiveDirectory\AboutFiltering]: PSKoans/Koans/Modules/ActiveDirectory/Introduction/AboutFiltering.Koans.ps1
+
+[dbatools\AboutDbaDatabase]: PSKoans/Koans/Modules/dbatools/AboutDbaDatabase.Koans.ps1
+[dbatools\AboutQueryingDatabases]: PSKoans/Koans/Modules/dbatools/AboutQueryingDatabases.Koans.ps1
+[dbatools\AboutNewDatabases]: PSKoans/Koans/Modules/dbatools/AboutNewDatabases.Koans.ps1
+[dbatools\AboutBackupDatabases]: PSKoans/Koans/Modules/dbatools/AboutBackupDatabases.Koans.ps1

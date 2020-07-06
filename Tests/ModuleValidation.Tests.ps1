@@ -1,49 +1,52 @@
-$ProjectRoot = Resolve-Path "$PSScriptRoot/.."
-$ModuleRoot = Split-Path (Resolve-Path "$ProjectRoot/*/*.psm1")
-$ModuleName = Split-Path $ModuleRoot -Leaf
+Describe 'Static Analysis: Module & Repository Files' {
 
-Describe "General project validation: $ModuleName" {
-
-    BeforeAll {
-        $FileSearch = @{
-            Path    = $ProjectRoot
-            Include = '*.ps1', '*.psm1', '*.psd1'
-            Recurse = $true
-            Exclude = '*.Koans.ps1'
-        }
-        $Scripts = Get-ChildItem @FileSearch
-
-        # TestCases are splatted to the script so we need hashtables
-        $TestCases = $Scripts | ForEach-Object { @{File = $_ } }
+    #region Discovery
+    $FileSearch = @{
+        Path    = Resolve-Path "$PSScriptRoot/.."
+        Include = '*.ps1', '*.psm1', '*.psd1'
+        Recurse = $true
+        Exclude = '*.Koans.ps1'
     }
+    $Scripts = Get-ChildItem @FileSearch
 
-    It '<File> should be valid powershell' -TestCases $TestCases {
-        param($File)
+    $TestCases = $Scripts | ForEach-Object { @{ File = $_ } }
+    #endregion Discovery
 
-        $File.FullName | Should -Exist
+    Context 'Repository Code' {
 
-        $FileContents = Get-Content -Path $File.FullName -ErrorAction Stop
-        $Errors = $null
-        [System.Management.Automation.PSParser]::Tokenize($FileContents, [ref]$Errors) > $null
-        $Errors.Count | Should -Be 0
-    }
+        It 'has no invalid syntax errors in <File>' -TestCases $TestCases {
+            $File.FullName | Should -Exist
 
-    It '<File> should include one (and only one) line feed at end of file' -TestCases $TestCases {
-        param($File)
-        $crlf = [Regex]::Match(($File | Get-Content -Raw), '(\r?(?<lf>\n))+\Z')
-        $crlf.Groups['lf'].Captures.Count | Should -Be 1
-    }
-
-    It 'can cleanly import the module' {
-        { Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force } | Should -Not -Throw
-    }
-
-    It 'can remove and re-import the module without errors' {
-        $Script = {
-            Remove-Module $ModuleName
-            Import-Module (Join-Path -Path $ModuleRoot -ChildPath "$ModuleName.psm1")
+            $FileContents = Get-Content -Path $File.FullName -ErrorAction Stop
+            $Errors = $null
+            [System.Management.Automation.PSParser]::Tokenize($FileContents, [ref]$Errors) > $null
+            $Errors.Count | Should -Be 0
         }
 
-        $Script | Should -Not -Throw
+        It 'has exactly one line feed at EOF in <File>' -TestCases $TestCases {
+            $crlf = [Regex]::Match(($File | Get-Content -Raw), '(\r?(?<lf>\n))+\Z')
+            $crlf.Groups['lf'].Captures.Count | Should -Be 1
+        }
+    }
+
+    Context 'Module Import' {
+
+        BeforeAll {
+            $ModuleName = 'PSKoans'
+            $ModuleRoot = (Get-Module -Name $ModuleName).ModuleBase
+        }
+
+        It 'cleanly imports the module' {
+            { Import-Module (Join-Path $ModuleRoot "$ModuleName.psm1") -Force } | Should -Not -Throw
+        }
+
+        It 'removes and re-imports the module without errors' {
+            $Script = {
+                Remove-Module $ModuleName
+                Import-Module (Join-Path -Path $ModuleRoot -ChildPath "$ModuleName.psm1")
+            }
+
+            $Script | Should -Not -Throw
+        }
     }
 }

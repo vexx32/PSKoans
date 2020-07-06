@@ -25,6 +25,11 @@
         [hashtable]
         $ParameterSplat
     )
+    begin {
+        if (-not $script:KoanRunspace) {
+            $script:KoanRunspace = New-KoanRunspace
+        }
+    }
     end {
         try {
             $Requirements = [System.Management.Automation.Language.Parser]::ParseFile(
@@ -34,42 +39,47 @@
             ).Ast.ScriptRequirements
 
             $Script = {
-                param( $Params, $RequiredModules, $PSKoansPath, $PSModulePath )
+                param( $Params, $RequiredModules, $PSModulePath )
 
-                [System.Collections.Generic.HashSet[string]] $ModulePaths = @(
-                    $PSModulePath -split [System.IO.Path]::PathSeparator
-                    $env:PSModulePath -split [System.IO.Path]::PathSeparator
-                )
+                $oldModulePath = $env:PSModulePath
+                try {
+                    $env:PSModulePath = @(
+                        $PSKoansPath | Split-Path -Parent
+                        $PSModulePath -split [System.IO.Path]::PathSeparator
+                        $env:PSModulePath -split [System.IO.Path]::PathSeparator
+                    ) -join [System.IO.Path]::PathSeparator
 
-                $env:PSModulePath = $ModulePaths -join [System.IO.Path]::PathSeparator
+                    foreach ($module in $RequiredModules) {
+                        Import-Module $module
+                    }
 
-                Get-Module $PSKoansPath -ListAvailable | Import-Module
-                foreach ($module in $RequiredModules) {
-                    Import-Module $module
+                    . ([scriptblock]::Create('using module PSKoans'))
+                    Invoke-Pester @Params
                 }
-
-                Invoke-Pester @Params
+                finally {
+                    $env:PSModulePath = $oldModulePath
+                }
             }
 
-            $Runspace = [powershell]::Create()
-            $Runspace.AddScript($Script) > $null
-            $Runspace.AddParameter('Params', $ParameterSplat) > $null
-            $Runspace.AddParameter('PSKoansPath', $MyInvocation.MyCommand.Module.ModuleBase) > $null
-            $Runspace.AddParameter('PSModulePath', $env:PSModulePath) > $null
+            $ps = [powershell]::Create($script:KoanRunspace)
+            $ps.AddScript($Script, <# useLocalScope: #> $true) > $null
+
+            $ps.AddParameter('Params', $ParameterSplat) > $null
+            $ps.AddParameter('PSModulePath', $env:PSModulePath) > $null
 
             if ($Requirements.RequiredModules) {
-                $Runspace.AddParameter('RequiredModules', $Requirements.RequiredModules)
+                $ps.AddParameter('RequiredModules', $Requirements.RequiredModules)
             }
 
-            $Status = $Runspace.BeginInvoke()
+            $Status = $ps.BeginInvoke()
 
-            do { Start-Sleep -Milliseconds 1 } until ($Status.IsCompleted)
+            do { Start-Sleep -Milliseconds 100 } until ($Status.IsCompleted)
 
-            $Result = $Runspace.EndInvoke($Status)
+            $Result = $ps.EndInvoke($Status)
 
-            if ($Runspace.HadErrors) {
+            if ($ps.HadErrors) {
                 # These will be errors outside the test itself; better propagate them upwards.
-                foreach ($errorItem in $Runspace.Streams.Error) {
+                foreach ($errorItem in $ps.Streams.Error) {
                     $PSCmdlet.WriteError($errorItem)
                 }
             }
@@ -77,7 +87,7 @@
             $Result
         }
         finally {
-            $Runspace.Dispose()
+            $ps.Dispose()
         }
     }
 }

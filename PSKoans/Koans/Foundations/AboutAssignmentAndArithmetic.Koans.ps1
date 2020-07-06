@@ -98,6 +98,7 @@ Describe 'Arithmetic Operators' {
             __ | Should -Be $Array
         }
     }
+
     Context 'Subtraction' {
 
         It 'works similarly to addition' {
@@ -148,9 +149,10 @@ Describe 'Arithmetic Operators' {
     }
 
     Context 'Modulus' {
-
-        # Modulus is a bit of an odd one, but common enough in programming. It performs a
-        # division, and then returns the integer value of the remainder.
+        <#
+                Modulus is a bit of an odd one, but common enough in programming. It performs a
+            division, and then returns the integer value of the remainder.
+        #>
         It 'is usually used with integers' {
             $Remainder = 15 % 7
             __ | Should -Be $Remainder

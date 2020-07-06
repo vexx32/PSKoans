@@ -21,6 +21,7 @@ $script:DefaultSettings = @{
 }
 
 [hashtable] $script:CurrentTopic = $null
+[runspace] $script:KoanRunspace = $null
 
 #region SupportingClasses
 

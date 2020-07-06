@@ -57,7 +57,7 @@ Write-FormatCustomView -AsControl -Name Prompt.Koan -Action {
     Write-FormatViewExpression -ScriptBlock {
         & (Get-Module -Name PSKoans) {
             $ReplacementPattern = '$1    {0} ' -f [char]0x258c
-            (Get-Random -InputObject $script:MeditationStrings) -replace '^|(\r?\n)', $ReplacementPattern
+            ($script:MeditationStrings | Get-Random) -replace '^|(\r?\n)', $ReplacementPattern
         }
     } -ForegroundColor 'PSKoans.Meditation.Emphasis'
 
@@ -123,38 +123,87 @@ Write-FormatCustomView -AsControl -Name Prompt.Details -Action {
     Write-FormatViewExpression -Newline
 
     Write-FormatViewExpression -If {
-        $_.Describe -and
-        $_.Describe -ne $global:_Koan_Describe
+        $_.Block.Name -and
+        $_.Block.Name -ne $global:_Koan_Block_Name
     } -ScriptBlock {
-        $global:_Koan_Describe = $_.Describe
-        $Indent = " " * 4
+        function Get-Depth {
+            param($Block)
 
-        '{0}Describing {1}{2}' -f $Indent, $_.Describe, [Environment]::NewLine
+            if (-not $Block) {
+                0
+                return
+            }
+
+            if (-not $Block.Parent) {
+                1
+            }
+            else {
+                1 + (Get-Depth -Block $Block.Parent)
+            }
+        }
+
+        $global:_Koan_Block_Name = $_.Block.Name
+        $Depth = Get-Depth $_.Block
+        $Indent = " " * (4 * $Depth)
+
+        '{0}|{1}| {2}{3}' -f $Indent, [char]0x39e, $_.Block.Name, [Environment]::NewLine
     } -ForegroundColor 'PSKoans.Meditation.Text'
 
-    Write-FormatViewExpression -If {
-        $_.Context -and
-        $_.Context -ne $global:_Koan_Context
-    } -ScriptBlock {
-        $global:_Koan_Context = $_.Context
-        $IndentSpaces = 4
-        if ($_.Context) { $IndentSpaces += 2 }
-        $Indent = " " * $IndentSpaces
+    <# OMITTED - Pester v5 doesn't distinguish its blocks after runs (Describe/Context aren't distinguishable)
+        Write-FormatViewExpression -If {
+            $_.Context -and
+            $_.Context -ne $global:_Koan_Context
+        } -ScriptBlock {
+            $global:_Koan_Context = $_.Context
+            $IndentSpaces = 4
+            if ($_.Context) { $IndentSpaces += 2 }
+            $Indent = " " * $IndentSpaces
 
-        '{0}{1}{2}' -f $Indent, $_.Context, [Environment]::NewLine
-    } -ForegroundColor 'PSKoans.Meditation.Emphasis'
-
+            '{0}{1}{2}' -f $Indent, $_.Context, [Environment]::NewLine
+        } -ForegroundColor 'PSKoans.Meditation.Emphasis'
+    #>
     Write-FormatViewExpression -If { $_.Passed } -ScriptBlock {
-        $IndentSpaces = 4
-        if ($_.Context) { $IndentSpaces += 4 } elseif ($_.Describe) { $Indent += 2 }
+        function Get-Depth {
+            param($Block)
+
+            if (-not $Block) {
+                0
+                return
+            }
+
+            if (-not $Block.Parent) {
+                1
+            }
+            else {
+                1 + (Get-Depth -Block $Block.Parent)
+            }
+        }
+
+        $IndentSpaces = 2 + 4 * (Get-Depth $_.Block)
         $Indent = " " * $IndentSpaces
 
         '{0}[{1}] It {2}' -f $Indent, [char]0x25b8, $_.Name
     } -ForegroundColor 'PSKoans.Meditation.Passed'
 
     Write-FormatViewExpression -If { -not $_.Passed } -ScriptBlock {
-        $IndentSpaces = 4
-        if ($_.Context) { $IndentSpaces += 4 } elseif ($_.Describe) { $Indent += 2 }
+        function Get-Depth {
+            param($Block)
+
+            if (-not $Block) {
+                0
+                return
+            }
+
+            if (-not $Block.Parent) {
+                1
+            }
+            else {
+                1 + (Get-Depth -Block $Block.Parent)
+            }
+        }
+
+        $Depth = Get-Depth $_.Block
+        $IndentSpaces = 2 + 4 * $Depth
         $Indent = " " * $IndentSpaces
 
         '{0}[{1}] It {2}' -f $Indent, [char]0xd7, $_.Name

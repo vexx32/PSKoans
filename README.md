@@ -57,16 +57,11 @@ To install the latest version of Pester, use the appropriate command for your ve
 
 ```PowerShell
 # PS 5.1 (upgrade to latest Pester)
-Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -MaximumVersion 4.99.99
+Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -MinimumVersion 5.0.2
 
 # PS 6.0+ (Install Pester under current user)
-Install-Module Pester -Scope CurrentUser -MaximumVersion 4.99.99
+Install-Module Pester -Scope CurrentUser -MinimumVersion 5.0.2
 ```
-
-> :warning: **WARNING**
->
-> PSKoans is not yet compatible with v5 of Pester, and I have (unwisely) neglected to set the -MaximumVersion in the PSKoans module manifest as yet.
-> I will make some fixes shortly, but in the meantime you cannot have v5 of Pester installed if you would like to use PSKoans.
 
 ## Getting Started
 

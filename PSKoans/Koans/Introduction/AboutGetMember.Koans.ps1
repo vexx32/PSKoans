@@ -38,95 +38,129 @@ param()
 #>
 
 Describe "Get Member" {
-<#
-    Use Get-Member to identify properties or methods of some common objects!
 
-    Make sure you use a different cmdlet each time, we'll be checking :)
-#>
+    Context 'Exploring Object Properties' {
+        <#
+            Let's look at some object properties!
 
-    It 'allows us to explore properties on an object' {
+            Using any three cmdlets you like (make sure you use three different
+            cmdlets!), use Get-Member in your console to peek at the properties
+            on the object.
 
-        # Get some properties!
+            Let's see an example; by sending the output from Get-Process into
+            Get-Member we can inspect the objects Get-Process outputs. You can
+            run the below command in your console:
 
-        <# EXAMPLE
+                Get-Process | Get-Member -MemberType Property
 
-        $Cmdlet1 = 'Get-Process'
-        $PropertyName = 'Threads'
-        $Reason = $BecauseString -f $PropertyName, $cmdlet1
-        & (Get-Command -Name $Cmdlet1) |
-            Get-Member -MemberType Property -Name $PropertyName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+            From the output of the above command, we will see that one of the
+            properties is named "Threads", so using that cmdlet name and that
+            property name will satisfy one of the tests below.
 
+            The others are up to you! Get-* cmdlets will be most helpful here;
+            if you're not sure which to try, you can use the following command
+            to list Get-* cmdlets you can try out:
+
+                Get-Command -Verb Get
         #>
-        $BecauseString = "property '{0}' should be present in output from {1}"
+        BeforeAll {
+            $Cmdlets = [System.Collections.Generic.HashSet[string]]::new()
+            $PropertyString = "property '{0}' should be present in output from {1}"
+            $UniqueString = 'unique cmdlets should be used for each test'
+        }
 
-        $Cmdlet1 = '____'
-        $PropertyName = '____'
+        It 'lists one of the properties of the first unique command' {
+            $CmdletName = '____'
+            $PropertyName = '____'
 
-        $Reason = $BecauseString -f $PropertyName, $cmdlet1
-        & (Get-Command -Name $Cmdlet1) |
-            Get-Member -MemberType Property -Name $PropertyName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+            $Reason = $PropertyString -f $PropertyName, $CmdletName
+            & (Get-Command -Name $CmdletName) |
+                Get-Member -MemberType Property -Name $PropertyName |
+                Should -Not -BeNullOrEmpty -Because $Reason
 
-        $Cmdlet2 = '____'
-        $PropertyName = '____'
+            $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
+        }
 
-        $Reason = $BecauseString -f $PropertyName, $cmdlet2
-        & (Get-Command -Name $Cmdlet2) |
-            Get-Member -MemberType Property -Name $PropertyName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+        It 'lists one of the properties of the second unique command' {
+            $CmdletName = '____'
+            $PropertyName = '____'
 
-        $Cmdlet3 = '____'
-        $PropertyName = '____'
+            $Reason = $PropertyString -f $PropertyName, $CmdletName
+            & (Get-Command -Name $CmdletName) |
+                Get-Member -MemberType Property -Name $PropertyName |
+                Should -Not -BeNullOrEmpty -Because $Reason
 
-        $Reason = $BecauseString -f $PropertyName, $cmdlet3
-        & (Get-Command -Name $Cmdlet3) |
-            Get-Member -MemberType Property -Name $PropertyName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+            $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
+        }
 
-        $cmdlet1, $cmdlet2, $cmdlet3 |
-            Get-Unique |
-            Should -HaveCount 3 -Because "three unique cmdlets should be supplied"
+        It 'lists one of the properties of the third unique command' {
+            $CmdletName = '____'
+            $PropertyName = '____'
+
+            $Reason = $PropertyString -f $PropertyName, $CmdletName
+            & (Get-Command -Name $CmdletName) |
+                Get-Member -MemberType Property -Name $PropertyName |
+                Should -Not -BeNullOrEmpty -Because $Reason
+
+            $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
+        }
     }
 
-    It 'allows us to explore methods on an object' {
+    Context 'Exploring Object Methods' {
+        <#
+            Similar to above, you can inspect the methods available from an
+            object that a cmdlet outputs, by changing the -MemberType value
+            you provide to Get-Member:
 
-        # Get some methods!
+                Get-Process | Get-Member -MemberType Method
 
-        <# EXAMPLE
+            If you don't provide a -MemberType option and value, it will simply
+            list all the members, regardless of the kind of members they are.
 
-        $Cmdlet1 = 'Get-Process'
-        $MethodName = 'Close'
-        $Reason = $BecauseString -f $MethodName, $cmdlet1
-        & (Get-Command -Name $Cmdlet1) |
-            Get-Member -MemberType Property -Name $MethodName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+            You can reuse the same set of cmdlets from above here if you wish,
+            but you will need to check to see if there are methods available on
+            the objects they output!
         #>
-        $BecauseString = "method '{0}' should be present in output from {1}"
+        BeforeAll {
+            $Cmdlets = [System.Collections.Generic.HashSet[string]]::new()
+            $MethodString = "property '{0}' should be present in output from {1}"
+            $UniqueString = 'unique cmdlets should be used for each test'
+        }
 
-        $Cmdlet1 = '____'
-        $MethodName = '____'
-        $Reason = $BecauseString -f $MethodName, $cmdlet1
-        & (Get-Command -Name $Cmdlet1) |
-            Get-Member -MemberType Method -Name $MethodName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+        It 'lists one of the methods of the first unique command' {
+            $CmdletName = '____'
+            $MethodName = '____'
 
-        $Cmdlet2 = '____'
-        $MethodName = '____'
-        $Reason = $BecauseString -f $MethodName, $cmdlet2
-        & (Get-Command -Name $Cmdlet2) |
-            Get-Member -MemberType Method -Name $MethodName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+            $Reason = $MethodString -f $MethodName, $CmdletName
+            & (Get-Command -Name $CmdletName) |
+                Get-Member -MemberType Property -Name $MethodName |
+                Should -Not -BeNullOrEmpty -Because $Reason
 
-        $Cmdlet3 = '____'
-        $MethodName = '____'
-        $Reason = $BecauseString -f $MethodName, $cmdlet3
-        & (Get-Command -Name $Cmdlet3) |
-            Get-Member -MemberType Method -Name $MethodName |
-            Should -Not -BeNullOrEmpty -Because $Reason
+            $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
+        }
 
-        $cmdlet1, $cmdlet2, $cmdlet3 |
-            Get-Unique |
-            Should -HaveCount 3 -Because "three unique cmdlets should be supplied"
+        It 'lists one of the methods of the second unique command' {
+            $CmdletName = '____'
+            $MethodName = '____'
+
+            $Reason = $MethodString -f $MethodName, $CmdletName
+            & (Get-Command -Name $CmdletName) |
+                Get-Member -MemberType Property -Name $MethodName |
+                Should -Not -BeNullOrEmpty -Because $Reason
+
+            $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
+        }
+
+        It 'lists one of the methods of the third unique command' {
+            $CmdletName = '____'
+            $MethodName = '____'
+
+            $Reason = $MethodString -f $MethodName, $CmdletName
+            & (Get-Command -Name $CmdletName) |
+                Get-Member -MemberType Property -Name $MethodName |
+                Should -Not -BeNullOrEmpty -Because $Reason
+
+            $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
+        }
     }
 }

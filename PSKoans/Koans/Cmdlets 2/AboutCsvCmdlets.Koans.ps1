@@ -19,7 +19,7 @@ param()
     handled directly by PowerShell's CSV cmdlets without some extra work.
 #>
 
-Describe '*-Csv Cmdlets' {
+Describe 'CSV Cmdlets' {
 
     Context 'Export-Csv' {
         <#
@@ -81,7 +81,21 @@ Describe '*-Csv Cmdlets' {
         }
 
         It 'allows you to specify the delimiter' {
+            $Delimiter = '_'
+            $Path = 'TestDrive:/DelimitedData.csv'
 
+            $Text = @(
+                '"Number","Square"'
+                '"__"?"__"'
+                '"__"?"__"'
+                '"__"?"__"'
+                '"__"?"__"'
+                '"__"?"__"'
+            )
+
+            $Objects | Export-Csv -Path $Path -Delimiter $Delimiter
+            $FileContents = Get-Content -Path $Path
+            $Text | Should -BeExactly $FileContents
         }
     }
 
@@ -207,6 +221,7 @@ Describe '*-Csv Cmdlets' {
     }
 
     Context 'ConvertFrom-Csv' {
+
         BeforeAll {
             $CsvString = @"
 "Number","Square"
