@@ -8,6 +8,7 @@ schema: 2.0.0
 # Get-PSKoanSetting
 
 ## SYNOPSIS
+
 Retrieves the configuration settings for PSKoans.
 
 ## SYNTAX
@@ -17,12 +18,13 @@ Get-PSKoanSetting [[-Name] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves configuration data via the PoshCode Configuration module.
-Module settings for PSKoans are stored in the user location / scope.
+
+Retrieves configuration data from the locally stored json file in `$HOME/.config/PSKoans`.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
+
 ```powershell
 Get-PSKoanSetting
 ```
@@ -30,6 +32,7 @@ Get-PSKoanSetting
 Retrieves all module settings.
 
 ### EXAMPLE 2
+
 ```powershell
 Get-PSKoanSetting -Name LibraryFolder
 ```
@@ -39,6 +42,7 @@ Retrieves the library folder location (also retrievable with `Get-PSKoanLocation
 ## PARAMETERS
 
 ### -Name
+
 Specifies which setting value to retrieve.
 
 ```yaml
@@ -47,21 +51,32 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### CommonParameters
+
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ## OUTPUTS
 
-### System.Object
+### System.String
+
+When a specific setting is requested, returns only the value of that setting, which will usually be a string.
+
 ### System.Management.Automation.PSObject
+
+When all settings are requested, returns an object with properties representing each setting.
+
 ## NOTES
 
+Author: Joel Sallow (@vexx32)
+
 ## RELATED LINKS
+
+[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)

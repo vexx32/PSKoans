@@ -24,12 +24,12 @@ An auxiliary command used primarily in the koan files itself.
 It is most commonly used in its alias form `__`, representing a blank space.
 This command returns a blank item that never equals anything.
 
-### [Get-Karma](Show-Karma.md)
+### [Get-Karma](Get-Karma.md)
 
 Use this command to assess your own progress and check how you're progressing.
 This command will output a simple report on your current progress.
 
-### [Get-PSKoanFile](Get-PSKoanFile.md)
+### [Get-PSKoan](Get-PSKoan.md)
 
 Use this command to list all koan files available.
 The report will contain location information for each file in both the module and user paths.
@@ -38,6 +38,11 @@ The report will contain location information for each file in both the module an
 
 Retrieves the currently set PSKoans working folder path.
 By default, this is set to `$HOME\PSKoans`.
+
+### [Get-PSKoanSetting](Get-PSKoanSetting.md)
+
+Gets all configurable PSKoans settings.
+Specify `-Name` to retrieve the value of a specific setting.
 
 ### [Move-PSKoanLibrary](Move-PSKoanLibrary.md)
 
@@ -57,6 +62,10 @@ The default is to reset everything (with confirmation prompts); use parameters t
 
 Sets the PSKoans working folder path for the current session.
 
+### [Set-PSKoanSetting](Set-PSKoanSetting.md)
+
+Configure available PSKoans settings, such as the editor used for `Show-Karma -Contemplate` and the user's library location.
+
 ### [Show-Advice](Show-Advice.md)
 
 Displays a random piece of advice from the PSKoans advice library on the screen.
@@ -66,7 +75,7 @@ Displays a random piece of advice from the PSKoans advice library on the screen.
 Use this command to assess your own progress and check how you're progressing.
 This command will display a detailed report with flavour-text to guide your progress.
 
-### [Update-PSKoan](Show-Advice.md)
+### [Update-PSKoan](Update-PSKoan.md)
 
 Updates selected topics, context blocks, and/or individual koan `It` blocks.
 This command is provided to smooth transition to new versions of PSKoans, and to update older files.
