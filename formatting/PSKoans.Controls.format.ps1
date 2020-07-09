@@ -115,7 +115,7 @@ Write-FormatCustomView -AsControl -Name Prompt.End -Action {
     Write-FormatViewExpression -Newline
 
     Write-FormatViewExpression -Text @"
-Run 'Show-Karma -Meditate' to begin your meditations.
+Run 'Show-Karma -Contemplate' to begin your meditations.
 "@ -ForegroundColor 'PSKoans.Meditation.Text'
 }
 
