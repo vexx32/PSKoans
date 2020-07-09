@@ -1,6 +1,6 @@
 function Get-PSKoanSetting {
     [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoanSetting.md')]
-    [OutputType([object], [PSCustomObject])]
+    [OutputType([string], [PSCustomObject])]
     param(
         [Parameter()]
         [string]

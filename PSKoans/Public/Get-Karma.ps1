@@ -1,7 +1,7 @@
 ﻿function Get-Karma {
     [CmdletBinding(DefaultParameterSetName = 'Default',
         HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-Karma.md')]
-    [OutputType([void])]
+    [OutputType('PSKoans.Result, PSKoans.CompleteResult')]
     [Alias()]
     param(
         [Alias('Koan', 'File')]
