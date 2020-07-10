@@ -69,7 +69,7 @@ Describe "$ModuleName Sanity Tests - Help Content" -Tags 'Module' {
 
             # This will be skipped for compiled commands ($Ast.Ast will be $null)
             It "has a help entry for all parameters of $Command" -TestCases $Ast -Skip:(-not ($Parameters -and $Ast.Ast)) {
-                $Parameters.Count | Should -Be $Ast.Body.ParamBlock.Parameters.Count -Because 'the number of parameters in the help should match the number in the function script'
+                @($Parameters).Count | Should -Be $Ast.Body.ParamBlock.Parameters.Count -Because 'the number of parameters in the help should match the number in the function script'
             }
 
             It "has a description for $Command parameter -<Name>" -TestCases $Parameters -Skip:(-not $Parameters) {
