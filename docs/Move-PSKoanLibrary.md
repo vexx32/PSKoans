@@ -34,23 +34,6 @@ Moves Joe's koan library into his OneDrive directory.
 
 ## PARAMETERS
 
-### -Path
-
-The path to the new library location.
-This path can be relative to the current session location, but cannot contain wildcards.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: PSPath, Folder
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True
-Accept wildcard characters: False
-```
-
 ### -Confirm
 
 Prompts you for confirmation before running the cmdlet.
@@ -64,6 +47,23 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Path
+
+The path to the new library location.
+This path can be relative to the current session location, but cannot contain wildcards.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: PSPath, Folder, Destination, TargetPath
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -98,6 +98,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
+Author: Joel Sallow (@vexx32)
+
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md](https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md)
+[Set-PSKoanSetting](https://github.com/vexx32/PSKoans/tree/main/docs/Set-PSKoanSetting.md)
+
+[Get-PSKoanSetting](https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoanSetting.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)
