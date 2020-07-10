@@ -19,8 +19,15 @@ Get-Blank [[-|PipeInput] <Object>] [[-|ParameterInput] <Object[]>] [<CommonParam
 
 ## DESCRIPTION
 
-Gets a blank object that is never equal to anything, including itself.
-This function exists to permit blank spaces such as `__` to be used without quotation marks where it is situationally appropriate.
+Get-Blank returns an object of type [Blank] as defined in the PSKoans module.
+This object is not equivalent to any other type of object, including itself, when compared
+with a standard `-eq` comparison.
+
+The only exception, which is unavoidable, is that it is considered equal to $true when
+$true is on the left-hand side of the comparison. This kind of comparison may sometimes
+need to be carefully avoided when framing a koan assertion.
+
+For instance,an assertion such as `____ | Should -BeTrue` WILL pass, although it should not.
 
 ## EXAMPLES
 
@@ -95,4 +102,4 @@ Author: Joel Sallow (@vexx32)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[PSKoans Github](https://github.com/vexx32/PSKoans)
