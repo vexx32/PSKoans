@@ -27,7 +27,7 @@ if ($OutputDirectory) {
 
 $HelpFile = Get-ChildItem -Path "$PSScriptRoot/PSKoans" -File -Recurse -Filter '*-help.xml'
 
-if ($HelpFile.Directory -notmatch 'en-us|\w{1,2}-\w{1,2}') {
+if ($HelpFile.Directory -notmatch 'en|\w{1,2}(-\w{1,2})?') {
     $PSCmdlet.WriteError(
         [System.Management.Automation.ErrorRecord]::new(
             [IO.FileNotFoundException]::new("Help files are missing!"),
