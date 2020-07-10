@@ -217,7 +217,7 @@ Describe 'Types of Errors' {
             Valid try/catch/finally patterns include:
                 - try { } catch { }
                 - try { } finally { }
-                - ret { } catch { } finally { }
+                - try { } catch { } finally { }
 
             (Multiple catch{} blocks can be used to catch various kinds of errors.)
 
