@@ -32,7 +32,7 @@ Describe "$ModuleName Sanity Tests - Help Content" -Tags 'Module' {
 
             #region Discovery
 
-            $Help = @{ Help = Get-Help -Name $Command -Full }
+            $Help = @{ Help = Get-Help -Name $Command -Full | Select-Object -Property * }
             $Parameters = Get-Help -Name $Command -Parameter * -ErrorAction Ignore |
                 Where-Object { $_.Name -and $_.Name -notin $ShouldProcessParameters } |
                 ForEach-Object {
