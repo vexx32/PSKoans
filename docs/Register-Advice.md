@@ -100,4 +100,6 @@ Author: Friedrich Weinmann (@FriedrichWeinmann)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[Show-Advice](https://github.com/vexx32/PSKoans/tree/main/docs/Show-Advice.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

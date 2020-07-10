@@ -79,4 +79,6 @@ Author: Joel Sallow (@vexx32)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[Set-PSKoanSetting](https://github.com/vexx32/PSKoans/tree/main/docs/Set-PSKoanSetting.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

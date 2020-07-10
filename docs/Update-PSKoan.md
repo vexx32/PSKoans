@@ -165,4 +165,8 @@ Author: Chris Dent (@indented-automation)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[Get-PSKoan](https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoan.md)
+
+[Reset-PSKoan](https://github.com/vexx32/PSKoans/tree/main/docs/Reset-PSKoan.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

@@ -102,4 +102,4 @@ Author: Joel Sallow (@vexx32)
 
 ## RELATED LINKS
 
-[PSKoans Github](https://github.com/vexx32/PSKoans)
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

@@ -177,4 +177,6 @@ Author: Joel Sallow (@vexx32)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans/tree/main/docs/Get-Karma.md](https://github.com/vexx32/PSKoans/tree/main/docs/Get-Karma.md)
+[Get-Karma](https://github.com/vexx32/PSKoans/tree/main/docs/Get-Karma.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

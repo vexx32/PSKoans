@@ -125,4 +125,8 @@ You can optionally populate it yourself by running `Show-Karma -Reset` following
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[Get-PSKoanLocation](https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoanLocation.md)
+
+[Move-PSKoanLibrary](https://github.com/vexx32/PSKoans/tree/main/docs/Move-PSKoanLibrary.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

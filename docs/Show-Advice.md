@@ -69,4 +69,6 @@ Author: Friedrich Weinmann (@FriedrichWeinmann)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[Register-Advice](https://github.com/vexx32/PSKoans/tree/main/docs/Register-Advice.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)

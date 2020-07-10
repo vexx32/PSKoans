@@ -160,4 +160,6 @@ Author: Joel Sallow (@vexx32)
 
 ## RELATED LINKS
 
-[https://github.com/vexx32/PSKoans](https://github.com/vexx32/PSKoans)
+[Get-PSKoanSetting](https://github.com/vexx32/PSKoans/tree/main/docs/Get-PSKoanSetting.md)
+
+[PSKoans](https://github.com/vexx32/PSKoans/tree/main/docs/PSKoans.md)
