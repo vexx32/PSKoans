@@ -146,8 +146,52 @@ Describe 'Common Parameters' {
         Test-WarningAction -WarningAction SilentlyContinue 3>&1 | Should -BeNullOrEmpty
     }
 
-    It 'provides the -WarningVariable common parameter' {
+    It 'provides the stream-associated -*Variable common parameters' {
+        <#
+            With the -*Variable common parameters, individual streams can store
+            their output into variables. Variables must be provided by name (as
+            a string) to the corresponding parameter, and any existing content
+            in the variable is overwritten. If you would like to append new
+            stream output to existing content in the variable, you can specify a
+            variable name prefixed with a plus sign (+).
 
+            For the streams that display by default, this doesn't actively
+            suppress any of their output; you need to combine them with a
+            corresponding `-*Action` parameter if you want to suppress (or show,
+            for streams that are hidden by default) the output of a given
+            stream.
+
+            Available -*Variable common parameters are:
+
+            -WarningVariable
+            -ErrorVariable
+            -InformationVariable
+
+            Note that Write-Host actually utilises the information stream, so
+            the -InformationVariable will also capture any text sent to
+            Write-Host. Out-Host instead bypasses all streams and writes
+            directly to the host.
+        #>
+
+        function Test-StreamVariables {
+            [CmdletBinding()]
+            param()
+
+            Write-Warning 'Warnings are shown by default'
+            Write-Error 'Errors are also shown by default, usually with more detail'
+            Write-Information 'Information is hidden by default, but still recorded by transcripts'
+        }
+
+        $Quiet = @{
+            ErrorAction = 'SilentlyContinue'
+            WarningAction = 'SilentlyContinue'
+        }
+        Test-StreamVariables @Quiet -InformationVariable 'info' -ErrorVariable 'err' -WarningVariable 'warn'
+
+        # Which variables
+        $____ | Should -Be 'Warnings are shown by default'
+        $____ | Should -Be 'Errors are also shown by default, usually with more detail'
+        $____ | Should -Be 'Information is hidden by default, but still recorded by transcripts'
     }
 
     It 'provides the -ErrorAction common parameter' {
