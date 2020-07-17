@@ -13,19 +13,20 @@ Write-Host $Lines
 try {
     # Try/Finally required since we will exit with exit code on failure.
     Invoke-Pester -Configuration @{
-        Run          = @{
+        Run          = [Pester.RunConfiguration]@{
             Path = "$env:PROJECTROOT/Tests"
             Exit = $true
         }
-        CodeCoverage = @{
+        CodeCoverage = [Pester.CodeCoverageConfiguration]@{
             Enabled = $true
             Path    = Get-ChildItem -Recurse -Include '*.ps1' -Path @(
                 "$env:PROJECTROOT/PSKoans/PSKoans.psm1"
                 "$env:PROJECTROOT/PSKoans/Public"
                 "$env:PROJECTROOT/PSKoans/Private"
-            )
+            ) |
+                Select-Object -ExpandProperty FullName
         }
-        TestResult   = @{
+        TestResult   = [Pester.TestResultConfiguration]@{
             Enabled       = $true
             TestSuiteName = "PSKoans-Pester"
         }
