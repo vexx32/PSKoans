@@ -22,7 +22,7 @@ try {
             "$env:PROJECTROOT/PSKoans/Private"
         ) | Select-Object -ExpandProperty FullName 
     $configuration.TestResult.Enabled = $true
-    $configuration.TestResult.TestSuiteName = "PSKoans-Pester
+    $configuration.TestResult.TestSuiteName = "PSKoans-Pester"
     
     Invoke-Pester -Configuration $configuration
 }
