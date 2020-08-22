@@ -150,8 +150,8 @@ Describe 'Arithmetic Operators' {
 
     Context 'Modulus' {
         <#
-                Modulus is a bit of an odd one, but common enough in programming. It performs a
-            division, and then returns the integer value of the remainder.
+            Modulus is a bit of an odd one, but common enough in programming.
+            It performs a division, and then returns the integer value of the remainder.
         #>
         It 'is usually used with integers' {
             $Remainder = 15 % 7
@@ -222,6 +222,16 @@ Describe 'Assignment/Arithmetic Combination Operators' {
     }
 
     It 'can get a bit confusing to follow' {
+        <#
+            Modulus is a little confusing to reverse-engineer, because there can
+            be multiple possible inputs that lead to the same result.
+            For example:
+
+                11 % 3   (result: 2)
+                8 % 3    (result: 2)
+                17 % 3   (result: 2)
+        #>
+
         $Value = __
 
         $Value /= 3
