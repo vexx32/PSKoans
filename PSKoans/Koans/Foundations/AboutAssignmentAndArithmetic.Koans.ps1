@@ -113,7 +113,7 @@ Describe 'Arithmetic Operators' {
             __ | Should -Be ('12' - '7.5')
 
             # In other words, subtraction only operates on numerical values.
-            { @(1, 2) - 1 } | Should -Throw -ExpectedMessage '____'
+            { @(1, 2) - 1 } | Should -Throw -ExpectedMessage "____"
         }
     }
 
@@ -137,7 +137,7 @@ Describe 'Arithmetic Operators' {
                 As with subtraction, there's no useful meaning of using division on a string
                 so any attempts to do so will throw an error.
             #>
-            { 'hello!' / 3 } | Should -Throw -ExpectedMessage '____'
+            { 'hello!' / 3 } | Should -Throw -ExpectedMessage "____"
 
             <#
                 Unlike with other numerical operators, however, division often results
@@ -165,14 +165,14 @@ Describe 'Arithmetic Operators' {
                 $String % 4
             }
             # Only a partially matching phrase from the error message is necessary.
-            $ModulusOnString | Should -Throw -ExpectedMessage '____'
+            $ModulusOnString | Should -Throw -ExpectedMessage "____"
 
             $ModulusOnArray = {
                 # If you have trouble, try doing something similar in the console to see what happens.
                 $Array = 1, 10, 20
                 $Array % 4
             }
-            $ModulusOnArray | Should -Throw -ExpectedMessage '____'
+            $ModulusOnArray | Should -Throw -ExpectedMessage "____"
         }
     }
 }
