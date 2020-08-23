@@ -64,15 +64,15 @@ Describe 'Kata - Sorting Characters' {
     } -TestCases @(
         @{
             String = 'Mountains are merely mountains.'
-            Result = 'aaaeeeiilMmmnnnnoorrssttuuy'
+            Result = 'aaaeeeiilmmMnnnnoorrssttuuy'
         }
         @{
             String = 'What do you call the world?'
-            Result = 'aacddehhlllooorttuWwy'
+            Result = 'aacddehhlllooorttuwWy'
         }
         @{
             String = 'Out of nowhere, the mind comes forth.'
-            Result = 'cdeeeeffhhhimmnnOoooorrstttuw'
+            Result = 'cdeeeeffhhhimmnnooooOrrstttuw'
         }
         @{
             String = 'Because it is so very clear, it takes longer to come to the realization.'
@@ -80,11 +80,11 @@ Describe 'Kata - Sorting Characters' {
         }
         @{
             String = 'The hands of the world are open.'
-            Result = 'aaddeeeefhhhlnnoooprrsTtw'
+            Result = 'aaddeeeefhhhlnnoooprrstTw'
         }
         @{
             String = 'You are those huge waves sweeping everything before them, swallowing all in their path.'
-            Result = 'aaaaabeeeeeeeeeeeefgggghhhhhhiiiiillllmnnnnoooopprrrrsssstttttuuvvwwwwYy'
+            Result = 'aaaaabeeeeeeeeeeeefgggghhhhhhiiiiillllmnnnnoooopprrrrsssstttttuuvvwwwwyY'
         }
     )
 }
