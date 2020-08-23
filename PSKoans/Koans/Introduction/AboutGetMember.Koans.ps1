@@ -73,8 +73,19 @@ Describe "Get Member" {
             $CmdletName = '____'
             $PropertyName = '____'
 
+            $Parameters = @{
+                <#
+                    This is only needed if a cmdlet you provide has mandatory
+                    parameters. Enter the parameter name and the value just
+                    outside this comment block, but inside the @{ } like so:
+
+                    ParameterName = "Value"
+                #>
+
+            }
+
             $Reason = $PropertyString -f $PropertyName, $CmdletName
-            & (Get-Command -Name $CmdletName) |
+            & (Get-Command -Name $CmdletName) @Parameters |
                 Get-Member -MemberType Property -Name $PropertyName |
                 Should -Not -BeNullOrEmpty -Because $Reason
 
@@ -85,8 +96,19 @@ Describe "Get Member" {
             $CmdletName = '____'
             $PropertyName = '____'
 
+            $Parameters = @{
+                <#
+                    This is only needed if a cmdlet you provide has mandatory
+                    parameters. Enter the parameter name and the value just
+                    outside this comment block, but inside the @{ } like so:
+
+                    ParameterName = "Value"
+                #>
+
+            }
+
             $Reason = $PropertyString -f $PropertyName, $CmdletName
-            & (Get-Command -Name $CmdletName) |
+            & (Get-Command -Name $CmdletName) @Parameters |
                 Get-Member -MemberType Property -Name $PropertyName |
                 Should -Not -BeNullOrEmpty -Because $Reason
 
@@ -97,8 +119,19 @@ Describe "Get Member" {
             $CmdletName = '____'
             $PropertyName = '____'
 
+            $Parameters = @{
+                <#
+                    This is only needed if a cmdlet you provide has mandatory
+                    parameters. Enter the parameter name and the value just
+                    outside this comment block, but inside the @{ } like so:
+
+                    ParameterName = "Value"
+                #>
+
+            }
+
             $Reason = $PropertyString -f $PropertyName, $CmdletName
-            & (Get-Command -Name $CmdletName) |
+            & (Get-Command -Name $CmdletName) @Parameters |
                 Get-Member -MemberType Property -Name $PropertyName |
                 Should -Not -BeNullOrEmpty -Because $Reason
 
