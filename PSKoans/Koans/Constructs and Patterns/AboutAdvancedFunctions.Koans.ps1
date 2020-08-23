@@ -17,21 +17,21 @@ param()
     problematic behaviour.
 #>
 
-Describe 'CmdletBinding' {
-    <#
-        [CmdletBinding()] is an attribute that can be applied to PowerShell
-        functions. It has the effect of turning them into "advanced" functions.
+Describe 'Advanced Functions' {
 
-        What this actually means is a bit complex, but in essence it brings them
-        significantly closer to behaving like a true compiled cmdlet.
+    Context 'CmdletBinding & Binding Parameters' {
+        <#
+            [CmdletBinding()] is an attribute that can be applied to PowerShell
+            functions. It has the effect of turning them into "advanced" functions.
 
-        When using CmdletBinding, parameters must be explicitly defined. There
-        is no usage of $args, nor any ability to handle unbound parameters.
-        Parameters that can't be bound by position or name will result in an
-        error.
-    #>
+            What this actually means is a bit complex, but in essence it brings them
+            significantly closer to behaving like a true compiled cmdlet.
 
-    Context 'Binding Parameters' {
+            When using CmdletBinding, parameters must be explicitly defined. There
+            is no usage of $args, nor any ability to handle unbound parameters.
+            Parameters that can't be bound by position or name will result in an
+            error.
+        #>
 
         It 'does not strictly bind parameters for simple functions' {
             # Simple functions don't verify parameters passed to them.
@@ -67,8 +67,42 @@ Describe 'CmdletBinding' {
             { Test-Function -Some Things -Are Strict } | Should -Throw -ExpectedMessage $Message
         }
     }
-}
 
-Describe 'Advanced Functions' {
+    Context 'Mandatory Parameters' {
 
+    }
+
+    Context 'Parameter Validation' {
+
+    }
+
+    Context 'Handling Pipeline Input' {
+
+        Describe 'ValueFromPipeline' {
+
+        }
+
+        Describe 'ValueFromPipelineByPropertyName' {
+
+        }
+    }
+
+    Context 'Permitting Arbitrary Arguments' {
+
+    }
+
+    Context 'Parameter Sets' {
+
+        Describe 'DefaultParameterSetName' {
+
+        }
+
+        Describe '__AllParameterSets' {
+
+        }
+
+        Describe 'Mandatory Parameters & Parameter Sets' {
+
+        }
+    }
 }
