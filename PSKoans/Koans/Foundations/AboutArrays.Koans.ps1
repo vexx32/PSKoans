@@ -307,10 +307,10 @@ Describe 'Arrays' {
     }
 
     It 'can be cast to a specific collection type' {
-        [string[]] $Array = 1, 2, 3, 4, 5
+        [string[]] $StringArray = 1, 2, 3, 4, 5
 
         # We started with numbers... what do we have after the array is created?
-        [____] | Should -Be $Array[0].GetType()
-        [____] | Should -Be $Array.GetType()
+        [____] | Should -Be $StringArray[0].GetType()
+        [____] | Should -Be $StringArray.GetType()
     }
 }
