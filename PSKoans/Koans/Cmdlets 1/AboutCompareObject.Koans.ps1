@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 205)]
+[Koan(Position = 204)]
 param()
 <#
     Compare-Object
@@ -15,8 +15,8 @@ Describe 'Compare-Object' {
             DifferenceObject = 'these', 'is', 'the', 'difference'
         }
         $CompareData = Compare-Object @Comparison
-        $CompareData[0].InputObject | Should -Be '__'
-        $CompareData[0].SideIndicator | Should -Be '__'
+        '__' | Should -Be $CompareData[0].InputObject
+        '__' | Should -Be $CompareData[0].SideIndicator
         $CompareData[0] | Should -BeOfType __
     }
 
@@ -28,6 +28,6 @@ Describe 'Compare-Object' {
         }
         $CompareData = Compare-Object @Comparison -IncludeEqual
         $CompareData.SideIndicator -contains '==' | Should -BeTrue
-        $CompareData.Where{$_.InputObject -eq 'the'}.SideIndicator | Should -Be '__'
+        '__' | Should -Be $CompareData.Where{$_.InputObject -eq 'the'}.SideIndicator
     }
 }

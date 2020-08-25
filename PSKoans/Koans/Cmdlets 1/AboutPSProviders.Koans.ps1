@@ -22,7 +22,7 @@ param()
     registry.
 
     All providers that have a defined function with the Get-Content cmdlet can also be accessed
-    similarly to variable scopes, e.g., { $env:Path } instead of { Get-Content 'Env:Path' }
+    similarly to variable scopes, e.g., { $env:PATH } instead of { Get-Content 'env:PATH' }
 #>
 Describe 'Alias Provider' {
     <#
@@ -31,29 +31,32 @@ Describe 'Alias Provider' {
         when a new module is imported.
     #>
     Context 'Direct Access' {
+        BeforeAll {
+            $Aliases = Get-ChildItem -Path 'Alias:'
+        }
 
         It 'can be queried with generic provider cmdlets' {
-            $Aliases = Get-ChildItem 'Alias:'
-
-            $Aliases.Name[0] | Should -Be __
-            $Aliases.Definition[0] | Should -Be __
+            '____' | Should -Be $Aliases.Name[0]
+            '____' | Should -Be $Aliases.Definition[0]
         }
 
         It 'maps aliases to the full command' {
-            $Alias = '__'
-            $AliasObject = Get-Item "Alias:\$Alias" -ErrorAction SilentlyContinue
+            $Alias = '____'
+            $AliasObject = Get-Item -Path "Alias:\$Alias" -ErrorAction SilentlyContinue
 
             $AliasObject | Get-Content | Should -Be 'Set-Location'
         }
 
         It 'can create aliases too!' {
-            $Aliases.Count | Should -Be __
+            __ | Should -Be $Aliases.Count
 
             New-Item -Path 'Alias:\grok' -Value 'Get-Item' -ErrorAction SilentlyContinue
-            $File = grok '__' -ErrorAction SilentlyContinue
 
-            $File | Should -BeOfType 'System.IO.FileInfo'
-            $Aliases.Count | Should -Be __
+            $File = grok '____' -ErrorAction SilentlyContinue
+            $File | Should -BeOfType [System.IO.FileInfo]
+
+            $Aliases2 = Get-ChildItem -Path 'Alias:'
+            __ | Should -Be $Aliases2.Count
 
             Remove-Item -Path 'Alias:\grok'
         }
@@ -62,43 +65,47 @@ Describe 'Alias Provider' {
     Context 'Access Via Cmdlet' {
 
         It 'can be accessed with Get-Alias' {
-            $AliasObjects = Get-ChildItem 'Alias:'
+            # These commands are effectively equivalent
+            $AliasObjects = Get-ChildItem -Path 'Alias:'
             $AliasObjects2 = Get-Alias
 
-            $AliasObjects2.Count | Should -Be __
-            $AliasObjects | Should -Be $AliasObjects2
+            __ | Should -Be $AliasObjects2.Count
+            $AliasObjects.Count | Should -Be $AliasObjects2.Count
         }
 
-        It 'allows for seeking out aliases for a command' {
-            $CmdletName = __
+        It 'can seek out aliases for a command' {
+            $CmdletName = '____'
             $AliasData = Get-Alias -Definition $CmdletName
 
             $AliasData.Name | Should -Be 'gcm'
         }
 
-        It 'can be used to find the exact command' {
+        It 'can be used to find the associated command' {
             $AliasData = Get-Alias -Name 'ft'
 
-            $AliasData.Definition | Should -Be '__'
+            '____' | Should -Be $AliasData.Definition
         }
 
         It 'can create aliases too!' {
+            # New-Alias and Set-Alias can both create aliases; Set-Alias will overwrite existing ones, however.
             Set-Alias -Name 'grok' -Value 'Get-Item'
             $File = grok $home
 
-            $File | Should -BeOfType __
+            $____ | Should -BeOfType [System.IO.DirectoryInfo]
         }
     }
 
     Context 'Variable Access' {
 
         It 'can be accessed like a variable' {
-            $Alias:gci | Should -Be __
+            '____' | Should -Be $Alias:gci
         }
 
         It 'is the same as using Get-Content on the path' {
             Get-Content -Path 'Alias:\gcm' | Should -Be $Alias:gcm
-            Get-Content -Path 'Alias:\echo' | Should -Be __
+
+            $AliasTarget = Get-Content -Path 'Alias:\echo'
+            '____' | Should -Be $AliasTarget
         }
     }
 }
@@ -114,41 +121,39 @@ Describe 'Environment Provider' {
 
     It 'allows access to system environment data' {
         $SelectedItem = $EnvironmentData.Where{ $_.Value -is [string] }[7]
+        $Content = $SelectedItem | Get-Content
 
-        $SelectedItem | Get-Content | Should -Be '__'
-        $SelectedItem.Name | Should -Be '__'
+        '____' | Should -Be $Content
+        '____' | Should -Be $SelectedItem.Name
     }
 
     It 'can be accessed via variables' {
-        $env:Path | Should -Be '__'
+        '____' | Should -Be $env:PATH
     }
 }
 
 Describe 'FileSystem Provider' {
-    $Path = 'TestDrive:' | Join-Path -ChildPath 'File001.tmp'
-    if (-not (Test-Path $Path)) {
-        New-Item -Path $Path > $null
+    BeforeAll {
+        $Path = 'TEMP:' | Join-Path -ChildPath 'File001.tmp'
 
-        -join (1..10000 | ForEach-Object {
-            Get-Random -Minimum 32 -Maximum 96 |
-                ForEach-Object {[char]$_ -as [string]}
-            if ((Get-Random) -match '[25]0$') {
-                "`n"
-            }
-        }) | Set-Content -Path $Path
+        $FileContent = @'
+PSKOANS!
+The Env: drive contains system environment data. Its contents can vary wildly from OS to OS,
+especially between Windows, Mac, and Linux, for example.
+'@
+        Set-Content -Path $Path -Value $FileContent
     }
-
     It 'allows access to various files and their properties' {
         $File = Get-Item -Path $Path
 
-        $File.Name | Should -Be '__'
-        $File.Attributes | Should -Be '__'
-        $File.Length | Should -Be '__'
+        '____' | Should -Be $File.Name
+        '____' | Should -Be $File.Attributes
+        '____' | Should -Be $File.Length
     }
 
     It 'allows you to extract the contents of files' {
         $FirstLine = Get-Content -Path $Path | Select-Object -First 1
-        $FirstLine | Should -Be '__'
+        '____!' | Should -Be $FirstLine
     }
 
     It 'allows you to copy, rename, or delete files' {
@@ -158,45 +163,48 @@ Describe 'FileSystem Provider' {
         $NewFile = Copy-Item -Path $Path -Destination $NewPath -PassThru
 
         $NewFile.Length | Should -Be $File.Length
-        $NewFile.Name | Should -Be '__'
+        '____' | Should -Be $NewFile.Name
 
         $NewFile = Rename-Item -Path $NewPath -NewName 'TESTNAME.tmp' -PassThru
-        $NewFile.Name | Should -Be '__'
-        $NewFile.Length | Should -Be '__'
+        '____' | Should -Be $NewFile.Name
+        '____' | Should -Be $NewFile.Length
 
         $FilePath = $NewFile.FullName
         Remove-Item -Path $FilePath
-        {Get-Item -Path $FilePath -ErrorAction Stop} | Should -Throw -ExceptionType '__'
+        { Get-Item -Path $FilePath -ErrorAction Stop } | Should -Throw -ExceptionType '____'
     }
 }
 
 Describe 'Function Provider' {
-    $Functions = Get-ChildItem 'Function:'
+    BeforeAll {
+        $Functions = Get-ChildItem -Path 'Function:'
+    }
 
     It 'allows access to all currently loaded functions' {
+        $ProperlyNamedFunction = $Functions |
+            Where-Object {$_.Verb -and $_.Noun} |
+            Select-Object -First 1
         # Most proper functions are named in the Verb-Noun convention
-        $Functions[5].Verb | Should -Be '__'
-        $Functions[5].Noun | Should -Be '__'
-        $Functions[5].Name | Should -Be '__'
-
-        $Functions[4].Name | Should -Be '__'
+        '____' | Should -Be $ProperlyNamedFunction.Verb
+        '____' | Should -Be $ProperlyNamedFunction.Noun
+        '____' | Should -Be $ProperlyNamedFunction.Name
     }
 
     It 'exposes the entire script block of a function' {
         $Functions[3].ScriptBlock | Should -BeOfType ScriptBlock
-        $Functions[1].ScriptBlock.ToString().Length | Should -Be __
+        __ | Should -Be $Functions[1].ScriptBlock.ToString().Length
 
-        $Functions[4] | Get-Content | Should -BeOfType __
+        $Functions[4] | Get-Content | Should -BeOfType [____]
     }
 
     It 'allows you to rename the functions however you wish' {
         function Test-Function {'Hello!'}
 
-        $TestItem = Get-Item 'Function:\Test-Function'
+        $TestItem = Get-Item -Path 'Function:\Test-Function'
         Test-Function | Should -Be 'Hello!'
 
         $TestItem | Rename-Item -NewName 'Get-Greeting'
-        Get-Greeting | Should -Be '__'
+        '___' | Should -Be (Get-Greeting)
     }
 
     It 'can also be accessed via variables' {
@@ -206,20 +214,26 @@ Describe 'Function Provider' {
             syntax must be used to indicate to the PowerShell parser that all contained characters
             are part of the variable name.
         #>
-        ${function:Test-Function} | Should -BeOfType __
+        ${function:Test-Function} | Should -BeOfType [____]
     }
 
     It 'can be defined using variable syntax' {
         <#
-            Although slower than the usual method of creating functions, it is a quick way to make a
+            Although more code than the usual method of creating functions, it is a quick way to make a
             function out of a script block.
         #>
-        $Script = {
-            1..3
-        }
+        $Script = { 1..3 }
         ${function:Get-Numbers} = $Script
 
-        Get-Numbers | Should -Be __
+        # Invoking script with & is very similar to calling a function name.
+        & $Script | Should -Be (Get-Numbers)
+
+        $Values = @(
+            __
+            __
+            __
+        )
+        $Values | Should -Be (Get-Numbers)
     }
 }
 
@@ -232,59 +246,59 @@ Describe 'Variable Provider' {
 
         It 'allows access to variables in the current scope' {
             Set-Variable -Name 'Test' -Value 22
-            $VariableData = Get-Item 'Variable:\Test'
+            $VariableData = Get-Item -Path 'Variable:\Test'
 
             $VariableData.Name | Should -Be 'Test'
-            $VariableData.Value | Should -Be __
-            $VariableData.Options | Should -Be __
+            __ | Should -Be $VariableData.Value
+            '____' | Should -Be $VariableData.Options
         }
 
         It 'allows you to remove variables' {
             $Test = 123
 
-            $Test | Should -Be __
+            __ | Should -Be $Test
 
-            Remove-Item 'Variable:\Test'
-            $Test | Should -Be __
-            {Get-Item 'Variable:\Test'} | Should -Throw -ExceptionType __
+            Remove-Item -Path 'Variable:\Test'
+            $____ | Should -Be $Test
+            { Get-Item -Path 'Variable:\Test' -ErrorAction Stop } | Should -Throw -ExceptionType ____
         }
 
         It 'exposes data from default variables' {
-            $Variables = Get-ChildItem 'Variable:'
+            $Variables = Get-ChildItem -Path 'Variable:'
 
-            $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value | Should -Be __
-            $Variables.Where{$_.Name -eq 'MaximumAliasCount'}.Value | Should -Be __
+            '____' | Should -Be $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value
+            __ | Should -Be $Variables.Where{$_.Name -eq 'MaximumAliasCount'}.Value
+            __ | Should -Be $Variables.Count
         }
 
         It 'allows you to set variable options' {
             Set-Variable -Name 'Test' -Value 'TEST'
 
-            $Var = Get-Item 'Variable:\Test'
+            $Var = Get-Item -Path 'Variable:\Test'
             $Var.Options = [System.Management.Automation.ScopedItemOptions]::ReadOnly
 
-            $Var | Should -Be __
-            {Remove-Item 'Variable:\Test'} | Should -Throw -ExceptionType __
+            '____' | Should -Be $Var
+            { Remove-Item -Path 'Variable:\Test' -ErrorAction Stop } | Should -Throw -ExceptionType ____
         }
     }
 
     Context 'Variable Cmdlets' {
 
         It 'works similarly to the generic cmdlets' {
-            Set-Variable 'test' -Value 7357
+            Set-Variable -Name 'test' -Value 7357
 
             $Info = Get-Variable -Name 'Test'
-            $Info.Options | Should -Be __
-            $Info.Name | Should -Be 'test'
-            $Info.Value | Should -Be __
+            'test' | Should -Be $Info.Name
+            '____' | Should -Be $Info.Options
+            __ | Should -Be $Info.Value
         }
 
         It 'can retrieve just the value' {
-            Set-Variable 'GetMe' -Value 'GOT!'
+            Set-Variable -Name 'GetMe' -Value 'GOT!'
 
             $Get = Get-Variable -Name 'GetMe' -ValueOnly
 
-            $Get | Should -Be __
+            '____' | Should -Be $Get
         }
     }
 }
-

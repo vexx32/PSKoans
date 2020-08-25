@@ -13,66 +13,36 @@
     Author: Joel Sallow
 #>
 
+$script:ModuleRoot = $PSScriptRoot
+$script:ConfigPath = '~/.config/PSKoans/config.json'
+$script:DefaultSettings = @{
+    KoanLocation = Resolve-Path -Path '~' | Join-Path -ChildPath 'PSKoans'
+    Editor       = 'code'
+}
+
+[hashtable] $script:CurrentTopic = $null
+[runspace] $script:KoanRunspace = $null
+
 #region SupportingClasses
 
-    class FILL_ME_IN {}
-    class __ : FILL_ME_IN {}
-
-    class KoanAttribute : System.Attribute {
-        [uint32] $Position
-
-        KoanAttribute($Position) {
-            $this.Position = $Position
-        }
-
-        KoanAttribute() {
-            $this.Position = [uint32]::MaxValue
-        }
-    }
+Get-ChildItem -Path "$PSScriptRoot/Classes" | ForEach-Object {
+    Write-Verbose "Importing classes from file: [$($_.Name)]"
+    . $_.FullName
+}
 
 #endregion SupportingClasses
 
-$script:ModuleFolder = $PSScriptRoot
+#region ImportCommands
 
-Write-Verbose 'Importing meditation koans'
-$script:Meditations = Import-CliXml -Path "$script:ModuleFolder/Data/Meditations.clixml"
-
-Get-ChildItem "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
+Get-ChildItem -Path "$PSScriptRoot/Public", "$PSScriptRoot/Private" | ForEach-Object {
     Write-Verbose "Importing functions from file: [$($_.Name)]"
     . $_.FullName
 }
 
-$env:PSKoans_Folder = $Home | Join-Path -ChildPath 'PSKoans'
-Write-Verbose "Koans folder set to $env:PSKoans_Folder"
+#endregion ImportCommands
 
-if (-not (Test-Path -Path $env:PSKoans_Folder)) {
-    Write-Verbose 'Koans folder does not exist; populating the folder'
-    Initialize-KoanDirectory -Confirm:$false
-}
-
-Add-AssertionOperator -Name Fail -Test {
-    param ($ActualValue, [switch] $Negate, [string] $Because)
-
-    # look at  https://github.com/pester/Pester/blob/master/Functions/Assertions/BeTrueOrFalse.ps1
-    # for inspiration, or here https://mathieubuisson.github.io/pester-custom-assertions/
-
-    if ($Negate) {
-        return [PSCustomObject]@{
-            Succeeded      = $false
-            FailureMessage = "Should -Not -Fail is not a valid assertion."
-        }
-    }
-
-    if (-not $Because) {
-        $Message = "The test failed, because the script reached the Should -Fail command call."
-    }
-    else {
-        $Reason = ($Because.Trim().TrimEnd('.') -replace '^because\s', '')
-        $Message = "The test failed, because $Reason."
-    }
-
-    [PSCustomObject]@{
-        Succeeded      = $false
-        FailureMessage = $Message
-    }
+#region Initialization
+Get-ChildItem -Path "$PSScriptRoot/Init" | ForEach-Object {
+    Write-Verbose "Initializing module: [$($_.Name)]"
+    . $_.FullName
 }

@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 104)]
+[Koan(Position = 118)]
 param()
 <#
     Order of Operations
@@ -27,7 +27,8 @@ Describe "Order of Operations" {
             return $Number1 + $Number2
         }
         # Be wary of open spaces when passing an expression as a function argument.
-        Add-Numbers (4 + 1) 18 | Should -Be __
+        $Sum = Add-Numbers (4 + 1) 18
+        __ | Should -Be $Sum
         Add-Numbers 3 * 4 7 | Should -Be 19 # Add parentheses to the function call to make this true.
     }
 
@@ -35,12 +36,13 @@ Describe "Order of Operations" {
         # A pipe character evaluates everything before it on the line before
         # passing along the value(s).
         __ + 7 | Should -Be 11
-        8 * 3 + 11 | Should -Be __
+        __ * 3 + 11 | Should -Be 35
     }
 
     It "otherwise follows standard mathematical rules" {
         # Although PowerShell doesn't have a native exponentiation operator,
         # we do have [Math]::Pow($base, $power)
-        3 + 4 / [Math]::Pow(2, 3) | Should -Be __
+        $Value = 3 + 4 / [Math]::Pow(2, 3)
+        __ | Should -Be $Value
     }
 }

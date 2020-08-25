@@ -1,2 +1,0 @@
-  Browsing completion options
-When typing a parameter or the value for a parameter, you can hit the TAB key to cycle through the options available. While this is generally well known, it is LESS well known, that by hitting "CTRL"+"SpaceBar" you can show all available options at once and use the cursor keys to navigate to the option you want.

@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 110)]
+[Koan(Position = 116)]
 param()
 <#
     Conditionals and Branching
@@ -28,7 +28,9 @@ Describe 'If/Else' {
                 }
             }
 
-            Assert-IsEven -Number 2 | Should -Be '__'
+            $ExpectedResult = Assert-IsEven -Number 2
+            '____' | Should -Be $ExpectedResult
+
             Assert-IsEven -Number __ | Should -Be 'ODD'
         }
 
@@ -39,7 +41,7 @@ Describe 'If/Else' {
                     $Number * 10
                 }
             }
-            Set-Number -Number 4 | Should -Be __
+            __ | Should -Be (Set-Number -Number 4)
             Set-Number -Number __ | Should -Be 70
         }
     }
@@ -48,7 +50,7 @@ Describe 'If/Else' {
 
         It 'can be used to select a value for a variable' {
             function Get-Thing {
-                return (Get-ChildItem -Path $home -File | Select-Object -Skip 3).Length
+                return (Get-ChildItem -Path $HOME -File | Select-Object -First 1).Length
             }
             $Thing = Get-Thing
             $Result = if ($Thing -gt 5) {
@@ -59,7 +61,7 @@ Describe 'If/Else' {
                 # but depending on the outcome of the conditional, either could end up stored!
                 "$Thing is less than 5"
             }
-            $Result | Should -Be __
+            __ | Should -Be $Result
         }
 
         It 'can also apply a condition to an else' {
@@ -73,7 +75,7 @@ Describe 'If/Else' {
                 -1
             }
             $Value += 1
-            $Value | Should -Be __
+            __ | Should -Be $Value
         }
     }
 }
@@ -106,10 +108,11 @@ Describe 'Switch' {
                 }
             }
 
-            $Amount | Should -Be '__'
+            '____' | Should -Be $Amount
         }
     }
     Context 'Assigning Values' {
+
         It 'can also be used to conditionally assign values' {
             $Case = __
             $Variable = switch ($Case) {
@@ -125,10 +128,13 @@ Describe 'Switch' {
                     -1
                     break
                 }
+                default {
+                    [double]::PositiveInfinity
+                }
             }
 
-            $Variable | Should -Be -1
-            $Variable | Should -BeOfType [__]
+            __ | Should -Be $Variable
+            $Variable | Should -BeOfType [____]
         }
 
         It 'can go through multiple branches' {
@@ -142,15 +148,16 @@ Describe 'Switch' {
                     2
                 }
             }
-            $Values | Should -Be __
+            __ | Should -Be ($Values)
         }
     }
 
     Context 'Use With Arrays' {
+
         It 'will process each element of arrays' {
             $Array = @(
-                __
                 4
+                __
             )
 
             $Result = switch ($Array) {
@@ -185,7 +192,7 @@ Describe 'Switch' {
                 }
             }
             # Since the input is an array, both items must get the correct output
-            $Result | Should -BeIn @(16, '15')
+            $Result | Should -Be @(16, '15')
         }
     }
 

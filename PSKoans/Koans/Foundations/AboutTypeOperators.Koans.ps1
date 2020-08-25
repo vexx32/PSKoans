@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 111)]
+[Koan(Position = 119)]
 param()
 <#
     Type Operators
@@ -15,17 +15,17 @@ Describe 'Type Operators' {
 
         It 'examines the type of the left hand object' {
             45 -isnot [double] | Should -BeTrue
-            'string' -is [__] | Should -BeTrue
+            'string' -is [____] | Should -BeTrue
         }
 
         It 'is useful for determining available methods' {
             $Value = __
 
             if ($Value -is [double]) {
-                $Value | Should -BeOfType __
+                [____] | Should -Be $Value.GetType()
             }
             else {
-                throw '$Value was of incorrect type.'
+                Should -Fail -Because '$Value was not the correct type.'
             }
         }
     }
@@ -57,9 +57,9 @@ Describe 'Type Operators' {
                 'string' -as [int]
             }
 
-            $Casting | Should -Throw -ErrorId __
+            $Casting | Should -Throw -ErrorId '____'
             $Conversion | Should -Not -Throw
-            $Conversion.Invoke() | Should -Be __
+            __ | Should -Be $Conversion.InvokeReturnAsIs()
         }
     }
 }

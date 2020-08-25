@@ -1,27 +1,18 @@
 ﻿function Get-Blank {
-    <#
-    .SYNOPSIS
-        Returns $null
-    .DESCRIPTION
-        Doesn't return any output. This function exists to permit tokens such as __
-        to be used without quotation marks where they would be situationally appropriate.
-    .EXAMPLE
-        PS> Get-Blank
-        <no output>
-    .EXAMPLE
-        PS> __
-        <no output>
-    .NOTES
-        Author: Joel Sallow
-        Module: PSKoans
-    .LINK
-        https://github.com/vexx32/PSKoans
-    #>
-    [CmdletBinding()]
-    [Alias('__', 'FILL_ME_IN')]
-    param()
+    [CmdletBinding(HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Get-Blank.md')]
+    [OutputType('Blank')]
+    [Alias('__', '____', 'FILL_ME_IN')]
+    param(
+        [Parameter(ValueFromPipeline, DontShow)]
+        [object]
+        ${|PipeInput},
+
+        [Parameter(ValueFromRemainingArguments, DontShow)]
+        [object[]]
+        ${|ParameterInput}
+    )
 
     Write-Verbose "I AIN'T DOIN' NOTHIN'!!!"
 
-    $null
+    return [Blank]::New()
 }

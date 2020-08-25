@@ -1,0 +1,12 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Data.DataRow</T>
+      <T>System.Object</T>
+    </TN>
+    <ToString>System.Data.DataRow</ToString>
+    <Props>
+      <S N="primary">database_name</S>
+    </Props>
+  </Obj>
+</Objs>

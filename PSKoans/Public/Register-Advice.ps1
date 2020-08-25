@@ -1,18 +1,7 @@
 ﻿function Register-Advice {
-    <#
-	.SYNOPSIS
-		Causes powershell to write a random piece of advice on each start.
-
-	.DESCRIPTION
-		Causes powershell to write a random piece of advice on each start.
-		This is done by creating / modifying the powershell profile.
-
-	.EXAMPLE
-		PS C:\> Register-Advice
-
-		Causes powershell to write a random piece of advice on each start.
-#>
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low',
+        HelpUri = 'https://github.com/vexx32/PSKoans/tree/main/docs/Register-Advice.md')]
+    [OutputType([void])]
     param(
         [Parameter(Position = 0)]
         [ValidateSet('AllUsersAllHosts', 'AllUsersCurrentHost', 'CurrentUserAllHosts', 'CurrentUserCurrentHost')]
@@ -20,9 +9,9 @@
         $TargetProfile = 'CurrentUserCurrentHost'
     )
 
-	$ProfilePath = $Profile.$TargetProfile
+    $ProfilePath = $Profile.$TargetProfile
 
-    if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Get-Advice')) {
+    if ($PSCmdlet.ShouldProcess("$TargetProfile PowerShell profile", 'Register Show-Advice')) {
         $ProfileFolder = Split-Path -Path $ProfilePath
 
         if (-not (Test-Path $ProfileFolder)) {
@@ -30,10 +19,10 @@
         }
 
         if (-not (Test-Path $ProfilePath)) {
-            Set-Content -Path $ProfilePath -Value 'Get-Advice'
+            Set-Content -Path $ProfilePath -Value 'Show-Advice'
         }
-        elseif (-not ($ProfilePath | Select-String -Pattern 'Get-Advice' -Quiet)) {
-            'Get-Advice' | Add-Content $ProfilePath
+        elseif (-not (Select-String  -Path $ProfilePath -Pattern '(Show|Get)-Advice' -Quiet)) {
+            'Show-Advice' | Add-Content $ProfilePath
         }
     }
 }

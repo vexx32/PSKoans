@@ -1,5 +1,5 @@
 ﻿using module PSKoans
-[Koan(Position = 103)]
+[Koan(Position = 117)]
 param()
 <#
     Functions & Script Blocks (I)
@@ -28,7 +28,11 @@ Describe 'Functions' {
                 within the function without causing the function to exit.
             #>
             Write-Output 20
+            Write-Output 42
         }
+
+        __ | Should -Be (Get-Number)
+
         function Get-ReturnedNumber {
             <#
                 Use of the return statement causes all output previously declared
@@ -36,7 +40,11 @@ Describe 'Functions' {
                 itself, then ends the function.
             #>
             return __
+            Write-Output "Does not return anything."
         }
+
+        Get-ReturnedNumber | Should -Be 13
+
         function Get-DroppedNumber {
             <#
                 Leaving a value, or a statement that returns a value on a line
@@ -47,9 +55,7 @@ Describe 'Functions' {
             12
         }
 
-        Get-Number | Should -Be __
-        Get-ReturnedNumber | Should -Be 13
-        Get-DroppedNumber | Should -Be __
+        __ | Should -Be (Get-DroppedNumber)
     }
 
     It 'can accept parameters' {
@@ -60,14 +66,14 @@ Describe 'Functions' {
 
         # Values are supplied separated by spaces, without parentheses.
         Add-Things '7' __ | Should -Be '72' # Strings add differently than numbers!
-        Add-Things 1 2 | Should -Be __
+        __ | Should -Be (Add-Things 1 2)
 
         # The road to mastery is travelled with many small steps.
         function Add-Numbers ($Number1, $Number2) {
             return ($Number1 + $Number2)
         }
 
-        Add-Numbers 1 7 | Should -Be __
+        __ | Should -Be (Add-Numbers 1 7)
         Add-Numbers __ 15 | Should -Be 31
 
         <#
@@ -92,7 +98,7 @@ Describe 'Functions' {
         }
         # How long is a piece of string?
         Measure-String 'Hello!' | Should -Be 6
-        Measure-String 'Muffins' | Should -Be __
+        __ | Should -Be (Measure-String 'Muffins')
     }
 }
 

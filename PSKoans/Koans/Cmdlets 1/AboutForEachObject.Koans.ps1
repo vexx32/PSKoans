@@ -31,7 +31,7 @@ Describe 'ForEach-Object' {
         $Output = 1..5 | ForEach-Object -Begin {'__'} -Process {$_} -End {'END'}
 
         $Output[0] | Should -Be 'BACON'
-        $Output[-1] | Should -Be '__'
+        '__' | Should -Be $Output[-1]
     }
 
     It 'can iterate over only a specific property of the objects' {

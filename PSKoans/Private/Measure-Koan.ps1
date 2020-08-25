@@ -1,7 +1,4 @@
-﻿using namespace System.Management.Automation
-using namespace System.Management.Automation.Language
-
-function Measure-Koan {
+﻿function Measure-Koan {
     <#
     .SYNOPSIS
         Counts the number of koans in the provided ExternalScriptInfo objects.
@@ -10,85 +7,75 @@ function Measure-Koan {
         files to find all of the 'It' blocks in order to count the total number of Pester
         tests present in the file.
 
-        When provided with a piped list of ExternalScriptInfo objects, sums the entire
+        When provided with a piped list of KoanInfo objects, sums the entire
         collection's 'It' blocks and returns a single integer sum.
     .PARAMETER KoanInfo
-        Takes an array of ExternalScriptInfo objects (as provided from Get-Command when
-        passed the path to an external .ps1 script file).
+        Takes an array of KoanInfo objects (as provided from Get-PSKoan).
     .EXAMPLE
-        PS> Get-Command .\KoanDirectory\*\*.ps1 | Measure-Koans
+        Get-Command .\KoanDirectory\*\*.ps1 | Measure-Koan
+
         422
     .NOTES
-        Measure-Koan is NOT designed to handle dynamic -TestCases values. It will handle
-        simple counts of directly attached -TestCases hashtables only if they do not
-        contain variables, pipelines, and other dynamic expressions.
-
-        Handling dynamic scripts with pipelines and variables is beyond scope and will
-        not be handled; we'd essentially end up reimplementing the PS parser. If it can't
-        be got with .GetSafeValue() we simply aren't working with it.
-
         Author: Joel Sallow
         Module: PSKoans
     .LINK
         https://github.com/vexx32/PSKoans
     #>
     [CmdletBinding()]
+    [OutputType([int])]
     param(
         [Parameter(Position = 0, Mandatory, ValueFromPipeline)]
-        [ValidateNotNull()]
-        [System.Management.Automation.CommandInfo[]]
+        [PSTypeName('PSKoans.KoanInfo')]
+        [psobject[]]
         $KoanInfo
     )
     begin {
         $KoanCount = 0
+        $oldModulePath = $env:PSModulePath
+
+        $env:PSModulePath = @(
+            $MyInvocation.MyCommand.Module.ModuleBase
+            $env:PSModulePath -split [System.IO.Path]::PathSeparator
+        ) -join [System.IO.Path]::PathSeparator
     }
     process {
-        Write-Verbose "Parsing koan files from [$($KoanInfo.Name -join '], [')]"
+        Write-Verbose "Discovering koans in [$($KoanInfo.Name -join '], [')]"
 
-        # Find all Pester 'It' commands
-        $ItCommands = $KoanInfo.ScriptBlock.Ast.FindAll(
-            {
-                param($Item)
-                $Item -is [System.Management.Automation.Language.CommandAst] -and
-                $Item.GetCommandName() -eq 'It'
-            }, $true
-        )
+        $Result = & (Get-Module Pester) {
+            [CmdletBinding()]
+            param(
+                $Path,
+                $ExcludePath,
+                $SessionState
+            )
 
-        # Find the -TestCases parameters
-        $TestCasesParameters = $ItCommands.CommandElements | Where-Object {
-            $_ -is [CommandParameterAst] -and
-            $_.ParameterName -eq 'TestCases'
-        }
-
-        if ($TestCasesParameters) {
-            # Get the right CommandElements indexes for their arguments
-            $Indexes = $TestCasesParameters.ForEach{$ItCommands.CommandElements.IndexOf($_) + 1}
-            # Get value of the argument for each -TestCases
-            $ParameterArgument = $ItCommands.CommandElements[$Indexes]
-
+            $_Pester_State_Backup = $state.PSObject.Copy()
+            $state.Stack = [System.Collections.Stack]@()
             try {
-                $TestCaseCount = $ParameterArgument.SafeGetValue().Count
-            }
-            catch {
-                # We aren't parsing complex or variable expressions, so exit here (violently)
-                $ParseException = [ParseException]::new(
-                    "Unable to parse unsafe expression in Koan -TestCase syntax.",
-                    $_.Exception
-                )
-                $ErrorRecord = [ErrorRecord]::new(
-                    $ParseException,
-                    "KoanAstParseError",
-                    [ErrorCategory]::ParserError,
-                    $ParameterValues.PipelineElements.Extent.Text
-                )
-                $PSCmdlet.ThrowTerminatingError($ErrorRecord)
-            }
-        }
+                Reset-TestSuiteState
 
-        $KoanCount += $TestCaseCount + $ItCommands.Count - $TestCasesParameters.Count
+                # to avoid Describe thinking that we run in interactive mode
+                $invokedViaInvokePester = $true
+
+                $fileList = Find-File -Path $Path -ExcludePath $ExcludePath -Extension '.Koans.ps1'
+                $containers = foreach ($file in $fileList) {
+                    New-BlockContainerObject -File (Get-Item $file)
+                }
+
+                Find-Test -BlockContainer $containers -SessionState $SessionState
+            }
+            finally {
+                $state = $_Pester_State_Backup
+                Remove-Variable -Name _Pester_State_Backup
+            }
+        } -Path $KoanInfo.Path -SessionState $PSCmdlet.SessionState
+
+        $KoanCount += Measure-KoanTestBlock $Result
     }
     end {
         Write-Verbose "Total Koans: $KoanCount"
         $KoanCount
+
+        $env:PSModulePath = $oldModulePath
     }
 }

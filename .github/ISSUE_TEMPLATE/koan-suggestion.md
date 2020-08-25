@@ -1,14 +1,17 @@
 ---
-name: Koan Suggestion
-about: Suggest a Koan
-
+name: "💡 Koan Suggestion"
+about: Suggest a koan, or a list of koans that you feel would add value to the project.
+labels: Category-Koans, Issue-Suggestion
 ---
 
-**Describe the koan you'd like to see**
-A clear and concise description of what you want to happen.
+# Describe "Koan(s) You Suggest"
 
-**Outline the scope you think would be most helpful and conducive to the koan format**
-A brief and succinct definition of the koan layout, structure, and/or overall scope of koan coverage.
+<!-- A clear and concise description of the area of PowerShell or a module that you would like to have Koan coverage. -->
 
-**Additional context**
-Add any other context or references you think would be helpful (existing unit tests, documentation, etc.)
+## Context "The Scope of the Koans You Suggest"
+
+<!-- A brief and succinct definition of the koan layout, structure, and/or overall scope of koan coverage. -->
+
+## Context "Additional Information"
+
+<!-- Add any other context or references you think would be helpful (existing unit tests, documentation, etc.) -->

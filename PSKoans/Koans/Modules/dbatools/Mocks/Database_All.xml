@@ -1,0 +1,114 @@
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Object[]</T>
+      <T>System.Array</T>
+      <T>System.Object</T>
+    </TN>
+    <LST>
+      <Obj RefId="1">
+        <TN RefId="1">
+          <T>System.Management.Automation.PSCustomObject</T>
+          <T>System.Object</T>
+        </TN>
+        <MS>
+          <S N="ComputerName">Server01</S>
+          <S N="InstanceName">MSSQLSERVER</S>
+          <S N="SqlInstance">Server01</S>
+          <S N="Name">testdb</S>
+          <S N="Status">Normal</S>
+          <B N="IsAccessible">true</B>
+          <S N="RecoveryModel">Full</S>
+          <S N="LogReuseWaitStatus">LogBackup</S>
+          <Db N="SizeMB">95.275</Db>
+          <S N="Compatibility">Version120</S>
+          <S N="Collation">Latin1_General_CI_AS</S>
+          <S N="Owner">sa</S>
+          <DT N="LastFullBackup">2019-02-26T19:56:36</DT>
+          <DT N="LastDiffBackup">2019-02-26T13:00:31</DT>
+          <DT N="LastLogBackup">2019-02-26T20:00:02</DT>
+        </MS>
+      </Obj>
+      <Obj RefId="2">
+        <TNRef RefId="1" />
+        <MS>
+          <S N="ComputerName">Server01</S>
+          <S N="InstanceName">MSSQLSERVER</S>
+          <S N="SqlInstance">Server01</S>
+          <S N="Name">tempdb</S>
+          <S N="Status">Normal</S>
+          <B N="IsAccessible">true</B>
+          <S N="RecoveryModel">Full</S>
+          <S N="LogReuseWaitStatus">Nothing</S>
+          <Db N="SizeMB">46.13</Db>
+          <S N="Compatibility">Version120</S>
+          <S N="Collation">Latin1_General_CI_AS</S>
+          <S N="Owner">sa</S>
+          <DT N="LastFullBackup">2019-02-26T19:57:35</DT>
+          <DT N="LastDiffBackup">2019-02-26T13:03:43</DT>
+          <DT N="LastLogBackup">2019-02-26T20:02:57</DT>
+        </MS>
+      </Obj>
+      <Obj RefId="3">
+        <TNRef RefId="1" />
+        <MS>
+          <S N="ComputerName">Server01</S>
+          <S N="InstanceName">MSSQLSERVER</S>
+          <S N="SqlInstance">Server01</S>
+          <S N="Name">primary</S>
+          <S N="Status">Normal</S>
+          <B N="IsAccessible">true</B>
+          <S N="RecoveryModel">Full</S>
+          <S N="LogReuseWaitStatus">Nothing</S>
+          <Db N="SizeMB">29.56</Db>
+          <S N="Compatibility">Version120</S>
+          <S N="Collation">Latin1_General_CI_AS</S>
+          <S N="Owner">sa</S>
+          <DT N="LastFullBackup">2019-02-26T19:59:39</DT>
+          <DT N="LastDiffBackup">2019-02-26T13:01:29</DT>
+          <DT N="LastLogBackup">2019-02-26T20:04:34</DT>
+        </MS>
+      </Obj>
+      <Obj RefId="4">
+        <TNRef RefId="1" />
+        <MS>
+          <S N="ComputerName">Server01</S>
+          <S N="InstanceName">MSSQLSERVER</S>
+          <S N="SqlInstance">Server01</S>
+          <S N="Name">model</S>
+          <S N="Status">Normal</S>
+          <B N="IsAccessible">true</B>
+          <S N="RecoveryModel">Full</S>
+          <S N="LogReuseWaitStatus">Nothing</S>
+          <Db N="SizeMB">39.68</Db>
+          <S N="Compatibility">Version120</S>
+          <S N="Collation">Latin1_General_CI_AS</S>
+          <S N="Owner">sa</S>
+          <DT N="LastFullBackup">2019-02-26T20:01:03</DT>
+          <DT N="LastDiffBackup">2019-02-26T13:02:30</DT>
+          <DT N="LastLogBackup">2019-02-26T20:01:19</DT>
+        </MS>
+      </Obj>
+      <Obj RefId="5">
+        <TNRef RefId="1" />
+        <MS>
+          <S N="ComputerName">Server01</S>
+          <S N="InstanceName">MSSQLSERVER</S>
+          <S N="SqlInstance">Server01</S>
+          <S N="Name">msdb</S>
+          <S N="Status">Normal</S>
+          <B N="IsAccessible">true</B>
+          <S N="RecoveryModel">Full</S>
+          <S N="LogReuseWaitStatus">Nothing</S>
+          <Db N="SizeMB">79.29</Db>
+          <S N="Compatibility">Version120</S>
+          <S N="Collation">Latin1_General_CI_AS</S>
+          <S N="Owner">sa</S>
+          <DT N="LastFullBackup">2019-02-26T19:59:54</DT>
+          <DT N="LastDiffBackup">2019-02-26T13:05:07</DT>
+          <DT N="LastLogBackup">2019-02-26T20:04:01</DT>
+        </MS>
+      </Obj>
+    </LST>
+  </Obj>
+</Objs>
