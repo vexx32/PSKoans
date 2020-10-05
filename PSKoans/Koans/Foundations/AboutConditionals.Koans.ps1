@@ -29,7 +29,7 @@ Describe 'If/Else' {
             }
 
             $ExpectedResult = Assert-IsEven -Number 2
-            '____' | Should -Be $ExpectedResult
+            'EVEN' | Should -Be $ExpectedResult
 
             Assert-IsEven -Number __ | Should -Be 'ODD'
         }
@@ -50,7 +50,9 @@ Describe 'If/Else' {
 
         It 'can be used to select a value for a variable' {
             function Get-Thing {
-                return (Get-ChildItem -Path $HOME -File | Select-Object -First 1).Length
+                $file = 'TestDrive:\file.txt'
+                Set-Content -Path $file -Value 'PowerShell is a powerful tool.'
+                return (Get-Item -Path $file).Length
             }
             $Thing = Get-Thing
             $Result = if ($Thing -gt 5) {
