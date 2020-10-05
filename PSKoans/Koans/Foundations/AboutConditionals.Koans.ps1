@@ -29,7 +29,7 @@ Describe 'If/Else' {
             }
 
             $ExpectedResult = Assert-IsEven -Number 2
-            'EVEN' | Should -Be $ExpectedResult
+            '____' | Should -Be $ExpectedResult
 
             Assert-IsEven -Number __ | Should -Be 'ODD'
         }
