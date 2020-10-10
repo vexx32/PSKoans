@@ -80,10 +80,50 @@ Describe 'Get-Member' {
                     "Hello!" | Get-Member
         
         This will return all of its members. Properties, methods, and other members like 
-        ScriptProperty or ScriptAlias. They will be covered in a separate koan. To make 
-        discovery easier, you can filter by MemberType:
+        ScriptProperty or AliasProperty. They will be covered in a 
+        separate koan. To make discovery easier, you can filter by MemberType:
                     "Hello!" | Get-Member -MemberType Property
                     "Hello!" | Get-Member -MemberType Method
+
+        All possible member types are in the help for Get-Member
+        
+        PS > Get-Help Get-Member -Parameter MemberType
+
+        Specifies the member type that this cmdlet gets. The default is All.
+
+            The acceptable values for this parameter are:
+
+            - AliasProperty
+
+            - CodeProperty
+
+            - Property
+
+            - NoteProperty
+
+            - ScriptProperty
+
+            - Properties
+
+            - PropertySet
+
+            - Method
+
+            - CodeMethod
+
+            - ScriptMethod
+
+            - Methods
+
+            - ParameterizedProperty
+
+            - MemberSet
+
+            - Event
+
+            - Dynamic
+
+            - All
 
     #>
     Context 'Members and methods of objects' {
