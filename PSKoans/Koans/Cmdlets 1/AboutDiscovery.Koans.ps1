@@ -45,9 +45,9 @@ Describe 'Get-Help' {
             )
 
             $ParamNames |
-            Group-Object |
-            Where-Object Count -gt 1 |
-            Should -BeNullOrEmpty -Because 'you need to enter unique parameter names'
+                Group-Object |
+                Where-Object Count -gt 1 |
+                Should -BeNullOrEmpty -Because 'you need to enter unique parameter names'
 
             $ParamNames | Should -BeIn $GetHelpParams
         }
@@ -176,8 +176,8 @@ Describe 'Get-Member' {
             $MethodArguments = @('____', '____')
 
             '7', '8', '9', '10' |
-            ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
-            Should -Be @('000007', '000008', '000009', '000010')
+                ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
+                Should -Be @('000007', '000008', '000009', '000010')
         }
     }
 
@@ -265,7 +265,7 @@ Describe 'Get-Command' {
 
     It 'can look for commands by module' {
         $KoanCommands = Get-Command -Module 'PSKoans' |
-        Sort-Object -Property Name
+            Sort-Object -Property Name
         $First4Commands = $KoanCommands | Select-Object -First 4
 
         __ | Should -Be $KoanCommands.Count
