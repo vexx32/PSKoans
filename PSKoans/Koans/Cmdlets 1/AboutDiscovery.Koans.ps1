@@ -140,7 +140,7 @@ Describe 'Get-Member' {
                 on the object. Thus, they sometimes need additional information as opposed to
                 properties you can query as is. This is where the parentheses come into play.
                 Inside the parentheses you give additional parameters (oftentimes called arguments)
-                to the method, similary to parameters for a function. In fact, this is how most
+                to the method, similar to parameters for a function. In fact, this is how most
                 programming languages treat functions and methods. If for example you want to
                 know if a string ends with a certain character, it is necessary that the method knows
                 which character you want to compare the string against.
