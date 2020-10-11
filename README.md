@@ -75,7 +75,7 @@ Install-Module PSKoans -Scope CurrentUser
 
 1. `git clone` the repository into your desired directory, or download the module zip file from the build artifacts available on [this page](https://dev.azure.com/SallowCode/PSKoans/_build/latest?definitionId=1).
 2. From a normal powershell session run `Get-ChildItem -Recurse | Unblock-File` in that directory to remove the "downloaded from internet" flag that blocks them from running.
-3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy RemoteSigned` in order to allow the scripts to run.
+3. Check `Get-ExecutionPolicy`: if it says 'Restricted' or 'Undefined', you need to also run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` in order to allow the scripts to run.
 4. Add the repository folder to `$env:PSModulePath` so that PowerShell can see it.
    - From the repository main folder, run: `$env:PSModulePath = "$(Get-Location)$([IO.Path]::PathSeparator)${env:PSModulePath}"`
 
