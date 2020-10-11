@@ -43,6 +43,8 @@ Describe "Get Member" {
         <#
             Let's look at some object properties!
 
+            Properties define the state an object is in.
+
             Using any three cmdlets you like (make sure you use three different
             cmdlets!), use Get-Member in your console to peek at the properties
             on the object.
@@ -141,6 +143,14 @@ Describe "Get Member" {
 
     Context 'Exploring Object Methods' {
         <#
+            Now that we know how the state of an object is represented by the values of its properties,
+            we can now take a look at methods. In contrast to properties, methods need parentheses.
+            Inside the parentheses you can give additional parameters (oftentimes called arguments)
+            to the method, similary to parameters for a function. In fact, this is how most
+            programming languages treat functions and methods. If for example you want to
+            know if a string ends with a certain character, it is necessary that the method knows
+            which character you want to compare the string against.
+            
             Similar to above, you can inspect the methods available from an
             object that a cmdlet outputs, by changing the -MemberType value
             you provide to Get-Member:
@@ -166,7 +176,7 @@ Describe "Get Member" {
 
             $Reason = $MethodString -f $MethodName, $CmdletName
             & (Get-Command -Name $CmdletName) |
-                Get-Member -MemberType Property -Name $MethodName |
+                Get-Member -MemberType Method -Name $MethodName |
                 Should -Not -BeNullOrEmpty -Because $Reason
 
             $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
@@ -178,7 +188,7 @@ Describe "Get Member" {
 
             $Reason = $MethodString -f $MethodName, $CmdletName
             & (Get-Command -Name $CmdletName) |
-                Get-Member -MemberType Property -Name $MethodName |
+                Get-Member -MemberType Method -Name $MethodName |
                 Should -Not -BeNullOrEmpty -Because $Reason
 
             $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
@@ -190,7 +200,7 @@ Describe "Get Member" {
 
             $Reason = $MethodString -f $MethodName, $CmdletName
             & (Get-Command -Name $CmdletName) |
-                Get-Member -MemberType Property -Name $MethodName |
+                Get-Member -MemberType Method -Name $MethodName |
                 Should -Not -BeNullOrEmpty -Because $Reason
 
             $Cmdlets.Add($CmdletName) | Should -BeTrue -Because $UniqueString
