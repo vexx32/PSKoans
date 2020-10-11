@@ -75,18 +75,17 @@ Describe 'Get-Member' {
         information about any object in PowerShell. It can be used to inspect the type
         name of an object, as well as all available methods and properties that can be
         accessed for that object.
-        
+
         To use Get-Member, pipe an object into it like so:
                     "Hello!" | Get-Member
-        
-        This will return all of its members. Properties, methods, and other members like 
-        ScriptProperty or AliasProperty. They will be covered in a 
-        separate koan. To make discovery easier, you can filter by MemberType:
+
+        This will return all of its members. Properties, methods, and other members like
+        ScriptProperty or AliasProperty. They will be covered in a separate koan.
+        To make discovery easier, you can filter by MemberType:
                     "Hello!" | Get-Member -MemberType Property
                     "Hello!" | Get-Member -MemberType Method
 
-        All possible member types are in the help for Get-Member
-        
+        All possible member types are in the help for Get-Member:
         PS > Get-Help Get-Member -Parameter MemberType
 
         Specifies the member type that this cmdlet gets. The default is All.
@@ -94,35 +93,20 @@ Describe 'Get-Member' {
             The acceptable values for this parameter are:
 
             - AliasProperty
-
             - CodeProperty
-
             - Property
-
             - NoteProperty
-
             - ScriptProperty
-
             - Properties
-
             - PropertySet
-
             - Method
-
             - CodeMethod
-
             - ScriptMethod
-
             - Methods
-
             - ParameterizedProperty
-
             - MemberSet
-
             - Event
-
             - Dynamic
-
             - All
 
     #>
@@ -154,17 +138,17 @@ Describe 'Get-Member' {
             <#
                 Contrary to properties that represent the state of an object, methods perform actions
                 on the object. Thus, they sometimes need additional information as opposed to
-                properties you can query as is. This is where the parentheses come into play. 
-                Inside the parenthesis you give additional parameters (oftentimes called arguments) 
-                to the method, similary to parameters for a function. In fact, this is how most 
-                programming languages treat functions and methods. If for example you want to 
-                know if a string ends with a certain character, it is necessary that the method knows 
+                properties you can query as is. This is where the parentheses come into play.
+                Inside the parentheses you give additional parameters (oftentimes called arguments)
+                to the method, similary to parameters for a function. In fact, this is how most
+                programming languages treat functions and methods. If for example you want to
+                know if a string ends with a certain character, it is necessary that the method knows
                 which character you want to compare the string against.
 
                 If you have trouble figuring out which parameters a method requires, you can check the
-                OverloadDefinitions by calling the method name without the parentheses (keep in mind 
-                this is NOT asking for a property, but all possible variations of the method). 
-                
+                OverloadDefinitions by calling the method name without the parentheses (keep in mind
+                this is NOT asking for a property, but all possible variations of the method).
+
                 For the above method, these look like this:
 
                 PS> 'string'.EndsWith
@@ -179,10 +163,18 @@ Describe 'Get-Member' {
                 followed by the type and number of arguments it will accept. Only one overload can
                 be used at a time, and usually the number of arguments and type of the arguments
                 determine the overload that PowerShell will apply when calling the method.
+
+                The ForEach-Object cmdlet can be used to call methods as well.
+                This is the same as calling 'Hello!'.$MethodName($MethodArguments),
+                but for each of the strings passed to ForEach-Object:
+
+                PS> 'Hello!', 'Goodbye!' | Foreach-Object -MemberName 'EndsWith' -ArgumentList '!'
+
+                Use Get-Member and the OverloadDefinitions to solve the next tests.
             #>
             $MethodName = '____'
             $MethodArguments = @('____', '____')
-            # The ForEach-Object cmdlet can be used to call methods as well.
+
             '7', '8', '9', '10' |
             ForEach-Object -MemberName $MethodName -ArgumentList $MethodArguments |
             Should -Be @('000007', '000008', '000009', '000010')
