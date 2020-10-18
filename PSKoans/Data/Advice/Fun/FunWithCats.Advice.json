@@ -15,7 +15,7 @@
     "\t$SpeechSynth = New-Object -ComObject SAPI.SpVoice",
     "\t$URI = 'https://catfact.ninja/fact'",
     "\t$CatFact = Invoke-WebRequest -Uri $URI | ConvertFrom-Json | Select-Object -ExpandProperty fact",
-    "\t$SpeechSynth.Speak(\"Did you know? $Catfact\") | Out-Null",
+    "\t$SpeechSynth.Speak(\"Did you know? $CatFact\") | Out-Null",
     "}",
     "\n",
     "Get-CatFact"
