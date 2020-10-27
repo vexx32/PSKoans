@@ -12,8 +12,9 @@
     "CurrentUserAllHosts",
     "CurrentUserCurrentHost",
     "\n",
-    "Different PSHosts (applications hosting a powershell process) like IDEs have custom profiles paths that are referenced by $profile. While the default $profile will be available in every environment, it is useful to know where IDEs save their profiles. Customizations only required for e.g. development can be added.",
+    "Different PSHosts (applications hosting a powershell process) like IDEs have custom profile paths that are referenced by $profile. While the default $profile will be available in every environment, it is useful to know where IDEs save their profiles. Customizations only required for e.g. development can be added.",
     "Powershell ISE uses $profile, but with a custom path pointing to a Microsoft.PowerShellISE_profile.ps1 file.",
-    "Visual Studio Code uses $profile, but with a custom path pointing to a Microsoft.VSCode_profile.ps1 file."
+    "Visual Studio Code uses $profile, but with a custom path pointing to a Microsoft.VSCode_profile.ps1 file.",
+    "The $profile variable stores by default the path to the 'Current User, Current Host' profile even in IDEs."
   ]
 }
