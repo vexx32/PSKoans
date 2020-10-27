@@ -4,6 +4,17 @@
     "When starting powershell, there is a script it will automatically execute: the PowerShell profile script.",
     "By default, it does not exist. It is stored in the location the variable $profile points to. By creating and adding code to it you can ensure that all your favorite aliases, variables, functions or whatnot will automatically be available each time!",
     "To create or open the profile file, simply run:",
-    "  notepad $profile"
+    "  notepad $profile",
+    "\n",
+    "The $profile variable stores the path to the 'Current User, Current Host' profile, that points to a Microsoft.PowerShell_profile.ps1 file. Other profiles can be retreived from note properties of the $profile variable:",
+    "AllUsersAllHosts",
+    "AllUsersCurrentHost",
+    "CurrentUserAllHosts",
+    "CurrentUserCurrentHost",
+    "\n",
+    "Different PSHosts (applications hosting a powershell process) like IDEs have custom profile paths that are referenced by $profile. While the default $profile will be available in every environment, it is useful to know where IDEs save their profiles. Customizations only required for e.g. development can be added.",
+    "Powershell ISE uses $profile, but with a custom path pointing to a Microsoft.PowerShellISE_profile.ps1 file.",
+    "Visual Studio Code uses $profile, but with a custom path pointing to a Microsoft.VSCode_profile.ps1 file.",
+    "The $profile variable stores by default the path to the 'Current User, Current Host' profile even in IDEs."
   ]
 }
