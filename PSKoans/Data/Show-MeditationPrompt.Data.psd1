@@ -193,5 +193,38 @@ of your own catastrophe.
 When you realise how perfect everything is,
 you will tilt your head back and laugh at the sky.
 '@
+        @'
+If you face a problem,
+it is not the problem that will detour.
+'@
+        @'
+You only lose what you cling to.
+'@
+        @'
+Do not dwell in the past,
+do not dream of the future,
+concentrate the mind on the present moment.
+'@
+        @'
+Never fear the unknown,
+thus the unknown does not fear you.
+'@
+        @'
+Possibilities are here, there, and everywhere.
+Keep your mind open to even more.
+'@
+        @'
+The most life gives us,
+often comes from failure at first.
+'@
+        @'
+When it gets tough,
+keep believing that
+everything will change for the better.
+'@
+        @'
+A light shines for everyone
+who can laugh in the darkness.
+'@
     )
 }
