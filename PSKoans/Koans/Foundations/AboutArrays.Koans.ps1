@@ -57,7 +57,7 @@ Describe 'Arrays' {
             Although in many cases in PowerShell, an expression that only
             returns one value will not become an array, this operator forces the
             value or object to be wrapped in an array if the result is not
-            already an array; it guarantes the result will be an array.
+            already an array; it guarantees the result will be an array.
         #>
         $Array = @( 10 )
 
