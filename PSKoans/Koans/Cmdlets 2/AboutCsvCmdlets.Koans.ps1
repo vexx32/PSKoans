@@ -157,6 +157,7 @@ Describe 'CSV Cmdlets' {
             $AnimalCsv = "$TestDrive/Animals.csv"
             $CsvString | Set-Content -Path $AnimalCsv
 
+			# Make sure to change the delimiter below
             $Delimiter = '_'
 
             $Animals = Import-Csv -Path $AnimalCsv -Delimiter $Delimiter
