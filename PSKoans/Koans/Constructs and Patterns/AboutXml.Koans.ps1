@@ -11,10 +11,10 @@ param()
     in the examples which follow, distinguishing the approach from reliance on XPath.
 #>
 Describe 'About XML' {
-	BeforeAll 	{
-		$path = Join-Path $TestDrive -ChildPath document.xml 
-	}
-	
+    BeforeAll {
+        $path = Join-Path $TestDrive -ChildPath document.xml
+    }
+    
     Context 'XML as an object' {
 
         It 'can cast a string to an XML document' {
