@@ -11,7 +11,10 @@ param()
     in the examples which follow, distinguishing the approach from reliance on XPath.
 #>
 Describe 'About XML' {
-
+    BeforeAll {
+        $path = Join-Path $TestDrive -ChildPath document.xml
+    }
+    
     Context 'XML as an object' {
 
         It 'can cast a string to an XML document' {
@@ -35,7 +38,6 @@ Describe 'About XML' {
                 Get-Content is often used to read XML content in as text.
             #>
 
-            $path = Join-Path -Path $TestDrive -ChildPath document.xml
             Set-Content -Path $path -Value @'
 <documentRoot>
     <element>A short XML file</element>
@@ -164,7 +166,6 @@ Describe 'About XML' {
         }
 
         It 'can select XML elements from a file' {
-            $path = Join-Path -Path $TestDrive -ChildPath document.xml
             Set-Content -Path $path -Value @'
 <drives>
     <drive>
@@ -259,7 +260,6 @@ Describe 'About XML' {
         # .NET offers the XmlWriter type to create XML content from scratch.
 
         It 'can create an XML file' {
-            $path = Join-Path -Path $TestDrive -ChildPath 'document.xml'
             $xmlWriter = [System.Xml.XmlWriter]::Create($path)
 
             # A root element can be added to the document
@@ -285,8 +285,6 @@ Describe 'About XML' {
                 XmlWriterSettings can be provided to change this and other behaviours. Settings cannot be modified
                 after the XmlWriter has been created.
             #>
-
-            $path = Join-Path -Path $TestDrive -ChildPath 'document.xml'
 
             # If Indent is set to $true, line breaks will be added. By default two-spaces are used to indent content.
             $settings = [System.Xml.XmlWriterSettings]@{
