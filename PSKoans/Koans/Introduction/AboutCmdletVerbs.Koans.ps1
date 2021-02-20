@@ -22,7 +22,7 @@ Describe "Basic Verbs" {
 
     BeforeAll {
         # We'll be using this path later on.
-        $FilePath = "$env:TMP/YOUR_PATH.txt"
+        $FilePath = Join-Path -Path "$env:TMP" -ChildPath "YOUR_PATH.txt"
 
         if (Test-Path $FilePath) {
             Remove-Item -Path $FilePath
