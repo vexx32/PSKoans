@@ -99,7 +99,7 @@ Show-Karma -Contemplate
 Opens the current koan file in the editor specified by the `Editor` setting.
 Use `Set-PSKoanSetting` to change the editor used.
 
-If a known editor (`code`, `code-insiders`, or `atom`) is used, PSKoans will pass along line information as well.
+If a known editor (`code`, `code-insiders`, `codium`, or `atom`) is used, PSKoans will pass along line information as well.
 
 ### EXAMPLE 3
 
