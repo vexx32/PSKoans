@@ -119,7 +119,7 @@ function Show-Karma {
             $LineNumber = $script:CurrentTopic.CurrentLine
 
             $Arguments = switch ($Editor) {
-                { $_ -in 'code', 'code-insiders' } {
+                { $_ -in 'code', 'code-insiders', 'codium' } {
                     '--goto'
                     '"{0}":{1}' -f (Resolve-Path $FilePath), $LineNumber
                     '--reuse-window'

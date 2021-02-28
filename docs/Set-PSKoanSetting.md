@@ -45,6 +45,16 @@ Set-PSKoanSetting -Name LibraryFolder -Value "./PSKoans"
 
 Sets the library folder location to the `PSKoans` folder in the current directory.
 
+### EXAMPLE 2
+
+```powershell
+Set-PSKoanSetting -Name Editor -Value "atom"
+```
+
+Sets the text editor used for `Show-Karma -Contemplate` to GitHub Atom. For a
+list of text editors known to PSKoans, see Example 2 in the documentation for
+[Show-Karma -Contemplate](https://github.com/vexx32/PSKoans/tree/main/docs/Show-Karma.md).
+
 ## PARAMETERS
 
 ### -Confirm

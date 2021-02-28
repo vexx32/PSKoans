@@ -39,6 +39,14 @@ Get-PSKoanSetting -Name LibraryFolder
 
 Retrieves the library folder location (also retrievable with `Get-PSKoanLocation`).
 
+### EXAMPLE 3
+
+```powershell
+Get-PSKoanSetting -Name Editor
+```
+
+Retrieves the text editor that PSKoans will use for `Show-Karma -Contemplate`.
+
 ## PARAMETERS
 
 ### -Name
