@@ -4,22 +4,6 @@
 | ------------------------------------ | ----------------------------------------------------------------------------------------------- |
 | [![PSKoans Logo][logo-64]][logo-svg] | [![Build Status][build-badge]][build-link]<br/>[![Coverage Status][coverage-badge]][build-link] |
 
-- [PowerShell Koans](#powershell-koans)
-  - [About the Author](#about-the-author)
-    - [Joel Sallow](#joel-sallow)
-  - [Synopsis](#synopsis)
-  - [Command Reference](#command-reference)
-  - [Prerequisites](#prerequisites)
-  - [Getting Started](#getting-started)
-    - [Install from Gallery](#install-from-gallery)
-    - [Or Download the Repo](#or-download-the-repo)
-  - [Start your Journey](#start-your-journey)
-    - [1. Run `Show-Karma` to start your journey towards PowerShell enlightenment](#1-run-show-karma-to-start-your-journey-towards-powershell-enlightenment)
-    - [2. Run `Show-Karma -Meditate` to open your Koans folder](#2-run-show-karma--meditate-to-open-your-koans-folder)
-    - [3. Run `Show-Karma` again to see how you did](#3-run-show-karma-again-to-see-how-you-did)
-  - [Contributing](#contributing)
-  - [Support the Project](#support-the-project)
-
 ## About the Author
 
 ### Joel Sallow
