@@ -268,6 +268,9 @@ Describe 'Variable Provider' {
         }
 
         It 'exposes data from default variables' {
+            if (Test-Path -Path 'Variable:Test') {
+                Remove-Variable -Name Test
+            }
             $Variables = Get-ChildItem -Path 'Variable:'
 
             '____' | Should -Be $Variables.Where{$_.Name -eq 'ConfirmPreference'}.Value
