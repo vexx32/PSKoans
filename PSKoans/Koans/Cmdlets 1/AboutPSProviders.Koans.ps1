@@ -75,7 +75,7 @@ Describe 'Alias Provider' {
 
         It 'can seek out aliases for a command' {
             $CmdletName = '____'
-            $AliasData = Get-Alias -Definition $CmdletName
+            $AliasData = Get-Alias -Definition $CmdletName -ErrorAction SilentlyContinue
 
             $AliasData.Name | Should -Be 'gcm'
         }
