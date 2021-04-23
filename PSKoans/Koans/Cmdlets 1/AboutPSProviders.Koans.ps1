@@ -134,6 +134,10 @@ Describe 'Environment Provider' {
 
 Describe 'FileSystem Provider' {
     BeforeAll {
+        if (-not (Test-Path -Path Temp: -PathType Container)){
+            # In PowerShell 5.x the Temp: drive is not defined by default
+            New-PSDrive -Name Temp -PSProvider FileSystem -Root $env:TEMP
+        }
         $Path = 'TEMP:' | Join-Path -ChildPath 'File001.tmp'
 
         $FileContent = @'
