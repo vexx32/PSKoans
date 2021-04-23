@@ -75,7 +75,7 @@ Describe 'Alias Provider' {
 
         It 'can seek out aliases for a command' {
             $CmdletName = '____'
-            $AliasData = Get-Alias -Definition $CmdletName
+            $AliasData = Get-Alias -Definition $CmdletName -ErrorAction SilentlyContinue
 
             $AliasData.Name | Should -Be 'gcm'
         }
@@ -134,6 +134,10 @@ Describe 'Environment Provider' {
 
 Describe 'FileSystem Provider' {
     BeforeAll {
+        if (-not (Test-Path -Path Temp: -PathType Container)){
+            # In PowerShell 5.x the Temp: drive is not defined by default
+            New-PSDrive -Name Temp -PSProvider FileSystem -Root $env:TEMP
+        }
         $Path = 'TEMP:' | Join-Path -ChildPath 'File001.tmp'
 
         $FileContent = @'
@@ -254,7 +258,7 @@ Describe 'Variable Provider' {
         }
 
         It 'allows you to remove variables' {
-            $Test = 123
+            Set-Variable -Name Test -Value 123
 
             __ | Should -Be $Test
 
