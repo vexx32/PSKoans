@@ -258,12 +258,9 @@ Describe 'Variable Provider' {
         }
 
         It 'allows you to remove variables' {
-            if (Test-Path -Path 'Variable:Test') {
-                Remove-Variable -Name Test
-            }
-            $Test = 123
+            Set-Variable -name Test -Value 123
 
-            __ | Should -Be $Test
+            123 | Should -Be $Test
 
             Remove-Item -Path 'Variable:\Test'
             $____ | Should -Be $Test
