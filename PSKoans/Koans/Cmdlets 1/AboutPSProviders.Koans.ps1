@@ -258,7 +258,7 @@ Describe 'Variable Provider' {
         }
 
         It 'allows you to remove variables' {
-            Set-Variable -name Test -Value 123
+            Set-Variable -Name Test -Value 123
 
             __ | Should -Be $Test
 
