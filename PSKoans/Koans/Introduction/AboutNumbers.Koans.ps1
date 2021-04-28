@@ -102,7 +102,7 @@ Describe 'Basic Number Types' {
         It 'allows you to request the larger type with a suffix' {
             <#
                 By specifying the L suffix, a number is forced to use the long
-                type. here are more suffixes available, depending on your
+                type. There are more suffixes available, depending on your
                 PowerShell version. We'll cover those in a later topic.
             #>
 
