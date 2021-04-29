@@ -85,7 +85,7 @@ Describe 'CSV Cmdlets' {
             $Path = 'TestDrive:/DelimitedData.csv'
 
             $Text = @(
-                '"Number","Square"'
+                '"Number"?"Square"'
                 '"__"?"__"'
                 '"__"?"__"'
                 '"__"?"__"'
