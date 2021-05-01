@@ -85,7 +85,7 @@ Describe 'CSV Cmdlets' {
             $Path = 'TestDrive:/DelimitedData.csv'
 
             $Text = @(
-                '"Number","Square"'
+                '"Number"?"Square"'
                 '"__"?"__"'
                 '"__"?"__"'
                 '"__"?"__"'
@@ -93,7 +93,7 @@ Describe 'CSV Cmdlets' {
                 '"__"?"__"'
             )
 
-            $Objects | Export-Csv -Path $Path -Delimiter $Delimiter
+            $Objects | Export-Csv -Path $Path -Delimiter $Delimiter -NoTypeInformation
             $FileContents = Get-Content -Path $Path
             $Text | Should -BeExactly $FileContents
         }
