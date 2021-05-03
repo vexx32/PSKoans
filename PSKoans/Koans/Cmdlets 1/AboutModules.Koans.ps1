@@ -143,7 +143,7 @@ Describe 'New-Module' {
     }
 
     AfterAll {
-        Remove-Module -Name 'PSKoans_TestModule'
+        $Module | Remove-Module
     }
 }
 
