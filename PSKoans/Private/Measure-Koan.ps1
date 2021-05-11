@@ -31,6 +31,12 @@
     )
     begin {
         $KoanCount = 0
+        $oldModulePath = $env:PSModulePath
+
+        $env:PSModulePath = @(
+            $MyInvocation.MyCommand.Module.ModuleBase
+            $env:PSModulePath -split [System.IO.Path]::PathSeparator
+        ) -join [System.IO.Path]::PathSeparator
 
         $configuration = New-PesterConfiguration
         $configuration.Output.Verbosity = 'None'
@@ -55,6 +61,7 @@
         $KoanCount += $Result.TotalCount
     }
     end {
+        $env:PSModulePath = $oldModulePath
         Write-Verbose "Total Koans: $KoanCount"
         $KoanCount
     }
