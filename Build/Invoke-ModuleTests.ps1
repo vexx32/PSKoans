@@ -15,7 +15,6 @@ try {
     $configuration = New-PesterConfiguration
     $configuration.CodeCoverage.Enabled = $true
     $configuration.TestResult.Enabled = $true
-    $configuration.Run.Exit = $true
     $configuration.Run.Path = $env:PROJECTROOT
     $configuration.Output.Verbosity = 'Normal'
     
