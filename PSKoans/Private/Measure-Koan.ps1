@@ -49,13 +49,7 @@
         Write-Verbose "Discovering koans in $koanTopics"
         $configuration.Run.Path = $KoanInfo.Path
 
-        <#
-            Null-redirecting stream 6 is necessary because the message about skipping the test run still displays
-            even if the output verbosity is set to 'None' in Pester 5.2.0.
-
-            Github issue: https://github.com/pester/Pester/issues/1933
-        #>
-        $Result = Invoke-Pester -Configuration $configuration 6> $null
+        $Result = Invoke-Pester -Configuration $configuration
 
         Write-Debug "Found $($Result.TotalCount) koans in $koanTopics"
         $KoanCount += $Result.TotalCount
