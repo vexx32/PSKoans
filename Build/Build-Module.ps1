@@ -4,7 +4,7 @@ Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 # Create format.ps1xml file
 & "$PSScriptRoot/../PSKoans.ezformat.ps1"
 
-Import-Module "$env:ProjectRoot/PSKoans"
+Import-Module "$env:PROJECTROOT/PSKoans"
 
 Set-BuildEnvironment
 
@@ -34,7 +34,7 @@ catch {
 }
 
 # Build external help files from Platyps MD files
-New-ExternalHelp -Path "$env:ProjectRoot/docs/" -OutputPath "$env:ProjectRoot/PSKoans/en"
+New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
 
-Copy-Item -Path "$env:ProjectRoot/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
+Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
     Where-Object { -not $_.PSIsContainer }
