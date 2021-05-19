@@ -76,7 +76,7 @@ jobs:
           
           $Params.Name = 'Pester'
           $Params.SkipPublisherCheck = $true
-          $Params.RequiredVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.ModuleVersion
+          $Params.RequiredVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
           $Params | Out-String | Write-Host
           Install-Module @Params
           
@@ -161,7 +161,7 @@ jobs:
           
           $Params.Name = 'Pester'
           $Params.SkipPublisherCheck = $true
-          $Params.RequiredVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.ModuleVersion
+          $Params.RequiredVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
           $Params | Out-String | Write-Host
           Install-Module @Params
           
