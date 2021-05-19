@@ -235,7 +235,7 @@ jobs:
           
   publish:
     needs: test
-    if: ${{ success() && startsWith( 'refs/tags/', env.GITHUB_REF ) }}
+    if: ${{ success() && startsWith( 'refs/tags/', $GITHUB_REF ) }}
     
     runs-on: ubuntu-latest
     
