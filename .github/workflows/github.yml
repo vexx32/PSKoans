@@ -21,7 +21,7 @@ env:
   NupkgArtifactName: 'PSKoans.nupkg'
   ModuleArtifactName: 'PSKoans'
   PesterInfoFileName: 'PesterVersion.txt'
-  PesterInfoFilePath: '${{ env.GITHUB_WORKSPACE }}/PesterVersion.txt'
+  PesterInfoFilePath: '${{ github.workspace }}/PesterVersion.txt'
 
 jobs:
 
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      FilePath: '${{ env.GITHUB_WORKSPACE }}/Changelog.md'
+      FilePath: '${{ github.workspace }}/Changelog.md'
 
     steps:
       - uses: actions/checkout@v2
@@ -53,8 +53,8 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      FileSystemDeploymentPath: '$GITHUB_WORKSPACE/Deploy/FileSystem'
-      BuiltModulePath: '$GITHUB_WORKSPACE/Deploy/PSKoans'
+      FileSystemDeploymentPath: '${{ github.workspace }}/Deploy/FileSystem'
+      BuiltModulePath: '${{ github.workspace }}/Deploy/PSKoans'
       # This needs to be set by the script which creates the nupkg
       NupkgPath: ''
     
@@ -136,7 +136,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     env:
-      PackageDownloadPath: '$GITHUB_WORKSPACE/Module'
+      PackageDownloadPath: '${{ github.workspace }}/Module'
       PSRepositoryName: 'FileSystem'
       # The following variables MUST be set in Invoke-ModuleTests.ps1
       TestFile: ''
@@ -217,13 +217,13 @@ jobs:
         uses: MirageNet/nunit-reporter@v1.0.5
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: '$GITHUB_WORKSPACE\$TestResults'
+          path: '${{ github.workspace }}/$TestResults'
           
       - name: Generate Code Coverage
         uses: danielpalme/ReportGenerator-GitHub-Action@4.8.8
         with:
-          reports: '$GITHUB_WORKSPACE\$CodeCoverageFile'
-          targetdir: '$GITHUB_WORKSPACE\coveragereports'
+          reports: '${{ github.workspace }}/$CodeCoverageFile'
+          targetdir: '${{ github.workspace }}/coveragereports'
           sourcedirs: $SourceFolders
           title: PSKoans Code Coverage
           
@@ -231,7 +231,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.3
         with:
           name: 'Code Coverage Reports'
-          path: '$GITHUB_WORKSPACE\coveragereports'
+          path: '${{ github.workspace }}/coveragereports'
           
   publish:
     needs: test
@@ -240,8 +240,8 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      BuiltModulePath: '$GITHUB_WORKSPACE/Deploy/PSKoans'
-      GalleryDeploymentPath: '$GITHUB_WORKSPACE/Deploy/PSGallery'
+      BuiltModulePath: '${{ github.workspace }}/Deploy/PSKoans'
+      GalleryDeploymentPath: '${{ github.workspace }}/Deploy/PSGallery'
       # This variable must be set by the script
       TagName: ''
       
@@ -261,17 +261,17 @@ jobs:
       - name: Set Release Tag Name
         shell: pwsh
         run: |
-          $tagName = ("${{ env.GITHUB_REF }}" -replace '^refs/tags/').Trim()
-          "TagName=$tagname" | Add-Content -Path '${{ env.GITHUB_ENV }}'
+          $tagName = ("${{ github.ref }}" -replace '^refs/tags/').Trim()
+          "TagName=$tagname" | Add-Content -Path '${{ github.env }}'
           
       - name: Download Artifacts
         uses: actions/download-artifact@v2.0.9
         with:
-          path: '$GITHUB_WORKSPACE/artifacts'
+          path: '${{ github.workspace }}/artifacts'
           
       - name: Update Release with Artifacts & Changelog
         uses: Roang-zero1/github-create-release-action@v2.1.0
         with:
           created_tag: $TagName
-          changelog_file: '$GITHUB_WORKSPACE/artifacts/Changelog.md'
+          changelog_file: '${{ github.workspace }}/artifacts/Changelog.md'
           release_title: 'PSKoans Release $TagName'
