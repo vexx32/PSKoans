@@ -52,4 +52,14 @@ Invoke-PSDeploy @DeploymentParams
 Get-ChildItem -Path $DeploymentParams['Path'] | Out-String | Write-Host
 
 $Nupkg = Get-ChildItem -Path $DeploymentParams['Path'] -Filter 'PSKoans*.nupkg' | ForEach-Object FullName
-Write-Host "##vso[task.setvariable variable=NupkgPath]$Nupkg"
+
+$AzurePipelines = $env:BUILD_SOURCESDIRECTORY -and $env:BUILD_BUILDNUMBER
+$GithubActions = [bool]$env:GITHUB_WORKSPACE
+
+if ($AzurePipelines) {
+    Write-Host "##vso[task.setvariable variable=NupkgPath]$Nupkg"
+}
+
+if ($GithubActions) {
+    "NupkgPath=$Nupkg" | Add-Content -Path $env:GITHUB_ENV
+}
