@@ -23,6 +23,9 @@ elseif ($GithubActions) {
     
     "PROJECTROOT=$ProjectRoot" | Add-Content -Path $env:GITHUB_ENV
 }
+else {
+    $env:PROJECTROOT = $ProjectRoot
+}
 
 Write-Host "Build System Details:"
 Get-Item 'Env:BH*' | Out-String | Write-Host
