@@ -20,7 +20,7 @@ on:
 env:
   NupkgArtifactName: 'PSKoans.nupkg'
   ModuleArtifactName: 'PSKoans'
-  PesterInfoFileName: 'PesterVersion.txt'
+  PesterInfoFileName: 'PesterVersion'
   PesterInfoFilePath: '${{ github.workspace }}/PesterVersion.txt'
 
 jobs:
@@ -191,7 +191,7 @@ jobs:
         uses: actions/download-artifact@v2.0.9
         with:
           name: ${{ env.PesterInfoFileName }}
-          path: ${{ env.PesterInfoFilePath }}
+          path: ${{ github.workspace }}
           
       - name: Install Module from Nupkg
         shell: pwsh
