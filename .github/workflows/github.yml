@@ -198,7 +198,7 @@ jobs:
         run: |
           $pesterParams = @{
               Name           = 'Pester'
-              MinimumVersion = Get-Content -Path "${{ env.PesterInfoFilePath }}"
+              RequiredVersion = Get-Content -Path "${{ env.PesterInfoFilePath }}"
               ProviderName   = 'NuGet'
               Path           = '${{ env.PackageDownloadPath }}'
               Force          = $true
