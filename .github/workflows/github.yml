@@ -21,7 +21,7 @@ env:
   NupkgArtifactName: 'PSKoans.nupkg'
   ModuleArtifactName: 'PSKoans'
   PesterInfoFileName: 'PesterVersion.txt'
-  PesterInfoFilePath: '$GITHUB_WORKSPACE/PesterVersion.txt'
+  PesterInfoFilePath: '${{ env.GITHUB_WORKSPACE }}/PesterVersion.txt'
 
 jobs:
 
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      FilePath: '$GITHUB_WORKSPACE/Changelog.md'
+      FilePath: '${{ env.GITHUB_WORKSPACE }}/Changelog.md'
 
     steps:
       - uses: actions/checkout@v2
