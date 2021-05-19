@@ -4,7 +4,15 @@ Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 # Create format.ps1xml file
 & "$PSScriptRoot/../PSKoans.ezformat.ps1"
 
-Import-Module "$env:PROJECTROOT/PSKoans"
+if ($env:PROJECTROOT) {
+    Import-Module "$env:PROJECTROOT/PSKoans"
+}
+elseif ($env:GITHUB_WORKSPACE) {
+    Import-Module "$env:GITHUB_WORKSPACE/PSKoans"
+}
+else {
+    Import-Module "./PSKoans"
+}
 
 Set-BuildEnvironment
 
