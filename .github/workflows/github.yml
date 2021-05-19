@@ -234,6 +234,7 @@ jobs:
           path: '${{ github.workspace }}/coveragereports'
           
   publish:
+    name: Publish Module to PSGallery
     needs: test
     if: success() && startsWith( github.ref, 'refs/tags/' )
     
