@@ -76,14 +76,14 @@ jobs:
           
           $Params.Name = 'Pester'
           $Params.SkipPublisherCheck = $true
-          $Params.MinimumVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
+          $Params.RequiredVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
           $Params | Out-String | Write-Host
           Install-Module @Params
           
-          $Params.MinimumVersion | Set-Content -Path "${{ env.PesterInfoFilePath }}"
+          $Params.RequiredVersion | Set-Content -Path "${{ env.PesterInfoFilePath }}"
           
           $Params.Remove('SkipPublisherCheck')
-          $Params.Remove('MinimumVersion')
+          $Params.Remove('RequiredVersion')
           
           $Params.Name = 'EZOut'
           $Params.AllowClobber = $true
@@ -161,12 +161,12 @@ jobs:
           
           $Params.Name = 'Pester'
           $Params.SkipPublisherCheck = $true
-          $Params.MinimumVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
+          $Params.RequiredVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
           $Params | Out-String | Write-Host
           Install-Module @Params
           
           $Params.Remove('SkipPublisherCheck')
-          $Params.Remove('MinimumVersion')
+          $Params.Remove('RequiredVersion')
           
           $Params.Name = 'EZOut'
           $Params.AllowClobber = $true
