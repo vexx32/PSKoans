@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.3
         with:
           name: Changelog.md
-          path: $FilePath
+          path: ${{ env.FilePath }}
           
   build:
     name: 'Build Module'
@@ -101,14 +101,14 @@ jobs:
       - name: Upload Module Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
-          name: $ModuleArtifactName
-          path: $BuiltModulePath
+          name: ${{ env.ModuleArtifactName }}
+          path: ${{ env.BuiltModulePath }}
           
       - name: Upload Pester Version Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
-          name: $PesterInfoFileName
-          path: $PesterInfoFilePath
+          name: ${{ env.PesterInfoFileName }}
+          path: ${{ env.PesterInfoFilePath }}
           
       - name: Generate Nupkg
         shell: pwsh
@@ -119,8 +119,8 @@ jobs:
       - name: Upload Nupkg Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
-          name: $NupkgArtifactName
-          path: $NupkgPath
+          name: ${{ env.NupkgArtifactName }}
+          path: ${{ env.NupkgPath }}
 
   test:
     name: "Test Module"
@@ -184,14 +184,14 @@ jobs:
       - name: Download Module Nupkg
         uses: actions/download-artifact@v2.0.9
         with:
-          name: $NupkgArtifactName
-          path: $PackageDownloadPath
+          name: ${{ env.NupkgArtifactName }}
+          path: ${{ env.PackageDownloadPath }}
           
       - name: Download Pester Version Information
         uses: actions/download-artifact@v2.0.9
         with:
-          name: $PesterInfoFileName
-          path: $PesterInfoFilePath
+          name: ${{ env.PesterInfoFileName }}
+          path: ${{ env.PesterInfoFilePath }}
           
       - name: Install Module from Nupkg
         shell: pwsh
@@ -224,7 +224,7 @@ jobs:
         with:
           reports: '${{ github.workspace }}/$CodeCoverageFile'
           targetdir: '${{ github.workspace }}/coveragereports'
-          sourcedirs: $SourceFolders
+          sourcedirs: ${{ env.ModuleFolders }}
           title: PSKoans Code Coverage
           
       - name: Publish Code Coverage artifacts
@@ -273,6 +273,6 @@ jobs:
       - name: Update Release with Artifacts & Changelog
         uses: Roang-zero1/github-create-release-action@v2.1.0
         with:
-          created_tag: $TagName
+          created_tag: ${{ env.TagName }}
           changelog_file: '${{ github.workspace }}/artifacts/Changelog.md'
-          release_title: 'PSKoans Release $TagName'
+          release_title: 'PSKoans Release ${{ env.TagName }}'
