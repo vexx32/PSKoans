@@ -192,7 +192,7 @@ Describe 'Logical Operators' {
 
         It 'returns $true only if both inputs are $true' {
             $true -and $true | Should -BeTrue
-            $____ -and $true | Should -BeFalse
+            $____ | Should -Be ($false -and $true)
         }
 
         It 'may coerce values to boolean' {
