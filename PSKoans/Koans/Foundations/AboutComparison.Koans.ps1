@@ -214,9 +214,9 @@ Describe 'Logical Operators' {
         It 'may coerce values to boolean' {
             # Remember, empty strings convert to boolean as $false.
             $String = ''
-            $Number = __
+            $Number = 1
 
-            $String -or $Number | Should -BeTrue
+            $____ | Should -Be ($String -or $Number)
         }
     }
 
