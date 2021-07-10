@@ -11,8 +11,20 @@ Write-Host "TEST: Pester Version: $PesterVersion"
 Write-Host $Lines
 
 try {
-    # Try/Finally required since -CI will exit with exit code on failure.
-    Invoke-Pester -Path "$env:PROJECTROOT" -CI -Output Normal
+    # Try/Finally required since we will exit with exit code on failure.
+    $configuration = [PesterConfiguration]::Default
+    $configuration.Run.Path = "$env:PROJECTROOT/Tests"
+    $configuration.Run.Exit = $true
+    $configuration.CodeCoverage.Enabled = $true
+    $configuration.CodeCoverage.Path = Get-ChildItem -Recurse -Include '*.ps1' -Path @(
+            "$env:PROJECTROOT/PSKoans/PSKoans.psm1"
+            "$env:PROJECTROOT/PSKoans/Public"
+            "$env:PROJECTROOT/PSKoans/Private"
+        ) | Select-Object -ExpandProperty FullName 
+    $configuration.TestResult.Enabled = $true
+    $configuration.TestResult.TestSuiteName = "PSKoans-Pester"
+    
+    Invoke-Pester -Configuration $configuration
 }
 finally {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
