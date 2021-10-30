@@ -13,7 +13,8 @@ function Get-KoanCachedResult {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string]$Path
+        [string]
+        $Path
     )
 
     $cacheEntryName = [System.IO.Path]::GetFileNameWithoutExtension($Path)

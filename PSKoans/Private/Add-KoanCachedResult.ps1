@@ -16,10 +16,12 @@ function Add-KoanCachedResult {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string]$Path,
+        [string]
+        $Path,
 
         [Parameter(Mandatory)]
-        [object]$Result
+        [object]
+        $Result
     )
 
     $currentHash = (Get-FileHash -Path $Path).Hash
