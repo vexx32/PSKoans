@@ -27,11 +27,11 @@ View the PSKoans [Command Reference Documentation][reference-docs].
 
 ## Prerequisites
 
-- Windows PowerShell version 5.1 / PowerShell 6+
-- NuGet
+- PowerShell version 5.1 / PowerShell 6+
+- NuGet (Windows only)
 - Pester v4.x
 
-If you've never installed PowerShell modules before, you need to first install the NuGet PackageProvider to enable modules to be installed:
+Windows only: If you've never installed PowerShell modules before, you need to first install the NuGet PackageProvider to enable modules to be installed:
 
 ```PowerShell
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
