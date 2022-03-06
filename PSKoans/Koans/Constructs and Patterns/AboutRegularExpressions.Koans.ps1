@@ -156,15 +156,20 @@ Describe 'Quantifiers' {
     
     Context '*' {
 
+        BeforeEach {
+            $firstTest = ('pears' -match 'p*ears')
+            $secondTest = ('shears' -match 'p*ears')
+        }
+
         It 'specifies 0 or more of something' {
             <#
-                The * character specifies "0 or more" of the symbol or group that comes 
+                The * character specifies "0 or more" of the symbol or group that comes
                 immediately before it. In this case, the pattern can be read aloud as "zero or more
                 of the letter p, then the letters e, a, r, and s."
             #>
-    
-            $____ | Should -Be ('pears' -match 'p*ears')
-            $____ | Should -Be ('shears' -match 'p*ears')
+
+            $____ | Should -Be $firstTest
+            $____ | Should -Be $secondTest
         }
 
         It 'does not need to match the entire string' {
