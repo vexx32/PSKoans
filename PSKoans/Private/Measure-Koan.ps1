@@ -39,7 +39,7 @@
         ) -join [System.IO.Path]::PathSeparator
     }
     process {
-        Write-Verbose "Discovering koans in [$($KoanInfo.Name -join '], [')]"
+        Write-Verbose "Discovering koans in [$($KoanInfo.Path -join '], [')]"
 
         $Result = & (Get-Module Pester) {
             [CmdletBinding()]

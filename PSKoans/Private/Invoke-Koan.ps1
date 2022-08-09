@@ -31,6 +31,11 @@
         }
     }
     end {
+        $CachedResult = Get-KoanCachedResult -Path $ParameterSplat['Script']
+        if ($CachedResult) {
+            return $CachedResult
+        }
+
         try {
             $Requirements = [System.Management.Automation.Language.Parser]::ParseFile(
                 $ParameterSplat.Script,
@@ -73,6 +78,7 @@
 
             $Status = $ps.BeginInvoke()
 
+            # Wait for the runspace in PS to support use of Control+C
             do { Start-Sleep -Milliseconds 100 } until ($Status.IsCompleted)
 
             $Result = $ps.EndInvoke($Status)
@@ -82,6 +88,9 @@
                 foreach ($errorItem in $ps.Streams.Error) {
                     $PSCmdlet.WriteError($errorItem)
                 }
+            } else {
+                # Never cache when errors are raised during the pester run
+                Add-KoanCachedResult -Path $ParameterSplat['Script'] -Result $Result
             }
 
             $Result

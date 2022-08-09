@@ -26,12 +26,17 @@ function New-KoanRunspace {
 
     try {
         $script = {
-            param( $PSKoansPath )
+            param(
+                $PesterPath,
+                $PSKoansPath
+            )
 
+            Get-Module $PesterPath -ListAvailable | Import-Module
             Get-Module $PSKoansPath -ListAvailable | Import-Module
         }
 
         $ps.AddScript($script) > $null
+        $ps.AddParameter('PesterPath', (Get-Module Pester).ModuleBase) > $null
         $ps.AddParameter('PSKoansPath', $MyInvocation.MyCommand.Module.ModuleBase) > $null
         $ps.Invoke() > $null
 

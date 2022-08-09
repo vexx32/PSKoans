@@ -15,6 +15,7 @@
 
 $script:ModuleRoot = $PSScriptRoot
 $script:ConfigPath = '~/.config/PSKoans/config.json'
+$script:CachePath = '~/.config/PSKoans/cache'
 $script:DefaultSettings = @{
     KoanLocation = Resolve-Path -Path '~' | Join-Path -ChildPath 'PSKoans'
     Editor       = 'code'
