@@ -65,7 +65,7 @@ Describe 'Strings' {
 
                 This could be the result of a typing mistake.
             #>
-            $String = "PowerShell's home folder is: $SPHome"
+            $String = "PowerShell's home folder is: $PSHome"
             "____" | Should -Be $String
         }
 
