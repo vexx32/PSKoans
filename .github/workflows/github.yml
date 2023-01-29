@@ -235,7 +235,7 @@ jobs:
           
   publish:
     needs: test
-    if: ${{ success() && startsWith( 'refs/tags/', env.GITHUB_REF ) }}
+    if: ${{ success() && startsWith( 'refs/tags/', github.ref ) }}
     
     runs-on: ubuntu-latest
     
@@ -261,8 +261,8 @@ jobs:
       - name: Set Release Tag Name
         shell: pwsh
         run: |
-          $tagName = ("${{ env.GITHUB_REF }}" -replace '^refs/tags/').Trim()
-          "TagName=$tagname" | Add-Content -Path '${{ env.GITHUB_ENV }}'
+          $tagName = ("${{ github.ref }}" -replace '^refs/tags/').Trim()
+          "TagName=$tagname" | Add-Content -Path '${{ github.env }}'
           
       - name: Download Artifacts
         uses: actions/download-artifact@v2.0.9
