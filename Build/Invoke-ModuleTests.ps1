@@ -11,8 +11,23 @@ Write-Host "TEST: Pester Version: $PesterVersion"
 Write-Host $Lines
 
 try {
+    $config = [PesterConfiguration]@{
+        Run = @{
+            Path = "$env:PROJECTROOT"
+            Exit = $true
+        }
+        CodeCoverage = @{
+            Enabled = $true
+        }
+        TestResult = @{
+            Enabled = $true
+        }
+        Output = @{
+            Verbosity = 'Normal'
+        }
+    }
     # Try/Finally required since -CI will exit with exit code on failure.
-    Invoke-Pester -Path "$env:PROJECTROOT" -CI -Output Normal
+    Invoke-Pester -Configuration $config
 }
 finally {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
