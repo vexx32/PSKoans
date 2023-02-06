@@ -50,9 +50,6 @@ jobs:
     name: 'Build Module'
     runs-on: ubuntu-latest
     
-    outputs:
-      pester_min_version: ${{ steps.pestermin.outputs.pester_min_version }}
-    
     env:
       FileSystemDeploymentPath: Deploy/FileSystem
       BuiltModulePath: Deploy/PSKoans
@@ -194,7 +191,7 @@ jobs:
           $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
           $pesterParams = @{
               Name           = 'Pester'
-              MinimumVersion = Get-Content -Path "${{ needs.build.outputs.pester_min_version }}"
+              MinimumVersion = Get-Content -Path $env:pester_min_version
               ProviderName   = 'NuGet'
               Path           = $PackageDownloadPath
               Force          = $true
@@ -207,6 +204,7 @@ jobs:
           GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
           PackageDownloadPath: ${{ env.PackageDownloadPath }}
           PSRepositoryName: ${{ env.PSRepositoryName }}
+          pester_min_version: ${{ env.pester_min_version }}
       
       - name: Run Pester Tests
         shell: pwsh
