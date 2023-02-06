@@ -153,8 +153,7 @@ jobs:
 
       - name: Show the previous action works
         shell: pwsh
-        run: |
-          Get-Module -Name PSDeploy, BuildHelpers, PlatyPS, EZOut -ListAvailable
+        run: Get-Module -Name PSDeploy, BuildHelpers, PlatyPS, EZOut -ListAvailable
 
       - name: Setup Environment
         shell: pwsh
