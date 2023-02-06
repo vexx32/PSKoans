@@ -3,7 +3,6 @@ Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
 # Create format.ps1xml file
 & "$PSScriptRoot/../PSKoans.ezformat.ps1"
-Write-Host "ProjectRoot: $env:PROJECTROOT"
 
 Import-Module "$env:PROJECTROOT/PSKoans"
 
@@ -36,13 +35,6 @@ catch {
 
 # Build external help files from Platyps MD files
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
-
-Write-Host "=============================PROJECT ROOT============================="
-Write-Host "ProjectRoot: $env:PROJECTROOT"
-Get-ChildItem -Path $env:PROJECTROOT -Recurse
-
-Write-Host "=============================Built Module Path============================="
-Write-Host "BuiltModulePath: $env:BUILTMODULEPATH`nGITHUB_WORKSPACE: $env:GITHUB_WORKSPACE"
 
 $BuiltModulePath = $env:BUILTMODULEPATH.Replace('$env:GITHUB_WORKSPACE', $env:GITHUB_WORKSPACE)
 Get-ChildItem -Path $BuiltModulePath -Recurse

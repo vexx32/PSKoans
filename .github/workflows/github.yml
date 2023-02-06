@@ -83,11 +83,6 @@ jobs:
           BUILD_SOURCEBRANCHNAME: ${{ env.GITHUB_REF_NAME}}
           BUILD_SOURCEBRANCH: ${{ env.GITHUB_REF }}
 
-      - name: Print ProjectRoot
-        shell: pwsh
-        run: |
-          Write-Host "ProjectRoot: ${{ env.PROJECTROOT }}"
-
       - name: Build Module
         shell: pwsh
         run: ./Build/Build-Module.ps1
@@ -99,8 +94,8 @@ jobs:
       - name: Upload Module Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: $ModuleArtifactName
-          path: $BuiltModulePath
+          name: ${{ env.ModuleArtifactName }}
+          path: ${{ env.BuiltModulePath }}
           
       - name: Generate Nupkg
         shell: pwsh
@@ -111,8 +106,8 @@ jobs:
       - name: Upload Nupkg Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: $NupkgArtifactName
-          path: $NupkgPath
+          name: ${{ env.NupkgArtifactName }}
+          path: ${{ env.NupkgPath }}
 
   test:
     name: "Test Module"
