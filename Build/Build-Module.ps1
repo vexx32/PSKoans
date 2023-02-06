@@ -37,10 +37,12 @@ catch {
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
 
 Write-Host "=============================PROJECT ROOT============================="
+Write-Host "ProjectRoot: $env:ProjectRoot"
 Get-ChildItem -Path $env:PROJECTROOT -Recurse
 
 Write-Host "=============================Built Module Path============================="
-Get-ChildItem -Path $env:BUILTMODULEPATH -Recurse
+Write-Host "BuiltModulePath: $env:BUILTMODULEPATH`nGITHUB_WORKSPACE: $env:GITHUB_WORKSPACE"
+Get-ChildItem -Path $($env:BUILTMODULEPATH.Replace('$env:GITHUB_WORKSPACE', $env:GITHUB_WORKSPACE)) -Recurse
 
 Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
     Where-Object { -not $_.PSIsContainer }
