@@ -76,7 +76,8 @@ jobs:
           Set-PSRepository PSGallery -InstallationPolicy Trusted
           Install-Module PSDeploy, BuildHelpers, PlatyPS, EZOut
           Install-Module Pester -MinimumVersion $env:pester_min_version
-        env: pester_min_version: ${{ env.pester_min_version }}
+        env:
+          pester_min_version: ${{ env.pester_min_version }}
       
       # - name: Install and cache PowerShell modules
       #   uses: potatoqualitee/psmodulecache@v5.2
@@ -92,7 +93,7 @@ jobs:
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
         env:
-          BUILD_SOURCEBRANCHNAME: ${{ env.GITHUB_REF_NAME}}
+          BUILD_SOURCEBRANCHNAME: ${{ env.GITHUB_REF_NAME }}
           BUILD_SOURCEBRANCH: ${{ env.GITHUB_REF }}
 
       - name: Build Module
