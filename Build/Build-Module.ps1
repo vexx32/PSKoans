@@ -36,5 +36,11 @@ catch {
 # Build external help files from Platyps MD files
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
 
-Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Force -Recurse -PassThru |
+Get-ChildItem -Path $env:PROJECTROOT -Recurse
+
+Get-ChildItem -Path $env:BUILTMODULEPATH -Recurse
+
+Write-Host "BuiltModulePath: $env:BUILTMODULEPATH"
+
+Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
     Where-Object { -not $_.PSIsContainer }
