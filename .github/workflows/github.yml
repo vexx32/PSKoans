@@ -54,8 +54,8 @@ jobs:
       pester_min_version: ${{ steps.pestermin.outputs.pester_min_version }}
     
     env:
-      FileSystemDeploymentPath: /Deploy/FileSystem
-      BuiltModulePath: /Deploy/PSKoans
+      FileSystemDeploymentPath: Deploy/FileSystem
+      BuiltModulePath: Deploy/PSKoans
       # This needs to be set by the script which creates the nupkg
       NupkgPath: ''
     
@@ -84,10 +84,6 @@ jobs:
       #   with:
       #     modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
       #     shell: pwsh
-
-      - name: Show the previous action works
-        shell: pwsh
-        run: Get-Module -Name PSDeploy, BuildHelpers, PlatyPS, Pester, EZOut -ListAvailable
 
       - name: Setup Environment
         shell: pwsh
@@ -140,7 +136,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     env:
-      PackageDownloadPath: '$env:GITHUB_WORKSPACE/Module'
+      PackageDownloadPath: '/Module'
       PSRepositoryName: 'FileSystem'
       # The following variables MUST be set in Invoke-ModuleTests.ps1
       TestFile: ''
@@ -158,11 +154,20 @@ jobs:
           Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
-      - name: Install and cache PowerShell modules
-        uses: potatoqualitee/psmodulecache@v5.2
-        with:
-          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
-          shell: pwsh
+      - name: Install from PSGallery
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSDeploy, BuildHelpers, PlatyPS, EZOut
+          Install-Module Pester -MinimumVersion $env:pester_min_version
+        env:
+          pester_min_version: ${{ env.pester_min_version }}
+      
+      # - name: Install and cache PowerShell modules
+      #   uses: potatoqualitee/psmodulecache@v5.2
+      #   with:
+      #     modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
+      #     shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
@@ -170,7 +175,9 @@ jobs:
         
       - name: Register FileSystem Repository
         shell: pwsh
-        run: ./Build/Register-FileSystemRepository.ps1 -Path '${{ env.PackageDownloadPath }}' -Name '${{ env.PSRepositoryName }}'
+        run: |
+          $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
+          ./Build/Register-FileSystemRepository.ps1 -Path $PackageDownloadPath -Name ${{ env.PSRepositoryName }}
       
       - name: Download Module Nupkg
         uses: actions/download-artifact@v2.0.9
