@@ -136,7 +136,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     env:
-      PackageDownloadPath: '/Module'
+      PackageDownloadPath: 'Module'
       PSRepositoryName: 'FileSystem'
       # The following variables MUST be set in Invoke-ModuleTests.ps1
       TestFile: ''
@@ -202,7 +202,7 @@ jobs:
           }
           Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
           Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
-          Install-Module PSKoans -Repository ${{ env:PSRepositoryName }} -Force -Scope CurrentUser
+          Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
         env:
           GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
           PackageDownloadPath: ${{ env.PackageDownloadPath }}
