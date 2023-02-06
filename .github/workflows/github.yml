@@ -36,14 +36,14 @@ jobs:
       FilePath: '$GITHUB_WORKSPACE/Changelog.md'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Generate Changelog
         shell: pwsh
         run: ./Build/New-Changelog.ps1 -Path "${{ env.FilePath }}" -ApiKey "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Upload Changelog
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
           name: Changelog.md
           path: $FilePath
@@ -51,6 +51,8 @@ jobs:
   build:
     name: 'Build Module'
     runs-on: ubuntu-latest
+    outputs:
+      pester_min_version: ${{ steps.pestermin.outputs.pester_min_version }}
     
     env:
       FileSystemDeploymentPath: '$GITHUB_WORKSPACE/Deploy/FileSystem'
@@ -59,36 +61,21 @@ jobs:
       NupkgPath: ''
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
-      - name: Install Dependencies
+      - name: Get Pester min version
+        id: pestermin
         shell: pwsh
         run: |
-          $Params = @{
-              Scope = 'CurrentUser'
-              Force = $true
-          }
-          
-          Write-Host "Installing Modules"
-          $Params.Name = @( 'PSDeploy', 'BuildHelpers', 'PlatyPS' )
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.Name = 'Pester'
-          $Params.SkipPublisherCheck = $true
-          $Params.MinimumVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.MinimumVersion | Set-Content -Path "${{ env.PesterInfoFilePath }}"
-          
-          $Params.Remove('SkipPublisherCheck')
-          $Params.Remove('MinimumVersion')
-          
-          $Params.Name = 'EZOut'
-          $Params.AllowClobber = $true
-          $Params | Out-String | Write-Host
-          Install-Module @Params
+          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
+          Write-Output "pester_min_version=$MinimumVersion" >> $GITHUB_OUTPUT
+          Write-Host "Minimum Pester Version: $MinimumVersion"
+
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v5.2
+        with:
+          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ steps.vars.outputs.pester_min_version }}, EZOut
+          shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
@@ -99,16 +86,10 @@ jobs:
         run: ./Build/Build-Module.ps1
 
       - name: Upload Module Artifact
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
           name: $ModuleArtifactName
           path: $BuiltModulePath
-          
-      - name: Upload Pester Version Artifact
-        uses: actions/upload-artifact@v2.2.3
-        with:
-          name: $PesterInfoFileName
-          path: $PesterInfoFilePath
           
       - name: Generate Nupkg
         shell: pwsh
@@ -117,7 +98,7 @@ jobs:
           ./Deploy/Publish.ps1 -Key 'filesystem' -Path '${{ env.FileSystemDeploymentPath }}' -OutputDirectory '${{ env.FileSystemDeploymentPath }}'
           
       - name: Upload Nupkg Artifact
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
           name: $NupkgArtifactName
           path: $NupkgPath
@@ -144,34 +125,20 @@ jobs:
       ModuleFolders: ''
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
-      - name: Install Dependencies
+      - name: Get Pester min version
         shell: pwsh
         run: |
-          $Params = @{
-              Scope = 'CurrentUser'
-              Force = $true
-          }
-          
-          Write-Host "Installing Modules"
-          $Params.Name = @( 'PSDeploy', 'BuildHelpers', 'PlatyPS' )
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.Name = 'Pester'
-          $Params.SkipPublisherCheck = $true
-          $Params.MinimumVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.Remove('SkipPublisherCheck')
-          $Params.Remove('MinimumVersion')
-          
-          $Params.Name = 'EZOut'
-          $Params.AllowClobber = $true
-          $Params | Out-String | Write-Host
-          Install-Module @Params
+          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
+          Write-Output "pester_min_version=$MinimumVersion" >> $GITHUB_OUTPUT
+          Write-Host "Minimum Pester Version: $MinimumVersion"
+
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v5.2
+        with:
+          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ steps.vars.outputs.pester_min_version }}, EZOut
+          shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
@@ -187,18 +154,12 @@ jobs:
           name: $NupkgArtifactName
           path: $PackageDownloadPath
           
-      - name: Download Pester Version Information
-        uses: actions/download-artifact@v2.0.9
-        with:
-          name: $PesterInfoFileName
-          path: $PesterInfoFilePath
-          
       - name: Install Module from Nupkg
         shell: pwsh
         run: |
           $pesterParams = @{
               Name           = 'Pester'
-              MinimumVersion = Get-Content -Path "${{ env.PesterInfoFilePath }}"
+              MinimumVersion = Get-Content -Path "${{ needs.build.outputs.pester_min_version }}"
               ProviderName   = 'NuGet'
               Path           = '${{ env.PackageDownloadPath }}'
               Force          = $true
@@ -246,7 +207,7 @@ jobs:
       TagName: ''
       
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Download Module Artifact
         uses: actions/download-artifact@v2.0.9
