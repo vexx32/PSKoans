@@ -87,6 +87,7 @@ jobs:
         shell: pwsh
         run: ./Build/Build-Module.ps1
         env:
+          PROJECTROOT: ${{ env.ProjectRoot }}
           BUILTMODULEPATH: ${{ env.BuiltModulePath }}
           GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
 

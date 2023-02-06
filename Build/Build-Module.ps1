@@ -42,7 +42,9 @@ Get-ChildItem -Path $env:PROJECTROOT -Recurse
 
 Write-Host "=============================Built Module Path============================="
 Write-Host "BuiltModulePath: $env:BUILTMODULEPATH`nGITHUB_WORKSPACE: $env:GITHUB_WORKSPACE"
-Get-ChildItem -Path $($env:BUILTMODULEPATH.Replace('$env:GITHUB_WORKSPACE', $env:GITHUB_WORKSPACE)) -Recurse
 
-Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
+$BuiltModulePath = $env:BUILTMODULEPATH.Replace('$env:GITHUB_WORKSPACE', $env:GITHUB_WORKSPACE)
+Get-ChildItem -Path $BuiltModulePath -Recurse
+
+Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $BuiltModulePath -Recurse -PassThru |
     Where-Object { -not $_.PSIsContainer }
