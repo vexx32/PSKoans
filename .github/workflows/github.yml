@@ -79,10 +79,16 @@ jobs:
       - name: Setup Environment
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
+        env:
+          BUILD_SOURCEBRANCHNAME: ${{ env.GITHUB_REF_NAME}}
+          BUILD_SOURCEBRANCH: ${{ env.GITHUB_REF }}
 
       - name: Build Module
         shell: pwsh
         run: ./Build/Build-Module.ps1
+        env:
+          BUILTMODULEPATH: $BuiltModulePath
+          BHProjectName: ${{ env.BHProjectName }}
 
       - name: Upload Module Artifact
         uses: actions/upload-artifact@v3
