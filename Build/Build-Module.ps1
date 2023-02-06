@@ -3,6 +3,7 @@ Get-PackageProvider -Name NuGet -ForceBootstrap > $null
 
 # Create format.ps1xml file
 & "$PSScriptRoot/../PSKoans.ezformat.ps1"
+Write-Host "ProjectRoot: $env:PROJECTROOT"
 
 Import-Module "$env:PROJECTROOT/PSKoans"
 
@@ -37,7 +38,7 @@ catch {
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
 
 Write-Host "=============================PROJECT ROOT============================="
-Write-Host "ProjectRoot: $env:ProjectRoot"
+Write-Host "ProjectRoot: $env:PROJECTROOT"
 Get-ChildItem -Path $env:PROJECTROOT -Recurse
 
 Write-Host "=============================Built Module Path============================="

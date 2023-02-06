@@ -83,11 +83,16 @@ jobs:
           BUILD_SOURCEBRANCHNAME: ${{ env.GITHUB_REF_NAME}}
           BUILD_SOURCEBRANCH: ${{ env.GITHUB_REF }}
 
+      - name: Print ProjectRoot
+        shell: pwsh
+        run: |
+          Write-Host "ProjectRoot: ${{ env.PROJECTROOT }}"
+
       - name: Build Module
         shell: pwsh
         run: ./Build/Build-Module.ps1
         env:
-          PROJECTROOT: ${{ env.ProjectRoot }}
+          PROJECTROOT: ${{ env.PROJECTROOT }}
           BUILTMODULEPATH: ${{ env.BuiltModulePath }}
           GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
 
