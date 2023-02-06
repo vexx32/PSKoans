@@ -88,6 +88,7 @@ jobs:
         run: ./Build/Build-Module.ps1
         env:
           BUILTMODULEPATH: ${{ env.BuiltModulePath }}
+          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
 
       - name: Upload Module Artifact
         uses: actions/upload-artifact@v3

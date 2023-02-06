@@ -36,22 +36,11 @@ catch {
 # Build external help files from Platyps MD files
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
 
-# Get-ChildItem env:
+Write-Host "=============================PROJECT ROOT============================="
+Get-ChildItem -Path $env:PROJECTROOT -Recurse
 
-# Write-Host "=============================PROJECT ROOT============================="
-# Get-ChildItem -Path $env:PROJECTROOT -Recurse
-Write-Host "Which works?`n1: $env:PROJECTROOT`n2:$ProjectRoot"
 Write-Host "=============================Built Module Path============================="
-Write-Host "BuiltModulePath: $env:BUILTMODULEPATH`nOr maybe: $BuiltModulePath"
-
 Get-ChildItem -Path $env:BUILTMODULEPATH -Recurse
 
-if($null -eq $env:BUILTMODULEPATH -and $null -ne $BuiltModulePath) {
-    Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $BuiltModulePath -Recurse -PassThru |
-        Where-Object { -not $_.PSIsContainer }
-} elseif ($null -eq $BuiltModulePath -and $null -ne $env:BUILTMODULEPATH) {
-    Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
-        Where-Object { -not $_.PSIsContainer }
-} else {
-    Write-Error "Missing BuiltModulePath environment variable."
-}
+Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $env:BUILTMODULEPATH -Recurse -PassThru |
+    Where-Object { -not $_.PSIsContainer }
