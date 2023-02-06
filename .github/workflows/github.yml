@@ -100,7 +100,7 @@ jobs:
       - name: Generate Nupkg
         shell: pwsh
         run: |
-          $FileSystemDeploymentPath = ${{ env.FileSystemDeploymentPath }}.Replace('$env:GITHUB_WORKSPACE', ${{ env:GITHUB_WORKSPACE}})
+          $FileSystemDeploymentPath = $env.FileSystemDeploymentPath.Replace('$env:GITHUB_WORKSPACE', $env:GITHUB_WORKSPACE)
           ./Build/Register-FileSystemRepository.ps1 -Path $FileSystemDeploymentPath -Name 'FileSystem'
           ./Deploy/Publish.ps1 -Key 'filesystem' -Path $FileSystemDeploymentPath -OutputDirectory $FileSystemDeploymentPath
           
