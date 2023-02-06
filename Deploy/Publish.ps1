@@ -14,14 +14,24 @@ $env:NugetApiKey = $Key
 
 if ($OutputDirectory) {
     Import-Module "$PSScriptRoot/PSKoans"
-    $Module = Get-Module -Name PSKoans
-    $Dependencies = @(
-        $Module.RequiredModules.Name
-        $Module.NestedModules.Name
-    ).Where{ $_ }
+    $PSKoansModule = Get-Module -Name PSKoans
 
+    $Dependencies = @()
+    $PSKoansModule.RequiredModules | ForEach-Object {
+        $Dependencies += @{
+            Name = $_.Name
+            Version = $_.Version
+        }
+    }
+    $PSKoansModule.NestedModules | ForEach-Object {
+        $Dependencies += @{
+            Name = $_.Name
+            Version = $_.Version
+        }
+    }
+    
     foreach ($Module in $Dependencies) {
-        Publish-Module -Name $Module -Repository FileSystem -NugetApiKey "Test-Publish"
+        Publish-Module -Name $Module.Name -RequiredVersion $Module.Version -Repository FileSystem -NugetApiKey "Test-Publish"
     }
 }
 
