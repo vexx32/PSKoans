@@ -69,12 +69,18 @@ jobs:
           $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version.ToString()
           Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           Write-Host "Minimum Pester Version: $MinimumVersion"
-
-      - name: Install and cache PowerShell modules
-        uses: potatoqualitee/psmodulecache@v5.2
-        with:
-          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
-          shell: pwsh
+        
+      - name: Install from PSGallery
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
+      
+      # - name: Install and cache PowerShell modules
+      #   uses: potatoqualitee/psmodulecache@v5.2
+      #   with:
+      #     modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
+      #     shell: pwsh
 
       - name: Show the previous action works
         shell: pwsh
