@@ -104,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ModuleArtifactName }}
-          path: "${{ env.GITHUB_WORKSPACE }}/${{ env.BuiltModulePath }}"
+          path: ${{ github.workspace }}/${{ env.BuiltModulePath }}
           
       - name: Generate Nupkg
         shell: pwsh
@@ -186,7 +186,7 @@ jobs:
         uses: actions/download-artifact@v2.0.9
         with:
           name: ${{ env.NupkgArtifactName }}
-          path: "${{ env.GITHUB_WORKSPACE }}/${{ env.PackageDownloadPath }}"
+          path: "${{ github.workspace }}/${{ env.PackageDownloadPath }}"
           
       - name: Install Module from Nupkg
         shell: pwsh
