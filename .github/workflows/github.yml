@@ -191,7 +191,7 @@ jobs:
           $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
           $pesterParams = @{
               Name           = 'Pester'
-              MinimumVersion = Get-Content -Path $env:pester_min_version
+              MinimumVersion = $env:pester_min_version
               ProviderName   = 'NuGet'
               Path           = $PackageDownloadPath
               Force          = $true
