@@ -54,8 +54,8 @@ jobs:
       pester_min_version: ${{ steps.pestermin.outputs.pester_min_version }}
     
     env:
-      FileSystemDeploymentPath: '${{ env:GITHUB_WORKSPACE }}/Deploy/FileSystem'
-      BuiltModulePath: '${{ env:GITHUB_WORKSPACE }}/Deploy/PSKoans'
+      FileSystemDeploymentPath: /Deploy/FileSystem
+      BuiltModulePath: /Deploy/PSKoans
       # This needs to be set by the script which creates the nupkg
       NupkgPath: ''
     
@@ -100,8 +100,12 @@ jobs:
       - name: Generate Nupkg
         shell: pwsh
         run: |
-          ./Build/Register-FileSystemRepository.ps1 -Path ${{ env.FileSystemDeploymentPath }} -Name 'FileSystem'
-          ./Deploy/Publish.ps1 -Key 'filesystem' -Path ${{ env.FileSystemDeploymentPath }} -OutputDirectory ${{ env.FileSystemDeploymentPath }}
+          $FileSystemDeploymentPath = "$env:GITHUB_WORKSPACE/$env:FileSystemDeploymentPath"
+          ./Build/Register-FileSystemRepository.ps1 -Path $FileSystemDeploymentPath -Name 'FileSystem'
+          ./Deploy/Publish.ps1 -Key 'filesystem' -Path $FileSystemDeploymentPath -OutputDirectory $FileSystemDeploymentPath
+        env:
+          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE}}
+          FileSystemDeploymentPath: ${{ env.FileSystemDeploymentPath }}
           
       - name: Upload Nupkg Artifact
         uses: actions/upload-artifact@v3
