@@ -104,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ModuleArtifactName }}
-          path: ${{ env.GITHUB_WORKSPACE }}/${{ env.BuiltModulePath }}
+          path: "${{ env.GITHUB_WORKSPACE }}/${{ env.BuiltModulePath }}"
           
       - name: Generate Nupkg
         shell: pwsh
@@ -178,27 +178,35 @@ jobs:
         run: |
           $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
           ./Build/Register-FileSystemRepository.ps1 -Path $PackageDownloadPath -Name ${{ env.PSRepositoryName }}
+        env:
+          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+          PackageDownloadPath: ${{ env.PackageDownloadPath }}
       
       - name: Download Module Nupkg
         uses: actions/download-artifact@v2.0.9
         with:
-          name: $NupkgArtifactName
-          path: $PackageDownloadPath
+          name: ${{ env.NupkgArtifactName }}
+          path: "${{ env.GITHUB_WORKSPACE }}/${{ env.PackageDownloadPath }}"
           
       - name: Install Module from Nupkg
         shell: pwsh
         run: |
+          $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
           $pesterParams = @{
               Name           = 'Pester'
               MinimumVersion = Get-Content -Path "${{ needs.build.outputs.pester_min_version }}"
               ProviderName   = 'NuGet'
-              Path           = '${{ env.PackageDownloadPath }}'
+              Path           = $PackageDownloadPath
               Force          = $true
               Source         = 'PSGallery'
           }
           Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
           Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
-          Install-Module PSKoans -Repository ${{ env.PSRepositoryName }} -Force -Scope CurrentUser
+          Install-Module PSKoans -Repository ${{ env:PSRepositoryName }} -Force -Scope CurrentUser
+        env:
+          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+          PackageDownloadPath: ${{ env.PackageDownloadPath }}
+          PSRepositoryName: ${{ env.PSRepositoryName }}
       
       - name: Run Pester Tests
         shell: pwsh
