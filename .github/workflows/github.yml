@@ -87,7 +87,7 @@ jobs:
         shell: pwsh
         run: ./Build/Build-Module.ps1
         env:
-          BUILTMODULEPATH: $BuiltModulePath
+          BUILTMODULEPATH: ${{ env.BuiltModulePath }}
 
       - name: Upload Module Artifact
         uses: actions/upload-artifact@v3
