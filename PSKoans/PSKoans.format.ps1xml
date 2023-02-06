@@ -1,0 +1,1510 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<!-- Generated with EZOut 1.9.9: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Configuration>
+  <Controls>
+    <Control>
+      <Name>Prompt.Preface</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <Text>    Welcome, seeker of enlightenment.
+    Let us observe your karma...</Text>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.Describe</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        'Describing "{0}" has damaged your karma.' -f $_
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.Expectation</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <Text>    You have not yet reached enlightenment.
+
+    The answers you seek...</Text>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <PropertyName>Expectation</PropertyName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.Meditation</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <Text>    Please meditate on the following code:</Text>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        @"
+{0} It "{1}"
+{2}
+"@ -f [char]0xd7, $_.It, $_.Meditation
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.Koan</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Emphasis' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        &amp; (Get-Module -Name PSKoans) {
+            $ReplacementPattern = '$1    {0} ' -f [char]0x258c
+            ($script:MeditationStrings | Get-Random) -replace '^|(\r?\n)', $ReplacementPattern
+        }
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Emphasis' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.TopicList</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $TopicList = $_.Topics -replace '^', '        - ' -join [Environment]::NewLine
+        $TopicOrTopics = if ($_.Count -gt 1) { 'topics' } else { 'topic' }
+        $_.FormatString -f $TopicOrTopics, $TopicList
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.ProgressPreamble</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.Complete </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @"
+    You examine the path beneath your feet...
+"@
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.Complete </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @"
+    You cast your gaze back upon the path that you have walked...
+"@
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.ProgressBar</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Progress' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>
+        $ConsoleWidth = ($host.UI.RawUI.WindowSize.Width, $host.UI.RawUI.BufferSize.Width, 80).Where{ $_ -ge 30 }[0]
+        $TopicProgressAmount = "{0}/{1}" -f $_.Completed, $_.Total
+        $ProgressWidth = $ConsoleWidth * $_.Width - ($_.Name.Length + $TopicProgressAmount.Length + 7)
+
+        [int] $PortionDone = ($_.Completed / $_.Total) * $ProgressWidth
+
+        " [{3}]: [{0}{1}] {2}" -f @(
+            "$([char]0x25a0)" * $PortionDone
+            "$([char]0x2015)" * ($ProgressWidth - $PortionDone)
+            $TopicProgressAmount
+            $_.Name
+        )
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Progress' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.End</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <Text>Run 'Show-Karma -Contemplate' to begin your meditations.</Text>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>Prompt.Details</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        $_.Block.Name -and
+        $_.Block.Name -ne $global:_Koan_Block_Name
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        function Get-Depth {
+            param($Block)
+
+            if (-not $Block) {
+                0
+                return
+            }
+
+            if (-not $Block.Parent) {
+                1
+            }
+            else {
+                1 + (Get-Depth -Block $Block.Parent)
+            }
+        }
+
+        $global:_Koan_Block_Name = $_.Block.Name
+        $Depth = Get-Depth $_.Block
+        $Indent = " " * (4 * $Depth)
+
+        '{0}|{1}| {2}{3}' -f $Indent, [char]0x39e, $_.Block.Name, [Environment]::NewLine
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Passed' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.Passed </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        function Get-Depth {
+            param($Block)
+
+            if (-not $Block) {
+                0
+                return
+            }
+
+            if (-not $Block.Parent) {
+                1
+            }
+            else {
+                1 + (Get-Depth -Block $Block.Parent)
+            }
+        }
+
+        $IndentSpaces = 2 + 4 * (Get-Depth $_.Block)
+        $Indent = " " * $IndentSpaces
+
+        '{0}[{1}] It {2}' -f $Indent, [char]0x25b8, $_.Name
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Passed' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> -not $_.Passed </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        function Get-Depth {
+            param($Block)
+
+            if (-not $Block) {
+                0
+                return
+            }
+
+            if (-not $Block.Parent) {
+                1
+            }
+            else {
+                1 + (Get-Depth -Block $Block.Parent)
+            }
+        }
+
+        $Depth = Get-Depth $_.Block
+        $IndentSpaces = 2 + 4 * $Depth
+        $Indent = " " * $IndentSpaces
+
+        '{0}[{1}] It {2}' -f $Indent, [char]0xd7, $_.Name
+    </ScriptBlock>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Error' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+    <Control>
+      <Name>${PSKoans_Format-RichText}</Name>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+    &lt;#
+    .Synopsis
+        Formats the text color of output
+    .Description
+        Formats the text color of output
+
+        * ForegroundColor
+        * BackgroundColor
+        * Bold
+        * Underline
+    .Notes
+        Stylized Output works in two contexts at present:
+        * Rich consoles (Windows Terminal, PowerShell.exe, Pwsh.exe) (when $host.UI.SupportsVirtualTerminal)
+        * Web pages (Based off the presence of a $Request variable, or when $host.UI.SupportsHTML (you must add this property to $host.UI))
+    #&gt;
+    [Management.Automation.Cmdlet("Format","Object")]
+    [ValidateScript({
+        $canUseANSI     = $host.UI.SupportsVirtualTerminal
+        $canUseHTML     = $Request -or $host.UI.SupportsHTML -or $OutputMode -eq 'HTML'
+        if (-not ($canUseANSI -or $canUseHTML)) { return $false}
+        return $true
+    })]
+    [OutputType([string])]
+    param(
+    # The input object
+    [Parameter(ValueFromPipeline)]
+    [PSObject]
+    $InputObject,
+    
+    # The foreground color
+    [string]$ForegroundColor,
+
+    # The background color
+    [string]$BackgroundColor,
+
+    # If set, will render as bold
+    [switch]$Bold,
+
+    # If set, will render as italic.
+    [Alias('Italics')]
+    [switch]$Italic,
+
+    # If set, will render as faint
+    [switch]$Faint,
+
+    # If set, will render as hidden text.
+    [switch]$Hide,
+
+    # If set, will render as blinking (not supported in all terminals or HTML)
+    [switch]$Blink,    
+
+    # If set, will render as strikethru
+    [Alias('Strikethrough', 'Crossout')]
+    [switch]$Strikethru,
+
+    # If set, will underline text
+    [switch]$Underline,
+
+    # If set, will double underline text.
+    [switch]$DoubleUnderline,    
+
+    # If set, will invert text
+    [switch]$Invert,
+
+    # If provided, will create a hyperlink to a given uri
+    [Alias('Hyperlink', 'Href')]
+    [uri]
+    $Link,
+
+    # If set, will not clear formatting
+    [switch]$NoClear,
+
+    # The alignment.  Defaulting to Left.
+    # Setting an alignment will pad the remaining space on each line.
+    [ValidateSet('Left','Right','Center')]
+    [string]
+    $Alignment,
+
+    # The length of a line.  By default, the buffer width
+    [int]$LineLength = $($host.UI.RawUI.BufferSize.Width)
+    )    
+
+    begin {
+        $canUseANSI     = $host.UI.SupportsVirtualTerminal
+        $canUseHTML     = $Request -or $host.UI.SupportsHTML -or $OutputMode -eq 'HTML'
+        $knownStreams = @{
+            Output='';Error='BrightRed';Warning='BrightYellow';
+            Verbose='BrightCyan';Debug='Yellow';Progress='Cyan';
+            Success='BrightGreen';Failure='Red';Default=''}
+
+        $ansiCode = [Regex]::new(@'
+        (?&lt;ANSI_Code&gt;
+        (?-i)\e                                                                                   # An Escape
+        \[                                                                                        # Followed by a bracket
+        (?&lt;ParameterBytes&gt;[\d\:\;\&lt;\=\&gt;\?]{0,})                                                   # Followed by zero or more parameter  
+        bytes
+        (?&lt;IntermediateBytes&gt;[\s\!\"\#\$\%\&amp;\'\(\)\*\+\,\-\.\/]{0,})                              # Followed by zero or more 
+        intermediate bytes
+        (?&lt;FinalByte&gt;[\@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~]) # Followed by a final byte
+        
+        )                
+'@)
+        $esc = [char]0x1b
+        $standardColors = 'Black', 'Red', 'Green', 'Yellow', 'Blue','Magenta', 'Cyan', 'White'
+        $brightColors   = 'BrightBlack', 'BrightRed', 'BrightGreen', 'BrightYellow', 'BrightBlue','BrightMagenta', 'BrightCyan', 'BrightWhite'
+
+        $allOutput      = @()
+
+        $n =0
+        $cssClasses = @()        
+        $colorAttributes =         
+            @(:nextColor foreach ($hc in $ForegroundColor,$BackgroundColor) {
+                $n++
+                if (-not $hc) { continue }
+                if ($hc[0] -eq $esc) {
+                    if ($canUseANSI) { 
+                        $hc; continue
+                    }
+                }
+        
+                $ansiStartPoint = if ($n -eq 1) { 30 } else { 40 } 
+                if ($knownStreams.ContainsKey($hc)) {
+                    $i = $brightColors.IndexOf($knownStreams[$hc])
+                    if ($canUseHTML) {
+                        $cssClasses += $hc
+                    } else {
+                        if ($i -ge 0 -and $canUseANSI) {
+                            '' + $esc + "[1;$($ansiStartPoint + $i)m"
+                        } else {
+                            $i = $standardColors.IndexOf($knownStreams[$hc])
+                            if ($i -ge 0 -and $canUseANSI) {
+                                '' + $esc + "[1;$($ansiStartPoint + $i)m"
+                            } elseif ($i -le 0 -and $canUseANSI) {                        
+                                '' + $esc + "[$($ansistartpoint + 8):5m"
+                            }
+                        }
+                    }
+                    continue nextColor
+                }
+                elseif ($standardColors -contains $hc) {
+                    for ($i = 0; $i -lt $standardColors.Count;$i++) {
+                        if ($standardColors[$i] -eq $hc) {
+                            if ($canUseANSI -and -not $canUseHTML) {
+                                '' + $esc + "[$($ansiStartPoint + $i)m"
+                            } else {
+                                $cssClasses += $standardColors[$i]
+                            }
+                            continue nextColor
+                        }
+                    }
+                } elseif ($brightColors -contains $hc) {
+                    for ($i = 0; $i -lt $brightColors.Count;$i++) {
+                        if ($brightColors[$i] -eq $hc) {
+                            if ($canUseANSI -and -not $canUseHTML) {
+                                '' + $esc + "[1;$($ansiStartPoint + $i)m"
+                            } else {
+                                $cssClasses += $standardColors[$i]
+                            }
+                            continue nextColor
+                        }
+                    }
+                }                
+                elseif ($psStyle -and $psStyle.Formatting.$hc -and 
+                    $psStyle.Formatting.$hc -match '^\e') {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        $psStyle.Formatting.$hc
+                    } else {
+                        $cssClasses += "formatting-$hc"
+                    }
+                }
+                elseif (-not $n -and $psStyle -and $psStyle.Foreground.$hc -and 
+                    $psStyle.Foreground.$hc -match '^\e' ) {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        $psStyle.Foreground.$hc
+                    } else {
+                        $cssClasses += "foreground-$hc"
+                    }                   
+                }
+                elseif ($n -and $psStyle -and $psStyle.Background.$hc -and
+                    $psStyle.Background.$hc -match '^\e') {
+                    if ($canUseANSI -and -not $canUseHTML) {
+                        $psStyle.Background.$hc
+                    } else {
+                        $cssClasses += "background-$hc"
+                    }                    
+                }
+
+        
+        
+                if ($hc -and $hc -notmatch '^[\#\e]') {
+                    $placesToLook=
+                        @(if ($hc.Contains('.')) {
+                            $module, $setting = $hc -split '\.', 2
+                            $theModule = Get-Module $module
+                            $theModule.PrivateData.Color,
+                                $theModule.PrivateData.Colors,
+                                $theModule.PrivateData.Colour,
+                                $theModule.PrivateData.Colours,
+                                $theModule.PrivateData.EZOut,
+                                $global:PSColors,
+                                $global:PSColours
+                        } else {
+                            $setting = $hc
+                            $moduleColorSetting = $theModule.PrivateData.PSColors.$setting
+                        })
+        
+                    foreach ($place in $placesToLook) {
+                        if (-not $place) { continue }
+                        foreach ($propName in $setting -split '\.') {
+                            $place = $place.$propName
+                            if (-not $place) { break }
+                        }
+                        if ($place -and "$place".StartsWith('#') -and 4,7 -contains "$place".Length) {
+                            $hc = $place
+                            continue
+                        }
+                    }
+                    if (-not $hc.StartsWith -or -not $hc.StartsWith('#')) {
+                        continue
+                    }
+                }
+                $r,$g,$b = if ($hc.Length -eq 7) {
+                    [int]::Parse($hc[1..2]-join'', 'HexNumber')
+                    [int]::Parse($hc[3..4]-join '', 'HexNumber')
+                    [int]::Parse($hc[5..6] -join'', 'HexNumber')
+                }elseif ($hc.Length -eq 4) {
+                    [int]::Parse($hc[1], 'HexNumber') * 16
+                    [int]::Parse($hc[2], 'HexNumber') * 16
+                    [int]::Parse($hc[3], 'HexNumber') * 16
+                }
+        
+                if ($canUseHTML) {
+                    if ($n -eq 1) { "color:$hc" }
+                    elseif ($n -eq 2) { "background-color:$hc"} 
+                }
+                elseif ($canUseANSI) {
+                    if ($n -eq 1) { $esc+"[38;2;$r;$g;${b}m" }
+                    elseif ($n -eq 2) { $esc+"[48;2;$r;$g;${b}m" }
+                }
+                
+            })
+        
+        $styleAttributes = @() + $colorAttributes
+        
+        $styleAttributes += @(
+            if ($Bold) {
+                if ($canUseHTML) {"font-weight:bold"}
+                elseif ($canUseANSI) { '' + $esc + "[1m" }
+            }
+            if ($Faint) {
+                if ($canUseHTML) { "opacity:.5" }
+                elseif ($canUseANSI) { '' + $esc + "[2m" }
+            }
+            if ($Italic) {                
+                if ($canUseHTML) { "font-weight:bold" }
+                elseif ($canUseANSI)  {'' + $esc + "[3m" }
+            }
+            
+            if ($Underline -and -not $doubleUnderline) {             
+                if ($canUseHTML) { "text-decoration:underline"} 
+                elseif ($canUseANSI) {'' +$esc + "[4m" }
+            }
+
+            if ($Blink) {             
+                if ($canUseANSI) { '' +$esc + "[5m" }
+            }
+
+            if ($invert) {
+                if ($canUseHTML) {"filter:invert(100%)"}
+                elseif ($canUseANSI) { '' + $esc + "[7m"}
+            }
+
+            if ($hide) {
+                if ($canUseHTML) {"opacity:0"}
+                elseif ($canUseANSI) { '' + $esc + "[8m"}
+            }
+            
+            if ($Strikethru) {             
+                if ($canUseHTML) {"text-decoration: line-through"}
+                elseif ($canUseANSI) { '' +$esc + "[9m" }
+            }
+            
+            if ($DoubleUnderline) {
+                if ($canUseHTML) { "border-bottom: 3px double;"}
+                elseif ($canUseANSI) {'' +$esc + "[21m" }
+            }
+
+            if ($Alignment -and $canUseHTML) {
+                "display:block;text-align:$($Alignment.ToLower())"
+            }
+
+            if ($Link) {
+                if ($canUseHTML) { 
+                    # Hyperlinks need to be a nested element
+                    # so we will not add it to style attributes for HTML
+                }
+                elseif ($canUseANSI) {
+                    # For ANSI,
+                    '' + $esc + ']8m;;' + $Link + $esc + '\'   
+                }
+            }
+            
+        )
+        
+        $header =
+            if ($canUseHTML) {        
+                "&lt;span$(
+                    if ($styleAttributes) { " style='$($styleAttributes -join ';')'"}
+                )$(
+                    if ($cssClasses) { " class='$($cssClasses -join ' ')'"}
+                )&gt;" + $(
+                    if ($Link) {
+                        "&lt;a href='$link'&gt;"
+                    }
+                )
+            } elseif ($canUseANSI) {
+                $styleAttributes -join ''
+            }
+    }
+
+    process {
+        $inputObjectAsString =
+            "$(if ($inputObject) { $inputObject | Out-String})".Trim()
+
+        $inputObjectAsString = 
+            if ($Alignment -and -not $canUseHTML) {
+                (@(foreach ($inputObjectLine in ($inputObjectAsString -split '(?&gt;\r\n|\n)')) {
+                    $inputObjectLength = $ansiCode.Replace($inputObjectLine, '').Length
+                    if ($inputObjectLength -lt $LineLength) {
+                        if ($Alignment -eq 'Left') {
+                            $inputObjectLine
+                        } elseif ($Alignment -eq 'Right') {
+                            (' ' * ($LineLength - $inputObjectLength)) + $inputObjectLine                            
+                        } else {
+                            $half = ($LineLength - $inputObjectLength)/2
+                            (' ' * [Math]::Floor($half)) + $inputObjectLine +
+                            (' ' * [Math]::Ceiling($half))
+                        }
+                    }
+                    else {
+                        $inputObjectLine
+                    }
+                }) -join [Environment]::NewLine) + [Environment]::newline
+            } else {
+                $inputObjectAsString
+            }
+
+        $allOutput +=
+            if ($header) {
+                "$header" + $inputObjectAsString
+            }
+            elseif ($inputObject) {
+                $inputObjectAsString
+            }
+    }
+
+    end {
+        
+        if (-not $NoClear) {
+            $allOutput += 
+                if ($canUseHTML) {
+                    if ($Link) {
+                        "&lt;/a&gt;"
+                    }
+                    "&lt;/span&gt;"
+                }
+                elseif ($canUseANSI) {
+                    if ($Bold -or $Faint -or $colorAttributes -match '\[1;') {
+                        "$esc[22m"
+                    }
+                    if ($Italic) {
+                        "$esc[23m"
+                    }
+                    if ($Underline -or $doubleUnderline) {
+                        "$esc[24m"
+                    }
+                    if ($Blink) {
+                        "$esc[25m"
+                    }                
+                    if ($Invert) {
+                        "$esc[27m"
+                    }
+                    if ($hide) {
+                        "$esc[28m"
+                    }
+                    if ($Strikethru) {
+                        "$esc[29m"
+                    }
+                    if ($ForegroundColor) {
+                        "$esc[39m"
+                    }
+                    if ($BackgroundColor) {
+                        "$esc[49m"
+                    }
+
+                    if ($Link) {
+                        "$esc]8;;$esc\"
+                    }
+                
+                    if (-not ($Underline -or $Bold -or $Invert -or $ForegroundColor -or $BackgroundColor)) {
+                        '' + $esc + '[0m'
+                    }
+                }
+        }
+
+        $allOutput -join ''
+    }
+</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </Control>
+  </Controls>
+  <ViewDefinitions>
+    <View>
+      <Name>List</Name>
+      <ViewSelectedBy>
+        <TypeName>PSKoans.CompleteResult</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>KoansPassed</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>TotalKoans</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>RequestedTopic</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Complete</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>PSKoans.CompleteResult</Name>
+      <ViewSelectedBy>
+        <TypeName>PSKoans.CompleteResult</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            FormatString = @"
+    Congratulations! You have taken the first steps towards enlightenment.
+
+    You have completed the {0}:
+{1}
+"@
+            Topics       = $_.RequestedTopic
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.TopicList</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock>$moduleName = 'PSKoans'
+
+            do {
+                $lm = Get-Module -Name $moduleName -ErrorAction Ignore
+                if (-not $lm) { continue } 
+                if ($lm.FormatPartsLoaded) { break }
+                $wholeScript = @(foreach ($formatFilePath in $lm.exportedFormatFiles) {         
+                    foreach ($partNodeName in Select-Xml -LiteralPath $formatFilePath -XPath "/Configuration/Controls/Control/Name[starts-with(., '$')]") {
+                        $ParentNode = $partNodeName.Node.ParentNode
+                        "$($ParentNode.Name)={
+            $($ParentNode.CustomControl.CustomEntries.CustomEntry.CustomItem.ExpressionBinding.ScriptBlock)}"
+                    }
+                }) -join [Environment]::NewLine
+                New-Module -Name "${ModuleName}.format.ps1xml" -ScriptBlock ([ScriptBlock]::Create(($wholeScript + ';Export-ModuleMember -Variable *'))) |
+                    Import-Module -Global
+                $onRemove = [ScriptBlock]::Create("Remove-Module '${ModuleName}.format.ps1xml'")
+                
+                if (-not $lm.OnRemove) {
+                    $lm.OnRemove = $onRemove
+                } else {
+                    $lm.OnRemove = [ScriptBlock]::Create($onRemove.ToString() + ''  + [Environment]::NewLine + $lm.OnRemove)
+                }
+                $lm | Add-Member NoteProperty FormatPartsLoaded $true -Force
+            
+            } while ($false)
+            
+        
+@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <Text>    Congratulations! You have made great progress towards enlightenment.
+
+    The journey to mastery is never-ending; if at any point you feel the need to
+    revisit a topic, you can simply call "Reset-PSKoan -Topic $name" to reset
+    that specific topic and work through it once again.
+
+    May your newfound knowledge serve you well, and may you find myriad ways to
+    pass it along to others in turn.
+
+    Mountains are, once again, merely mountains.</Text>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock> 1 </ScriptBlock>
+                <CustomControlName>Prompt.Koan</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.ProgressPreamble</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic.Count -gt 1 </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.5
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic.Count -eq 1 </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.8
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        -not $_.RequestedTopic -or
+        $_.RequestedTopic.Count -gt 1
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.KoansPassed
+            Total     = $_.TotalKoans
+            Name      = 'Total'
+            Width     = 0.8
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <NewLine />
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' -NoClear) -join ''</ScriptBlock>
+              </ExpressionBinding>
+              <Text>    If you would like to further your studies in this manner, consider investing in
+    "PowerShell by Mistake" by Don Jones - https://leanpub.com/powershell-by-mistake</Text>
+              <ExpressionBinding>
+                <ScriptBlock>@(&amp; ${PSKoans_Format-RichText} -ForegroundColor 'PSKoans.Meditation.Text' ) -join ''</ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>PSKoans.KoanInfo</Name>
+      <ViewSelectedBy>
+        <TypeName>PSKoans.KoanInfo</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+          <TableColumnHeader>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Topic</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Module</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Position</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>List</Name>
+      <ViewSelectedBy>
+        <TypeName>PSKoans.Result</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>Describe</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>It</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Expectation</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>Meditation</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>KoansPassed</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>TotalKoans</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>CurrentTopic</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>Meditation</Name>
+      <ViewSelectedBy>
+        <TypeName>PSKoans.Result</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> 1 </ScriptBlock>
+                <CustomControlName>Prompt.Preface</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_.Describe </ScriptBlock>
+                <CustomControlName>Prompt.Describe</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.Expectation</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.Meditation</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> 1 </ScriptBlock>
+                <CustomControlName>Prompt.Koan</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Topics       = $_.RequestedTopic
+            FormatString = @"
+    You must meditate further on your selected {0}:
+{1}
+"@
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.TopicList</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.ProgressPreamble</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic.Count -ne 1 </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.5
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic.Count -eq 1 </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock> @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.8
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        -not $_.RequestedTopic -or
+        $_.RequestedTopic.Count -gt 1
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.KoansPassed
+            Total     = $_.TotalKoans
+            Name      = 'Total'
+            Width     = 0.8
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> 1 </ScriptBlock>
+                <CustomControlName>Prompt.End</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+    <View>
+      <Name>Detailed</Name>
+      <ViewSelectedBy>
+        <TypeName>PSKoans.Result</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.Expectation</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.Meditation</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> 1 </ScriptBlock>
+                <CustomControlName>Prompt.Koan</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Topics       = $_.RequestedTopic
+            FormatString = @"
+    You must meditate further on your selected {0}:
+{1}
+"@
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.TopicList</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ScriptBlock> $_ </ScriptBlock>
+                <CustomControlName>Prompt.ProgressPreamble</CustomControlName>
+              </ExpressionBinding>
+              <NewLine />
+              <ExpressionBinding>
+                <ScriptBlock> $_.Results </ScriptBlock>
+                <EnumerateCollection />
+                <CustomControlName>Prompt.Details</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic.Count -ne 1 </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.5
+            Newline   = $true
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock> $_.RequestedTopic.Count -eq 1 </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.CurrentTopic.Completed
+            Total     = $_.CurrentTopic.Total
+            Name      = $_.CurrentTopic.Name
+            Width     = 0.8
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+              <ExpressionBinding>
+                <ItemSelectionCondition>
+                  <ScriptBlock>
+        -not $_.RequestedTopic -or
+        $_.RequestedTopic.Count -gt 1
+    </ScriptBlock>
+                </ItemSelectionCondition>
+                <ScriptBlock>
+        @{
+            Completed = $_.KoansPassed
+            Total     = $_.TotalKoans
+            Name      = 'Total'
+            Width     = 0.8
+        }
+    </ScriptBlock>
+                <CustomControlName>Prompt.ProgressBar</CustomControlName>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

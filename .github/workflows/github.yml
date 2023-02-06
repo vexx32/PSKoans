@@ -20,8 +20,6 @@ on:
 env:
   NupkgArtifactName: 'PSKoans.nupkg'
   ModuleArtifactName: 'PSKoans'
-  PesterInfoFileName: 'PesterVersion.txt'
-  PesterInfoFilePath: '$GITHUB_WORKSPACE/PesterVersion.txt'
 
 jobs:
 
@@ -51,6 +49,7 @@ jobs:
   build:
     name: 'Build Module'
     runs-on: ubuntu-latest
+    
     outputs:
       pester_min_version: ${{ steps.pestermin.outputs.pester_min_version }}
     
@@ -67,14 +66,14 @@ jobs:
         id: pestermin
         shell: pwsh
         run: |
-          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
+          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version.ToString()
           Write-Output "pester_min_version=$MinimumVersion" >> $GITHUB_OUTPUT
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v5.2
         with:
-          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, "Pester:${{ steps.pestermin.outputs.pester_min_version }}"", EZOut
+          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ steps.pestermin.outputs.pester_min_version }}, EZOut
           shell: pwsh
 
       - name: Setup Environment
@@ -131,7 +130,7 @@ jobs:
         id: pestermin
         shell: pwsh
         run: |
-          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
+          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version.ToString()
           Write-Output "pester_min_version=$MinimumVersion" >> $GITHUB_OUTPUT
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
