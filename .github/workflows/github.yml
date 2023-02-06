@@ -134,6 +134,11 @@ jobs:
           Write-Output "pester_min_version=$MinimumVersion" >> $GITHUB_OUTPUT
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
+      - name: Get Pester min value from output
+        shell: pwsh
+        run: |
+          Write-Host ${{ steps.pestermin.outputs.pester_min_version }}
+
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v5.2
         with:
