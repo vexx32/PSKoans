@@ -37,7 +37,6 @@ catch {
 New-ExternalHelp -Path "$env:PROJECTROOT/docs/" -OutputPath "$env:PROJECTROOT/PSKoans/en"
 
 $BuiltModulePath = "$env:GITHUB_WORKSPACE/$env:BUILTMODULEPATH"
-Get-ChildItem -Path "$BuiltModulePath" -Recurse
 
 Copy-Item -Path "$env:PROJECTROOT/PSKoans" -Destination $BuiltModulePath -Recurse -PassThru |
     Where-Object { -not $_.PSIsContainer }

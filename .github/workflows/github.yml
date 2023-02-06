@@ -95,7 +95,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ModuleArtifactName }}
-          path: ${{ env.BuiltModulePath }}
+          path: ${{ env.GITHUB_WORKSPACE }}/${{ env.BuiltModulePath }}
           
       - name: Generate Nupkg
         shell: pwsh
