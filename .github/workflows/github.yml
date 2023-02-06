@@ -74,7 +74,9 @@ jobs:
         shell: pwsh
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
+          Install-Module PSDeploy, BuildHelpers, PlatyPS, EZOut
+          Install-Module Pester -MinimumVersion $env:pester_min_version
+        env: pester_min_version: ${{ env.pester_min_version }}
       
       # - name: Install and cache PowerShell modules
       #   uses: potatoqualitee/psmodulecache@v5.2
