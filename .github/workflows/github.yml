@@ -70,15 +70,10 @@ jobs:
           Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
-      - name: Get Pester min value from env
-        shell: pwsh
-        run: |
-          Write-Host "Minimum Pester Version: ${{ env.pester_min_version }}"
-
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v5.2
         with:
-          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:$pester_min_version, EZOut
+          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
           shell: pwsh
 
       - name: Setup Environment
@@ -136,13 +131,13 @@ jobs:
         shell: pwsh
         run: |
           $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version.ToString()
-          Write-Output "pester_min_version=$MinimumVersion" >> $GITHUB_ENV
+          Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v5.2
         with:
-          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:$pester_min_version, EZOut
+          modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
           shell: pwsh
 
       - name: Setup Environment
