@@ -151,6 +151,11 @@ jobs:
           modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
           shell: pwsh
 
+      - name: Show the previous action works
+        shell: pwsh
+        run: |
+          Get-Module -Name PSDeploy, BuildHelpers, PlatyPS, EZOut -ListAvailable
+
       - name: Setup Environment
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
