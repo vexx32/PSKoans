@@ -3,7 +3,7 @@ using namespace System.Management.Automation.Language
 function Get-KoanAst {
     <#
     .SYNOPSIS
-        Get the AST for a Koan.
+        Get the Abstract Syntax Tree (AST) for a Koan.
 
     .DESCRIPTION
         Parse the content of a Koan file into an AST. Ignores "using module" statements.
@@ -11,6 +11,13 @@ function Get-KoanAst {
     .PARAMETER Path
         The path to a Koan file.
 
+    .NOTES
+        Author: Joel Sallow (@vexx32)
+
+    .EXAMPLE
+        Get-KoanAst -Path C:\userKoanDir\Foundations\AboutArrays.Koans.ps1
+
+        Returns the Ast from the AboutArrays.Koans.ps1 file.
     #>
 
     [CmdletBinding()]

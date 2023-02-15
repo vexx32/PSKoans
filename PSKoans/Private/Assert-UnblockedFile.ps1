@@ -14,9 +14,27 @@ function Assert-UnblockedFile {
     .PARAMETER FileInfo
         An instance of System.IO.FileInfo to test.
 
+    .PARAMETER PassThru
+        If `-PassThru` is specified, the command will emit the input path value back to the output stream.
+
     .INPUTS
         System.IO.FileInfo
+    
+    .NOTES
+        Author: Joel Sallow (@vexx32)
 
+    .EXAMPLE
+        PS> Get-ChildItem -Recurse -Filter *.Koans.ps1 | Assert-UnblockedFile
+        If the file is not in use, nothing happens and nothing is returned. If in use, an exception is thrown.
+    
+    .EXAMPLE
+        PS> Get-ChildItem -Recurse -Filter *.Koans.ps1 | Assert-UnblockedFile -PassThru
+        Directory: C:\GitHub\PSKoans\PSKoans\Koans\Cmdlets 1
+        LastWriteTime  Length Name
+        -------------  ------ ----
+        1/29/2023 12:36:33 AM  1.22kb AboutCompareObject.Koans.ps1
+        ...
+        The file was not in use, so no exception was thrown. Since we specified -PassThru, each FileInfo passed in is returned back to the output stream.
     #>
 
     [CmdletBinding()]

@@ -14,6 +14,7 @@ function New-KoanRunspace {
     $script:KoanRunspace = New-KoanRunspace
 
     .NOTES
+    Author: Joel Swallow (@vexx32))
     Run scripts in a new scope to avoid scope bleed wherever possible, with the `$ps.AddScript($script, $true) overload.
     #>
     [CmdletBinding()]

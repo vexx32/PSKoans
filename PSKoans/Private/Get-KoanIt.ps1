@@ -11,6 +11,9 @@ function Get-KoanIt {
     .PARAMETER Path
         The path to the file to search.
 
+    .NOTES
+        Author: Joel Sallow (@vexx32)
+
     .EXAMPLE
         Get-KoanIt -Path C:\userKoanDir\Foundations\AboutArrays.Koans.ps1
 

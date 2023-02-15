@@ -12,6 +12,9 @@ function ConvertFrom-WildcardPattern {
     .PARAMETER Pattern
         Zero or more wildcard patterns to convert.
 
+    .NOTES
+        Author: Joel Sallow (@vexx32)
+
     .EXAMPLE
         ConvertFrom-WildcardPattern -Pattern AboutComp*,
 

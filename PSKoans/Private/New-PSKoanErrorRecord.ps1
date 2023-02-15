@@ -26,6 +26,9 @@ function New-PSKoanErrorRecord {
     .PARAMETER TargetObject
         The object or command which raised the exception, or caused the exception to be raised.
 
+    .NOTES
+        Author: Joel Sallow (@vexx32)
+
     .EXAMPLE
         $ErrorDetails = @{
             ExceptionType    = 'System.IO.FileNotFoundException'

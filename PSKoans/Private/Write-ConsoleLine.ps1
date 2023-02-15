@@ -4,6 +4,12 @@
         Writes text to the console.
     .DESCRIPTION
         Cuts text to console-appropriate widths for viewing, where possible.
+    .PARAMETER InputString
+        The text to be displayed to the console.
+    .PARAMETER Title
+        Whether the text to display is the title.
+    .NOTES
+        Author: Joel Sallow (@vexx32)
     .EXAMPLE
         Write-ConsoleLine $String
 
