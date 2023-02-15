@@ -67,20 +67,11 @@ jobs:
           Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           Write-Host "Minimum Pester Version: $MinimumVersion"
         
-      - name: Install from PSGallery
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module PSDeploy, BuildHelpers, PlatyPS, EZOut
-          Install-Module Pester -MinimumVersion $env:pester_min_version
-        env:
-          pester_min_version: ${{ env.pester_min_version }}
-      
-      # - name: Install and cache PowerShell modules
-      #   uses: potatoqualitee/psmodulecache@v5.2
-      #   with:
-      #     modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
-      #     shell: pwsh
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v5.2
+        with:
+          modules-to-cache: PSDeploy, BuildHelpers, platyPS, Pester:${{ env.pester_min_version }}, EZOut
+          shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
@@ -151,20 +142,11 @@ jobs:
           Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           Write-Host "Minimum Pester Version: $MinimumVersion"
 
-      - name: Install from PSGallery
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module PSDeploy, BuildHelpers, PlatyPS, EZOut
-          Install-Module Pester -MinimumVersion $env:pester_min_version
-        env:
-          pester_min_version: ${{ env.pester_min_version }}
-      
-      # - name: Install and cache PowerShell modules
-      #   uses: potatoqualitee/psmodulecache@v5.2
-      #   with:
-      #     modules-to-cache: PSDeploy, BuildHelpers, PlatyPS, Pester:${{ env.pester_min_version }}, EZOut
-      #     shell: pwsh
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v5.2
+        with:
+          modules-to-cache: PSDeploy, BuildHelpers, platyPS, Pester:${{ env.pester_min_version }}, EZOut
+          shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
