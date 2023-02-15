@@ -3,7 +3,10 @@
 Describe "Show-Advice" {
 
     BeforeAll {
-        Mock 'Write-ConsoleLine' -ModuleName 'PSKoans'
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+        Mock 'Write-ConsoleLine' @module
     }
 
     Context "Behaviour of Parameter-less Calls" {
@@ -13,11 +16,11 @@ Describe "Show-Advice" {
         }
 
         It "calls Write-ConsoleLine with Parameter -Title" {
-            Should -Invoke 'Write-ConsoleLine' -ModuleName 'PSKoans' -ParameterFilter { $null -eq $Title } -Scope Context
+            Should -Invoke 'Write-ConsoleLine' @module -ParameterFilter { $null -eq $Title } -Scope Context
         }
 
         It "calls Write-ConsoleLine with only the display string" {
-            Should -Invoke 'Write-ConsoleLine' -ModuleName 'PSKoans' -ParameterFilter { $null -ne $Title } -Scope Context
+            Should -Invoke 'Write-ConsoleLine' @module -ParameterFilter { $null -ne $Title } -Scope Context
         }
 
         It "outputs nothing to the pipeline" {
@@ -32,11 +35,11 @@ Describe "Show-Advice" {
         }
 
         It "should call Write-ConsoleLine with normal parameters" {
-            Should -Invoke 'Write-ConsoleLine' -ParameterFilter { $null -ne $Title } -ModuleName 'PSKoans' -Scope Context
+            Should -Invoke 'Write-ConsoleLine' -ParameterFilter { $null -ne $Title } @module -Scope Context
         }
 
         It "should call Write-ConsoleLine without parameters" {
-            Should -Invoke 'Write-ConsoleLine' -ParameterFilter { $null -eq $Title } -ModuleName 'PSKoans' -Scope Context
+            Should -Invoke 'Write-ConsoleLine' -ParameterFilter { $null -eq $Title } @module -Scope Context
         }
 
         It "should throw an error if the requested file cannot be found" {

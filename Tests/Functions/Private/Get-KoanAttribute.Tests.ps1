@@ -3,6 +3,9 @@
 Describe 'Get-KoanAttribute' {
 
     BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
         $filePath = @{
             Path = Join-Path $TestDrive  -ChildPath 'AboutSomething.Koans.ps1'
         }
@@ -11,7 +14,7 @@ Describe 'Get-KoanAttribute' {
     Context 'Content has no errors' {
 
         BeforeAll {
-            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+            Mock 'Get-KoanAst' @module {
                 {
                     [Koan(Position = 1)]
                     param()
@@ -50,7 +53,7 @@ Describe 'Get-KoanAttribute' {
     Context 'Module declared' {
 
         BeforeAll {
-            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+            Mock 'Get-KoanAst' @module {
                 {
                     [Koan(Position = 1, Module = 'Name')]
                     param()
@@ -80,7 +83,7 @@ Describe 'Get-KoanAttribute' {
     Context 'Full attribute name used' {
 
         BeforeAll {
-            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+            Mock 'Get-KoanAst' @module {
                 {
                     [KoanAttribute(Position = 1)]
                     param( )
@@ -134,7 +137,7 @@ Describe 'Get-KoanAttribute' {
     Context 'Attribute is missing' {
 
         BeforeAll {
-            Mock 'Get-KoanAst' -ModuleName 'PSKoans' {
+            Mock 'Get-KoanAst' @module {
                 {
                     param()
 

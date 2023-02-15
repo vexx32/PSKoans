@@ -1,6 +1,11 @@
 #Requires -Modules PSKoans
 
 Describe 'Move-PSKoanLibrary' {
+    BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+    }
 
     Context 'Unit Tests with Mocks' {
 
@@ -11,9 +16,9 @@ Describe 'Move-PSKoanLibrary' {
                 Select-Object -ExpandProperty FullName |
                 Join-Path -ChildPath 'Koans'
 
-            Mock 'Get-PSKoanLocation' { $OriginalPath } -ModuleName 'PSKoans'
-            Mock 'Set-PSKoanLocation' -ParameterFilter { $Path -eq $TestPath } -ModuleName 'PSKoans'
-            Mock 'Move-Item' -ParameterFilter { $Path -eq $OriginalPath } -MockWith { $Destination } -ModuleName 'PSKoans'
+            Mock 'Get-PSKoanLocation' { $OriginalPath } @module
+            Mock 'Set-PSKoanLocation' -ParameterFilter { $Path -eq $TestPath } @module
+            Mock 'Move-Item' -ParameterFilter { $Path -eq $OriginalPath } -MockWith { $Destination } @module
         }
 
         It 'should output the new location' {
@@ -21,15 +26,15 @@ Describe 'Move-PSKoanLibrary' {
         }
 
         It 'should call Get-PSKoanLocation' {
-            Should -Invoke 'Get-PSKoanLocation' -Scope Context -ModuleName 'PSKoans'
+            Should -Invoke 'Get-PSKoanLocation' -Scope Context @module
         }
 
         It 'should call Move-Item' {
-            Should -Invoke 'Move-Item' -Scope Context -ModuleName 'PSKoans'
+            Should -Invoke 'Move-Item' -Scope Context @module
         }
 
         It 'should call Set-PSKoanLocation' {
-            Should -Invoke 'Set-PSKoanLocation' -Scope Context -ModuleName 'PSKoans'
+            Should -Invoke 'Set-PSKoanLocation' -Scope Context @module
         }
     }
 
