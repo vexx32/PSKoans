@@ -23,6 +23,7 @@ Describe 'Get-Karma' {
                     Failed      = @()
                 }
             }
+            Update-PSKoan -Confirm:$false
 
             $Result = Get-Karma
         }
@@ -52,18 +53,19 @@ Describe 'Get-Karma' {
 
         BeforeAll {
             Mock 'Measure-Koan' -ModuleName 'PSKoans'
-            Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' }
-            Mock 'Update-PSKoan' { throw 'Prevent recursion' }
-            Mock 'Write-Warning'
+            Mock 'Update-PSKoan' -MockWith { throw 'Prevent recursion' } -ModuleName 'PSKoans'
+            Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' } -ModuleName 'PSKoans'
+            Mock 'Write-Warning' -ModuleName 'PSKoans'
         }
 
         It 'should attempt to populate koans and then recurse to reassess' {
             { Get-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
-            Should -Invoke 'Update-PSKoan' -Scope Context
+            Should -Invoke 'Update-PSKoan' -Scope Context -ModuleName 'PSKoans'
         }
 
         It 'displays a warning before initiating a reset' {
-            Should -Invoke 'Write-Warning' -Scope Context
+            { Get-Karma } | Should -Throw
+            Should -Invoke 'Write-Warning' -Scope Context -ModuleName 'PSKoans'
         }
 
         It 'throws an error if a Topic is specified that matches nothing' {
@@ -74,13 +76,13 @@ Describe 'Get-Karma' {
     Context 'With -ListTopics Parameter' {
 
         BeforeAll {
-            Mock 'Get-PSKoan'
+            Mock 'Get-PSKoan' -ModuleName 'PSKoans'
         }
 
         It 'lists all the koan topics' {
             Get-Karma -ListTopics
 
-            Should -Invoke 'Get-PSKoan'
+            Should -Invoke 'Get-PSKoan' -ModuleName 'PSKoans'
         }
     }
 
@@ -104,10 +106,6 @@ Describe 'Get-Karma' {
     Context 'Behaviour When All Koans Are Completed' {
 
         BeforeAll {
-            Mock 'Get-PSKoanLocation' {
-                Join-Path -Path $TestDrive -ChildPath 'CompletedKoan'
-            }
-
             Mock 'Measure-Koan' -ModuleName 'PSKoans' -MockWith { 2 }
 
             $TestFile = Join-Path -Path (Get-PSKoanLocation) -ChildPath 'Group\SelectedTopicTest.Koans.ps1'

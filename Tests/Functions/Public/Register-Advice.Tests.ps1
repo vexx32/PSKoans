@@ -5,9 +5,9 @@ Describe "Register-Advice" {
     Context "Profile Folder/File Missing" {
 
         BeforeAll {
-            Mock New-Item -Verifiable
-            Mock Test-Path { $false } -Verifiable
-            Mock Set-Content -ParameterFilter { $Value -eq "Show-Advice" } -Verifiable
+            Mock New-Item -Verifiable -ModuleName 'PSKoans'
+            Mock Test-Path { $false } -Verifiable -ModuleName 'PSKoans'
+            Mock Set-Content -Verifiable -ModuleName 'PSKoans'
         }
 
         It 'should create the $profile if it does not exist' {
@@ -19,9 +19,9 @@ Describe "Register-Advice" {
     Context "Profile Already Exists" {
 
         BeforeAll {
-            Mock 'Test-Path' { $true } -Verifiable
-            Mock 'Select-String' { $false } -Verifiable
-            Mock 'Add-Content' -Verifiable
+            Mock 'Test-Path' { $true } -Verifiable -ModuleName 'PSKoans'
+            Mock 'Select-String' { $false } -Verifiable -ModuleName 'PSKoans'
+            Mock 'Add-Content' -Verifiable -ModuleName 'PSKoans'
         }
 
         It "adds content to the profile if it already exists (Get|Set)-Advice" {

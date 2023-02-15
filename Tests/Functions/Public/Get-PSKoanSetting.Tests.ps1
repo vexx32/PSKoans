@@ -22,7 +22,7 @@ Describe 'Get-PSKoanSetting' {
     Context 'Settings file does not exist' {
 
         BeforeAll {
-            Mock 'Set-PSKoanSetting' -ParameterFilter { $Settings -is [hashtable] }
+            Mock 'Set-PSKoanSetting' -ParameterFilter { $Settings -is [hashtable] } -ModuleName 'PSKoans'
             $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
         }
 `
@@ -34,7 +34,7 @@ Describe 'Get-PSKoanSetting' {
         }
 
         It 'calls Set-PSKoanSetting to set the default settings' {
-            Should -Invoke 'Set-PSKoanSetting' -Scope Context
+            Should -Invoke 'Set-PSKoanSetting' -Scope Context -ModuleName 'PSKoans'
         }
     }
 
