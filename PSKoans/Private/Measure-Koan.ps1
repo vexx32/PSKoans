@@ -39,25 +39,22 @@
         ) -join [System.IO.Path]::PathSeparator
     }
     process {
-        Write-Verbose "Discovering koans in [$($KoanInfo.Name -join '], [')]"
+        Write-Verbose "Discovering koans in [$($KoanInfo.Topic -join '], [')]"
 
         $Result = & (Get-Module Pester) {
             [CmdletBinding()]
             param(
                 $Path,
-                $ExcludePath,
                 $SessionState
             )
-
-            $_Pester_State_Backup = $state.PSObject.Copy()
-            $state.Stack = [System.Collections.Stack]@()
+            
+            $state = if($null -eq $state) { @{ Stack = [System.Collections.Stack]@() } }
+            $_Pester_State_Backup = if($null -ne $state.PSObject) {$state.PSObject.Copy()}
             try {
-                Reset-TestSuiteState
-
                 # to avoid Describe thinking that we run in interactive mode
                 $invokedViaInvokePester = $true
 
-                $fileList = Find-File -Path $Path -ExcludePath $ExcludePath -Extension '.Koans.ps1'
+                $fileList = Find-File -Path $Path -Extension '.Koans.ps1'
                 $containers = foreach ($file in $fileList) {
                     New-BlockContainerObject -File (Get-Item $file)
                 }
