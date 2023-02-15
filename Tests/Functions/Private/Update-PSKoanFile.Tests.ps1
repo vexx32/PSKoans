@@ -28,12 +28,6 @@ Describe 'Update-PSKoanFile' {
                     __ | Should -Be 2
                 }
 
-                Context 'first' {
-                    It 'koan 3' {
-                        __ | Should -Be 3
-                    }
-                }
-
                 Context 'second' {
                     It 'koan 4' {
                         __ | Should -Be 4
@@ -54,6 +48,12 @@ Describe 'Update-PSKoanFile' {
 
                 It 'koan 2' {
                     __ | Should -Be 2
+                }
+
+                Context 'first' {
+                    It 'koan 3' {
+                        __ | Should -Be 3
+                    }
                 }
 
                 Context 'second' {
