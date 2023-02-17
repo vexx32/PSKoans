@@ -2,14 +2,20 @@
 
 Describe 'Update-PSKoan' {
 
+    BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+    }
+
     Context 'Mocked Commands' {
 
         BeforeAll {
-            Mock 'Remove-Item'
-            Mock 'Copy-Item'
-            Mock 'New-Item'
-            Mock 'Move-Item'
-            Mock 'Update-PSKoanFile' -ModuleName 'PSKoans'
+            Mock 'Remove-Item' @module
+            Mock 'Copy-Item' @module
+            Mock 'New-Item' @module
+            Mock 'Move-Item' @module
+            Mock 'Update-PSKoanFile' @module
 
             Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'Module' } -MockWith {
                 [PSCustomObject]@{
@@ -24,7 +30,7 @@ Describe 'Update-PSKoan' {
                     Topic = 'Existing'
                     Path  = 'Module\Group\AboutSomethingExisting.Koans.ps1'
                 }
-            }
+            } @module
 
             Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' } -MockWith {
                 [PSCustomObject]@{
@@ -39,7 +45,7 @@ Describe 'Update-PSKoan' {
                     Topic = 'Existing'
                     Path  = 'Module\Group\AboutSomethingExisting.Koans.ps1'
                 }
-            }
+            } @module
         }
 
         It 'should not produce output' {
@@ -47,19 +53,19 @@ Describe 'Update-PSKoan' {
         }
 
         It 'should copy missing topic files' {
-            Should -Invoke 'Copy-Item' -Times 1 -Scope Context
+            Should -Invoke 'Copy-Item' -Times 1 -Scope Context @module
         }
 
         It 'should move incorrectly placed topics' {
-            Should -Invoke 'Remove-Item' -Times 1 -Scope Context
+            Should -Invoke 'Remove-Item' -Times 1 -Scope Context @module
         }
 
         It 'should remove discarded topics' {
-            Should -Invoke 'Remove-Item' -Times 1 -Scope Context
+            Should -Invoke 'Remove-Item' -Times 1 -Scope Context @module
         }
 
         It 'should update topics which exist in module and koan path' {
-            Should -Invoke 'Update-PSKoanFile' -ModuleName 'PSKoans' -Times 2 -Scope Context
+            Should -Invoke 'Update-PSKoanFile' @module -Times 2 -Scope Context
         }
     }
 
@@ -69,6 +75,9 @@ Describe 'Update-PSKoan' {
             Mock 'Get-PSKoanLocation' {
                 Join-Path -Path $TestDrive -ChildPath 'PSKoans'
             }
+            Mock 'Get-PSKoanLocation' {
+                Join-Path -Path $TestDrive -ChildPath 'PSKoans'
+            } @module
 
             New-Item -Path (Get-PSKoanLocation) -ItemType Directory
             Update-PSKoan -Confirm:$false

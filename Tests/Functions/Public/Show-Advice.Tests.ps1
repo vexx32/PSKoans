@@ -53,8 +53,8 @@ Describe "Show-Advice" {
         BeforeAll {
             $GetContentResult = [string]::Empty
 
-            Mock Get-Content -MockWith { $GetContentResult } -Verifiable
-            Mock Get-ChildItem -MockWith { [PSCustomObject]@{ PSPath = "DummyPath" } } -Verifiable
+            Mock Get-Content -MockWith { $GetContentResult } -Verifiable @module
+            Mock Get-ChildItem -MockWith { [PSCustomObject]@{ PSPath = "DummyPath" } } -Verifiable @module
         }
 
         It "should throw an error if the requested file's format is not correct" -TestCases @(

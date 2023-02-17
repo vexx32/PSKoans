@@ -3,7 +3,10 @@
 Describe 'Set-PSKoanLocation' {
 
     BeforeAll {
-        Mock 'Set-PSKoanSetting' -ParameterFilter { $Name -eq 'KoanLocation' }
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+        Mock 'Set-PSKoanSetting' -ParameterFilter { $Name -eq 'KoanLocation' } @module
     }
 
     It 'outputs no data by default' {
@@ -11,7 +14,7 @@ Describe 'Set-PSKoanLocation' {
     }
 
     It 'sets the KoanLocation setting' {
-        Should -Invoke 'Set-PSKoanSetting' -Scope Describe
+        Should -Invoke 'Set-PSKoanSetting' -Scope Describe @module
     }
 
     It 'returns the input -Path value back to the pipeline with -PassThru' {
