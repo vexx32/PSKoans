@@ -4,3 +4,5 @@
 PSKoans.psproj
 
 PSKoans/*/PSKoans-help.xml
+coverage.xml
+testResults.xml

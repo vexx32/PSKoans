@@ -197,7 +197,7 @@ jobs:
         uses: MirageNet/nunit-reporter@v1.1.0
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: '${{ github.workspace }}\$env:TestResults'
+          path: '$env:GITHUB_WORKSPACE\$env:TestResults'
           
       - name: Generate Code Coverage
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
