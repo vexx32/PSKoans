@@ -51,10 +51,10 @@ finally {
     }
     elseif ($GithubActions) {
         @(
-            "TestResults=$TestFile"
+            "TestFile=$  "
             "CodeCoverageFile=$CodeCoverageFile"
-            "SourceFolders=$ModuleFolders"
-        ) | Add-Content -Path $env:GITHUB_ENV
+            "ModuleFolders=$ModuleFolders"
+        ) | Out-File -FilePath $env:GITHUB_ENV -Encoding -utf8 -Append
         
         Move-Item -Path './testResults.xml' -Destination "$env:GITHUB_WORKSPACE/$TestFile"
         Move-Item -Path './coverage.xml' -Destination "$env:GITHUB_WORKSPACE/$CodeCoverageFile"        
