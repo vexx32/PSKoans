@@ -194,7 +194,7 @@ jobs:
         
       - name: Publish Test Results
         if: always()
-        uses: MirageNet/nunit-reporter@v1.1.0
+        uses: MirageNet/nunit-reporter@v1.0.5
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
           path: '${{github.workspace}}\${{env.TestFile}}'
