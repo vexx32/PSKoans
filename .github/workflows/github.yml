@@ -197,7 +197,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Test Results for ${{ matrix.os }}
-          path: $env:GITHUB_WORKSPACE\$env:TestResults
+          path: ${{env.GITHUB_WORKSPACE}}\${{env.TestResults}}
 
 
           
