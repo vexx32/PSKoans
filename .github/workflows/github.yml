@@ -196,7 +196,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: Test Results for ${{ matrix.os }}
+          name: ${{matrix.os}}Test-Results
           path: ${{env.GITHUB_WORKSPACE}}\${{env.TestResults}}
 
 
@@ -210,8 +210,8 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      BuiltModulePath: '$env:GITHUB_WORKSPACE/Deploy/PSKoans'
-      GalleryDeploymentPath: '$env:GITHUB_WORKSPACE/Deploy/PSGallery'
+      BuiltModulePath: '${{env.GITHUB_WORKSPACE}}/Deploy/PSKoans'
+      GalleryDeploymentPath: '${{env.GITHUB_WORKSPACE}}/Deploy/PSGallery'
       # This variable must be set by the script
       TagName: ''
       
@@ -231,26 +231,27 @@ jobs:
       - name: Generate Code Coverage
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
         with:
-          reports: '$env:GITHUB_WORKSPACE\$env:CodeCoverageFile'
-          targetdir: '$env:GITHUB_WORKSPACE\coveragereports'
-          sourcedirs: '$env:SourceFolders'
+          reports: '${{env.GITHUB_WORKSPACE}}\${{env.CodeCoverageFile}}'
+          targetdir: '${{env.GITHUB_WORKSPACE}}\coveragereports'
+          sourcedirs: '${{env.SourceFolders}}'
           title: PSKoans Code Coverage
           
       - name: Publish Code Coverage artifacts
         uses: actions/upload-artifact@v3
         with:
           name: 'Code Coverage Reports'
-          path: '$env:GITHUB_WORKSPACE\coveragereports'
+          path: '${{env.GITHUB_WORKSPACE}}\coveragereports'
       
       - name: Download Module Artifact
-        uses: actions/download-artifact@v2.0.9
+        uses: actions/download-artifact@v2
         with:
-          name: $ModuleArtifactName
-          path: $BuiltModulePath
+          name: ${{env.ModuleArtifactName}}
+          path: ${{env.BuiltModulePath}}
           
       - name: Deploy Module to PSGallery
         shell: pwsh
-        run: ./Deploy/Publish.ps1 -ApiKey '${{ secrets.PSGALLERYAPIKEY }}' -Path '${{ env.GalleryDeploymentPath }}'
+        run: |
+          ./Deploy/Publish.ps1 -ApiKey '${{ secrets.PSGALLERYAPIKEY }}' -Path '${{ env.GalleryDeploymentPath }}'
         
       - name: Set Release Tag Name
         shell: pwsh
@@ -259,13 +260,13 @@ jobs:
           "TagName=$tagname" | Add-Content -Path '${{ github.env }}'
           
       - name: Download Artifacts
-        uses: actions/download-artifact@v2.0.9
+        uses: actions/download-artifact@v2
         with:
-          path: '$env:GITHUB_WORKSPACE/artifacts'
+          path: '${{env.GITHUB_WORKSPACE}}/artifacts'
           
       - name: Update Release with Artifacts & Changelog
         uses: Roang-zero1/github-create-release-action@v2.1.0
         with:
-          created_tag: $TagName
-          changelog_file: '$env:GITHUB_WORKSPACE/artifacts/Changelog.md'
-          release_title: 'PSKoans Release $TagName'
+          created_tag: ${{env.TagName}}
+          changelog_file: '${{env.GITHUB_WORKSPACE}}/artifacts/Changelog.md'
+          release_title: 'PSKoans Release ${{env.TagName}}'
