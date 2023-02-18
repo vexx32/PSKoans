@@ -194,7 +194,7 @@ jobs:
         
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Test Results for ${{ matrix.os }}
           path: ${{env.GITHUB_WORKSPACE}}\${{env.TestResults}}
@@ -237,7 +237,7 @@ jobs:
           title: PSKoans Code Coverage
           
       - name: Publish Code Coverage artifacts
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
           name: 'Code Coverage Reports'
           path: '$env:GITHUB_WORKSPACE\coveragereports'
