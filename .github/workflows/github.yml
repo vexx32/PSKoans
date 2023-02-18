@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      FilePath: '$env:GITHUB_WORKSPACE/Changelog.md'
+      FilePath: '${{github.workspace}}/Changelog.md'
 
     steps:
       - uses: actions/checkout@v3
@@ -86,7 +86,7 @@ jobs:
         env:
           PROJECTROOT: ${{ env.PROJECTROOT }}
           BUILTMODULEPATH: ${{ env.BuiltModulePath }}
-          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+          GITHUB_WORKSPACE: ${{github.workspace}}
 
       - name: Upload Module Artifact
         uses: actions/upload-artifact@v3
@@ -101,7 +101,7 @@ jobs:
           ./Build/Register-FileSystemRepository.ps1 -Path $FileSystemDeploymentPath -Name 'FileSystem'
           ./Deploy/Publish.ps1 -Key 'filesystem' -Path $FileSystemDeploymentPath -OutputDirectory $FileSystemDeploymentPath
         env:
-          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE}}
+          GITHUB_WORKSPACE: ${{github.workspace}}
           FileSystemDeploymentPath: ${{ env.FileSystemDeploymentPath }}
           
       - name: Upload Nupkg Artifact
@@ -158,7 +158,7 @@ jobs:
           $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
           ./Build/Register-FileSystemRepository.ps1 -Path $PackageDownloadPath -Name ${{ env.PSRepositoryName }}
         env:
-          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+          GITHUB_WORKSPACE: ${{github.workspace}}
           PackageDownloadPath: ${{ env.PackageDownloadPath }}
       
       - name: Download Module Nupkg
@@ -183,7 +183,7 @@ jobs:
           Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
           Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
         env:
-          GITHUB_WORKSPACE: ${{ env.GITHUB_WORKSPACE }}
+          GITHUB_WORKSPACE: ${{github.workspace}}
           PackageDownloadPath: ${{ env.PackageDownloadPath }}
           PSRepositoryName: ${{ env.PSRepositoryName }}
           pester_min_version: ${{ env.pester_min_version }}
@@ -197,10 +197,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{matrix.os}}Test-Results
-          path: ${{env.GITHUB_WORKSPACE}}\${{env.TestResults}}
-
-
-          
+          path: ${{github.workspace}}\${{env.TestResults}}
+      
   publish:
     needs: test
     if: ${{ success() && startsWith( 'refs/tags/', github.ref ) }}
@@ -210,8 +208,8 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      BuiltModulePath: '${{env.GITHUB_WORKSPACE}}/Deploy/PSKoans'
-      GalleryDeploymentPath: '${{env.GITHUB_WORKSPACE}}/Deploy/PSGallery'
+      BuiltModulePath: '${{github.workspace}}/Deploy/PSKoans'
+      GalleryDeploymentPath: '${{github.workspace}}/Deploy/PSGallery'
       # This variable must be set by the script
       TagName: ''
       
@@ -231,8 +229,8 @@ jobs:
       - name: Generate Code Coverage
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
         with:
-          reports: '${{env.GITHUB_WORKSPACE}}\${{env.CodeCoverageFile}}'
-          targetdir: '${{env.GITHUB_WORKSPACE}}\coveragereports'
+          reports: '${{github.workspace}}\${{env.CodeCoverageFile}}'
+          targetdir: '${{github.workspace}}\coveragereports'
           sourcedirs: '${{env.SourceFolders}}'
           title: PSKoans Code Coverage
           
@@ -240,7 +238,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 'Code Coverage Reports'
-          path: '${{env.GITHUB_WORKSPACE}}\coveragereports'
+          path: '${{github.workspace}}\coveragereports'
       
       - name: Download Module Artifact
         uses: actions/download-artifact@v2
@@ -262,11 +260,11 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
-          path: '${{env.GITHUB_WORKSPACE}}/artifacts'
+          path: '${{github.workspace}}/artifacts'
           
       - name: Update Release with Artifacts & Changelog
         uses: Roang-zero1/github-create-release-action@v2.1.0
         with:
           created_tag: ${{env.TagName}}
-          changelog_file: '${{env.GITHUB_WORKSPACE}}/artifacts/Changelog.md'
+          changelog_file: '${{github.workspace}}/artifacts/Changelog.md'
           release_title: 'PSKoans Release ${{env.TagName}}'
