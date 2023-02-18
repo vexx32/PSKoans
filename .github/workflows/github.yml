@@ -220,7 +220,7 @@ jobs:
           path: artifacts
 
       - name: Publish Test Results
-        uses: EnricoMi/public-unit-test-result-action@v2.4.1
+        uses: EnricoMi/publish-unit-test-result-action@v2.4.1
         with:
           files: "artifacts/**/*TestResults.xml"
           
