@@ -192,13 +192,41 @@ jobs:
         shell: pwsh
         run: ./Build/Invoke-ModuleTests.ps1
         
-      - name: Publish Test Results
-        if: ${{ always() }}
-        uses: dorny/test-reporter@v1.6.0
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
         with:
-          name: Pester Tests
-          path: '$env:GITHUB_WORKSPACE\$env:TestResults'
-          reporter: dotnet-trx
+          name: Test Results for ${{ matrix.os }}
+          path: $env:GITHUB_WORKSPACE\$env:TestResults
+
+
+          
+  publish:
+    needs: test
+    if: ${{ success() && startsWith( 'refs/tags/', github.ref ) }}
+    permissions:
+      checks: write
+    
+    runs-on: ubuntu-latest
+    
+    env:
+      BuiltModulePath: '$env:GITHUB_WORKSPACE/Deploy/PSKoans'
+      GalleryDeploymentPath: '$env:GITHUB_WORKSPACE/Deploy/PSGallery'
+      # This variable must be set by the script
+      TagName: ''
+      
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download Test Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Publish Test Results
+        uses: EnricoMi/public-unit-test-result-action@v2.4.1
+        with:
+          files: "artifacts/**/*TestResults.xml"
           
       - name: Generate Code Coverage
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
@@ -213,21 +241,6 @@ jobs:
         with:
           name: 'Code Coverage Reports'
           path: '$env:GITHUB_WORKSPACE\coveragereports'
-          
-  publish:
-    needs: test
-    if: ${{ success() && startsWith( 'refs/tags/', github.ref ) }}
-    
-    runs-on: ubuntu-latest
-    
-    env:
-      BuiltModulePath: '$env:GITHUB_WORKSPACE/Deploy/PSKoans'
-      GalleryDeploymentPath: '$env:GITHUB_WORKSPACE/Deploy/PSGallery'
-      # This variable must be set by the script
-      TagName: ''
-      
-    steps:
-      - uses: actions/checkout@v3
       
       - name: Download Module Artifact
         uses: actions/download-artifact@v2.0.9
