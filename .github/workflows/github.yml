@@ -233,7 +233,7 @@ jobs:
         with:
           reports: 'artifacts/**/*coverage.xml'
           targetdir: '${{github.workspace}}/coveragereports'
-          sourcedirs: '${{env.SourceFolders}}'
+          sourcedirs: '${{env.ModuleFolders}}'
           title: PSKoans Code Coverage
           
       - name: Publish Code Coverage artifacts
