@@ -192,85 +192,64 @@ jobs:
         shell: pwsh
         run: ./Build/Invoke-ModuleTests.ps1
         
-      - name: Publish Test Results
+      - name: Upload Test Results
         if: always()
-        uses: MirageNet/nunit-reporter@v1.0.5
+        uses: actions/upload-artifact@v3
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: '${{github.workspace}}\${{env.TestFile}}'
-          
+          name: ${{matrix.os}}-Test-Results
+          path: ${{github.workspace}}/${{env.TestFile}}
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.os}}-Test-Results
+          path: ${{ github.event_path }}
+
+      - name: Upload Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.os}}-Test-Results
+          path: ${{github.workspace}}/${{env.CodeCoverageFile}}
+      
+  report-tests:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download Test Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
       - name: Generate Code Coverage
-        uses: danielpalme/ReportGenerator-GitHub-Action@4.8.8
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
         with:
-          reports: '${{github.workspace}}\${{env.CodeCoverageFile}}'
-          targetdir: '${{github.workspace}}\coveragereports'
-          sourcedirs: ${{env.ModuleFolders}}
+          reports: 'artifacts/**/*coverage.xml'
+          targetdir: '${{github.workspace}}/coveragereports'
+          sourcedirs: '${{env.ModuleFolders}}'
           title: PSKoans Code Coverage
           
       - name: Publish Code Coverage artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: 'Code Coverage Reports'
-          path: '${{github.workspace}}\coveragereports'
-
-  #     - name: Upload Test Results
-  #       if: always()
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: ${{matrix.os}}-Test-Results
-  #         path: ${{github.workspace}}/${{env.TestFile}}
-
-  #     - name: Upload Test Results
-  #       if: always()
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: ${{matrix.os}}-Test-Results
-  #         path: ${{ github.event_path }}
-
-  #     - name: Upload Coverage Results
-  #       if: always()
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: ${{matrix.os}}-Test-Results
-  #         path: ${{github.workspace}}/${{env.CodeCoverageFile}}
+          name: 'CodeCoverageReport'
+          path: '${{github.workspace}}/coveragereports'
       
-  # report-tests:
-  #   needs: test
-  #   if: always()
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     checks: write
-
-  #   steps:
-  #     - uses: actions/checkout@v3
-      
-  #     - name: Download Test Artifacts
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         path: artifacts
-
-  #     - name: Generate Code Coverage
-  #       uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
-  #       with:
-  #         reports: 'artifacts/**/*coverage.xml'
-  #         targetdir: '${{github.workspace}}/coveragereports'
-  #         sourcedirs: '${{env.ModuleFolders}}'
-  #         title: PSKoans Code Coverage
-          
-  #     - name: Publish Code Coverage artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: 'CodeCoverageReport'
-  #         path: '${{github.workspace}}/coveragereports'
-      
-  # event_file:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Upload Event File
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: Event File
-  #         path: ${{ github.event_path }}
+  event_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Event File
+        uses: actions/upload-artifact@v3
+        with:
+          name: Event File
+          path: ${{ github.event_path }}
           
   publish:
     needs: test
