@@ -41,10 +41,10 @@ To install the latest version of Pester, use the appropriate command for your ve
 
 ```PowerShell
 # PS 5.1 (upgrade to latest Pester)
-Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -MinimumVersion 5.0.2
+Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser -MinimumVersion 5.4.0
 
 # PS 6.0+ (Install Pester under current user)
-Install-Module Pester -Scope CurrentUser -MinimumVersion 5.0.2
+Install-Module Pester -Scope CurrentUser -MinimumVersion 5.4.0
 ```
 
 ## Getting Started

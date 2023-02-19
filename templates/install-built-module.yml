@@ -28,7 +28,7 @@ steps:
     script: |
       $pesterParams = @{
           Name           = 'Pester'
-          MinimumVersion = '5.0.2'
+          MinimumVersion = '5.4.0'
           ProviderName   = 'NuGet'
           Path           = '${{ parameters.repositoryPath }}'
           Force          = $true
