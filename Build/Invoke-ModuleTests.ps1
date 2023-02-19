@@ -14,7 +14,7 @@ try {
     # Try/Finally required since -CI will exit with exit code on failure.
     $config = New-PesterConfiguration
 
-    $config.Run.Path = "$env:PROJECTROOT"
+    $config.Run.Path = "$env:PROJECTROOT\Tests"
     $config.Run.Exit = $true
 
     $config.TestResult.Enabled = $true
@@ -22,7 +22,7 @@ try {
     $config.Output.Verbosity = "Detailed"
 
     $config.CodeCoverage.Enabled = $true
-    $config.CodeCoverage.Path = "$env:PROJECTROOT"
+    $config.CodeCoverage.Path = "$env:PROJECTROOT\PSKoans"
 
     Invoke-Pester -Configuration $config
 }
