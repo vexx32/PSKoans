@@ -3,6 +3,10 @@
 Describe 'Get-PSKoanSetting' {
 
     BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+        
         $configFilePath = 'TestDrive:/config.json'
         InModuleScope 'PSKoans' -Parameters @{ Path = $configFilePath } {
             param($Path)
@@ -22,7 +26,7 @@ Describe 'Get-PSKoanSetting' {
     Context 'Settings file does not exist' {
 
         BeforeAll {
-            Mock 'Set-PSKoanSetting' -ParameterFilter { $Settings -is [hashtable] }
+            Mock 'Set-PSKoanSetting' -ParameterFilter { $Settings -is [hashtable] } @module
             $DefaultSettings = InModuleScope 'PSKoans' { $script:DefaultSettings }
         }
 `
@@ -34,7 +38,7 @@ Describe 'Get-PSKoanSetting' {
         }
 
         It 'calls Set-PSKoanSetting to set the default settings' {
-            Should -Invoke 'Set-PSKoanSetting' -Scope Context
+            Should -Invoke 'Set-PSKoanSetting' -Scope Context @module
         }
     }
 

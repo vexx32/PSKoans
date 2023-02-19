@@ -20,8 +20,6 @@ on:
 env:
   NupkgArtifactName: 'PSKoans.nupkg'
   ModuleArtifactName: 'PSKoans'
-  PesterInfoFileName: 'PesterVersion.txt'
-  PesterInfoFilePath: '$GITHUB_WORKSPACE/PesterVersion.txt'
 
 jobs:
 
@@ -33,17 +31,17 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      FilePath: '$GITHUB_WORKSPACE/Changelog.md'
+      FilePath: '${{github.workspace}}/Changelog.md'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Generate Changelog
         shell: pwsh
         run: ./Build/New-Changelog.ps1 -Path "${{ env.FilePath }}" -ApiKey "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Upload Changelog
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
           name: Changelog.md
           path: $FilePath
@@ -53,74 +51,64 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      FileSystemDeploymentPath: '$GITHUB_WORKSPACE/Deploy/FileSystem'
-      BuiltModulePath: '$GITHUB_WORKSPACE/Deploy/PSKoans'
+      FileSystemDeploymentPath: Deploy/FileSystem
+      BuiltModulePath: Deploy/PSKoans
       # This needs to be set by the script which creates the nupkg
       NupkgPath: ''
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
-      - name: Install Dependencies
+      - name: Get Pester min version
+        id: pestermin
         shell: pwsh
         run: |
-          $Params = @{
-              Scope = 'CurrentUser'
-              Force = $true
-          }
-          
-          Write-Host "Installing Modules"
-          $Params.Name = @( 'PSDeploy', 'BuildHelpers', 'PlatyPS' )
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.Name = 'Pester'
-          $Params.SkipPublisherCheck = $true
-          $Params.MinimumVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.MinimumVersion | Set-Content -Path "${{ env.PesterInfoFilePath }}"
-          
-          $Params.Remove('SkipPublisherCheck')
-          $Params.Remove('MinimumVersion')
-          
-          $Params.Name = 'EZOut'
-          $Params.AllowClobber = $true
-          $Params | Out-String | Write-Host
-          Install-Module @Params
+          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version.ToString()
+          Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Host "Minimum Pester Version: $MinimumVersion"
+        
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v5.2
+        with:
+          modules-to-cache: PSDeploy, BuildHelpers, platyPS, Pester:${{ env.pester_min_version }}, EZOut
+          shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
+        env:
+          BUILD_SOURCEBRANCHNAME: ${{ env.GITHUB_REF_NAME }}
+          BUILD_SOURCEBRANCH: ${{ env.GITHUB_REF }}
 
       - name: Build Module
         shell: pwsh
         run: ./Build/Build-Module.ps1
+        env:
+          PROJECTROOT: ${{ env.PROJECTROOT }}
+          BUILTMODULEPATH: ${{ env.BuiltModulePath }}
+          GITHUB_WORKSPACE: ${{github.workspace}}
 
       - name: Upload Module Artifact
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
-          name: $ModuleArtifactName
-          path: $BuiltModulePath
-          
-      - name: Upload Pester Version Artifact
-        uses: actions/upload-artifact@v2.2.3
-        with:
-          name: $PesterInfoFileName
-          path: $PesterInfoFilePath
+          name: ${{ env.ModuleArtifactName }}
+          path: ${{ github.workspace }}/${{ env.BuiltModulePath }}
           
       - name: Generate Nupkg
         shell: pwsh
         run: |
-          ./Build/Register-FileSystemRepository.ps1 -Path '${{ env.FileSystemDeploymentPath }}' -Name 'FileSystem'
-          ./Deploy/Publish.ps1 -Key 'filesystem' -Path '${{ env.FileSystemDeploymentPath }}' -OutputDirectory '${{ env.FileSystemDeploymentPath }}'
+          $FileSystemDeploymentPath = "$env:GITHUB_WORKSPACE/$env:FileSystemDeploymentPath"
+          ./Build/Register-FileSystemRepository.ps1 -Path $FileSystemDeploymentPath -Name 'FileSystem'
+          ./Deploy/Publish.ps1 -Key 'filesystem' -Path $FileSystemDeploymentPath -OutputDirectory $FileSystemDeploymentPath
+        env:
+          GITHUB_WORKSPACE: ${{github.workspace}}
+          FileSystemDeploymentPath: ${{ env.FileSystemDeploymentPath }}
           
       - name: Upload Nupkg Artifact
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
-          name: $NupkgArtifactName
-          path: $NupkgPath
+          name: ${{ env.NupkgArtifactName }}
+          path: ${{ env.NupkgPath }}
 
   test:
     name: "Test Module"
@@ -136,7 +124,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     
     env:
-      PackageDownloadPath: '$GITHUB_WORKSPACE/Module'
+      PackageDownloadPath: 'Module'
       PSRepositoryName: 'FileSystem'
       # The following variables MUST be set in Invoke-ModuleTests.ps1
       TestFile: ''
@@ -144,134 +132,161 @@ jobs:
       ModuleFolders: ''
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
-      - name: Install Dependencies
+      - name: Get Pester min version
+        id: pestermin
         shell: pwsh
         run: |
-          $Params = @{
-              Scope = 'CurrentUser'
-              Force = $true
-          }
-          
-          Write-Host "Installing Modules"
-          $Params.Name = @( 'PSDeploy', 'BuildHelpers', 'PlatyPS' )
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.Name = 'Pester'
-          $Params.SkipPublisherCheck = $true
-          $Params.MinimumVersion = $Params.MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version
-          $Params | Out-String | Write-Host
-          Install-Module @Params
-          
-          $Params.Remove('SkipPublisherCheck')
-          $Params.Remove('MinimumVersion')
-          
-          $Params.Name = 'EZOut'
-          $Params.AllowClobber = $true
-          $Params | Out-String | Write-Host
-          Install-Module @Params
+          $MinimumVersion = (Get-Module -ListAvailable ./PSKoans).RequiredModules.Where{$_.Name -eq 'Pester'}.Version.ToString()
+          Write-Output "pester_min_version=$MinimumVersion" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Host "Minimum Pester Version: $MinimumVersion"
+
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v5.2
+        with:
+          modules-to-cache: PSDeploy, BuildHelpers, platyPS, Pester:${{ env.pester_min_version }}, EZOut
+          shell: pwsh
 
       - name: Setup Environment
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
         
-      - name: Register FileSystem Repository
+      - name: Generate help.xml
         shell: pwsh
-        run: ./Build/Register-FileSystemRepository.ps1 -Path '${{ env.PackageDownloadPath }}' -Name '${{ env.PSRepositoryName }}'
+        run: New-ExternalHelp -Path "${{env.PROJECTROOT}}/docs/" -OutputPath "${{env.PROJECTROOT}}/PSKoans/en"
+
+      # - name: Register FileSystem Repository
+      #   shell: pwsh
+      #   run: |
+      #     $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
+      #     ./Build/Register-FileSystemRepository.ps1 -Path $PackageDownloadPath -Name ${{ env.PSRepositoryName }}
+      #   env:
+      #     GITHUB_WORKSPACE: ${{github.workspace}}
+      #     PackageDownloadPath: ${{ env.PackageDownloadPath }}
       
-      - name: Download Module Nupkg
-        uses: actions/download-artifact@v2.0.9
-        with:
-          name: $NupkgArtifactName
-          path: $PackageDownloadPath
+      # - name: Download Module Nupkg
+      #   uses: actions/download-artifact@v2.0.9
+      #   with:
+      #     name: ${{ env.NupkgArtifactName }}
+      #     path: "${{ github.workspace }}/${{ env.PackageDownloadPath }}"
           
-      - name: Download Pester Version Information
-        uses: actions/download-artifact@v2.0.9
-        with:
-          name: $PesterInfoFileName
-          path: $PesterInfoFilePath
-          
-      - name: Install Module from Nupkg
-        shell: pwsh
-        run: |
-          $pesterParams = @{
-              Name           = 'Pester'
-              MinimumVersion = Get-Content -Path "${{ env.PesterInfoFilePath }}"
-              ProviderName   = 'NuGet'
-              Path           = '${{ env.PackageDownloadPath }}'
-              Force          = $true
-              Source         = 'PSGallery'
-          }
-          Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
-          Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
-          Install-Module PSKoans -Repository ${{ env.PSRepositoryName }} -Force -Scope CurrentUser
+      # - name: Install Module from Nupkg
+      #   shell: pwsh
+      #   run: |
+      #     $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
+      #     $pesterParams = @{
+      #         Name           = 'Pester'
+      #         MinimumVersion = $env:pester_min_version
+      #         ProviderName   = 'NuGet'
+      #         Path           = $PackageDownloadPath
+      #         Force          = $true
+      #         Source         = 'PSGallery'
+      #     }
+      #     Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
+      #     Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
+      #     Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
+      #   env:
+      #     GITHUB_WORKSPACE: ${{github.workspace}}
+      #     PackageDownloadPath: ${{ env.PackageDownloadPath }}
+      #     PSRepositoryName: ${{ env.PSRepositoryName }}
+      #     pester_min_version: ${{ env.pester_min_version }}
       
       - name: Run Pester Tests
         shell: pwsh
         run: ./Build/Invoke-ModuleTests.ps1
         
-      - name: Publish Test Results
-        if: ${{ always() }}
-        uses: MirageNet/nunit-reporter@v1.0.5
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: '$GITHUB_WORKSPACE\$TestResults'
-          
+          name: ${{matrix.os}}-Test-Results
+          path: ${{github.workspace}}/${{env.TestFile}}
+
+      - name: Upload Coverage Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{matrix.os}}-Coverage-Results
+          path: ${{github.workspace}}/${{env.CodeCoverageFile}}
+      
+  report-tests:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download Test Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
       - name: Generate Code Coverage
-        uses: danielpalme/ReportGenerator-GitHub-Action@4.8.8
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.17
         with:
-          reports: '$GITHUB_WORKSPACE\$CodeCoverageFile'
-          targetdir: '$GITHUB_WORKSPACE\coveragereports'
-          sourcedirs: $SourceFolders
+          reports: 'artifacts/**/*coverage.xml'
+          targetdir: '${{github.workspace}}/coveragereports'
+          sourcedirs: 'artifacts/PSKoans'
           title: PSKoans Code Coverage
           
       - name: Publish Code Coverage artifacts
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v3
         with:
-          name: 'Code Coverage Reports'
-          path: '$GITHUB_WORKSPACE\coveragereports'
+          name: 'CodeCoverageReport'
+          path: '${{github.workspace}}/coveragereports'
+      
+  event_file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Event File
+        uses: actions/upload-artifact@v3
+        with:
+          name: Event File
+          path: ${{ github.event_path }}
           
   publish:
     needs: test
-    if: ${{ success() && startsWith( 'refs/tags/', env.GITHUB_REF ) }}
-    
+    if: ${{ success() && startsWith( 'refs/tags/', github.ref ) }}
     runs-on: ubuntu-latest
     
     env:
-      BuiltModulePath: '$GITHUB_WORKSPACE/Deploy/PSKoans'
-      GalleryDeploymentPath: '$GITHUB_WORKSPACE/Deploy/PSGallery'
+      BuiltModulePath: '${{github.workspace}}/Deploy/PSKoans'
+      GalleryDeploymentPath: '${{github.workspace}}/Deploy/PSGallery'
       # This variable must be set by the script
       TagName: ''
       
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Download Module Artifact
-        uses: actions/download-artifact@v2.0.9
+        uses: actions/download-artifact@v3
         with:
-          name: $ModuleArtifactName
-          path: $BuiltModulePath
+          name: ${{env.ModuleArtifactName}}
+          path: ${{env.BuiltModulePath}}
           
       - name: Deploy Module to PSGallery
         shell: pwsh
-        run: ./Deploy/Publish.ps1 -ApiKey '${{ secrets.PSGALLERYAPIKEY }}' -Path '${{ env.GalleryDeploymentPath }}'
+        run: |
+          ./Deploy/Publish.ps1 -ApiKey '${{ secrets.PSGALLERYAPIKEY }}' -Path '${{ env.GalleryDeploymentPath }}'
         
       - name: Set Release Tag Name
         shell: pwsh
         run: |
-          $tagName = ("${{ env.GITHUB_REF }}" -replace '^refs/tags/').Trim()
-          "TagName=$tagname" | Add-Content -Path '${{ env.GITHUB_ENV }}'
+          $tagName = ("${{ github.ref }}" -replace '^refs/tags/').Trim()
+          "TagName=$tagname" | Add-Content -Path '${{ github.env }}'
           
       - name: Download Artifacts
-        uses: actions/download-artifact@v2.0.9
+        uses: actions/download-artifact@v3
         with:
-          path: '$GITHUB_WORKSPACE/artifacts'
+          path: '${{github.workspace}}/artifacts'
           
       - name: Update Release with Artifacts & Changelog
         uses: Roang-zero1/github-create-release-action@v2.1.0
         with:
-          created_tag: $TagName
-          changelog_file: '$GITHUB_WORKSPACE/artifacts/Changelog.md'
-          release_title: 'PSKoans Release $TagName'
+          created_tag: ${{env.TagName}}
+          changelog_file: '${{github.workspace}}/artifacts/Changelog.md'
+          release_title: 'PSKoans Release ${{env.TagName}}'

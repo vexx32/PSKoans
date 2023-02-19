@@ -3,6 +3,12 @@
 Describe 'Show-Karma' {
 
     BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+        Mock 'Get-PSKoanLocation' {
+            "$TestDrive/Koans"
+        } @module
         Mock 'Get-PSKoanLocation' {
             "$TestDrive/Koans"
         }
@@ -19,7 +25,7 @@ Describe 'Show-Karma' {
     Context 'Default Behaviour' {
 
         BeforeAll {
-            Mock 'Out-Host'
+            Mock 'Out-Host' @module
             Mock 'Get-Karma' {
                 [PSCustomObject]@{
                     PSTypeName   = 'PSKoans.Result'
@@ -36,7 +42,7 @@ Describe 'Show-Karma' {
                         CurrentLine = 1
                     }
                 }
-            }
+            } @module
         }
 
         It 'should not produce output' {
@@ -44,18 +50,18 @@ Describe 'Show-Karma' {
         }
 
         It 'should write the formatted output to host' {
-            Should -Invoke 'Out-Host' -Scope Context
+            Should -Invoke 'Out-Host' -Scope Context @module
         }
 
         It 'should call Get-Karma to examine the koans' {
-            Should -Invoke 'Get-Karma' -Scope Context
+            Should -Invoke 'Get-Karma' -Scope Context @module
         }
     }
 
     Context 'With All Koans Completed' {
 
         BeforeAll {
-            Mock 'Out-Host' -Verifiable
+            Mock 'Out-Host' -Verifiable @module
             Mock 'Get-Karma' -Verifiable {
                 [PSCustomObject]@{
                     PSTypeName     = 'PSKoans.CompleteResult'
@@ -64,7 +70,7 @@ Describe 'Show-Karma' {
                     RequestedTopci = $null
                     Complete       = $true
                 }
-            }
+            } @module
         }
 
         It 'should not throw errors' {
@@ -76,8 +82,8 @@ Describe 'Show-Karma' {
     Context 'With -ClearScreen Switch' {
 
         BeforeAll {
-            Mock 'Clear-Host'
-            Mock 'Out-Host'
+            Mock 'Clear-Host' @module
+            Mock 'Out-Host' @module
             Mock 'Get-Karma' {
                 [PSCustomObject]@{
                     PSTypeName   = 'PSKoans.Result'
@@ -94,7 +100,7 @@ Describe 'Show-Karma' {
                         CurrentLine = 1
                     }
                 }
-            }
+            } @module
         }
 
         It 'should not produce output' {
@@ -102,28 +108,28 @@ Describe 'Show-Karma' {
         }
 
         It 'should clear the screen' {
-            Should -Invoke 'Clear-Host' -Scope Context -Times 1 -Exactly
+            Should -Invoke 'Clear-Host' -Scope Context -Times 1 -Exactly @module
         }
 
         It 'should display the rendered output' {
-            Should -Invoke 'Out-Host' -Scope Context
+            Should -Invoke 'Out-Host' -Scope Context @module
         }
 
         It 'should use Get-Karma to retrieve koan results' {
-            Should -Invoke 'Get-Karma' -Scope Context -Times 1 -Exactly
+            Should -Invoke 'Get-Karma' -Scope Context -Times 1 -Exactly @module
         }
     }
 
     Context 'With Nonexistent Koans Folder / No Koans Found' {
 
         BeforeAll {
-            Mock 'Write-Host'
-            Mock 'Get-PSKoan'
-            Mock 'Update-PSKoan' { throw 'Prevent recursion' }
-            Mock 'Write-Warning'
-            Mock 'Test-Path' { $false }
-            Mock 'Invoke-Item'
-            Mock 'Measure-Koan' -ModuleName 'PSKoans'
+            Mock 'Write-Host' @module
+            Mock 'Get-PSKoan' @module
+            Mock 'Update-PSKoan' { throw 'Prevent recursion' } @module
+            Mock 'Write-Warning' @module
+            Mock 'Test-Path' { $false } @module
+            Mock 'Invoke-Item' @module
+            Mock 'Measure-Koan' @module
         }
 
         BeforeEach {
@@ -135,7 +141,7 @@ Describe 'Show-Karma' {
         }
 
         It 'should display a warning before initiating a reset' {
-            Should -Invoke 'Write-Warning' -Scope Context -Times 1 -Exactly
+            Should -Invoke 'Write-Warning' -Scope Context -Times 1 -Exactly @module
         }
 
         It 'throws an error if a Topic is specified that matches nothing' {
@@ -145,34 +151,34 @@ Describe 'Show-Karma' {
         It 'should create PSKoans directory with -Library' {
             { Show-Karma -Library } | Should -Throw -ExpectedMessage 'Prevent recursion'
 
-            Should -Invoke 'Test-Path'
-            Should -Invoke 'Update-PSKoan' -Times 1 -Exactly
+            Should -Invoke 'Test-Path' @module
+            Should -Invoke 'Update-PSKoan' -Times 1 -Exactly @module
         }
 
         It 'should call Get-PSKoan to retrieve the correct file -Contemplate' {
             { Show-Karma -Contemplate } | Should -Throw -ExpectedMessage 'Prevent recursion'
 
-            Should -Invoke 'Get-PSKoan' -Times 1 -Exactly
-            Should -Invoke 'Update-PSKoan' -Times 1 -Exactly
+            Should -Invoke 'Get-PSKoan' -Times 1 -Exactly @module
+            Should -Invoke 'Update-PSKoan' -Times 1 -Exactly @module
         }
     }
 
     Context 'With -ListTopics Parameter' {
 
         BeforeAll {
-            Mock 'Get-PSKoan'
+            Mock 'Get-PSKoan' @module
         }
 
         It 'should list all the koan topics' {
             Show-Karma -ListTopics
-            Should -Invoke 'Get-PSKoan' -Times 1 -Exactly
+            Should -Invoke 'Get-PSKoan' -Times 1 -Exactly @module
         }
     }
 
     Context 'With -Topic Parameter' {
 
         BeforeAll {
-            Mock 'Out-Host' -Verifiable
+            Mock 'Out-Host' -Verifiable @module
             Mock 'Get-Karma' -ParameterFilter { $Topic -eq 'TestTopic' } -Verifiable -MockWith {
                 [PSCustomObject]@{
                     PSTypeName     = 'PSKoans.Result'
@@ -190,7 +196,7 @@ Describe 'Show-Karma' {
                     }
                     RequestedTopic = $Topic
                 }
-            }
+            } @module
         }
 
         It 'should call Get-Karma on the selected topic' {
@@ -202,8 +208,8 @@ Describe 'Show-Karma' {
     Context 'With All Koans in a Single Topic Completed' {
 
         BeforeAll {
-            Mock 'Format-Custom' -Verifiable { $null }
-            Mock 'Out-Host' -Verifiable
+            Mock 'Format-Custom' -Verifiable { $null } @module
+            Mock 'Out-Host' -Verifiable @module
             Mock 'Get-Karma' -Verifiable {
                 [PSCustomObject]@{
                     PSTypeName     = 'PSKoans.CompleteResult'
@@ -212,7 +218,7 @@ Describe 'Show-Karma' {
                     RequestedTopic = 'TestTopic'
                     Complete       = $true
                 }
-            }
+            } @module
         }
 
         It 'should not throw errors' {
@@ -226,12 +232,12 @@ Describe 'Show-Karma' {
         BeforeAll {
             $TestFile = New-TemporaryFile
 
-            Mock 'Invoke-Item' { $Path }
-            Mock 'Get-Command' { $true } -ParameterFilter { $Name -ne "missing_editor" }
-            Mock 'Get-Command' { $false } -ParameterFilter { $Name -eq "missing_editor" }
+            Mock 'Invoke-Item' { $Path } @module
+            Mock 'Get-Command' { $true } -ParameterFilter { $Name -ne "missing_editor" } @module
+            Mock 'Get-Command' { $false } -ParameterFilter { $Name -eq "missing_editor" } @module
             Mock 'Start-Process' {
                 @{ Editor = $FilePath; Arguments = $ArgumentList; NoNewWindow = $NoNewWindow }
-            }
+            } @module
 
             Mock 'Get-Karma' {
                 $currentTopic = @{
@@ -256,11 +262,11 @@ Describe 'Show-Karma' {
                     param($Topic)
                     $script:CurrentTopic = $Topic
                 }
-            }
+            } @module
 
             Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' } {
                 [PSCustomObject]@{ Path = $TestFile.FullName }
-            }
+            } @module
         }
 
         AfterAll {
@@ -281,8 +287,8 @@ Describe 'Show-Karma' {
             $Path = ($Result.Arguments[1] -split '(?<="):')[0] -replace '"'
             $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly
-            Should -Invoke 'Start-Process' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly @module
+            Should -Invoke 'Start-Process' -Times 1 -Exactly @module
 
             InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
         }
@@ -306,10 +312,10 @@ Describe 'Show-Karma' {
             $Path = ($Result.Arguments[1] -split '(?<="):')[0] -replace '"'
             $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly
-            Should -Invoke 'Start-Process' -Times 1 -Exactly
-            Should -Invoke 'Get-Karma' -ParameterFilter { $Module -eq $ModuleName }
-            Should -Invoke 'Get-PSKoan' -ParameterFilter { $IncludeModule -eq $ModuleName }
+            Should -Invoke 'Get-Command' -Times 1 -Exactly @module
+            Should -Invoke 'Start-Process' -Times 1 -Exactly @module
+            Should -Invoke 'Get-Karma' -ParameterFilter { $Module -eq $ModuleName } @module
+            Should -Invoke 'Get-PSKoan' -ParameterFilter { $IncludeModule -eq $ModuleName } @module
 
             InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
         }
@@ -320,8 +326,8 @@ Describe 'Show-Karma' {
             $Result = Show-Karma -Contemplate -Topic TestTopic
             $Result.Arguments[1] | Should -MatchExactly ([regex]::Escape($TestFile.FullName))
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly
-            Should -Invoke 'Start-Process' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly @module
+            Should -Invoke 'Start-Process' -Times 1 -Exactly @module
 
             InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
         }
@@ -337,8 +343,8 @@ Describe 'Show-Karma' {
             $Path = $Result.Arguments -replace '"'
             $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly
-            Should -Invoke 'Start-Process' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly @module
+            Should -Invoke 'Start-Process' -Times 1 -Exactly @module
 
             InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
         }
@@ -348,8 +354,8 @@ Describe 'Show-Karma' {
 
             Show-Karma -Contemplate | Should -BeExactly $TestFile.FullName
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly -ParameterFilter { $Name -eq "missing_editor" }
-            Should -Invoke 'Invoke-Item' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly -ParameterFilter { $Name -eq "missing_editor" } @module
+            Should -Invoke 'Invoke-Item' -Times 1 -Exactly @module
 
             InModuleScope 'PSKoans' { $script:CurrentTopic } | Should -BeNullOrEmpty
         }
@@ -358,12 +364,12 @@ Describe 'Show-Karma' {
     Context 'With -Library Switch' {
 
         BeforeAll {
-            Mock 'Get-Command' { $true } -ParameterFilter { $Name -ne "missing_editor" }
-            Mock 'Get-Command' { $false } -ParameterFilter { $Name -eq "missing_editor" }
+            Mock 'Get-Command' { $true } -ParameterFilter { $Name -ne "missing_editor" } @module
+            Mock 'Get-Command' { $false } -ParameterFilter { $Name -eq "missing_editor" } @module
             Mock 'Start-Process' {
                 @{ Editor = $FilePath; Arguments = $ArgumentList }
-            }
-            Mock 'Invoke-Item' { $Path }
+            } @module
+            Mock 'Invoke-Item' { $Path } @module
         }
 
         It 'invokes VS Code with "code" set as Editor with proper arguments' {
@@ -376,8 +382,8 @@ Describe 'Show-Karma' {
             $Path = $Result.Arguments -replace '"'
             $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly
-            Should -Invoke 'Start-Process' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly @module
+            Should -Invoke 'Start-Process' -Times 1 -Exactly @module
         }
 
         It 'invokes the set editor with unknown editor chosen' {
@@ -390,8 +396,8 @@ Describe 'Show-Karma' {
             $Path = $Result.Arguments -replace '"'
             $Path | Should -BeExactly (Resolve-Path -Path $Path).Path
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly
-            Should -Invoke 'Start-Process' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly @module
+            Should -Invoke 'Start-Process' -Times 1 -Exactly @module
         }
 
         It 'opens the file directly when selected editor is unavailable' {
@@ -399,8 +405,8 @@ Describe 'Show-Karma' {
 
             Show-Karma -Library | Should -BeExactly (Get-PSKoanLocation)
 
-            Should -Invoke 'Get-Command' -Times 1 -Exactly -ParameterFilter { $Name -eq "missing_editor" }
-            Should -Invoke 'Invoke-Item' -Times 1 -Exactly
+            Should -Invoke 'Get-Command' -Times 1 -Exactly -ParameterFilter { $Name -eq "missing_editor" } @module
+            Should -Invoke 'Invoke-Item' -Times 1 -Exactly @module
         }
     }
 }

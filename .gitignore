@@ -1,7 +1,8 @@
 .vs/
 .DS_Store/
 *.temppoint.*
-*.format.ps1xml
 PSKoans.psproj
 
 PSKoans/*/PSKoans-help.xml
+coverage.xml
+testResults.xml

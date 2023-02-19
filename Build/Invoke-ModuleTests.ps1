@@ -1,6 +1,7 @@
 $Lines = '-' * 70
 
-Import-Module 'PSKoans'
+$env:PSModulePath = "$env:PROJECTROOT" + [IO.Path]::PathSeparator + "$env:PSModulePath"
+Import-Module "PSKoans"
 
 $PesterVersion = (Get-Module -Name Pester).Version
 $PSVersion = $PSVersionTable.PSVersion
@@ -12,7 +13,19 @@ Write-Host $Lines
 
 try {
     # Try/Finally required since -CI will exit with exit code on failure.
-    Invoke-Pester -Path "$env:PROJECTROOT" -CI -Output Normal
+    $config = New-PesterConfiguration
+
+    $config.Run.Path = @("$env:PROJECTROOT\Tests")
+    $config.Run.Exit = $true
+
+    $config.TestResult.Enabled = $true
+
+    $config.Output.Verbosity = "Normal"
+
+    $config.CodeCoverage.Enabled = $true
+    $config.CodeCoverage.Path = @("$env:PROJECTROOT\PSKoans\Private", "$env:PROJECTROOT\PSKoans\Public")
+
+    Invoke-Pester -Configuration $config
 }
 finally {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
@@ -40,9 +53,9 @@ finally {
     }
     elseif ($GithubActions) {
         @(
-            "TestResults=$TestFile"
+            "TestFile=$TestFile"
             "CodeCoverageFile=$CodeCoverageFile"
-            "SourceFolders=$ModuleFolders"
+            "ModuleFolders=$ModuleFolders"
         ) | Add-Content -Path $env:GITHUB_ENV
         
         Move-Item -Path './testResults.xml' -Destination "$env:GITHUB_WORKSPACE/$TestFile"

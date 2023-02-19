@@ -11,6 +11,9 @@ function Update-PSKoanFile {
     .PARAMETER Topic
         Updates the specified topic from the module.
 
+    .NOTES
+        Author: Joel Sallow (@vexx32)
+
     .EXAMPLE
         Update-PSKoanFile -Topic AboutArrays
 
@@ -24,17 +27,7 @@ function Update-PSKoanFile {
         [Alias('Koan', 'File')]
         [SupportsWildcards()]
         [string[]]
-        $Topic,
-
-        [Parameter()]
-        [SupportsWildcards()]
-        [string[]]
-        $Module,
-
-        [Parameter()]
-        [SupportsWildcards()]
-        [string[]]
-        $IncludeModule
+        $Topic
     )
 
     $PSBoundParameters.Remove('Confirm') > $null

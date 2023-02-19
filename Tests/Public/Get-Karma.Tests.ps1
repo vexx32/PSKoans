@@ -1,8 +1,10 @@
 #Requires -Modules PSKoans
 
 Describe 'Get-Karma' {
-
     BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
         $originalLocation = Get-PSKoanLocation
         Set-PSKoanLocation -Path (Join-Path $TestDrive -ChildPath 'PSKoans')
         Update-PSKoan -Confirm:$false
@@ -15,14 +17,15 @@ Describe 'Get-Karma' {
     Context 'Default Behaviour' {
 
         BeforeAll {
-            Mock 'Measure-Koan' -MockWith { 4 } -ModuleName 'PSKoans'
-            Mock 'Invoke-Koan' -ModuleName 'PSKoans' {
+            Mock 'Measure-Koan' -MockWith { 4 } @module
+            Mock 'Invoke-Koan' @module {
                 [PSCustomObject]@{
                     PassedCount = 0
                     FailedCount = 4
                     Failed      = @()
                 }
             }
+            Update-PSKoan -Confirm:$false
 
             $Result = Get-Karma
         }
@@ -33,11 +36,11 @@ Describe 'Get-Karma' {
         }
 
         It 'calls Measure-Koan on each file to count koans' {
-            Should -Invoke 'Measure-Koan' -Scope Context -ModuleName 'PSKoans'
+            Should -Invoke 'Measure-Koan' -Scope Context @module
         }
 
         It 'calls Invoke-Koan on each topic file until it fails a test' {
-            Should -Invoke 'Invoke-Koan' -Times 1 -ModuleName 'PSKoans' -Scope Context
+            Should -Invoke 'Invoke-Koan' -Times 1 @module -Scope Context
         }
 
         It 'populates the $script:CurrentTopic variable' {
@@ -51,19 +54,20 @@ Describe 'Get-Karma' {
     Context 'With Nonexistent Koans Folder / No Koans Found' {
 
         BeforeAll {
-            Mock 'Measure-Koan' -ModuleName 'PSKoans'
-            Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' }
-            Mock 'Update-PSKoan' { throw 'Prevent recursion' }
-            Mock 'Write-Warning'
+            Mock 'Measure-Koan' @module
+            Mock 'Update-PSKoan' -MockWith { throw 'Prevent recursion' } @module
+            Mock 'Get-PSKoan' -ParameterFilter { $Scope -eq 'User' } @module
+            Mock 'Write-Warning' @module
         }
 
         It 'should attempt to populate koans and then recurse to reassess' {
             { Get-Karma } | Should -Throw -ExpectedMessage 'Prevent recursion'
-            Should -Invoke 'Update-PSKoan' -Scope Context
+            Should -Invoke 'Update-PSKoan' -Scope Context @module
         }
 
         It 'displays a warning before initiating a reset' {
-            Should -Invoke 'Write-Warning' -Scope Context
+            { Get-Karma } | Should -Throw
+            Should -Invoke 'Write-Warning' -Scope Context @module
         }
 
         It 'throws an error if a Topic is specified that matches nothing' {
@@ -74,21 +78,21 @@ Describe 'Get-Karma' {
     Context 'With -ListTopics Parameter' {
 
         BeforeAll {
-            Mock 'Get-PSKoan'
+            Mock 'Get-PSKoan' @module
         }
 
         It 'lists all the koan topics' {
             Get-Karma -ListTopics
 
-            Should -Invoke 'Get-PSKoan'
+            Should -Invoke 'Get-PSKoan' @module
         }
     }
 
     Context 'With -Topic Parameter' {
 
         BeforeAll {
-            Mock 'Measure-Koan' -ModuleName 'PSKoans' { [int]::MaxValue }
-            Mock 'Invoke-Koan' -ModuleName 'PSKoans'
+            Mock 'Measure-Koan' @module { [int]::MaxValue }
+            Mock 'Invoke-Koan' @module
         }
 
         It 'calls Invoke-Koan on only the topics selected: <Topic>' -TestCases @(
@@ -97,18 +101,14 @@ Describe 'Get-Karma' {
         ) {
             Get-Karma -Topic $Topic
 
-            Should -Invoke 'Invoke-Koan' -Times @($Topic).Count -ModuleName 'PSKoans'
+            Should -Invoke 'Invoke-Koan' -Times @($Topic).Count @module
         }
     }
 
     Context 'Behaviour When All Koans Are Completed' {
 
         BeforeAll {
-            Mock 'Get-PSKoanLocation' {
-                Join-Path -Path $TestDrive -ChildPath 'CompletedKoan'
-            }
-
-            Mock 'Measure-Koan' -ModuleName 'PSKoans' -MockWith { 2 }
+            Mock 'Measure-Koan' @module -MockWith { 2 }
 
             $TestFile = Join-Path -Path (Get-PSKoanLocation) -ChildPath 'Group\SelectedTopicTest.Koans.ps1'
             New-Item -Path (Split-Path $TestFile -Parent) -ItemType Directory -Force

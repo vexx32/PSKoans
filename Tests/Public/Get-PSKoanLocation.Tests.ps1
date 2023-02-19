@@ -1,13 +1,18 @@
 ﻿#Requires -Modules PSKoans
 
 Describe 'Get-PSKoanLocation' {
+    BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+    }
 
     Context 'Normal Behaviour' {
 
         BeforeAll {
             Mock 'Get-PSKoanSetting' -ParameterFilter { $Name -eq 'KoanLocation' } -MockWith {
                 '~/PSKoans'
-            }
+            } @module
 
             $Result = Get-PSKoanLocation
         }
@@ -17,14 +22,14 @@ Describe 'Get-PSKoanLocation' {
         }
 
         It 'calls Get-PSKoanSetting with -Name "KoanLocation"' {
-            Should -Invoke 'Get-PSKoanSetting' -Scope Context
+            Should -Invoke 'Get-PSKoanSetting' -Scope Context @module
         }
     }
 
     Context 'No Value Available' {
 
         BeforeAll {
-            Mock 'Get-PSKoanSetting' -ParameterFilter { $Name -eq 'KoanLocation' }
+            Mock 'Get-PSKoanSetting' -ParameterFilter { $Name -eq 'KoanLocation' } @module
         }
 
         It 'throws an error if no value can be retrieved' {

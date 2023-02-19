@@ -1,13 +1,18 @@
 #Requires -Modules PSKoans
 
 Describe "Register-Advice" {
+    BeforeAll {
+        $module = @{
+            ModuleName = 'PSKoans'
+        }
+    }
 
     Context "Profile Folder/File Missing" {
 
         BeforeAll {
-            Mock New-Item -Verifiable
-            Mock Test-Path { $false } -Verifiable
-            Mock Set-Content -ParameterFilter { $Value -eq "Show-Advice" } -Verifiable
+            Mock New-Item @module -Verifiable
+            Mock Test-Path { $false } @module -Verifiable
+            Mock Set-Content @module -Verifiable
         }
 
         It 'should create the $profile if it does not exist' {
@@ -19,9 +24,9 @@ Describe "Register-Advice" {
     Context "Profile Already Exists" {
 
         BeforeAll {
-            Mock 'Test-Path' { $true } -Verifiable
-            Mock 'Select-String' { $false } -Verifiable
-            Mock 'Add-Content' -Verifiable
+            Mock Test-Path { $true } @module -Verifiable
+            Mock Select-String { $false } @module -Verifiable
+            Mock Add-Content @module -Verifiable
         }
 
         It "adds content to the profile if it already exists (Get|Set)-Advice" {
@@ -33,10 +38,10 @@ Describe "Register-Advice" {
     Context "Parameter Validation" {
 
         BeforeAll {
-            Mock Test-Path { $false } -ParameterFilter { $Path -eq $ProfileFolder }
-            Mock New-Item
-            Mock Test-Path { $false } -ParameterFilter { $Path -eq $ProfilePath }
-            Mock Set-Content -ParameterFilter { $Value -eq "Show-Advice" }
+            Mock Test-Path { $false } -ParameterFilter { $Path -eq $ProfileFolder } @module
+            Mock New-Item @module
+            Mock Test-Path { $false } -ParameterFilter { $Path -eq $ProfilePath } @module
+            Mock Set-Content @module
         }
 
         It "throws if an invalid value is supplied for -TargetProfile" {

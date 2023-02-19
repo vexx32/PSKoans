@@ -7,6 +7,10 @@ Describe 'Get-PSKoan' {
             Join-Path $TestDrive 'PSKoans'
         }
 
+        Mock 'Get-PSKoanLocation' {
+            Join-Path $TestDrive 'PSKoans'
+        } -ModuleName 'PSKoans'
+
         Update-PSKoan -Confirm:$false
 
         # Stage test module

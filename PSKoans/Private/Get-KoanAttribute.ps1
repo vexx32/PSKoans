@@ -7,6 +7,14 @@ function Get-KoanAttribute {
     .DESCRIPTION
         Modified koan file parser that avoids "using module" statements. Semantic checks for using module include
         invoking "Get-Module -ListAvailable" which adds a considerable delay when parsing individual files.
+    .PARAMETER Path
+        The path to a Koan file.
+    .EXAMPLE
+        Get-KoanAttribute -Path C:\userKoanDir\Foundations\AboutArrays.Koans.ps1
+
+        Returns the KoanAttributeInfo from the AboutArrays.Koans.ps1 file.
+    .NOTES
+        Author: Joel Sallow (@vexx32)
     #>
 
     [CmdletBinding()]

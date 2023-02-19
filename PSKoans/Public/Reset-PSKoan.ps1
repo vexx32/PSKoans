@@ -97,7 +97,10 @@ function Reset-PSKoan {
                             # Replace the content of the koan with the modules content.
                             $content = $content.Remove(
                                 $_.Ast.Extent.StartOffset,
-                                ($_.Ast.Extent.EndOffset - $_.Ast.Extent.StartOffset)
+                                [math]::Min(
+                                    ($_.Ast.Extent.EndOffset - $_.Ast.Extent.StartOffset),
+                                    ($content.Length - $_.Ast.Extent.StartOffset)
+                                )
                             ).Insert(
                                 $_.Ast.Extent.StartOffset,
                                 $ModuleItCommands[$_.ID].Ast.Extent.Text

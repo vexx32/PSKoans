@@ -10,6 +10,9 @@
     .PARAMETER ParameterSplat
         Defines the hashtable that will be splatted into Invoke-Pester in the new PowerShell instance.
 
+    .NOTES
+        Author: Joel Sallow (@vexx32)
+
     .EXAMPLE
         Invoke-Koan @{ Script = '.\AboutArrays.Koans.ps1'; PassThru = $true; Show = 'None' }
 
