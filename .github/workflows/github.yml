@@ -181,7 +181,7 @@ jobs:
           }
           Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
           Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
-          Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
+          #Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
         env:
           GITHUB_WORKSPACE: ${{github.workspace}}
           PackageDownloadPath: ${{ env.PackageDownloadPath }}
