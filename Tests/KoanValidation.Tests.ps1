@@ -23,7 +23,7 @@ Describe 'Static Analysis: Koan Topics' {
             }
         #endregion Discovery
 
-        It 'has no syntax errors in <Topic>' -TestCases $KoanTopics {
+        It 'has no syntax errors in <Name>' -TestCases $KoanTopics {
             $File.FullName | Should -Exist
 
             $Errors = $Tokens = $null
@@ -31,7 +31,7 @@ Describe 'Static Analysis: Koan Topics' {
             $Errors.Count | Should -Be 0
         }
 
-        It 'does not have nested It blocks in <Topic>' -TestCases $KoanTopics {
+        It 'does not have nested It blocks in <Name>' -TestCases $KoanTopics {
             function Test-ItBlock {
                 [CmdletBinding()]
                 param([Ast] $element)
@@ -78,12 +78,12 @@ Describe 'Static Analysis: Koan Topics' {
             $ParentItBlocks | Should -BeNullOrEmpty -Because 'It blocks cannot be nested'
         }
 
-        It 'has exactly one line feed at end of the <Topic> file' -TestCases $KoanTopics {
+        It 'has exactly one line feed at end of the <Name> file' -TestCases $KoanTopics {
             $crlf = [Regex]::Match(($File | Get-Content -Raw), '(\r?(?<lf>\n))+\Z')
             $crlf.Groups['lf'].Captures.Count | Should -Be 1
         }
 
-        It 'has a position number defined for <Topic>' -TestCases $KoanTopics {
+        It 'has a position number defined for <Name>' -TestCases $KoanTopics {
             param($File, $Position)
 
             $Position | Should -Not -BeNullOrEmpty
