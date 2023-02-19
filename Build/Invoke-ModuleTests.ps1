@@ -16,17 +16,15 @@ try {
 
     $config.Run.Path = "$env:PROJECTROOT"
     $config.Run.Exit = $true
-    $config.Run.PassThru = $true
 
     $config.TestResult.Enabled = $true
 
-    $config.Output.Verbosity = "Normal"
+    $config.Output.Verbosity = "Detailed"
 
     $config.CodeCoverage.Enabled = $true
+    $config.CodeCoverage.Path = "$env:PROJECTROOT"
 
-    $pesterResults = Invoke-Pester -Configuration $config
-    $pesterResults
-    $pesterResults.CodeCoverage
+    Invoke-Pester -Configuration $config
 }
 finally {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"
