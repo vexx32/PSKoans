@@ -152,6 +152,10 @@ jobs:
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
         
+      - name: Generate help.xml
+        shell: pwsh
+        run: New-ExternalHelp -Path "${{env.PROJECTROOT}}/docs/" -OutputPath "${{env.PROJECTROOT}}/PSKoans/en"
+        
       # - name: Register FileSystem Repository
       #   shell: pwsh
       #   run: |
