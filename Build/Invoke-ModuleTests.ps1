@@ -16,6 +16,7 @@ try {
 
     $config.Run.Path = "$env:PROJECTROOT"
     $config.Run.Exit = $true
+    $config.Run.PassThru = $true
 
     $config.TestResult.Enabled = $true
 
@@ -23,7 +24,9 @@ try {
 
     $config.CodeCoverage.Enabled = $true
 
-    Invoke-Pester -Configuration $config
+    $pesterResults = Invoke-Pester -Configuration $config
+    $pesterResults
+    $pesterResults.CodeCoverage
 }
 finally {
     $Timestamp = Get-Date -Format "yyyyMMdd-hhmmss"

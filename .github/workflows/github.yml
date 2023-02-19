@@ -192,25 +192,18 @@ jobs:
         shell: pwsh
         run: ./Build/Invoke-ModuleTests.ps1
         
-      - name: Upload Test Results (package)
+      - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: ${{matrix.os}}-Test-Results
           path: ${{github.workspace}}/${{env.TestFile}}
 
-      - name: Upload Test Results (event)
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{matrix.os}}-Test-Results
-          path: ${{ github.event_path }}
-
       - name: Upload Coverage Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: ${{matrix.os}}-Test-Results
+          name: ${{matrix.os}}-Coverage-Results
           path: ${{github.workspace}}/${{env.CodeCoverageFile}}
       
   report-tests:
