@@ -1,7 +1,7 @@
 $Lines = '-' * 70
 
-Get-ChildItem -Path $env:PROJECTROOT
-Import-Module "$env:PROJECTROOT\PSKoans"
+$env:PSModulePath = "$env:PROJECTROOT" + [IO.Path]::PathSeparator + "$env:PSModulePath"
+Import-Module "PSKoans"
 
 $PesterVersion = (Get-Module -Name Pester).Version
 $PSVersion = $PSVersionTable.PSVersion
