@@ -1,5 +1,5 @@
 $Lines = '-' * 70
-$env:PSModulePath = "$env:PROJECTROOT$([IO.Path]::PathSeparator)$env:PSModulePath"
+
 Import-Module "$env:PROJECTROOT\PSKoans"
 
 $PesterVersion = (Get-Module -Name Pester).Version
@@ -19,7 +19,7 @@ try {
 
     $config.TestResult.Enabled = $true
 
-    $config.Output.Verbosity = "Normal"
+    $config.Output.Verbosity = "Detailed"
 
     $config.CodeCoverage.Enabled = $true
     $config.CodeCoverage.Path = @("$env:PROJECTROOT\PSKoans\Private", "$env:PROJECTROOT\PSKoans\Public")

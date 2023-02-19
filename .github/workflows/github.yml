@@ -167,26 +167,26 @@ jobs:
           name: ${{ env.NupkgArtifactName }}
           path: "${{ github.workspace }}/${{ env.PackageDownloadPath }}"
           
-      - name: Install Module from Nupkg
-        shell: pwsh
-        run: |
-          $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
-          $pesterParams = @{
-              Name           = 'Pester'
-              MinimumVersion = $env:pester_min_version
-              ProviderName   = 'NuGet'
-              Path           = $PackageDownloadPath
-              Force          = $true
-              Source         = 'PSGallery'
-          }
-          Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
-          Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
-          #Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
-        env:
-          GITHUB_WORKSPACE: ${{github.workspace}}
-          PackageDownloadPath: ${{ env.PackageDownloadPath }}
-          PSRepositoryName: ${{ env.PSRepositoryName }}
-          pester_min_version: ${{ env.pester_min_version }}
+      # - name: Install Module from Nupkg
+      #   shell: pwsh
+      #   run: |
+      #     $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
+      #     $pesterParams = @{
+      #         Name           = 'Pester'
+      #         MinimumVersion = $env:pester_min_version
+      #         ProviderName   = 'NuGet'
+      #         Path           = $PackageDownloadPath
+      #         Force          = $true
+      #         Source         = 'PSGallery'
+      #     }
+      #     Register-PackageSource -Name PSGallery -ProviderName NuGet -Location https://www.powershellgallery.com/api/v2 -Force
+      #     Save-Package @pesterParams | Select-Object -Property Name, Version, Status, Source
+      #     Install-Module PSKoans -Repository $env:PSRepositoryName -Force -Scope CurrentUser
+      #   env:
+      #     GITHUB_WORKSPACE: ${{github.workspace}}
+      #     PackageDownloadPath: ${{ env.PackageDownloadPath }}
+      #     PSRepositoryName: ${{ env.PSRepositoryName }}
+      #     pester_min_version: ${{ env.pester_min_version }}
       
       - name: Run Pester Tests
         shell: pwsh
