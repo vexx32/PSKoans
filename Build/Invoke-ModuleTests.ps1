@@ -22,7 +22,7 @@ try {
     $config.Output.Verbosity = "Detailed"
 
     $config.CodeCoverage.Enabled = $true
-    $config.CodeCoverage.Path = "$env:PROJECTROOT\PSKoans"
+    $config.CodeCoverage.Path = @("$env:PROJECTROOT\PSKoans\Private", "$env:PROJECTROOT\PSKoans\Public")
 
     Invoke-Pester -Configuration $config
 }
