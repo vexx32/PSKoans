@@ -155,7 +155,7 @@ jobs:
       - name: Generate help.xml
         shell: pwsh
         run: New-ExternalHelp -Path "${{env.PROJECTROOT}}/docs/" -OutputPath "${{env.PROJECTROOT}}/PSKoans/en"
-        
+
       # - name: Register FileSystem Repository
       #   shell: pwsh
       #   run: |
@@ -221,7 +221,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Download Test Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: artifacts
 
@@ -263,7 +263,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Download Module Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ${{env.ModuleArtifactName}}
           path: ${{env.BuiltModulePath}}
@@ -280,7 +280,7 @@ jobs:
           "TagName=$tagname" | Add-Content -Path '${{ github.env }}'
           
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           path: '${{github.workspace}}/artifacts'
           

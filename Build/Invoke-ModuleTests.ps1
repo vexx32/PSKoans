@@ -20,7 +20,7 @@ try {
 
     $config.TestResult.Enabled = $true
 
-    $config.Output.Verbosity = "Detailed"
+    $config.Output.Verbosity = "Normal"
 
     $config.CodeCoverage.Enabled = $true
     $config.CodeCoverage.Path = @("$env:PROJECTROOT\PSKoans\Private", "$env:PROJECTROOT\PSKoans\Public")
