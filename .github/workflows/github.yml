@@ -152,20 +152,20 @@ jobs:
         shell: pwsh
         run: ./Build/Initialize-Environment.ps1
         
-      - name: Register FileSystem Repository
-        shell: pwsh
-        run: |
-          $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
-          ./Build/Register-FileSystemRepository.ps1 -Path $PackageDownloadPath -Name ${{ env.PSRepositoryName }}
-        env:
-          GITHUB_WORKSPACE: ${{github.workspace}}
-          PackageDownloadPath: ${{ env.PackageDownloadPath }}
+      # - name: Register FileSystem Repository
+      #   shell: pwsh
+      #   run: |
+      #     $PackageDownloadPath = "$env:GITHUB_WORKSPACE/$env:PackageDownloadPath"
+      #     ./Build/Register-FileSystemRepository.ps1 -Path $PackageDownloadPath -Name ${{ env.PSRepositoryName }}
+      #   env:
+      #     GITHUB_WORKSPACE: ${{github.workspace}}
+      #     PackageDownloadPath: ${{ env.PackageDownloadPath }}
       
-      - name: Download Module Nupkg
-        uses: actions/download-artifact@v2.0.9
-        with:
-          name: ${{ env.NupkgArtifactName }}
-          path: "${{ github.workspace }}/${{ env.PackageDownloadPath }}"
+      # - name: Download Module Nupkg
+      #   uses: actions/download-artifact@v2.0.9
+      #   with:
+      #     name: ${{ env.NupkgArtifactName }}
+      #     path: "${{ github.workspace }}/${{ env.PackageDownloadPath }}"
           
       # - name: Install Module from Nupkg
       #   shell: pwsh
